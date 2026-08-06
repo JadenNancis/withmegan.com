@@ -8,7 +8,7 @@ export default async function BtsAdminDashboard({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  await requireAdmin();
+  await requireAdmin("/bts/admin");
   const params = await searchParams;
   const search = typeof params.search === "string" ? params.search : undefined;
   const guardians = await getAllGuardians(search);
@@ -39,7 +39,7 @@ export default async function BtsAdminDashboard({
         <div className="flex gap-2">
           <Link
             href="/bts/admin/reports"
-            className="inline-flex items-center justify-center rounded-lg border border-cyan-200 bg-white px-4 py-2 text-sm font-bold text-cyan-700 shadow-sm hover:bg-cyan-50 transition-colors"
+            className="inline-flex items-center justify-center rounded-lg border border-cyan-200 bg-white px-4 py-2.5 text-sm font-bold text-cyan-700 shadow-sm hover:bg-cyan-50 transition-colors min-h-[44px]"
           >
             Reports &rarr;
           </Link>
@@ -61,16 +61,16 @@ export default async function BtsAdminDashboard({
       </div>
 
       {/* Search bar */}
-      <form method="get" className="bts-fade-in-up bts-stagger-3 flex gap-2">
+      <form method="get" className="bts-fade-in-up bts-stagger-3 flex flex-col gap-2 sm:flex-row">
         <input
           name="search"
           defaultValue={search ?? ""}
           placeholder="Search by guardian name, email, or THA ID…"
-          className="flex-1 rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm focus:border-transparent focus:ring-2 focus:ring-cyan-500 focus:outline-none transition-shadow"
+          className="flex-1 rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm focus:border-transparent focus:ring-2 focus:ring-cyan-500 focus:outline-none transition-shadow min-h-[44px]"
         />
         <button
           type="submit"
-          className="rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-cyan-700 transition-colors"
+          className="rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-cyan-700 transition-colors min-h-[44px] sm:w-auto"
         >
           Search
         </button>
@@ -88,6 +88,9 @@ export default async function BtsAdminDashboard({
         </div>
       ) : (
         <div className="bts-fade-in-up bts-stagger-4 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+          <p className="px-4 py-2 text-xs text-gray-400 border-b border-gray-100 sm:hidden">
+            ← Swipe to see more columns →
+          </p>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gradient-to-r from-cyan-50 to-cyan-50/50">
@@ -127,7 +130,7 @@ export default async function BtsAdminDashboard({
                     <td className="px-4 py-3 text-sm">
                       <Link
                         href={`/bts/admin/${g.id}`}
-                        className="font-bold text-cyan-600 hover:text-cyan-800 transition-colors"
+                        className="inline-flex items-center font-bold text-cyan-600 hover:text-cyan-800 transition-colors py-1"
                       >
                         Details &rarr;
                       </Link>

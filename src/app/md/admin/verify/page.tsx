@@ -4,7 +4,7 @@ import { VerifyCounter } from "@/components/verify-counter";
 import { SunsetWaveDivider } from "@/components/md-illustrations";
 
 export default async function MdAdminVerifyPage() {
-  const user = await requireAdmin();
+  const user = await requireAdmin("/md/admin/verify");
   void user;
 
   return (

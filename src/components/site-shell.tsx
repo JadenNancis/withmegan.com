@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import type { SiteConfig } from "@/sites/site-registry";
 import { SiteProvider } from "@/sites/site-context";
+import { AuthButton } from "@/components/auth-button";
 import { cn } from "@/lib/cn";
 
 const accentMap = {
@@ -37,7 +38,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
               <span className="text-lg font-bold leading-tight">{site.name}</span>
               <span className="text-xs opacity-80">{site.tagline}</span>
             </Link>
-            <nav className="flex gap-1 sm:gap-4">
+            <nav className="flex gap-1 sm:gap-4 items-center">
               {site.nav.map((item) => (
                 <Link
                   key={item.href}
@@ -47,6 +48,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
                   {item.label}
                 </Link>
               ))}
+              <AuthButton accent={site.accent} />
             </nav>
           </div>
         </header>

@@ -153,13 +153,13 @@ export function HouseholdManager({
             value={newRef}
             onChange={(e) => setNewRef(e.target.value)}
             placeholder="Leave blank for auto-generated (HH-0001)"
-            className="flex-1 rounded-md border border-amber-200 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
+            className="min-h-[44px] flex-1 rounded-md border border-amber-200 px-3 py-2.5 text-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
           />
           <button
             type="button"
             onClick={createHousehold}
             disabled={creating || pending}
-            className="rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-50 transition-colors"
+            className="min-h-[44px] rounded-md bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-50 transition-colors"
           >
             {creating ? "Creating…" : "Create"}
           </button>
@@ -174,9 +174,9 @@ export function HouseholdManager({
           <div className="mt-3 space-y-2">
             {unassigned.map((r) => (
               <div key={r.id} className="flex flex-col sm:flex-row sm:items-center gap-2 rounded-lg bg-white p-3 border border-amber-100 shadow-sm">
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">{r.fullName}</p>
-                  <p className="text-xs font-mono text-amber-700">{r.thaId ?? "—"}</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900 truncate">{r.fullName}</p>
+                  <p className="text-xs font-mono text-amber-700 mt-0.5">{r.thaId ?? "—"}</p>
                 </div>
                 <select
                   defaultValue=""
@@ -184,7 +184,7 @@ export function HouseholdManager({
                     if (e.target.value) assign(r.id, e.target.value);
                     e.target.value = "";
                   }}
-                  className="rounded-md border border-amber-200 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                  className="min-h-[44px] w-full sm:w-auto rounded-md border border-amber-200 px-3 py-2.5 text-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
                 >
                   <option value="">Assign to household…</option>
                   {households.map((h) => (
@@ -233,7 +233,7 @@ export function HouseholdManager({
                         value={h.hamperStatus}
                         onChange={(e) => setStatus(h.id, e.target.value as "unassigned" | "assigned" | "redeemed")}
                         disabled={pending}
-                        className="rounded-md border border-amber-200 px-2 py-1 text-xs focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none disabled:opacity-50"
+                        className="min-h-[44px] rounded-md border border-amber-200 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none disabled:opacity-50"
                       >
                         <option value="unassigned">unassigned</option>
                         <option value="assigned">assigned</option>

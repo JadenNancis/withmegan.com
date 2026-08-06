@@ -1,32 +1,22 @@
 import NextAuth from "next-auth";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { db } from "@/db/client";
-import { users, accounts, sessions, verificationTokens } from "@/db/schema";
 import Credentials from "next-auth/providers/credentials";
-import { eq } from "drizzle-orm";
 
 /**
  * Shared Auth.js v5 configuration.
  *
- * One auth realm, one set of users. A user's `role` column ("admin" | "staff")
- * gates access to admin routes on BOTH sites. This keeps admin onboarding
- * simple: one account, two dashboards.
+ * One auth realm, one set of users. A user's `role` ("admin" | "staff")
+ * gates access to admin routes on BOTH sites.
  *
- * Prototype uses Credentials with a single seeded admin. Production should
- * swap in an OAuth provider (Google, Azure AD, etc.) per the security notes.
+ * Prototype: JWT-based session with hardcoded admin credentials so auth
+ * works without a database connection. Production should swap to database
+ * sessions with DrizzleAdapter + an OAuth provider (Google, Azure AD).
  */
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "admin@withmegan.local";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "admin";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: DrizzleAdapter(db, {
-    usersTable: users,
-    accountsTable: accounts,
-    sessionsTable: sessions,
-    verificationTokensTable: verificationTokens,
-  }),
-  session: { strategy: "database" },
+  session: { strategy: "jwt" },
   providers: [
     Credentials({
       name: "Admin",
@@ -39,28 +29,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const password = creds?.password as string | undefined;
         if (!email || !password) return null;
 
-        // Prototype: single hardcoded admin. Swap for real user lookup.
         if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-          // Upsert so the session has a real user row.
-          const existing = await db.select().from(users).where(eq(users.email, email)).limit(1);
-          if (existing[0]) {
-            return { id: existing[0].id, email: existing[0].email, name: existing[0].name, role: existing[0].role } as any;
-          }
-          const [created] = await db
-            .insert(users)
-            .values({ email, name: "Administrator", role: "admin" })
-            .returning();
-          return { id: created.id, email: created.email, name: created.name, role: created.role } as any;
+          return {
+            id: "admin-prototype",
+            email,
+            name: "Administrator",
+            role: "admin",
+          } as any;
         }
         return null;
       },
     }),
   ],
   callbacks: {
-    async session({ session, user }) {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = (user as any).role ?? "staff";
+      }
+      return token;
+    },
+    async session({ session, token }) {
       if (session.user) {
-        (session.user as any).id = user.id;
-        (session.user as any).role = (user as any).role;
+        (session.user as any).id = token.sub;
+        (session.user as any).role = token.role;
       }
       return session;
     },

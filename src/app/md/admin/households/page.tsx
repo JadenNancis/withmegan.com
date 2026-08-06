@@ -8,7 +8,7 @@ import { isNull } from "drizzle-orm";
 import { SunsetWaveDivider } from "@/components/md-illustrations";
 
 export default async function MdAdminHouseholdsPage() {
-  const user = await requireAdmin();
+  const user = await requireAdmin("/md/admin/households");
   void user;
 
   const [households, audit, unassignedRows] = await Promise.all([

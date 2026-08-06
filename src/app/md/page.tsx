@@ -70,15 +70,15 @@ export default function MdLanding() {
 
       {/* ──────── Stats Cards ──────── */}
       <section className="grid gap-4 sm:grid-cols-3 px-0 -mt-2">
-        <div className="md-animate-fade-in-up rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-6 md-animate-glow">
-          <p className="text-2xl font-bold text-amber-700">{formattedDate}</p>
+        <div className="md-animate-fade-in-up rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-5 sm:p-6 md-animate-glow">
+          <p className="text-base sm:text-2xl font-bold text-amber-700 leading-snug">{formattedDate}</p>
           <p className="mt-1 text-sm font-medium text-amber-800">Event date</p>
         </div>
-        <div className="md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-6 md-animate-glow">
+        <div className="md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-5 sm:p-6 md-animate-glow">
           <p className="text-2xl font-bold text-amber-700">2</p>
           <p className="mt-1 text-sm font-medium text-amber-800">Distribution centres</p>
         </div>
-        <div className="md-animate-fade-in-up md-delay-2 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-6 md-animate-glow">
+        <div className="md-animate-fade-in-up md-delay-2 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-5 sm:p-6 md-animate-glow">
           <p className="text-2xl font-bold text-amber-700">Free</p>
           <p className="mt-1 text-sm font-medium text-amber-800">For registered residents</p>
         </div>

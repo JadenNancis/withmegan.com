@@ -61,13 +61,13 @@ export default function MdRegisterPage() {
 
   if (success) {
     return (
-      <div className="space-y-6">
+      <div className="relative space-y-6 overflow-hidden">
         {/* Floating celebration elements */}
         <FloatingProduce className="absolute top-20 left-4 w-12 h-12 opacity-30 md-animate-float" />
         <FloatingProduce className="absolute top-32 right-8 w-10 h-10 opacity-25 md-animate-float-slow" />
         <FloatingProduce className="absolute top-48 left-12 w-8 h-8 opacity-20 md-animate-float" />
 
-        <div className="relative rounded-2xl border-2 border-green-300 bg-gradient-to-br from-green-50 to-amber-50 p-8 text-center shadow-lg overflow-hidden">
+        <div className="relative rounded-2xl border-2 border-green-300 bg-gradient-to-br from-green-50 to-amber-50 p-6 sm:p-8 text-center shadow-lg overflow-hidden">
           <div className="md-animate-celebrate mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-500 text-white shadow-lg">
             <svg viewBox="0 0 40 40" className="w-12 h-12" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M 10 20 L 17 27 L 30 13" />
@@ -79,7 +79,7 @@ export default function MdRegisterPage() {
           </p>
           <div className="mt-6 rounded-xl bg-white p-5 border border-green-200 shadow-sm md-animate-fade-in-up md-delay-3">
             <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">Your THA ID</p>
-            <p className="mt-1 text-3xl font-mono font-bold text-amber-700 select-all">{success.thaId}</p>
+            <p className="mt-1 text-2xl sm:text-3xl font-mono font-bold text-amber-700 select-all break-all">{success.thaId}</p>
             <p className="mt-2 text-xs text-gray-500">
               Keep this ID safe &mdash; you&apos;ll need it for verification on event day.
             </p>
@@ -88,14 +88,14 @@ export default function MdRegisterPage() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center md-animate-fade-in-up md-delay-4">
           <Link
             href="/md"
-            className="inline-flex justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+            className="inline-flex justify-center min-h-[44px] items-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
           >
             Back to home
           </Link>
           <button
             type="button"
             onClick={() => setSuccess(null)}
-            className="md-animate-pulse-warm inline-flex justify-center rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 transition-colors"
+            className="md-animate-pulse-warm inline-flex justify-center min-h-[44px] items-center rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 transition-colors"
           >
             Register another person
           </button>
@@ -171,7 +171,7 @@ export default function MdRegisterPage() {
             <input
               type="checkbox"
               name="consent"
-              className="mt-0.5 h-4 w-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500"
+              className="mt-1 h-5 w-5 flex-none rounded border-gray-300 text-amber-600 focus:ring-amber-500"
             />
             <span>
               I consent to the collection and use of my data for the purpose of this
@@ -181,13 +181,13 @@ export default function MdRegisterPage() {
           {errors.consent && <p className="mt-1 text-xs text-red-600">{errors.consent}</p>}
         </div>
 
-        <div className="flex gap-3">
-          <SubmitButton className={cn("bg-amber-500 hover:bg-amber-600 md-animate-pulse-warm")} >
+        <div className="flex flex-col sm:flex-row gap-3">
+          <SubmitButton className={cn("min-h-[44px] bg-amber-500 hover:bg-amber-600 md-animate-pulse-warm")} >
             {submitting ? "Submitting…" : "Register"}
           </SubmitButton>
           <Link
             href="/md"
-            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
           >
             Cancel
           </Link>

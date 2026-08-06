@@ -183,17 +183,17 @@ export function VerifyCounter() {
                 setSelected(r);
                 setFeedback({ kind: "idle" });
               }}
-              className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-amber-50 transition-colors"
+              className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left hover:bg-amber-50 active:bg-amber-50 transition-colors min-h-[56px]"
             >
-              <div>
-                <p className="font-medium text-gray-900">{r.fullName}</p>
-                <p className="text-xs font-mono text-amber-700">{r.thaId ?? "—"}</p>
+              <div className="min-w-0 flex-1">
+                <p className="font-medium text-gray-900 truncate">{r.fullName}</p>
+                <p className="text-xs font-mono text-amber-700 mt-0.5">{r.thaId ?? "—"}</p>
               </div>
-              <div className="text-right">
+              <div className="text-right flex-none">
                 <p className="text-sm text-gray-600">{r.householdReference ?? "No household"}</p>
                 <span
                   className={cn(
-                    "inline-block rounded-full px-2 py-0.5 text-xs font-medium",
+                    "mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-medium",
                     r.hamperStatus === "redeemed"
                       ? "bg-red-100 text-red-700"
                       : r.hamperStatus === "assigned"
@@ -217,11 +217,11 @@ export function VerifyCounter() {
 
       {/* Selected registrant card */}
       {selected && (
-        <div className="md-animate-fade-in-up rounded-xl border-2 border-amber-200 bg-white p-6 shadow-sm">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-            <div className="space-y-1">
-              <h2 className="text-xl font-bold text-gray-900">{selected.fullName}</h2>
-              <p className="font-mono text-sm text-amber-700">{selected.thaId ?? "No THA ID"}</p>
+        <div className="md-animate-fade-in-up rounded-xl border-2 border-amber-200 bg-white p-4 sm:p-6 shadow-sm">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
+            <div className="space-y-1 min-w-0">
+              <h2 className="text-xl font-bold text-gray-900 break-words">{selected.fullName}</h2>
+              <p className="font-mono text-sm text-amber-700 break-all">{selected.thaId ?? "No THA ID"}</p>
             </div>
             <span
               className={cn(
@@ -310,7 +310,7 @@ export function VerifyCounter() {
       {feedback.kind !== "idle" && (
         <div
           className={cn(
-            "md-animate-fade-in-up rounded-xl p-6 text-center shadow-lg",
+            "md-animate-fade-in-up rounded-xl p-5 sm:p-6 text-center shadow-lg",
             feedback.kind === "success" && "border-2 border-green-500 bg-gradient-to-br from-green-50 to-amber-50",
             feedback.kind === "blocked" && "border-2 border-red-500 bg-red-50",
             feedback.kind === "error" && "border-2 border-gray-400 bg-gray-100",
@@ -318,31 +318,31 @@ export function VerifyCounter() {
         >
           <p
             className={cn(
-              "text-3xl font-bold flex items-center justify-center gap-3",
+              "text-xl sm:text-3xl font-bold flex items-center justify-center gap-2 sm:gap-3",
               feedback.kind === "success" && "text-green-700",
               feedback.kind === "blocked" && "text-red-700",
               feedback.kind === "error" && "text-gray-800",
             )}
           >
             {feedback.kind === "success" && (
-              <svg viewBox="0 0 40 40" className="w-10 h-10 md-animate-celebrate" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+              <svg viewBox="0 0 40 40" className="w-8 h-8 sm:w-10 sm:h-10 flex-none md-animate-celebrate" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M 10 20 L 17 27 L 30 13" />
               </svg>
             )}
             {feedback.kind === "blocked" && (
-              <svg viewBox="0 0 40 40" className="w-10 h-10 md-animate-celebrate" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round">
+              <svg viewBox="0 0 40 40" className="w-8 h-8 sm:w-10 sm:h-10 flex-none md-animate-celebrate" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round">
                 <path d="M 10 10 L 30 30 M 30 10 L 10 30" />
               </svg>
             )}
             {feedback.kind === "error" && (
-              <span>⚠</span>
+              <span className="flex-none">⚠</span>
             )}
-            {feedback.message}
+            <span className="break-words">{feedback.message}</span>
           </p>
           {feedback.detail && (
             <p
               className={cn(
-                "mt-2 text-base",
+                "mt-2 text-sm sm:text-base break-words",
                 feedback.kind === "success" && "text-green-700",
                 feedback.kind === "blocked" && "text-red-700",
                 feedback.kind === "error" && "text-gray-700",

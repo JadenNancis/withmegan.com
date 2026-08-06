@@ -21,7 +21,7 @@ export default async function MdAdminReportsPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const user = await requireAdmin();
+  const user = await requireAdmin("/md/admin/reports");
   void user;
 
   const sp = await searchParams;

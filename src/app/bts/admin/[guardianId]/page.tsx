@@ -9,7 +9,7 @@ export default async function GuardianDetailPage({
 }: {
   params: Promise<{ guardianId: string }>;
 }) {
-  const user = await requireAdmin();
+  const user = await requireAdmin("/bts/admin/[guardianId]");
   const { guardianId } = await params;
   const guardian = await getGuardianWithDependents(guardianId);
 
@@ -20,7 +20,7 @@ export default async function GuardianDetailPage({
   return (
     <div className="space-y-6">
       <div>
-        <Link href="/bts/admin" className="text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/bts/admin" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 py-1">
           ← Back to dashboard
         </Link>
       </div>
@@ -64,7 +64,7 @@ export default async function GuardianDetailPage({
                   href={dep.bookListUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-md bg-blue-50 px-3 py-1.5 text-sm font-medium text-blue-700 hover:bg-blue-100"
+                  className="inline-flex items-center justify-center rounded-md bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100 min-h-[44px]"
                 >
                   📄 Download book list
                 </a>
@@ -90,10 +90,10 @@ export default async function GuardianDetailPage({
         {auditTrail.length === 0 ? (
           <p className="mt-2 text-sm text-gray-500">No audit entries recorded.</p>
         ) : (
-          <ul className="mt-3 space-y-2">
+          <ul className="mt-3 space-y-3">
             {auditTrail.map((entry) => (
-              <li key={entry.id} className="flex items-start gap-3 text-sm">
-                <span className="mt-0.5 font-mono text-xs text-gray-400">
+              <li key={entry.id} className="flex flex-col gap-0.5 text-sm sm:flex-row sm:items-start sm:gap-3">
+                <span className="font-mono text-xs text-gray-400 sm:mt-0.5">
                   {entry.createdAt.toLocaleString("en-TT")}
                 </span>
                 <div>

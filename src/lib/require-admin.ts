@@ -6,12 +6,14 @@ import { redirect } from "next/navigation";
  * handler that should only be accessible to authenticated admins.
  *
  * Returns the authenticated user (with role) or redirects to sign-in.
+ * Pass `callbackPath` so the user returns to the page they tried to access.
  */
 
-export async function requireAdmin() {
+export async function requireAdmin(callbackPath?: string) {
   const session = await auth();
   if (!session?.user) {
-    redirect("/auth/signin");
+    const cb = callbackPath ? `?callbackUrl=${encodeURIComponent(callbackPath)}` : "";
+    redirect(`/auth/signin${cb}`);
   }
   const role = (session.user as any).role as string | undefined;
   if (role !== "admin" && role !== "staff") {

@@ -4,7 +4,7 @@ import { db } from "@/db/client";
 import { btsGuardians, btsDependents, btsResourceAssignments } from "@/db/schema";
 
 export default async function BtsReportsPage() {
-  await requireAdmin();
+  await requireAdmin("/bts/admin/reports");
 
   const [guardians, dependents, assignments] = await Promise.all([
     db.select().from(btsGuardians),

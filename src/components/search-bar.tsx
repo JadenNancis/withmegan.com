@@ -31,12 +31,12 @@ export function SearchBar({ placeholder = "Search…", paramName = "q" }: Search
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
-        className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
         autoFocus
+        className="min-h-[44px] flex-1 rounded-md border border-gray-300 px-3 py-2.5 text-base sm:text-sm shadow-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
       />
       <button
         type="submit"
-        className="rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600"
+        className="min-h-[44px] rounded-md bg-amber-500 px-5 py-2.5 text-base sm:text-sm font-semibold text-white hover:bg-amber-600 transition-colors"
       >
         Search
       </button>

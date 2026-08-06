@@ -188,14 +188,14 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
         <p className="mt-1 text-xs text-gray-400">No resources assigned yet.</p>
       )}
 
-      <div className="mt-3 flex flex-wrap items-end gap-2">
-        <div>
+      <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:gap-2">
+        <div className="flex-1">
           <label className="block text-xs text-gray-500">New item</label>
           <input
             value={newItem}
             onChange={(e) => setNewItem(e.target.value)}
             placeholder="e.g. Mathematics textbook"
-            className="rounded-md border border-gray-300 px-2 py-1 text-sm"
+            className="w-full rounded-md border border-gray-300 px-2 py-2 text-sm min-h-[44px]"
           />
         </div>
         <div>
@@ -205,7 +205,7 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
             min={0}
             value={newQty}
             onChange={(e) => setNewQty(e.target.value)}
-            className="w-20 rounded-md border border-gray-300 px-2 py-1 text-sm"
+            className="w-full sm:w-20 rounded-md border border-gray-300 px-2 py-2 text-sm min-h-[44px]"
           />
         </div>
         <button
@@ -213,7 +213,7 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
           onClick={addAssignment}
           disabled={pending}
           className={cn(
-            "rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-blue-700",
+            "rounded-md bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 min-h-[44px] sm:self-end",
             pending && "opacity-60",
           )}
         >
