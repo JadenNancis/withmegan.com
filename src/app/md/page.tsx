@@ -24,7 +24,12 @@ export default function MdLanding() {
   return (
     <div className="space-y-0">
       {/* ──────── Hero Section ──────── */}
-      <section className="relative overflow-hidden rounded-2xl md-hero-shimmer shadow-2xl">
+      <section className="relative overflow-hidden rounded-2xl shadow-2xl bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/tobago/caribbean-warm.jpg')" }}
+      >
+        {/* Warm sunset gradient overlay for MD */}
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/85 via-orange-800/80 to-amber-600/75" />
+        <div className="md-hero-shimmer absolute inset-0 opacity-30" />
         {/* Floating decorative produce */}
         <FloatingProduce className="absolute top-8 left-4 w-10 h-10 opacity-60 md-animate-float" />
         <FloatingProduce className="absolute top-16 right-6 w-8 h-8 opacity-50 md-animate-float-slow" />
@@ -124,7 +129,11 @@ export default function MdLanding() {
       </section>
 
       {/* ──────── Bottom CTA ──────── */}
-      <section className="relative overflow-hidden rounded-2xl md-hero-shimmer shadow-xl">
+      <section className="relative overflow-hidden rounded-2xl shadow-xl bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/tobago/ocean-hero.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/85 via-orange-800/80 to-amber-600/75" />
+        <div className="md-hero-shimmer absolute inset-0 opacity-20" />
         <FloatingProduce className="absolute top-4 left-6 w-8 h-8 opacity-50 md-animate-float" />
         <FloatingProduce className="absolute bottom-4 right-6 w-10 h-10 opacity-40 md-animate-float-slow" />
         <SunsetWaveDivider className="w-full h-[30px] block opacity-60" />

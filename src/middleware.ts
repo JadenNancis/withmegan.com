@@ -21,11 +21,13 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  // Shared paths (auth, api) pass through unchanged.
+  // Shared paths (auth, api, static assets) pass through unchanged.
   if (
     pathname.startsWith("/api") ||
     pathname.startsWith("/auth") ||
     pathname.startsWith("/_next") ||
+    pathname.startsWith("/images") ||
+    pathname.startsWith("/uploads") ||
     pathname.startsWith("/favicon") ||
     pathname === "/robots.txt" ||
     pathname === "/sitemap.xml"

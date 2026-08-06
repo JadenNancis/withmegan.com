@@ -16,8 +16,15 @@ export default function BtsLanding() {
     <div className="space-y-0">
       {/* ===== Hero Section ===== */}
       <section className="-mx-4 -mt-8 mb-0 overflow-hidden">
-        {/* Ocean shimmer background */}
-        <div className="bts-ocean-shimmer relative">
+        {/* Tobago beach photo background with ocean gradient overlay */}
+        <div
+          className="relative bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/tobago/pigeon-point.jpg')" }}
+        >
+          {/* Gradient overlay — blue ocean tones for BTS */}
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/85 via-blue-800/80 to-cyan-600/75" />
+          {/* Shimmer animation layer on top of photo */}
+          <div className="bts-ocean-shimmer absolute inset-0 opacity-30" />
           {/* Floating decorative elements */}
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="bts-float bts-float-delay-1 absolute left-[5%] top-[10%] opacity-20">
@@ -161,7 +168,12 @@ export default function BtsLanding() {
           <WaveDivider className="h-12 w-full rotate-180" preserveAspectRatio="none" />
         </div>
 
-        <div className="bts-ocean-shimmer relative">
+        <div
+          className="relative bg-cover bg-center"
+          style={{ backgroundImage: "url('/images/tobago/ocean-hero.jpg')" }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/85 via-blue-800/80 to-cyan-600/75" />
+          <div className="bts-ocean-shimmer absolute inset-0 opacity-20" />
           {/* Floating decorative books */}
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="bts-float bts-float-delay-1 absolute left-[10%] top-[20%] opacity-20">
