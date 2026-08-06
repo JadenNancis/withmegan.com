@@ -115,7 +115,7 @@ export default async function MdAdminReportsPage({
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900 md-animate-fade-in-up">
+        <h2 className="text-lg font-semibold text-gray-900 md-animate-fade-in-up break-words">
           Registrations {q && `· filtered by "${q}"`}
         </h2>
         <Suspense fallback={<div className="text-sm text-gray-400">Loading search…</div>}>

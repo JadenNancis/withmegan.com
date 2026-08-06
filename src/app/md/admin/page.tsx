@@ -49,19 +49,19 @@ export default async function MdAdminPage({
       </section>
 
       <section className="flex flex-col sm:flex-row gap-3">
-        <Link href="/md/admin/households" className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 text-center transition-colors">
+        <Link href="/md/admin/households" className="min-h-[44px] flex items-center justify-center rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 text-center transition-colors">
           Household management
         </Link>
-        <Link href="/md/admin/verify" className="md-animate-pulse-warm rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 text-center transition-colors">
+        <Link href="/md/admin/verify" className="md-animate-pulse-warm min-h-[44px] flex items-center justify-center rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 text-center transition-colors">
           Verification counter
         </Link>
-        <Link href="/md/admin/reports" className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 text-center transition-colors">
+        <Link href="/md/admin/reports" className="min-h-[44px] flex items-center justify-center rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 text-center transition-colors">
           Reports
         </Link>
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900">
+        <h2 className="text-lg font-semibold text-gray-900 break-words">
           {q ? `Search results for "${q}"` : "Recent registrations"}
         </h2>
         <Suspense fallback={<div className="text-sm text-gray-400">Loading search…</div>}>

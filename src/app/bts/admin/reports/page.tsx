@@ -34,7 +34,7 @@ export default async function BtsReportsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <Link href="/bts/admin" className="text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/bts/admin" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 py-1">
           ← Back to dashboard
         </Link>
         <h1 className="mt-2 text-2xl font-bold text-gray-900">Reports</h1>

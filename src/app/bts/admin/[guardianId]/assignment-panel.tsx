@@ -102,8 +102,12 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
 
       {items.length > 0 ? (
-        <div className="mt-2 overflow-x-auto">
-          <table className="min-w-full text-sm">
+        <div className="mt-2">
+          <p className="mb-1 text-xs text-gray-400 sm:hidden">
+            ← Swipe to see more columns →
+          </p>
+          <div className="overflow-x-auto">
+            <table className="min-w-full text-sm">
             <thead>
               <tr className="text-left text-xs uppercase text-gray-400">
                 <th className="py-1 pr-3 font-medium">Item</th>
@@ -173,7 +177,7 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
                           updateAssignment(a.id, { collectedByName: e.target.value })
                         }
                         placeholder="Name of person who collected"
-                        className="w-40 rounded-md border border-gray-300 px-2 py-1 text-xs"
+                        className="w-32 sm:w-40 rounded-md border border-gray-300 px-2 py-1.5 text-xs"
                       />
                     ) : (
                       <span className="text-xs text-gray-300">—</span>
@@ -183,6 +187,7 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       ) : (
         <p className="mt-1 text-xs text-gray-400">No resources assigned yet.</p>
@@ -243,7 +248,7 @@ function QtyInput({ value, onChange }: { value: number; onChange: (v: number) =>
         const v = parseInt(e.target.value, 10);
         onChange(isNaN(v) ? 0 : Math.max(0, v));
       }}
-      className="w-16 rounded-md border border-gray-300 px-2 py-1 text-sm"
+      className="w-16 rounded-md border border-gray-300 px-2 py-1.5 text-sm"
     />
   );
 }
