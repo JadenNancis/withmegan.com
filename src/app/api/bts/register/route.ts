@@ -22,7 +22,7 @@ const registrationSchema = z.object({
   guardian: z.object({
     fullName: z.string().min(1, "Full name is required"),
     contactNumber: z.string().refine(isValidTtPhone, "Enter a valid TT phone number, e.g. (868) 123-4567"),
-    email: z.string().email("A valid email address is required"),
+    email: z.string().email("A valid email address is required").optional().or(z.literal("")),
     address: z.string().min(1, "Community is required"),
     consent: z.boolean().refine((v) => v === true, "Consent is required"),
   }),
@@ -52,7 +52,7 @@ export async function POST(req: Request) {
   const { guardian } = input;
   const normalizedPhone = normalizeTtPhone(guardian.contactNumber) ?? guardian.contactNumber;
 
-  const existingByEmail = guardian.email
+  const existingByEmail = guardian.email && guardian.email.trim()
     ? await db.select().from(btsGuardians).where(eq(btsGuardians.email, guardian.email)).limit(1)
     : [];
 
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
       .values({
         fullName: guardian.fullName,
         contactNumber: normalizedPhone,
-        email: guardian.email,
+        email: guardian.email || "",
         address: guardian.address,
         consent: guardian.consent,
         thaId,
@@ -121,19 +121,21 @@ export async function POST(req: Request) {
     day: "numeric",
   });
 
-  void sendEmail({
-    to: guardian.email,
-    subject: `Registration Confirmation — ${thaId}`,
-    html: btsRegistrationConfirmationHtml({
-      guardianName: guardian.fullName,
-      thaId,
-      dependents: input.dependents.map((d) => ({
-        studentName: d.studentName,
-        schoolName: d.schoolName,
-      })),
-      eventDate,
-    }),
-  });
+  if (guardian.email && guardian.email.trim()) {
+    void sendEmail({
+      to: guardian.email,
+      subject: `Registration Confirmation — ${thaId}`,
+      html: btsRegistrationConfirmationHtml({
+        guardianName: guardian.fullName,
+        thaId,
+        dependents: input.dependents.map((d) => ({
+          studentName: d.studentName,
+          schoolName: d.schoolName,
+        })),
+        eventDate,
+      }),
+    });
+  }
 
   return NextResponse.json({ success: true, thaId });
 }

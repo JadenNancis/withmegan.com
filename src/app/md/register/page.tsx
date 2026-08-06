@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Field, TextInput, TextArea, Select, SubmitButton } from "@/components/form";
 import { cn } from "@/lib/cn";
 import { BasketIcon, FloatingProduce, SunsetWaveDivider } from "@/components/md-illustrations";
+import { TOBAGO_LOCATIONS, OTHER_LOCATION_VALUE } from "@/lib/tobago-locations";
+import { formatTtPhone, isValidTtPhone } from "@/lib/tt-phone";
 
 type Errors = Partial<Record<string, string>>;
 
@@ -19,36 +21,60 @@ export default function MdRegisterPage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState<SuccessResult | null>(null);
 
-  function validate(data: FormData): Errors {
+  // Controlled fields
+  const [fullName, setFullName] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [address, setAddress] = useState("");
+  const [manualAddress, setManualAddress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [nationalId, setNationalId] = useState("");
+  const [productCategory, setProductCategory] = useState("");
+  const [householdReference, setHouseholdReference] = useState("");
+  const [consent, setConsent] = useState(false);
+
+  function validate(): Errors {
     const e: Errors = {};
-    if (!String(data.get("fullName") ?? "").trim()) e.fullName = "Full name is required";
-    if (!String(data.get("dateOfBirth") ?? "").trim()) e.dateOfBirth = "Date of birth is required";
-    if (!String(data.get("address") ?? "").trim()) e.address = "Address is required";
-    if (!String(data.get("phoneNumber") ?? "").trim()) e.phoneNumber = "Phone number is required";
-    const email = String(data.get("email") ?? "").trim();
+    if (!fullName.trim()) e.fullName = "Full name is required";
+    if (!dateOfBirth.trim()) e.dateOfBirth = "Date of birth is required";
+    if (!address) e.address = "Select your community";
+    else if (address === OTHER_LOCATION_VALUE && !manualAddress.trim())
+      e.address = "Enter your community";
+    if (!phoneNumber.trim()) e.phoneNumber = "Phone number is required";
+    else if (!isValidTtPhone(phoneNumber)) e.phoneNumber = "Enter a valid TT number, e.g. (868) 123-4567";
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = "Invalid email address";
-    if (data.get("consent") !== "on") e.consent = "You must consent to data collection to register";
+    if (!consent) e.consent = "You must consent to data collection to register";
     return e;
   }
 
-  async function handleSubmit(ev: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(ev: React.FormEvent) {
     ev.preventDefault();
     setSubmitError(null);
-    const form = ev.currentTarget;
-    const data = new FormData(form);
-    const e = validate(data);
-    setErrors(e);
-    if (Object.keys(e).length > 0) return;
+    const errs = validate();
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) return;
 
     setSubmitting(true);
     try {
+        const payload = {
+        fullName,
+        nationalId: nationalId || undefined,
+        dateOfBirth,
+        address: address === OTHER_LOCATION_VALUE ? manualAddress : address,
+        phoneNumber,
+        email: email || undefined,
+        productCategory: productCategory || undefined,
+        householdReference: householdReference || undefined,
+        consent,
+      };
       const res = await fetch("/api/md/register", {
         method: "POST",
-        body: data,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
       const json = (await res.json()) as { success?: boolean; thaId?: string; error?: string };
       if (res.ok && json.success && json.thaId) {
-        setSuccess({ thaId: json.thaId, fullName: String(data.get("fullName")) });
+        setSuccess({ thaId: json.thaId, fullName });
       } else {
         setSubmitError(json.error ?? "Registration failed. Please try again.");
       }
@@ -94,7 +120,19 @@ export default function MdRegisterPage() {
           </Link>
           <button
             type="button"
-            onClick={() => setSuccess(null)}
+            onClick={() => {
+              setSuccess(null);
+              setFullName("");
+              setNationalId("");
+              setDateOfBirth("");
+              setAddress("");
+              setManualAddress("");
+              setPhoneNumber("");
+              setEmail("");
+              setProductCategory("");
+              setHouseholdReference("");
+              setConsent(false);
+            }}
             className="md-animate-pulse-warm inline-flex justify-center min-h-[44px] items-center rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 transition-colors"
           >
             Register another person
@@ -129,31 +167,85 @@ export default function MdRegisterPage() {
 
       <form onSubmit={handleSubmit} className="md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-200 bg-white p-6 space-y-0 shadow-sm" noValidate>
         <Field label="Full name" htmlFor="fullName" required error={errors.fullName}>
-          <TextInput id="fullName" name="fullName" autoComplete="name" placeholder="Jane Doe" />
+          <TextInput
+            id="fullName"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
+            autoComplete="name"
+            placeholder="Jane Doe"
+          />
         </Field>
 
-        <Field label="National ID or other identifier" htmlFor="nationalId" error={errors.nationalId}>
-          <TextInput id="nationalId" name="nationalId" placeholder="Optional" />
+        <Field label="National ID or other identifier" htmlFor="nationalId">
+          <TextInput
+            id="nationalId"
+            value={nationalId}
+            onChange={(e) => setNationalId(e.target.value)}
+            placeholder="Optional"
+          />
         </Field>
 
         <Field label="Date of birth" htmlFor="dateOfBirth" required error={errors.dateOfBirth}>
-          <TextInput id="dateOfBirth" name="dateOfBirth" type="date" />
+          <TextInput
+            id="dateOfBirth"
+            value={dateOfBirth}
+            onChange={(e) => setDateOfBirth(e.target.value)}
+            type="date"
+          />
         </Field>
 
-        <Field label="Address / community" htmlFor="address" required error={errors.address}>
-          <TextArea id="address" name="address" rows={2} placeholder="Mount St. George / Goodwood" />
+        <Field label="Community" htmlFor="address" required error={errors.address}>
+          <Select
+            id="address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          >
+            <option value="">Select your community…</option>
+            {TOBAGO_LOCATIONS.filter((l) => l !== OTHER_LOCATION_VALUE).map((loc) => (
+              <option key={loc} value={loc}>{loc}</option>
+            ))}
+            <option value={OTHER_LOCATION_VALUE}>{OTHER_LOCATION_VALUE}</option>
+          </Select>
         </Field>
+        {address === OTHER_LOCATION_VALUE && (
+          <Field label="Specify your community" htmlFor="manualAddress" required error={errors.address}>
+            <TextInput
+              id="manualAddress"
+              value={manualAddress}
+              onChange={(e) => setManualAddress(e.target.value)}
+              placeholder="Enter your community name"
+            />
+          </Field>
+        )}
 
         <Field label="Phone number" htmlFor="phoneNumber" required error={errors.phoneNumber}>
-          <TextInput id="phoneNumber" name="phoneNumber" type="tel" autoComplete="tel" placeholder="1-868-xxx-xxxx" />
+          <TextInput
+            id="phoneNumber"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(formatTtPhone(e.target.value))}
+            type="tel"
+            autoComplete="tel"
+            placeholder="(868) 123-4567"
+          />
         </Field>
 
         <Field label="Email address" htmlFor="email" error={errors.email}>
-          <TextInput id="email" name="email" type="email" autoComplete="email" placeholder="Optional" />
+          <TextInput
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            type="email"
+            autoComplete="email"
+            placeholder="Optional"
+          />
         </Field>
 
         <Field label="Market-related category / product type" htmlFor="productCategory">
-          <Select id="productCategory" name="productCategory" defaultValue="">
+          <Select
+            id="productCategory"
+            value={productCategory}
+            onChange={(e) => setProductCategory(e.target.value)}
+          >
             <option value="">— None selected —</option>
             <option value="produce">Fresh produce</option>
             <option value="dry-goods">Dry goods</option>
@@ -163,14 +255,20 @@ export default function MdRegisterPage() {
         </Field>
 
         <Field label="Household reference" htmlFor="householdReference">
-          <TextInput id="householdReference" name="householdReference" placeholder="e.g. HH-0001 (if you already have one)" />
+          <TextInput
+            id="householdReference"
+            value={householdReference}
+            onChange={(e) => setHouseholdReference(e.target.value)}
+            placeholder="e.g. HH-0001 (if you already have one)"
+          />
         </Field>
 
         <div className="mb-6 mt-4">
           <label className="flex items-start gap-3 text-sm text-gray-700">
             <input
               type="checkbox"
-              name="consent"
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
               className="mt-1 h-5 w-5 flex-none rounded border-gray-300 text-amber-600 focus:ring-amber-500"
             />
             <span>
@@ -182,7 +280,7 @@ export default function MdRegisterPage() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3">
-          <SubmitButton className={cn("min-h-[44px] bg-amber-500 hover:bg-amber-600 md-animate-pulse-warm")} >
+          <SubmitButton className={cn("min-h-[44px] bg-amber-500 hover:bg-amber-600 md-animate-pulse-warm")}>
             {submitting ? "Submitting…" : "Register"}
           </SubmitButton>
           <Link

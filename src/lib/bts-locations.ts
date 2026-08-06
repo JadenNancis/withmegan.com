@@ -1,44 +1,14 @@
 /**
- * Communities served by the Back to School with Megan book drive.
+ * BTS-specific location exports.
  *
- * The platform serves families in and around Mount St. George and
- * Goodwood, eastern Tobago. This is the canonical list used for the
- * guardian location dropdown — the only locations the platform accepts.
+ * The canonical village list now lives in @/lib/tobago-locations,
+ * which orders Megan Morrison's district (Mt. St. George/Goodwood)
+ * first. This file re-exports it for backward compatibility with
+ * BTS components that import from @/lib/bts-locations.
  */
-
-export const BTS_LOCATIONS = [
-  "Mount St. George",
-  "Goodwood",
-  "Belle Garden",
-  "Bethesda",
-  "Bacolet",
-  "Buccoo",
-  "Cane Garden",
-  "Charlotteville",
-  "Delaford",
-  "Diamond",
-  "Golden Lane",
-  "Hope",
-  "Lambeau",
-  "L'Anse Fourmi",
-  "Mason Hall",
-  "Montgomery",
-  "Moriah",
-  "Parlatuvier",
-  "Patience Hill",
-  "Pembroke",
-  "Plymouth",
-  "Roxborough",
-  "Scarborough",
-  "Signal Hill",
-  "Speyside",
-  "Other (specify below)",
-] as const;
-
-export type BtsLocation = (typeof BTS_LOCATIONS)[number];
-
-export const OTHER_LOCATION_VALUE = "Other (specify below)";
-
-export function isKnownLocation(value: string): boolean {
-  return BTS_LOCATIONS.includes(value as BtsLocation);
-}
+export {
+  TOBAGO_LOCATIONS as BTS_LOCATIONS,
+  OTHER_LOCATION_VALUE,
+  isKnownLocation,
+  type TobagoLocation as BtsLocation,
+} from "./tobago-locations";

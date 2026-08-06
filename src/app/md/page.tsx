@@ -83,8 +83,8 @@ export default function MdLanding() {
             <p className="mt-1 text-sm font-medium text-amber-100">Event date</p>
           </div>
           <div className="md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-200/40 bg-white/10 p-5 sm:p-6 backdrop-blur-md">
-            <p className="text-2xl font-bold text-white">2</p>
-            <p className="mt-1 text-sm font-medium text-amber-100">Distribution centres</p>
+            <p className="text-2xl font-bold text-white">1</p>
+            <p className="mt-1 text-sm font-medium text-amber-100">Distribution centre</p>
           </div>
           <div className="md-animate-fade-in-up md-delay-2 rounded-2xl border border-amber-200/40 bg-white/10 p-5 sm:p-6 backdrop-blur-md">
             <p className="text-2xl font-bold text-white">Free</p>

@@ -5,6 +5,7 @@ import { eq, or } from "drizzle-orm";
 import { generateApplicationId } from "@/lib/tha-id";
 import { logAudit } from "@/lib/audit";
 import { registrationSchema } from "@/lib/md-schemas";
+import { normalizeTtPhone } from "@/lib/tt-phone";
 
 export const runtime = "nodejs";
 
@@ -26,11 +27,11 @@ export async function POST(req: Request): Promise<Response> {
   const data = parsed.data;
 
   const trimmedName = data.fullName.trim().toLowerCase();
-  const trimmedPhone = data.phoneNumber.trim();
+  const normalizedPhone = normalizeTtPhone(data.phoneNumber) ?? data.phoneNumber.trim();
 
   const dupConditions = [
     eq(mdRegistrants.fullName, data.fullName.trim()),
-    eq(mdRegistrants.phoneNumber, trimmedPhone),
+    eq(mdRegistrants.phoneNumber, normalizedPhone),
   ];
   if (data.nationalId && data.nationalId.trim()) {
     dupConditions.push(eq(mdRegistrants.nationalId, data.nationalId.trim()));
@@ -72,7 +73,7 @@ export async function POST(req: Request): Promise<Response> {
       nationalId: data.nationalId?.trim() || null,
       dateOfBirth: data.dateOfBirth,
       address: data.address.trim(),
-      phoneNumber: trimmedPhone,
+      phoneNumber: normalizedPhone,
       email: data.email?.trim() || null,
       productCategory: data.productCategory?.trim() || null,
       consent: data.consent,

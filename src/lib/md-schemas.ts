@@ -1,11 +1,12 @@
 import { z } from "zod";
+import { isValidTtPhone } from "./tt-phone";
 
 export const registrationSchema = z.object({
   fullName: z.string().min(1, "Full name is required").max(200),
   nationalId: z.string().max(50).optional().nullable(),
   dateOfBirth: z.string().min(1, "Date of birth is required").max(20),
   address: z.string().min(1, "Address is required").max(500),
-  phoneNumber: z.string().min(1, "Phone number is required").max(50),
+  phoneNumber: z.string().refine(isValidTtPhone, "Enter a valid TT phone number, e.g. (868) 123-4567"),
   email: z.string().email("Invalid email address").max(200).optional().nullable(),
   productCategory: z.string().max(200).optional().nullable(),
   householdReference: z.string().max(50).optional().nullable(),
