@@ -24,12 +24,14 @@ export default function MdLanding() {
   return (
     <div className="space-y-0">
       {/* ──────── Hero Section ──────── */}
-      <section className="relative overflow-hidden rounded-2xl shadow-2xl bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/tobago/caribbean-warm.jpg')" }}
+      {/* Tobago produce market photo — reflects food/hamper distribution purpose */}
+      <section
+        className="relative overflow-hidden rounded-2xl shadow-2xl bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/tobago/produce-market.jpg')" }}
       >
-        {/* Warm sunset gradient overlay for MD */}
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/85 via-orange-800/80 to-amber-600/75" />
-        <div className="md-hero-shimmer absolute inset-0 opacity-30" />
+        {/* Warm amber gradient overlay for MD */}
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/90 via-orange-900/85 to-amber-700/80" />
+        <div className="md-hero-shimmer absolute inset-0 opacity-20" />
         {/* Floating decorative produce */}
         <FloatingProduce className="absolute top-8 left-4 w-10 h-10 opacity-60 md-animate-float" />
         <FloatingProduce className="absolute top-16 right-6 w-8 h-8 opacity-50 md-animate-float-slow" />
@@ -89,8 +91,33 @@ export default function MdLanding() {
         </div>
       </section>
 
+      {/* ──────── Tobago Food & Community Photo Gallery ──────── */}
+      <section className="mt-4">
+        <div className="mb-3 text-center">
+          <h2 className="text-xl font-bold text-amber-800">Tobago: Food &amp; Community</h2>
+          <p className="text-sm text-amber-600">Fresh produce, local markets, shared abundance</p>
+        </div>
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
+          <PhotoCard
+            src="/images/tobago/tobago-cuisine.jpg"
+            alt="Tobago cuisine — local food preparation"
+            span="col-span-2 sm:col-span-2"
+          />
+          <PhotoCard
+            src="/images/tobago/coconut-vendor.jpg"
+            alt="Coconut vendor, Trinidad & Tobago"
+            span="col-span-1"
+          />
+          <PhotoCard
+            src="/images/tobago/scarborough-market.jpg"
+            alt="Scarborough Market, Tobago"
+            span="col-span-1"
+          />
+        </div>
+      </section>
+
       {/* ──────── About / How It Works ──────── */}
-      <section className="rounded-2xl border border-amber-200 bg-white p-6 sm:p-8 md-animate-fade-in-up md-delay-3">
+      <section className="mt-4 rounded-2xl border border-amber-200 bg-white p-6 sm:p-8 md-animate-fade-in-up md-delay-3">
         <div className="flex items-center gap-4 mb-4">
           <TobagoMapBadge className="w-12 h-12 flex-none" />
           <div>
@@ -129,11 +156,13 @@ export default function MdLanding() {
       </section>
 
       {/* ──────── Bottom CTA ──────── */}
-      <section className="relative overflow-hidden rounded-2xl shadow-xl bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/tobago/ocean-hero.jpg')" }}
+      {/* Tobago cuisine photo — food/community purpose */}
+      <section
+        className="relative overflow-hidden rounded-2xl shadow-xl bg-cover bg-center mt-4"
+        style={{ backgroundImage: "url('/images/tobago/tobago-cuisine.jpg')" }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/85 via-orange-800/80 to-amber-600/75" />
-        <div className="md-hero-shimmer absolute inset-0 opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/90 via-orange-900/85 to-amber-700/80" />
+        <div className="md-hero-shimmer absolute inset-0 opacity-15" />
         <FloatingProduce className="absolute top-4 left-6 w-8 h-8 opacity-50 md-animate-float" />
         <FloatingProduce className="absolute bottom-4 right-6 w-10 h-10 opacity-40 md-animate-float-slow" />
         <SunsetWaveDivider className="w-full h-[30px] block opacity-60" />
@@ -151,6 +180,22 @@ export default function MdLanding() {
         </div>
         <SunsetWaveDivider className="w-full h-[30px] block opacity-60 -scale-y-100" />
       </section>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Photo Card — Tobago food & community photography                   */
+/* ------------------------------------------------------------------ */
+function PhotoCard({ src, alt, span }: { src: string; alt: string; span: string }) {
+  return (
+    <div className={`group relative overflow-hidden rounded-2xl shadow-md ${span}`}>
+      <img
+        src={src}
+        alt={alt}
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+      />
     </div>
   );
 }

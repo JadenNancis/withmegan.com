@@ -16,15 +16,15 @@ export default function BtsLanding() {
     <div className="space-y-0">
       {/* ===== Hero Section ===== */}
       <section className="-mx-4 -mt-8 mb-0 overflow-hidden">
-        {/* Tobago beach photo background with ocean gradient overlay */}
+        {/* Tobago library photo background — reflects education/book drive purpose */}
         <div
           className="relative bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/tobago/pigeon-point.jpg')" }}
+          style={{ backgroundImage: "url('/images/tobago/library.jpg')" }}
         >
-          {/* Gradient overlay — blue ocean tones for BTS */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/85 via-blue-800/80 to-cyan-600/75" />
-          {/* Shimmer animation layer on top of photo */}
-          <div className="bts-ocean-shimmer absolute inset-0 opacity-30" />
+          {/* Gradient overlay — deep blue education tones */}
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/90 via-blue-900/85 to-cyan-700/80" />
+          {/* Subtle shimmer animation layer */}
+          <div className="bts-ocean-shimmer absolute inset-0 opacity-20" />
           {/* Floating decorative elements */}
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="bts-float bts-float-delay-1 absolute left-[5%] top-[10%] opacity-20">
@@ -124,8 +124,39 @@ export default function BtsLanding() {
         <WaveDivider className="h-12 w-full" preserveAspectRatio="none" />
       </div>
 
-      {/* ===== About the Initiative ===== */}
+      {/* ===== Tobago Photo Gallery ===== */}
       <section className="bg-gradient-to-b from-cyan-50 to-white py-12">
+        <div className="mx-auto max-w-4xl px-4">
+          <div className="bts-fade-in-up bts-stagger-1 mb-6 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-cyan-900">
+              Tobago: Our Community
+            </h2>
+            <p className="mt-2 text-sm text-cyan-700">
+              Serving the families of Mount St. George &amp; Goodwood
+            </p>
+          </div>
+          <div className="bts-fade-in-up bts-stagger-2 grid grid-cols-2 gap-3 sm:gap-4">
+            <PhotoCard
+              src="/images/tobago/fort-george-sunset.jpg"
+              alt="Sunset at Fort King George, Tobago"
+              span="col-span-2 sm:col-span-2"
+            />
+            <PhotoCard
+              src="/images/tobago/pigeon-point.jpg"
+              alt="Pigeon Point beach, Tobago"
+              span="col-span-1"
+            />
+            <PhotoCard
+              src="/images/tobago/tobago-rainforest.jpg"
+              alt="Tobago rainforest — Main Ridge Forest Reserve"
+              span="col-span-1"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ===== About the Initiative ===== */}
+      <section className="bg-gradient-to-b from-white to-cyan-50 py-12">
         <div className="mx-auto max-w-4xl px-4">
           <div className="bts-fade-in-up bts-stagger-1 flex flex-col items-center text-center">
             <div className="mb-6 bts-float">
@@ -168,12 +199,13 @@ export default function BtsLanding() {
           <WaveDivider className="h-12 w-full rotate-180" preserveAspectRatio="none" />
         </div>
 
+        {/* Fort King George sunset photo — Tobago heritage/community */}
         <div
           className="relative bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/tobago/ocean-hero.jpg')" }}
+          style={{ backgroundImage: "url('/images/tobago/fort-george-sunset.jpg')" }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/85 via-blue-800/80 to-cyan-600/75" />
-          <div className="bts-ocean-shimmer absolute inset-0 opacity-20" />
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/90 via-blue-900/85 to-cyan-700/80" />
+          <div className="bts-ocean-shimmer absolute inset-0 opacity-15" />
           {/* Floating decorative books */}
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="bts-float bts-float-delay-1 absolute left-[10%] top-[20%] opacity-20">
@@ -212,6 +244,22 @@ export default function BtsLanding() {
           <WaveDivider className="h-16 w-full" preserveAspectRatio="none" />
         </div>
       </section>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Photo Card — Tobago photography display                            */
+/* ------------------------------------------------------------------ */
+function PhotoCard({ src, alt, span }: { src: string; alt: string; span: string }) {
+  return (
+    <div className={`group relative overflow-hidden rounded-2xl shadow-md ${span}`}>
+      <img
+        src={src}
+        alt={alt}
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        loading="lazy"
+      />
     </div>
   );
 }
