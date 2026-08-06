@@ -34,7 +34,7 @@ See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for the full deployment guide.
 - **TypeScript strict.** No `any` without a stated reason in a comment.
 - **Auth before mutation.** Admin routes call `requireAdmin()` at the top. Never trust client-supplied `userId`, `role`, or `orgId`.
 - **Parameterized SQL only.** Use Drizzle's query builder — never string-interpolate SQL.
-- **Server-side ID generation.** THA IDs come from `src/lib/tha-id.ts`; never accept them from the client.
+- **Server-side ID generation.** Application IDs come from `src/lib/tha-id.ts`; never accept them from the client.
 - **Audit sensitive changes.** Call `logAudit()` from `src/lib/audit.ts` for state-changing admin operations.
 - **No secrets in code.** `.env.local` is gitignored. Never commit real connection strings, tokens, or passwords. `.env.example` (placeholder values only) is safe to commit.
 

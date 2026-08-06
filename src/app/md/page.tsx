@@ -154,7 +154,7 @@ export default function MdLanding() {
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { icon: <BasketIcon className="w-10 h-10 mx-auto" />, step: "1", text: "Register online with your name, address, and contact details.", delay: "" },
-              { icon: <MangoIcon className="w-10 h-10 mx-auto" />, step: "2", text: "Receive your unique THA ID and household reference.", delay: "md-delay-1" },
+              { icon: <MangoIcon className="w-10 h-10 mx-auto" />, step: "2", text: "Receive your unique Application ID and household reference.", delay: "md-delay-1" },
               { icon: <CommunityIcon className="w-12 h-10 mx-auto" />, step: "3", text: "Bring your ID on event day for verification at the distribution counter.", delay: "md-delay-2" },
               { icon: <BreadfruitIcon className="w-10 h-10 mx-auto" />, step: "4", text: "Collect your hamper &mdash; one per household.", delay: "md-delay-3" },
             ].map((item) => (

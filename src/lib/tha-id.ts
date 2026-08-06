@@ -1,5 +1,5 @@
 /**
- * Server-side unique THA ID generation.
+ * Server-side unique Application ID generation.
  *
  * Format: BTS-{YYMMDD}-{6 random chars}  or  MD-{YYMMDD}-{6 random chars}
  * Generated server-side only — never trust a client-supplied ID.
@@ -19,7 +19,7 @@ function randomSuffix(length: number): string {
   return out;
 }
 
-export function generateThaId(site: "bts" | "md", date = new Date()): string {
+export function generateApplicationId(site: "bts" | "md", date = new Date()): string {
   const prefix = site === "bts" ? "BTS" : "MD";
   const yy = String(date.getFullYear()).slice(2);
   const mm = String(date.getMonth() + 1).padStart(2, "0");
@@ -27,3 +27,6 @@ export function generateThaId(site: "bts" | "md", date = new Date()): string {
   const rand = randomSuffix(6);
   return `${prefix}-${yy}${mm}${dd}-${rand}`;
 }
+
+/** @deprecated Use generateApplicationId instead. */
+export const generateThaId = generateApplicationId;

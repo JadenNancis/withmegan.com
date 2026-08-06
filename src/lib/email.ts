@@ -79,9 +79,9 @@ export function btsRegistrationConfirmationHtml(params: {
   </div>
   <div style="margin-top:24px;">
     <p>Hi ${escapeHtml(params.guardianName)},</p>
-    <p>Your registration has been received. Save your THA ID — you'll need it to collect resources on event day.</p>
+    <p>Your registration has been received. Save your Application ID — you'll need it to collect resources on event day.</p>
     <div style="margin:20px 0;border:2px dashed #93c5fd;background:#eff6ff;border-radius:12px;padding:20px;text-align:center;">
-      <p style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#1d4ed8;margin:0;">Your THA ID</p>
+      <p style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#1d4ed8;margin:0;">Your Application ID</p>
       <p style="font-size:28px;font-weight:700;color:#1e3a8a;letter-spacing:0.1em;margin:4px 0 0;">${escapeHtml(params.thaId)}</p>
     </div>
     <h2 style="font-size:18px;color:#111827;">Registered Dependents</h2>
@@ -96,7 +96,7 @@ export function btsRegistrationConfirmationHtml(params: {
     </table>
     <div style="margin-top:24px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;">
       <p style="margin:0;font-size:14px;color:#0c4a6e;"><strong>Event date:</strong> ${escapeHtml(params.eventDate)}</p>
-      <p style="margin:4px 0 0;font-size:14px;color:#0c4a6e;">Bring your THA ID to collect books and supplies.</p>
+      <p style="margin:4px 0 0;font-size:14px;color:#0c4a6e;">Bring your Application ID to collect books and supplies.</p>
     </div>
     <p style="margin-top:24px;font-size:12px;color:#6b7280;">If you did not register, you can ignore this email.</p>
   </div>

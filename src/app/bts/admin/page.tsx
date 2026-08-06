@@ -65,7 +65,7 @@ export default async function BtsAdminDashboard({
         <input
           name="search"
           defaultValue={search ?? ""}
-          placeholder="Search by guardian name, email, or THA ID…"
+          placeholder="Search by guardian name, email, or Application ID…"
           className="flex-1 rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm focus:border-transparent focus:ring-2 focus:ring-cyan-500 focus:outline-none transition-shadow min-h-[44px]"
         />
         <button
@@ -95,7 +95,7 @@ export default async function BtsAdminDashboard({
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gradient-to-r from-cyan-50 to-cyan-50/50">
                 <tr>
-                  <Th>THA ID</Th>
+                  <Th>Application ID</Th>
                   <Th>Guardian</Th>
                   <Th>Contact</Th>
                   <Th>Dependents</Th>

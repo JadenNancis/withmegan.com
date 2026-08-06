@@ -97,7 +97,7 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
   }
 
   return (
-    <div className="mt-4 border-t border-gray-100 pt-4">
+    <div className="border-t border-gray-100 pt-4">
       <h4 className="text-sm font-semibold text-gray-700">Resource Assignments</h4>
       {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
 

@@ -32,13 +32,13 @@ export default async function GuardianDetailPage({
           <div>
             <h1 className="text-2xl font-bold text-gray-900">{guardian.fullName}</h1>
             <p className="mt-1 font-mono text-sm font-medium text-blue-700">
-              {guardian.thaId ?? "No THA ID"}
+              {guardian.thaId ?? "No Application ID"}
             </p>
           </div>
           <div className="text-sm text-gray-600">
             <p>📞 {guardian.contactNumber}</p>
             <p>✉️ {guardian.email}</p>
-            <p>🏠 {guardian.address}</p>
+            <p>📍 {guardian.address}</p>
             <p className="mt-1 text-xs text-gray-400">
               Registered {guardian.createdAt.toLocaleDateString("en-TT")}
             </p>
@@ -53,32 +53,45 @@ export default async function GuardianDetailPage({
         </h2>
         {guardian.dependents.map((dep) => (
           <div key={dep.id} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-              <div>
+            {/* Header row — name + school/grade on left, file badge on right */}
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
                 <h3 className="font-semibold text-gray-900">{dep.studentName}</h3>
                 <p className="text-sm text-gray-600">
                   {dep.schoolName} · {dep.gradeLevel}
                 </p>
               </div>
               {dep.bookListUrl && (
-                <span className="inline-flex items-center rounded-md bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-500">
+                <span className="inline-flex shrink-0 items-center rounded-md bg-blue-50 px-2.5 py-1 text-xs font-semibold text-blue-700 ring-1 ring-inset ring-blue-200">
                   {dep.bookListUrl.toLowerCase().endsWith(".pdf") ? "PDF" : "DOC"}
                 </span>
               )}
             </div>
+
+            {/* Book list viewer — uniform spacing from header */}
             {dep.bookListUrl && (
-              <BookListViewer bookListUrl={dep.bookListUrl} studentName={dep.studentName} />
+              <div className="mt-4">
+                <BookListViewer bookListUrl={dep.bookListUrl} studentName={dep.studentName} />
+              </div>
             )}
+
+            {/* Notes — only if present */}
             {dep.notes && (
-              <p className="mt-2 rounded-md bg-amber-50 p-2 text-sm text-amber-800">
-                <strong>Notes:</strong> {dep.notes}
-              </p>
+              <div className="mt-4">
+                <p className="rounded-md bg-amber-50 p-3 text-sm text-amber-800">
+                  <strong>Notes:</strong> {dep.notes}
+                </p>
+              </div>
             )}
-            <AssignmentPanel
-              dependentId={dep.id}
-              assignments={dep.assignments}
-              actorEmail={user.email ?? undefined}
-            />
+
+            {/* Assignment panel — uniform top divider */}
+            <div className="mt-4">
+              <AssignmentPanel
+                dependentId={dep.id}
+                assignments={dep.assignments}
+                actorEmail={user.email ?? undefined}
+              />
+            </div>
           </div>
         ))}
       </section>

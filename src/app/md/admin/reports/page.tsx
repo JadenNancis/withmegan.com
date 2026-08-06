@@ -119,7 +119,7 @@ export default async function MdAdminReportsPage({
           Registrations {q && `· filtered by "${q}"`}
         </h2>
         <Suspense fallback={<div className="text-sm text-gray-400">Loading search…</div>}>
-          <SearchBar placeholder="Search by name, THA ID, national ID, or household" />
+          <SearchBar placeholder="Search by name, Application ID, national ID, or household" />
         </Suspense>
 
         {filtered.length === 0 ? (
@@ -131,7 +131,7 @@ export default async function MdAdminReportsPage({
             <table className="min-w-full divide-y divide-amber-100 text-sm">
               <thead className="bg-gradient-to-r from-amber-50 to-orange-50">
                 <tr>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">THA ID</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Application ID</th>
                   <th className="px-3 py-2 text-left font-semibold text-amber-800">Name</th>
                   <th className="px-3 py-2 text-left font-semibold text-amber-800">National ID</th>
                   <th className="px-3 py-2 text-left font-semibold text-amber-800">Household</th>

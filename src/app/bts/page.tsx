@@ -110,7 +110,7 @@ export default function BtsLanding() {
           <StepPhotoCard
             step="3"
             title="Collect Resources"
-            body="Receive a THA ID and collect matched books and supplies at the distribution event."
+            body="Receive an Application ID and collect matched books and supplies at the distribution event."
             src="/images/tobago/bts-classroom.jpg"
             alt="Classroom with students"
           />
@@ -181,7 +181,7 @@ export default function BtsLanding() {
               Back to School with Megan is a THA-supported community initiative serving families in
               Mount St. George and Goodwood, Tobago. Our goal is to reduce the financial burden of
               back-to-school season by connecting students with the books and learning materials they
-              need to succeed. Every registration generates a unique THA ID you can use to track your
+              need to succeed. Every registration generates a unique Application ID you can use to track your
               request and collect your resources on event day.
             </p>
           </div>
@@ -194,7 +194,7 @@ export default function BtsLanding() {
             />
             <TrustIndicator
               icon={<SchoolBookIcon className="h-8 w-8" />}
-              text="Primary · Secondary · Tertiary"
+              text="Primary · Secondary"
             />
             <TrustIndicator
               icon={<PelicanIcon className="h-8 w-8" />}

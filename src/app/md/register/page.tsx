@@ -78,7 +78,7 @@ export default function MdRegisterPage() {
             Thank you, {success.fullName}. Your registration has been recorded.
           </p>
           <div className="mt-6 rounded-xl bg-white p-5 border border-green-200 shadow-sm md-animate-fade-in-up md-delay-3">
-            <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">Your THA ID</p>
+            <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">Your Application ID</p>
             <p className="mt-1 text-2xl sm:text-3xl font-mono font-bold text-amber-700 select-all break-all">{success.thaId}</p>
             <p className="mt-2 text-xs text-gray-500">
               Keep this ID safe &mdash; you&apos;ll need it for verification on event day.

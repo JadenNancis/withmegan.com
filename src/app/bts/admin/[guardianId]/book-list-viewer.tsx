@@ -47,14 +47,14 @@ export function BookListViewer({ bookListUrl, studentName }: BookListViewerProps
   const pdf = isPdf(bookListUrl);
 
   return (
-    <div ref={containerRef} className="relative mt-3">
+    <div ref={containerRef} className="relative">
       {/* Closed folder tab — click to open */}
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label={open ? `Close book list for ${studentName}` : `Open book list for ${studentName}`}
-        className="group flex w-full items-center gap-3 rounded-lg border border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100/50 px-4 py-3 text-left transition-colors hover:from-blue-100 hover:to-blue-100"
+        className="group flex w-full items-center gap-3 rounded-lg border border-blue-200 bg-gradient-to-br from-blue-50 to-blue-100/50 px-4 py-2.5 text-left transition-colors hover:from-blue-100 hover:to-blue-100 min-h-[44px]"
       >
         {/* Folder icon with animated flap */}
         <div className="relative h-8 w-10 shrink-0" style={{ perspective: 100 }}>

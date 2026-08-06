@@ -98,7 +98,7 @@ Full table reference in [DATABASE.md](./DATABASE.md).
 
 `src/lib/audit.ts` exposes `logAudit()` — a fire-and-forget writer that records the actor, action, site, and target. It never blocks the mutation on audit failure (errors are logged to console only). Every state-changing admin operation on a sensitive resource should call it.
 
-## THA ID generation
+## Application ID generation
 
 `src/lib/tha-id.ts` generates server-side unique IDs in the format `BTS-YYMMDD-XXXXXX` or `MD-YYMMDD-XXXXXX`. Client-supplied IDs are never trusted.
 

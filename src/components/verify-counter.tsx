@@ -149,7 +149,7 @@ export function VerifyCounter() {
       {/* Search */}
       <div className="md-animate-fade-in-up rounded-xl border-2 border-amber-200 bg-white p-4 sm:p-6 shadow-sm">
         <label htmlFor="verify-search" className="block text-sm font-semibold text-amber-800 mb-2">
-          Search by name, THA ID, phone, or household reference
+          Search by name, Application ID, phone, or household reference
         </label>
         <div className="flex flex-col sm:flex-row gap-2">
           <input
@@ -221,7 +221,7 @@ export function VerifyCounter() {
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
             <div className="space-y-1 min-w-0">
               <h2 className="text-xl font-bold text-gray-900 break-words">{selected.fullName}</h2>
-              <p className="font-mono text-sm text-amber-700 break-all">{selected.thaId ?? "No THA ID"}</p>
+              <p className="font-mono text-sm text-amber-700 break-all">{selected.thaId ?? "No Application ID"}</p>
             </div>
             <span
               className={cn(

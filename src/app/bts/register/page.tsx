@@ -5,6 +5,8 @@ import Link from "next/link";
 import { Field, TextInput, TextArea, Select, SubmitButton } from "@/components/form";
 import { cn } from "@/lib/cn";
 import { BTS_SCHOOLS, OTHER_SCHOOL_VALUE, schoolsByCategory } from "@/lib/bts-schools";
+import { formatTtPhone, isValidTtPhone } from "@/lib/tt-phone";
+import { BTS_LOCATIONS, OTHER_LOCATION_VALUE } from "@/lib/bts-locations";
 import { SchoolBookIcon, PalmTreeIcon, PelicanIcon, SuccessCheckmark } from "@/components/bts-illustrations";
 
 interface DependentForm {
@@ -40,6 +42,7 @@ export default function BtsRegisterPage() {
   const [contactNumber, setContactNumber] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [manualAddress, setManualAddress] = useState("");
   const [consent, setConsent] = useState(false);
   const [dependents, setDependents] = useState<DependentForm[]>([emptyDependent()]);
   const [submitting, setSubmitting] = useState(false);
@@ -82,8 +85,10 @@ export default function BtsRegisterPage() {
     const errs: Record<string, string> = {};
     if (!fullName.trim()) errs.fullName = "Full name is required";
     if (!contactNumber.trim()) errs.contactNumber = "Contact number is required";
+    else if (!isValidTtPhone(contactNumber)) errs.contactNumber = "Enter a valid TT number, e.g. (868) 123-4567";
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = "Invalid email";
-    if (!address.trim()) errs.address = "Home address is required";
+    if (!address) errs.address = "Select your community";
+    else if (address === OTHER_LOCATION_VALUE && !manualAddress.trim()) errs.address = "Enter your community";
     if (!consent) errs.consent = "You must consent to continue";
     dependents.forEach((d, i) => {
       if (!d.studentName.trim()) errs[`dep-${i}-name`] = "Student name is required";
@@ -108,7 +113,13 @@ export default function BtsRegisterPage() {
     setSubmitting(true);
     try {
       const payload = {
-        guardian: { fullName, contactNumber, email, address, consent },
+        guardian: {
+          fullName,
+          contactNumber,
+          email,
+          address: address === OTHER_LOCATION_VALUE ? manualAddress : address,
+          consent,
+        },
         dependents: dependents.map((d) => ({
           studentName: d.studentName,
           schoolName:
@@ -165,13 +176,13 @@ export default function BtsRegisterPage() {
             Registration Submitted!
           </h1>
           <p className="bts-fade-in-up bts-stagger-3 mt-3 text-sm text-gray-600">
-            Your registration has been received. Save your THA ID &mdash; you&rsquo;ll need it to collect
+            Your registration has been received. Save your Application ID &mdash; you&rsquo;ll need it to collect
             resources on event day.
           </p>
 
-          {/* THA ID card */}
+          {/* Application ID card */}
           <div className="bts-fade-in-up bts-stagger-4 mt-6 rounded-2xl border-2 border-dashed border-cyan-300 bg-gradient-to-br from-cyan-50 to-white p-6 shadow-md">
-            <p className="text-xs font-semibold uppercase tracking-wider text-cyan-600">Your THA ID</p>
+            <p className="text-xs font-semibold uppercase tracking-wider text-cyan-600">Your Application ID</p>
             <p className="mt-2 text-3xl font-bold text-cyan-900 tracking-wider font-mono">
               {success.thaId}
             </p>
@@ -192,6 +203,7 @@ export default function BtsRegisterPage() {
                 setContactNumber("");
                 setEmail("");
                 setAddress("");
+                setManualAddress("");
                 setConsent(false);
                 setDependents([emptyDependent()]);
               }}
@@ -243,9 +255,10 @@ export default function BtsRegisterPage() {
               <TextInput
                 id="contactNumber"
                 value={contactNumber}
-                onChange={(e) => setContactNumber(e.target.value)}
+                onChange={(e) => setContactNumber(formatTtPhone(e.target.value))}
                 type="tel"
                 autoComplete="tel"
+                placeholder="(868) 123-4567"
               />
             </Field>
             <Field label="Email address" htmlFor="email" error={fieldErrors.email}>
@@ -257,14 +270,29 @@ export default function BtsRegisterPage() {
                 autoComplete="email"
               />
             </Field>
-            <Field label="Home address / community" htmlFor="address" required error={fieldErrors.address}>
-              <TextInput
+            <Field label="Community" htmlFor="address" required error={fieldErrors.address}>
+              <Select
                 id="address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-                autoComplete="street-address"
-              />
+              >
+                <option value="">Select your community…</option>
+                {BTS_LOCATIONS.filter((l) => l !== OTHER_LOCATION_VALUE).map((loc) => (
+                  <option key={loc} value={loc}>{loc}</option>
+                ))}
+                <option value={OTHER_LOCATION_VALUE}>{OTHER_LOCATION_VALUE}</option>
+              </Select>
             </Field>
+            {address === OTHER_LOCATION_VALUE && (
+              <Field label="Specify your community" htmlFor="manualAddress" required error={fieldErrors.address}>
+                <TextInput
+                  id="manualAddress"
+                  value={manualAddress}
+                  onChange={(e) => setManualAddress(e.target.value)}
+                  placeholder="Enter your community name"
+                />
+              </Field>
+            )}
           </div>
           <div className="mt-2 flex items-start gap-2">
             <input

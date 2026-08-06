@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/db/client";
 import { mdRegistrants, mdHouseholds } from "@/db/schema";
 import { eq, or } from "drizzle-orm";
-import { generateThaId } from "@/lib/tha-id";
+import { generateApplicationId } from "@/lib/tha-id";
 import { logAudit } from "@/lib/audit";
 import { registrationSchema } from "@/lib/md-schemas";
 
@@ -63,7 +63,7 @@ export async function POST(req: Request): Promise<Response> {
     }
   }
 
-  const thaId = generateThaId("md");
+  const thaId = generateApplicationId("md");
 
   const [registrant] = await db
     .insert(mdRegistrants)

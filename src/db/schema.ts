@@ -78,7 +78,7 @@ export const btsGuardians = pgTable("bts_guardians", {
   email: text("email").notNull(),
   address: text("address").notNull(),
   consent: boolean("consent").notNull().default(false),
-  /** Server-generated unique THA ID. */
+  /** Server-generated unique Application ID. */
   thaId: text("tha_id").unique(),
   createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),

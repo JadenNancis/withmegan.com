@@ -1,4 +1,4 @@
-export type SchoolCategory = "Primary / Middle" | "Secondary / High" | "Tertiary";
+export type SchoolCategory = "Primary / Middle" | "Secondary / High";
 
 export interface School {
   name: string;
@@ -52,13 +52,12 @@ export const BTS_SCHOOLS: readonly School[] = [
   { name: "Scarborough Secondary", category: "Secondary / High" },
   { name: "Signal Hill Secondary", category: "Secondary / High" },
   { name: "Speyside Secondary", category: "Secondary / High" },
-  { name: "U.W.I. Sixth Form Tobago", category: "Tertiary" },
 ] as const;
 
 export const OTHER_SCHOOL_VALUE = "__other__";
 
 export function schoolsByCategory(): { category: SchoolCategory; schools: School[] }[] {
-  const order: SchoolCategory[] = ["Primary / Middle", "Secondary / High", "Tertiary"];
+  const order: SchoolCategory[] = ["Primary / Middle", "Secondary / High"];
   return order.map((category) => ({
     category,
     schools: BTS_SCHOOLS.filter((s) => s.category === category),
