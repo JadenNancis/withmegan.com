@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    typedRoutes: true,
-  },
-  // Allow both production domains and localhost variants in dev.
+  // typedRoutes disabled — our domain-routing pattern uses runtime string
+  // hrefs from the site registry, which conflicts with static route typing.
   images: {
     remotePatterns: [],
   },

@@ -32,7 +32,7 @@ function emptyDependent(): DependentForm {
   };
 }
 
-type SubmitError = { message: string; issues?: unknown };
+type SubmitError = { message?: string; error?: string; issues?: unknown };
 
 export default function BtsRegisterPage() {
   const [fullName, setFullName] = useState("");
