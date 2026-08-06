@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/require-admin";
 import { getGuardianWithDependents, getAuditTrailForGuardian } from "@/lib/bts-queries";
 import { AssignmentPanel } from "./assignment-panel";
+import { BookListViewer } from "./book-list-viewer";
 
 export default async function GuardianDetailPage({
   params,
@@ -60,16 +61,14 @@ export default async function GuardianDetailPage({
                 </p>
               </div>
               {dep.bookListUrl && (
-                <a
-                  href={dep.bookListUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center rounded-md bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 hover:bg-blue-100 min-h-[44px]"
-                >
-                  📄 Download book list
-                </a>
+                <span className="inline-flex items-center rounded-md bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-500">
+                  {dep.bookListUrl.toLowerCase().endsWith(".pdf") ? "PDF" : "DOC"}
+                </span>
               )}
             </div>
+            {dep.bookListUrl && (
+              <BookListViewer bookListUrl={dep.bookListUrl} studentName={dep.studentName} />
+            )}
             {dep.notes && (
               <p className="mt-2 rounded-md bg-amber-50 p-2 text-sm text-amber-800">
                 <strong>Notes:</strong> {dep.notes}

@@ -16,15 +16,13 @@ export default function BtsLanding() {
     <div className="space-y-0">
       {/* ===== Hero Section ===== */}
       <section className="-mx-4 -mt-8 mb-0 overflow-hidden">
-        {/* Tobago library photo background — reflects education/book drive purpose */}
+        {/* Child reading — bold education imagery */}
         <div
-          className="relative bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/tobago/library.jpg')" }}
+          className="relative bg-cover bg-center min-h-[420px] sm:min-h-[520px]"
+          style={{ backgroundImage: "url('/images/tobago/bts-child-reading.jpg')" }}
         >
-          {/* Gradient overlay — deep blue education tones */}
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/90 via-blue-900/85 to-cyan-700/80" />
-          {/* Subtle shimmer animation layer */}
-          <div className="bts-ocean-shimmer absolute inset-0 opacity-20" />
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/90 via-blue-900/85 to-cyan-700/75" />
+          <div className="bts-ocean-shimmer absolute inset-0 opacity-15" />
           {/* Floating decorative elements */}
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
             <div className="bts-float bts-float-delay-1 absolute left-[5%] top-[10%] opacity-20">
@@ -83,7 +81,7 @@ export default function BtsLanding() {
         </div>
       </section>
 
-      {/* ===== How It Works — Step Cards ===== */}
+      {/* ===== How It Works — Step Cards with Photos ===== */}
       <section className="mx-auto max-w-4xl px-4 py-12">
         <div className="bts-fade-in-up bts-stagger-1 mb-8 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold text-cyan-900">
@@ -95,26 +93,26 @@ export default function BtsLanding() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-3">
-          <StepCard
+          <StepPhotoCard
             step="1"
             title="Register"
             body="Submit your details and your dependents' information through our secure form."
-            icon={<PalmTreeIcon className="h-12 w-12" />}
-            delay="bts-stagger-2"
+            src="/images/tobago/bts-school-supplies.jpg"
+            alt="School supplies and backpack"
           />
-          <StepCard
+          <StepPhotoCard
             step="2"
             title="Upload Book Lists"
             body="Attach each student's book list (PDF or Word) so we know exactly what's needed."
-            icon={<SchoolBookIcon className="h-12 w-12" />}
-            delay="bts-stagger-3"
+            src="/images/tobago/bts-colorful-books.jpg"
+            alt="Stack of colorful books"
           />
-          <StepCard
+          <StepPhotoCard
             step="3"
             title="Collect Resources"
             body="Receive a THA ID and collect matched books and supplies at the distribution event."
-            icon={<PelicanIcon className="h-12 w-12" />}
-            delay="bts-stagger-4"
+            src="/images/tobago/bts-classroom.jpg"
+            alt="Classroom with students"
           />
         </div>
       </section>
@@ -137,13 +135,23 @@ export default function BtsLanding() {
           </div>
           <div className="bts-fade-in-up bts-stagger-2 grid grid-cols-2 gap-3 sm:gap-4">
             <PhotoCard
+              src="/images/tobago/bts-child-reading.jpg"
+              alt="Child reading a book"
+              span="col-span-2 sm:col-span-2"
+            />
+            <PhotoCard
               src="/images/tobago/fort-george-sunset.jpg"
               alt="Sunset at Fort King George, Tobago"
-              span="col-span-2 sm:col-span-2"
+              span="col-span-1"
             />
             <PhotoCard
               src="/images/tobago/pigeon-point.jpg"
               alt="Pigeon Point beach, Tobago"
+              span="col-span-1"
+            />
+            <PhotoCard
+              src="/images/tobago/bts-classroom.jpg"
+              alt="Classroom ready for learning"
               span="col-span-1"
             />
             <PhotoCard
@@ -156,8 +164,12 @@ export default function BtsLanding() {
       </section>
 
       {/* ===== About the Initiative ===== */}
-      <section className="bg-gradient-to-b from-white to-cyan-50 py-12">
-        <div className="mx-auto max-w-4xl px-4">
+      <section
+        className="relative overflow-hidden bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/tobago/library.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-white/95 via-cyan-50/90 to-white/95" />
+        <div className="relative mx-auto max-w-4xl px-4 py-12">
           <div className="bts-fade-in-up bts-stagger-1 flex flex-col items-center text-center">
             <div className="mb-6 bts-float">
               <TobagoMapBadge className="h-24 w-24 drop-shadow-lg" />
@@ -199,7 +211,7 @@ export default function BtsLanding() {
           <WaveDivider className="h-12 w-full rotate-180" preserveAspectRatio="none" />
         </div>
 
-        {/* Fort King George sunset photo — Tobago heritage/community */}
+        {/* Fort King George sunset — Tobago heritage/community */}
         <div
           className="relative bg-cover bg-center"
           style={{ backgroundImage: "url('/images/tobago/fort-george-sunset.jpg')" }}
@@ -257,7 +269,7 @@ function PhotoCard({ src, alt, span }: { src: string; alt: string; span: string 
       <img
         src={src}
         alt={alt}
-        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 min-h-[160px] sm:min-h-[200px]"
         loading="lazy"
       />
     </div>
@@ -265,33 +277,43 @@ function PhotoCard({ src, alt, span }: { src: string; alt: string; span: string 
 }
 
 /* ------------------------------------------------------------------ */
-/*  Step Card — animated icon card for "How It Works"                 */
+/*  Step Photo Card — step with background photo                        */
 /* ------------------------------------------------------------------ */
-function StepCard({
+function StepPhotoCard({
   step,
   title,
   body,
-  icon,
-  delay,
+  src,
+  alt,
 }: {
   step: string;
   title: string;
   body: string;
-  icon: React.ReactNode;
-  delay: string;
+  src: string;
+  alt: string;
 }) {
   return (
-    <div
-      className={`bts-fade-in-up ${delay} group relative rounded-2xl border border-cyan-100 bg-white p-6 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1`}
-    >
-      {/* Step number badge */}
-      <div className="absolute -top-3 -right-3 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-cyan-700 text-sm font-bold text-white shadow-md">
-        {step}
+    <div className="bts-fade-in-up group relative overflow-hidden rounded-2xl shadow-lg transition-all hover:shadow-xl hover:-translate-y-1">
+      {/* Photo background */}
+      <div className="relative h-40 overflow-hidden">
+        <img
+          src={src}
+          alt={alt}
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-cyan-900/80 via-cyan-900/30 to-transparent" />
+        {/* Step number badge */}
+        <div className="absolute -top-3 -right-3 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-cyan-700 text-sm font-bold text-white shadow-md">
+          {step}
+        </div>
+        {/* Title overlaid on photo */}
+        <h3 className="absolute bottom-2 left-3 text-base font-bold text-white drop-shadow-lg">{title}</h3>
       </div>
-      {/* Icon */}
-      <div className="bts-icon-pulse mb-4 inline-block">{icon}</div>
-      <h3 className="text-base font-bold text-cyan-900">{title}</h3>
-      <p className="mt-2 text-sm text-gray-600 leading-relaxed">{body}</p>
+      {/* Body text below photo */}
+      <div className="bg-white p-4">
+        <p className="text-sm text-gray-600 leading-relaxed">{body}</p>
+      </div>
     </div>
   );
 }
@@ -301,7 +323,7 @@ function StepCard({
 /* ------------------------------------------------------------------ */
 function TrustIndicator({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-cyan-200 bg-white px-4 py-3 shadow-sm">
+    <div className="flex items-center gap-3 rounded-xl border border-cyan-200 bg-white/90 px-4 py-3 shadow-sm backdrop-blur-sm">
       <div className="bts-icon-pulse flex-shrink-0">{icon}</div>
       <span className="text-sm font-medium text-cyan-800">{text}</span>
     </div>
