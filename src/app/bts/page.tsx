@@ -1,102 +1,249 @@
 import Link from "next/link";
 import { SITES } from "@/sites/site-registry";
+import {
+  TobagoBooksHero,
+  PalmTreeIcon,
+  PelicanIcon,
+  SchoolBookIcon,
+  WaveDivider,
+  TobagoMapBadge,
+} from "@/components/bts-illustrations";
 
 const EVENT_DATE = new Date(SITES.bts.eventDate);
 
 export default function BtsLanding() {
   return (
-    <div className="space-y-10">
-      <section className="rounded-2xl bg-gradient-to-br from-blue-700 to-blue-500 text-white p-8 sm:p-12 shadow-lg">
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">
-          Back to School with Megan
-        </h1>
-        <p className="mt-3 text-lg text-blue-50 max-w-2xl">
-          A community book drive ensuring every student in Mount St. George &amp; Goodwood, Tobago
-          starts the school year ready to learn. Register your dependents, upload their book lists,
-          and we&rsquo;ll help match them with the resources they need.
-        </p>
-        <div className="mt-6 flex flex-col sm:flex-row gap-3">
-          <Link
-            href="/bts/register"
-            className="inline-flex items-center justify-center rounded-lg bg-white px-6 py-3 text-base font-semibold text-blue-700 shadow-sm hover:bg-blue-50 transition-colors"
-          >
-            Register a Student →
-          </Link>
-          <div className="inline-flex items-center rounded-lg bg-blue-600/40 px-6 py-3 text-base font-medium text-white ring-1 ring-inset ring-white/30">
-            <span className="mr-2">📅</span>
-            {EVENT_DATE.toLocaleDateString("en-TT", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
+    <div className="space-y-0">
+      {/* ===== Hero Section ===== */}
+      <section className="-mx-4 -mt-8 mb-0 overflow-hidden">
+        {/* Ocean shimmer background */}
+        <div className="bts-ocean-shimmer relative">
+          {/* Floating decorative elements */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div className="bts-float bts-float-delay-1 absolute left-[5%] top-[10%] opacity-20">
+              <PalmTreeIcon className="h-16 w-16" />
+            </div>
+            <div className="bts-float bts-float-delay-3 absolute right-[8%] top-[15%] opacity-25">
+              <PelicanIcon className="h-20 w-16" />
+            </div>
+            <div className="bts-float-sm bts-float-delay-2 absolute left-[15%] top-[55%] opacity-15">
+              <SchoolBookIcon className="h-12 w-12" />
+            </div>
+          </div>
+
+          <div className="relative mx-auto max-w-4xl px-4 py-10 sm:py-16">
+            {/* Hero illustration */}
+            <div className="bts-fade-in-up bts-stagger-1 mx-auto mb-6 max-w-md sm:max-w-lg">
+              <TobagoBooksHero className="w-full h-auto drop-shadow-2xl" />
+            </div>
+
+            {/* Hero text */}
+            <div className="bts-fade-in-up bts-stagger-2 text-center text-white">
+              <h1 className="text-3xl sm:text-5xl font-bold tracking-tight drop-shadow-lg">
+                Back to School with Megan
+              </h1>
+              <p className="mt-4 text-base sm:text-lg text-cyan-50 max-w-2xl mx-auto leading-relaxed">
+                A community book drive ensuring every student in Mount St. George &amp; Goodwood, Tobago
+                starts the school year ready to learn. Register your dependents, upload their book lists,
+                and we&rsquo;ll help match them with the resources they need.
+              </p>
+            </div>
+
+            {/* CTA buttons */}
+            <div className="bts-fade-in-up bts-stagger-3 mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+              <Link
+                href="/bts/register"
+                className="bts-pulse-glow inline-flex items-center justify-center rounded-xl bg-white px-8 py-4 text-base font-bold text-cyan-800 shadow-lg hover:bg-cyan-50 transition-all hover:scale-105 active:scale-95"
+              >
+                Register a Student &rarr;
+              </Link>
+              <div className="inline-flex items-center justify-center rounded-xl bg-cyan-600/30 px-6 py-4 text-base font-medium text-white ring-1 ring-inset ring-white/30 backdrop-blur-sm">
+                <span className="mr-2 text-lg">&#128197;</span>
+                {EVENT_DATE.toLocaleDateString("en-TT", {
+                  weekday: "long",
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Wave divider at bottom of hero */}
+        <div className="-mt-2 h-16 overflow-hidden">
+          <WaveDivider className="h-16 w-full" preserveAspectRatio="none" />
+        </div>
+      </section>
+
+      {/* ===== How It Works — Step Cards ===== */}
+      <section className="mx-auto max-w-4xl px-4 py-12">
+        <div className="bts-fade-in-up bts-stagger-1 mb-8 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-cyan-900">
+            How It Works
+          </h2>
+          <p className="mt-2 text-sm text-cyan-700">
+            Three simple steps to get your student ready for the new school year.
+          </p>
+        </div>
+
+        <div className="grid gap-6 sm:grid-cols-3">
+          <StepCard
+            step="1"
+            title="Register"
+            body="Submit your details and your dependents' information through our secure form."
+            icon={<PalmTreeIcon className="h-12 w-12" />}
+            delay="bts-stagger-2"
+          />
+          <StepCard
+            step="2"
+            title="Upload Book Lists"
+            body="Attach each student's book list (PDF or Word) so we know exactly what's needed."
+            icon={<SchoolBookIcon className="h-12 w-12" />}
+            delay="bts-stagger-3"
+          />
+          <StepCard
+            step="3"
+            title="Collect Resources"
+            body="Receive a THA ID and collect matched books and supplies at the distribution event."
+            icon={<PelicanIcon className="h-12 w-12" />}
+            delay="bts-stagger-4"
+          />
+        </div>
+      </section>
+
+      {/* Wave divider between sections */}
+      <div className="h-12 overflow-hidden">
+        <WaveDivider className="h-12 w-full" preserveAspectRatio="none" />
+      </div>
+
+      {/* ===== About the Initiative ===== */}
+      <section className="bg-gradient-to-b from-cyan-50 to-white py-12">
+        <div className="mx-auto max-w-4xl px-4">
+          <div className="bts-fade-in-up bts-stagger-1 flex flex-col items-center text-center">
+            <div className="mb-6 bts-float">
+              <TobagoMapBadge className="h-24 w-24 drop-shadow-lg" />
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-cyan-900">
+              About the Initiative
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm sm:text-base text-cyan-800 leading-relaxed">
+              Back to School with Megan is a THA-supported community initiative serving families in
+              Mount St. George and Goodwood, Tobago. Our goal is to reduce the financial burden of
+              back-to-school season by connecting students with the books and learning materials they
+              need to succeed. Every registration generates a unique THA ID you can use to track your
+              request and collect your resources on event day.
+            </p>
+          </div>
+
+          {/* Trust indicators */}
+          <div className="bts-fade-in-up bts-stagger-3 mt-8 grid gap-4 sm:grid-cols-3">
+            <TrustIndicator
+              icon={<PalmTreeIcon className="h-8 w-8" />}
+              text="Mount St. George & Goodwood, Tobago"
+            />
+            <TrustIndicator
+              icon={<SchoolBookIcon className="h-8 w-8" />}
+              text="Primary · Secondary · Tertiary"
+            />
+            <TrustIndicator
+              icon={<PelicanIcon className="h-8 w-8" />}
+              text="Free for registered families"
+            />
           </div>
         </div>
       </section>
 
-      <section className="grid gap-6 sm:grid-cols-3">
-        <InfoCard
-          step="1"
-          title="Register"
-          body="Submit your details and your dependents' information through our secure form."
-        />
-        <InfoCard
-          step="2"
-          title="Upload Book Lists"
-          body="Attach each student's book list (PDF or Word) so we know exactly what's needed."
-        />
-        <InfoCard
-          step="3"
-          title="Collect Resources"
-          body="Receive a THA ID and collect matched books and supplies at the distribution event."
-        />
-      </section>
-
-      <section className="rounded-xl border border-blue-200 bg-blue-50 p-6">
-        <h2 className="text-xl font-semibold text-blue-900">About the Initiative</h2>
-        <p className="mt-3 text-sm text-blue-800 leading-relaxed">
-          Back to School with Megan is a THA-supported community initiative serving families in
-          Mount St. George and Goodwood, Tobago. Our goal is to reduce the financial burden of
-          back-to-school season by connecting students with the books and learning materials they
-          need to succeed. Every registration generates a unique THA ID you can use to track your
-          request and collect your resources on event day.
-        </p>
-        <div className="mt-4 flex flex-wrap gap-4 text-sm">
-          <span className="rounded-full bg-blue-100 px-3 py-1 font-medium text-blue-800">
-            📍 Mount St. George &amp; Goodwood, Tobago
-          </span>
-          <span className="rounded-full bg-blue-100 px-3 py-1 font-medium text-blue-800">
-            🎒 Primary · Secondary · Tertiary
-          </span>
-          <span className="rounded-full bg-blue-100 px-3 py-1 font-medium text-blue-800">
-            🆓 Free for registered families
-          </span>
+      {/* ===== Bottom CTA ===== */}
+      <section className="relative overflow-hidden">
+        {/* Wave divider at top */}
+        <div className="h-12 overflow-hidden">
+          <WaveDivider className="h-12 w-full rotate-180" preserveAspectRatio="none" />
         </div>
-      </section>
 
-      <section className="text-center">
-        <Link
-          href="/bts/register"
-          className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-blue-700 transition-colors"
-        >
-          Register a Student Now
-        </Link>
-        <p className="mt-3 text-xs text-gray-500">
-          Questions? Visit us at the community centre or ask on event day.
-        </p>
+        <div className="bts-ocean-shimmer relative">
+          {/* Floating decorative books */}
+          <div className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div className="bts-float bts-float-delay-1 absolute left-[10%] top-[20%] opacity-20">
+              <SchoolBookIcon className="h-14 w-14" />
+            </div>
+            <div className="bts-float bts-float-delay-3 absolute right-[12%] top-[30%] opacity-20">
+              <PalmTreeIcon className="h-16 w-16" />
+            </div>
+          </div>
+
+          <div className="relative mx-auto max-w-4xl px-4 py-16 text-center">
+            <div className="bts-fade-in-up bts-stagger-1">
+              <h2 className="text-2xl sm:text-4xl font-bold text-white drop-shadow-lg">
+                Ready to Register?
+              </h2>
+              <p className="mt-3 text-base text-cyan-50">
+                Join families across Tobago in preparing our students for success.
+              </p>
+            </div>
+            <div className="bts-fade-in-up bts-stagger-2 mt-8">
+              <Link
+                href="/bts/register"
+                className="bts-pulse-glow inline-flex items-center justify-center rounded-xl bg-white px-10 py-4 text-lg font-bold text-cyan-800 shadow-xl hover:bg-cyan-50 transition-all hover:scale-105 active:scale-95"
+              >
+                Register a Student Now
+              </Link>
+              <p className="mt-4 text-xs text-cyan-100/80">
+                Questions? Visit us at the community centre or ask on event day.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom wave divider */}
+        <div className="-mt-2 h-16 overflow-hidden">
+          <WaveDivider className="h-16 w-full" preserveAspectRatio="none" />
+        </div>
       </section>
     </div>
   );
 }
 
-function InfoCard({ step, title, body }: { step: string; title: string; body: string }) {
+/* ------------------------------------------------------------------ */
+/*  Step Card — animated icon card for "How It Works"                 */
+/* ------------------------------------------------------------------ */
+function StepCard({
+  step,
+  title,
+  body,
+  icon,
+  delay,
+}: {
+  step: string;
+  title: string;
+  body: string;
+  icon: React.ReactNode;
+  delay: string;
+}) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
-      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
+    <div
+      className={`bts-fade-in-up ${delay} group relative rounded-2xl border border-cyan-100 bg-white p-6 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1`}
+    >
+      {/* Step number badge */}
+      <div className="absolute -top-3 -right-3 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-cyan-700 text-sm font-bold text-white shadow-md">
         {step}
       </div>
-      <h3 className="mt-3 text-base font-semibold text-gray-900">{title}</h3>
-      <p className="mt-1 text-sm text-gray-600">{body}</p>
+      {/* Icon */}
+      <div className="bts-icon-pulse mb-4 inline-block">{icon}</div>
+      <h3 className="text-base font-bold text-cyan-900">{title}</h3>
+      <p className="mt-2 text-sm text-gray-600 leading-relaxed">{body}</p>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Trust Indicator — small badge with animated icon                  */
+/* ------------------------------------------------------------------ */
+function TrustIndicator({ icon, text }: { icon: React.ReactNode; text: string }) {
+  return (
+    <div className="flex items-center gap-3 rounded-xl border border-cyan-200 bg-white px-4 py-3 shadow-sm">
+      <div className="bts-icon-pulse flex-shrink-0">{icon}</div>
+      <span className="text-sm font-medium text-cyan-800">{text}</span>
     </div>
   );
 }

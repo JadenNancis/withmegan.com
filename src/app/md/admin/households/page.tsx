@@ -5,6 +5,7 @@ import { getHouseholds, getAuditTrail } from "@/lib/md-queries";
 import { mdRegistrants } from "@/db/schema";
 import { db } from "@/db/client";
 import { isNull } from "drizzle-orm";
+import { SunsetWaveDivider } from "@/components/md-illustrations";
 
 export default async function MdAdminHouseholdsPage() {
   const user = await requireAdmin();
@@ -44,7 +45,8 @@ export default async function MdAdminHouseholdsPage() {
   return (
     <div className="space-y-6">
       <AdminNav current="/md/admin/households" />
-      <h1 className="text-2xl font-bold text-gray-900">Household Management</h1>
+      <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
+      <h1 className="text-2xl font-bold text-gray-900 md-animate-fade-in-up">Household Management</h1>
       <HouseholdManager households={hh} unassigned={unassigned} audit={auditSerialised} />
     </div>
   );

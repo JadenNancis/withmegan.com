@@ -75,7 +75,7 @@ export const btsGuardians = pgTable("bts_guardians", {
   id: uuid("id").primaryKey().defaultRandom(),
   fullName: text("full_name").notNull(),
   contactNumber: text("contact_number").notNull(),
-  email: text("email"),
+  email: text("email").notNull(),
   address: text("address").notNull(),
   consent: boolean("consent").notNull().default(false),
   /** Server-generated unique THA ID. */
@@ -115,6 +115,8 @@ export const btsResourceAssignments = pgTable("bts_resource_assignments", {
   quantityCollected: integer("quantity_collected").notNull().default(0),
   status: btsResourceAssignmentStatus("status").notNull().default("pending"),
   assignedBy: text("assigned_by").references(() => users.id, { onDelete: "set null" }),
+  /** Name of the person who physically collected the items (event-day confirmation). */
+  collectedByName: text("collected_by_name"),
   collectedAt: timestamp("collected_at", { mode: "date" }),
   createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),

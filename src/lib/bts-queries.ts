@@ -5,13 +5,13 @@ import {
   btsResourceAssignments,
   auditLog,
 } from "@/db/schema";
-import { eq, ilike, or, desc } from "drizzle-orm";
+import { eq, ilike, or, desc, inArray } from "drizzle-orm";
 
 export interface GuardianWithDependents {
   id: string;
   fullName: string;
   contactNumber: string;
-  email: string | null;
+  email: string;
   address: string;
   consent: boolean;
   thaId: string | null;
@@ -31,6 +31,7 @@ export interface GuardianWithDependents {
       quantityAssigned: number;
       quantityCollected: number;
       status: "pending" | "partial" | "full" | "collected";
+      collectedByName: string | null;
       collectedAt: Date | null;
       createdAt: Date;
       updatedAt: Date;
@@ -55,7 +56,7 @@ export async function getGuardianWithDependents(guardianId: string): Promise<Gua
   const dependentIds = dependents.map((d) => d.id);
   const assignments =
     dependentIds.length > 0
-      ? await db.select().from(btsResourceAssignments)
+      ? await db.select().from(btsResourceAssignments).where(inArray(btsResourceAssignments.dependentId, dependentIds))
       : [];
 
   const assignmentsByDependent = new Map<string, GuardianWithDependents["dependents"][number]["assignments"]>();
@@ -67,6 +68,7 @@ export async function getGuardianWithDependents(guardianId: string): Promise<Gua
       quantityAssigned: a.quantityAssigned,
       quantityCollected: a.quantityCollected,
       status: a.status,
+      collectedByName: a.collectedByName,
       collectedAt: a.collectedAt,
       createdAt: a.createdAt,
       updatedAt: a.updatedAt,
@@ -107,7 +109,9 @@ export async function getAllGuardians(search?: string): Promise<GuardianWithDepe
   const guardianIds = guardians.map((g) => g.id);
   if (guardianIds.length === 0) return [];
 
-  const dependents = await db.select().from(btsDependents);
+  const dependents = guardianIds.length > 0
+    ? await db.select().from(btsDependents).where(inArray(btsDependents.guardianId, guardianIds))
+    : [];
 
   const dependentsByGuardian = new Map<string, typeof dependents>();
   for (const d of dependents) {

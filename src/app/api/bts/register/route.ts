@@ -5,6 +5,8 @@ import { db } from "@/db/client";
 import { btsGuardians, btsDependents } from "@/db/schema";
 import { generateThaId } from "@/lib/tha-id";
 import { logAudit } from "@/lib/audit";
+import { sendEmail, btsRegistrationConfirmationHtml } from "@/lib/email";
+import { SITES } from "@/sites/site-registry";
 
 const dependentSchema = z.object({
   studentName: z.string().min(1, "Student name is required"),
@@ -19,7 +21,7 @@ const registrationSchema = z.object({
   guardian: z.object({
     fullName: z.string().min(1, "Full name is required"),
     contactNumber: z.string().min(1, "Contact number is required"),
-    email: z.string().email("Invalid email").optional().or(z.literal("")),
+    email: z.string().email("A valid email address is required"),
     address: z.string().min(1, "Home address is required"),
     consent: z.boolean().refine((v) => v === true, "Consent is required"),
   }),
@@ -69,7 +71,7 @@ export async function POST(req: Request) {
       .values({
         fullName: guardian.fullName,
         contactNumber: guardian.contactNumber,
-        email: guardian.email || null,
+        email: guardian.email,
         address: guardian.address,
         consent: guardian.consent,
         thaId,
@@ -108,6 +110,27 @@ export async function POST(req: Request) {
       dependents: input.dependents.length,
       schoolNames: input.dependents.map((d) => d.schoolName),
     },
+  });
+
+  const eventDate = new Date(SITES.bts.eventDate).toLocaleDateString("en-TT", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
+  void sendEmail({
+    to: guardian.email,
+    subject: `Registration Confirmation — ${thaId}`,
+    html: btsRegistrationConfirmationHtml({
+      guardianName: guardian.fullName,
+      thaId,
+      dependents: input.dependents.map((d) => ({
+        studentName: d.studentName,
+        schoolName: d.schoolName,
+      })),
+      eventDate,
+    }),
   });
 
   return NextResponse.json({ success: true, thaId });

@@ -9,6 +9,7 @@ interface Assignment {
   quantityAssigned: number;
   quantityCollected: number;
   status: "pending" | "partial" | "full" | "collected";
+  collectedByName: string | null;
   collectedAt: Date | null;
 }
 
@@ -66,6 +67,7 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
             quantityAssigned: qty,
             quantityCollected: 0,
             status: qty > 0 ? "partial" : "pending",
+            collectedByName: null,
             collectedAt: null,
           },
         ]);
@@ -108,6 +110,7 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
                 <th className="py-1 pr-3 font-medium">Assigned</th>
                 <th className="py-1 pr-3 font-medium">Collected</th>
                 <th className="py-1 pr-3 font-medium">Status</th>
+                <th className="py-1 pr-3 font-medium">Collected by</th>
               </tr>
             </thead>
             <tbody>
@@ -140,11 +143,16 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
                   <td className="py-2 pr-3">
                     <select
                       value={a.status}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        const newStatus = e.target.value as Assignment["status"];
                         updateAssignment(a.id, {
-                          status: e.target.value as Assignment["status"],
-                        })
-                      }
+                          status: newStatus,
+                          collectedByName:
+                            newStatus === "collected"
+                              ? a.collectedByName ?? ""
+                              : null,
+                        });
+                      }}
                       className={cn(
                         "rounded px-2 py-0.5 text-xs font-medium",
                         STATUS_COLORS[a.status],
@@ -155,6 +163,21 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
                       <option value="full">full</option>
                       <option value="collected">collected</option>
                     </select>
+                  </td>
+                  <td className="py-2 pr-3">
+                    {a.status === "collected" ? (
+                      <input
+                        type="text"
+                        value={a.collectedByName ?? ""}
+                        onChange={(e) =>
+                          updateAssignment(a.id, { collectedByName: e.target.value })
+                        }
+                        placeholder="Name of person who collected"
+                        className="w-40 rounded-md border border-gray-300 px-2 py-1 text-xs"
+                      />
+                    ) : (
+                      <span className="text-xs text-gray-300">—</span>
+                    )}
                   </td>
                 </tr>
               ))}

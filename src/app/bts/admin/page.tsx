@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/require-admin";
 import { getAllGuardians } from "@/lib/bts-queries";
+import { WaveDivider, SchoolBookIcon } from "@/components/bts-illustrations";
 
 export default async function BtsAdminDashboard({
   searchParams,
@@ -12,92 +13,130 @@ export default async function BtsAdminDashboard({
   const search = typeof params.search === "string" ? params.search : undefined;
   const guardians = await getAllGuardians(search);
 
+  // Compute summary stats
+  const totalDependents = guardians.reduce((sum, g) => sum + g.dependents.length, 0);
+
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p className="mt-1 text-sm text-gray-600">
-            {guardians.length} registration{guardians.length === 1 ? "" : "s"}
-          </p>
+      {/* Subtle wave divider at top */}
+      <div className="-mx-4 -mt-8 mb-2 h-10 overflow-hidden">
+        <WaveDivider className="h-10 w-full" preserveAspectRatio="none" />
+      </div>
+
+      {/* Header */}
+      <div className="bts-fade-in-up bts-stagger-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
+            <SchoolBookIcon className="h-8 w-8" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-cyan-900">Admin Dashboard</h1>
+            <p className="mt-0.5 text-sm text-gray-600">
+              {guardians.length} registration{guardians.length === 1 ? "" : "s"}
+            </p>
+          </div>
         </div>
         <div className="flex gap-2">
           <Link
             href="/bts/admin/reports"
-            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+            className="inline-flex items-center justify-center rounded-lg border border-cyan-200 bg-white px-4 py-2 text-sm font-bold text-cyan-700 shadow-sm hover:bg-cyan-50 transition-colors"
           >
-            Reports →
+            Reports &rarr;
           </Link>
         </div>
       </div>
 
-      <form method="get" className="flex gap-2">
+      {/* Stats summary cards */}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="bts-card-enter bts-count-up bts-stagger-2 rounded-2xl border border-cyan-100 bg-gradient-to-br from-cyan-50 to-white p-5 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-cyan-600">Total Registrations</p>
+          <p className="mt-2 text-4xl font-bold text-cyan-900">{guardians.length}</p>
+          <p className="mt-1 text-xs text-gray-500">Guardian families registered</p>
+        </div>
+        <div className="bts-card-enter bts-count-up bts-stagger-3 rounded-2xl border border-cyan-100 bg-gradient-to-br from-cyan-50 to-white p-5 shadow-sm">
+          <p className="text-xs font-semibold uppercase tracking-wide text-cyan-600">Total Dependents</p>
+          <p className="mt-2 text-4xl font-bold text-cyan-900">{totalDependents}</p>
+          <p className="mt-1 text-xs text-gray-500">Students awaiting resources</p>
+        </div>
+      </div>
+
+      {/* Search bar */}
+      <form method="get" className="bts-fade-in-up bts-stagger-3 flex gap-2">
         <input
           name="search"
           defaultValue={search ?? ""}
           placeholder="Search by guardian name, email, or THA ID…"
-          className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-transparent focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          className="flex-1 rounded-xl border border-gray-300 px-4 py-2.5 text-sm shadow-sm focus:border-transparent focus:ring-2 focus:ring-cyan-500 focus:outline-none transition-shadow"
         />
         <button
           type="submit"
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700"
+          className="rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-cyan-700 transition-colors"
         >
           Search
         </button>
       </form>
 
+      {/* Registrations table */}
       {guardians.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-gray-300 p-12 text-center">
+        <div className="bts-fade-in-up bts-stagger-4 rounded-2xl border border-dashed border-cyan-300 bg-cyan-50/30 p-12 text-center">
+          <div className="mx-auto mb-4 opacity-30">
+            <SchoolBookIcon className="h-16 w-16" />
+          </div>
           <p className="text-sm text-gray-500">
             {search ? "No registrations match your search." : "No registrations yet."}
           </p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <Th>THA ID</Th>
-                <Th>Guardian</Th>
-                <Th>Contact</Th>
-                <Th>Dependents</Th>
-                <Th>Registered</Th>
-                <Th>View</Th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {guardians.map((g) => (
-                <tr key={g.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-sm font-mono font-medium text-blue-700">
-                    {g.thaId ?? "—"}
-                  </td>
-                  <td className="px-4 py-3 text-sm">
-                    <div className="font-medium text-gray-900">{g.fullName}</div>
-                    <div className="text-xs text-gray-500">{g.email ?? "No email"}</div>
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-700">{g.contactNumber}</td>
-                  <td className="px-4 py-3 text-sm text-gray-700">
-                    {g.dependents.length} student{g.dependents.length === 1 ? "" : "s"}
-                  </td>
-                  <td className="px-4 py-3 text-sm text-gray-500">
-                    {g.createdAt.toLocaleDateString("en-TT", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </td>
-                  <td className="px-4 py-3 text-sm">
-                    <Link
-                      href={`/bts/admin/${g.id}`}
-                      className="font-medium text-blue-600 hover:text-blue-800"
-                    >
-                      Details →
-                    </Link>
-                  </td>
+        <div className="bts-fade-in-up bts-stagger-4 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gradient-to-r from-cyan-50 to-cyan-50/50">
+                <tr>
+                  <Th>THA ID</Th>
+                  <Th>Guardian</Th>
+                  <Th>Contact</Th>
+                  <Th>Dependents</Th>
+                  <Th>Registered</Th>
+                  <Th>View</Th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {guardians.map((g, i) => (
+                  <tr
+                    key={g.id}
+                    className={`hover:bg-cyan-50/40 transition-colors bts-fade-in-up bts-stagger-${Math.min(i + 1, 7)}`}
+                  >
+                    <td className="px-4 py-3 text-sm font-mono font-medium text-cyan-700">
+                      {g.thaId ?? "—"}
+                    </td>
+                    <td className="px-4 py-3 text-sm">
+                      <div className="font-medium text-gray-900">{g.fullName}</div>
+                      <div className="text-xs text-gray-500">{g.email ?? "No email"}</div>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-700">{g.contactNumber}</td>
+                    <td className="px-4 py-3 text-sm text-gray-700">
+                      {g.dependents.length} student{g.dependents.length === 1 ? "" : "s"}
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-500">
+                      {g.createdAt.toLocaleDateString("en-TT", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </td>
+                    <td className="px-4 py-3 text-sm">
+                      <Link
+                        href={`/bts/admin/${g.id}`}
+                        className="font-bold text-cyan-600 hover:text-cyan-800 transition-colors"
+                      >
+                        Details &rarr;
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
@@ -106,7 +145,7 @@ export default async function BtsAdminDashboard({
 
 function Th({ children }: { children: React.ReactNode }) {
   return (
-    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
+    <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-cyan-700">
       {children}
     </th>
   );

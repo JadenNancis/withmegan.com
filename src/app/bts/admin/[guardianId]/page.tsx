@@ -36,7 +36,7 @@ export default async function GuardianDetailPage({
           </div>
           <div className="text-sm text-gray-600">
             <p>📞 {guardian.contactNumber}</p>
-            {guardian.email && <p>✉️ {guardian.email}</p>}
+            <p>✉️ {guardian.email}</p>
             <p>🏠 {guardian.address}</p>
             <p className="mt-1 text-xs text-gray-400">
               Registered {guardian.createdAt.toLocaleDateString("en-TT")}

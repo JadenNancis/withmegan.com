@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Field, TextInput, TextArea, Select, SubmitButton } from "@/components/form";
 import { cn } from "@/lib/cn";
 import { BTS_SCHOOLS, OTHER_SCHOOL_VALUE, schoolsByCategory } from "@/lib/bts-schools";
+import { SchoolBookIcon, PalmTreeIcon, PelicanIcon, SuccessCheckmark } from "@/components/bts-illustrations";
 
 interface DependentForm {
   studentName: string;
@@ -138,43 +139,67 @@ export default function BtsRegisterPage() {
 
   if (success) {
     return (
-      <div className="mx-auto max-w-lg text-center py-12">
-        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-          <svg className="h-8 w-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
+      <div className="relative mx-auto max-w-lg overflow-hidden text-center py-12">
+        {/* Floating celebration elements */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <div className="bts-float bts-float-delay-1 absolute left-[10%] top-[15%] opacity-30">
+            <PalmTreeIcon className="h-12 w-12" />
+          </div>
+          <div className="bts-float bts-float-delay-3 absolute right-[10%] top-[20%] opacity-30">
+            <PelicanIcon className="h-14 w-12" />
+          </div>
+          <div className="bts-float-sm bts-float-delay-2 absolute left-[15%] bottom-[10%] opacity-25">
+            <SchoolBookIcon className="h-10 w-10" />
+          </div>
+          <div className="bts-float-sm bts-float-delay-4 absolute right-[15%] bottom-[15%] opacity-25">
+            <PalmTreeIcon className="h-10 w-10" />
+          </div>
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">Registration Submitted!</h1>
-        <p className="mt-2 text-sm text-gray-600">
-          Your registration has been received. Save your THA ID — you&rsquo;ll need it to collect
-          resources on event day.
-        </p>
-        <div className="mt-6 rounded-lg border-2 border-dashed border-blue-300 bg-blue-50 p-6">
-          <p className="text-xs font-medium uppercase tracking-wide text-blue-700">Your THA ID</p>
-          <p className="mt-1 text-2xl font-bold text-blue-900 tracking-wider">{success.thaId}</p>
-        </div>
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-          <Link
-            href="/bts"
-            className="rounded-md bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-blue-700"
-          >
-            Back to Home
-          </Link>
-          <button
-            type="button"
-            onClick={() => {
-              setSuccess(null);
-              setFullName("");
-              setContactNumber("");
-              setEmail("");
-              setAddress("");
-              setConsent(false);
-              setDependents([emptyDependent()]);
-            }}
-            className="rounded-md border border-gray-300 px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
-          >
-            Register Another Family
-          </button>
+
+        {/* Success checkmark with bounce-in */}
+        <div className="relative">
+          <div className="bts-bounce-in mx-auto mb-6 flex h-24 w-24 items-center justify-center">
+            <SuccessCheckmark className="h-24 w-24 drop-shadow-xl" />
+          </div>
+          <h1 className="bts-fade-in-up bts-stagger-2 text-2xl sm:text-3xl font-bold text-cyan-900">
+            Registration Submitted!
+          </h1>
+          <p className="bts-fade-in-up bts-stagger-3 mt-3 text-sm text-gray-600">
+            Your registration has been received. Save your THA ID &mdash; you&rsquo;ll need it to collect
+            resources on event day.
+          </p>
+
+          {/* THA ID card */}
+          <div className="bts-fade-in-up bts-stagger-4 mt-6 rounded-2xl border-2 border-dashed border-cyan-300 bg-gradient-to-br from-cyan-50 to-white p-6 shadow-md">
+            <p className="text-xs font-semibold uppercase tracking-wider text-cyan-600">Your THA ID</p>
+            <p className="mt-2 text-3xl font-bold text-cyan-900 tracking-wider font-mono">
+              {success.thaId}
+            </p>
+          </div>
+
+          <div className="bts-fade-in-up bts-stagger-5 mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <Link
+              href="/bts"
+              className="inline-flex items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-all hover:scale-105 active:scale-95"
+            >
+              Back to Home
+            </Link>
+            <button
+              type="button"
+              onClick={() => {
+                setSuccess(null);
+                setFullName("");
+                setContactNumber("");
+                setEmail("");
+                setAddress("");
+                setConsent(false);
+                setDependents([emptyDependent()]);
+              }}
+              className="inline-flex items-center justify-center rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all hover:scale-105 active:scale-95"
+            >
+              Register Another Family
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -182,18 +207,27 @@ export default function BtsRegisterPage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-xl bg-blue-50 border border-blue-200 p-5">
-        <h1 className="text-2xl font-bold text-blue-900">Register a Student</h1>
-        <p className="mt-1 text-sm text-blue-800">
-          Complete the form below to register your dependents for the book drive. Fields marked{" "}
-          <span className="text-red-500">*</span> are required.
-        </p>
+      {/* Animated header */}
+      <div className="bts-fade-in-up bts-stagger-1 relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-700 to-cyan-500 p-6 shadow-lg">
+        <div className="pointer-events-none absolute right-4 top-2 opacity-20">
+          <SchoolBookIcon className="h-16 w-16 bts-float-sm" />
+        </div>
+        <div className="relative">
+          <div className="mb-3 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
+            <SchoolBookIcon className="h-10 w-10" />
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Register a Student</h1>
+          <p className="mt-2 text-sm text-cyan-50">
+            Complete the form below to register your dependents for the book drive. Fields marked{" "}
+            <span className="font-bold text-red-200">*</span> are required.
+          </p>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Guardian section */}
-        <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-100 pb-3 mb-4">
+        <section className="bts-fade-in-up bts-stagger-2 rounded-2xl border border-cyan-100 bg-white p-6 shadow-sm transition-all hover:shadow-md">
+          <h2 className="text-lg font-bold text-cyan-900 border-b border-cyan-100 pb-3 mb-4">
             Guardian Information
           </h2>
           <div className="grid gap-1 sm:grid-cols-2">
@@ -238,7 +272,7 @@ export default function BtsRegisterPage() {
               type="checkbox"
               checked={consent}
               onChange={(e) => setConsent(e.target.checked)}
-              className="mt-1 h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+              className="mt-1 h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500"
             />
             <label htmlFor="consent" className="text-sm text-gray-700">
               I consent to the collection of my data and my dependents&rsquo; data for the purpose of
@@ -250,13 +284,13 @@ export default function BtsRegisterPage() {
         </section>
 
         {/* Dependents section */}
-        <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-          <div className="flex items-center justify-between border-b border-gray-100 pb-3 mb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Dependents</h2>
+        <section className="bts-fade-in-up bts-stagger-3 rounded-2xl border border-cyan-100 bg-white p-6 shadow-sm transition-all hover:shadow-md">
+          <div className="flex items-center justify-between border-b border-cyan-100 pb-3 mb-4">
+            <h2 className="text-lg font-bold text-cyan-900">Dependents</h2>
             <button
               type="button"
               onClick={addDependent}
-              className="rounded-md bg-blue-100 px-3 py-1.5 text-sm font-semibold text-blue-700 hover:bg-blue-200"
+              className="rounded-lg bg-cyan-100 px-4 py-2 text-sm font-bold text-cyan-700 hover:bg-cyan-200 transition-colors"
             >
               + Add dependent
             </button>
@@ -276,18 +310,18 @@ export default function BtsRegisterPage() {
         </section>
 
         {error && (
-          <div className="rounded-md bg-red-50 border border-red-200 p-4 text-sm text-red-800">
+          <div className="bts-fade-in-up rounded-xl bg-red-50 border border-red-200 p-4 text-sm text-red-800 shadow-sm">
             {error}
           </div>
         )}
 
-        <div className="flex items-center gap-4">
+        <div className="bts-fade-in-up bts-stagger-4 flex items-center gap-4">
           <SubmitButton className={cn(submitting && "opacity-60 cursor-not-allowed")}>
             {submitting ? "Submitting…" : "Submit Registration"}
           </SubmitButton>
           <Link
             href="/bts"
-            className="text-sm font-medium text-gray-600 hover:text-gray-900"
+            className="text-sm font-medium text-gray-600 hover:text-cyan-700 transition-colors"
           >
             Cancel
           </Link>
@@ -317,14 +351,14 @@ function DependentCard({
   const isOther = dep.schoolName === OTHER_SCHOOL_VALUE;
 
   return (
-    <div className="mb-6 rounded-lg border border-gray-200 bg-gray-50/50 p-4 last:mb-0">
+    <div className="mb-6 rounded-xl border border-gray-200 bg-gradient-to-br from-cyan-50/30 to-gray-50/30 p-4 last:mb-0 transition-all hover:shadow-sm">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-gray-700">Dependent {index + 1}</h3>
+        <h3 className="text-sm font-bold text-cyan-800">Dependent {index + 1}</h3>
         {onRemove && (
           <button
             type="button"
             onClick={onRemove}
-            className="text-xs font-medium text-red-600 hover:text-red-800"
+            className="text-xs font-bold text-red-600 hover:text-red-800 transition-colors"
           >
             Remove
           </button>
@@ -372,10 +406,10 @@ function DependentCard({
                 const file = e.target.files?.[0];
                 if (file) onUpload(file);
               }}
-              className="block w-full text-sm text-gray-500 file:mr-3 file:rounded-md file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
+              className="block w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-cyan-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-cyan-700 hover:file:bg-cyan-100 file:transition-colors"
             />
             {dep.uploading && (
-              <p className="mt-1 text-xs text-blue-600">Uploading…</p>
+              <p className="mt-1 text-xs text-cyan-600">Uploading…</p>
             )}
             {dep.bookListUrl && !dep.uploading && (
               <p className="mt-1 text-xs text-green-600">

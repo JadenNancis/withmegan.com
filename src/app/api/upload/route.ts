@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
+import { put } from "@vercel/blob";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import crypto from "crypto";
@@ -7,13 +8,14 @@ import crypto from "crypto";
 /**
  * Shared file upload endpoint for book-list documents (BTS).
  *
- * Prototype: stores files locally under /public/uploads with an opaque key.
- * Production: swap to Vercel Blob — the response shape (url) stays the same.
+ * Production: Vercel Blob — files survive redeployments and are served
+ * from the Vercel Blob CDN. Requires BLOB_READ_WRITE_TOKEN.
+ *
+ * Dev fallback: when BLOB_READ_WRITE_TOKEN is absent, stores locally
+ * under /public/uploads so the prototype works without external config.
+ * The response shape ({ url }) is identical either way.
  *
  * Security gates:
- *  - Auth checked first (registrants submit while unauthenticated in this
- *    prototype, so this route is open for public uploads but validates MIME +
- *    extension + size). TODO: require auth for admin-only access to files.
  *  - MIME type AND extension validated.
  *  - File size capped.
  *  - Opaque filename (original name discarded).
@@ -28,7 +30,6 @@ const ALLOWED = {
 const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 
 export async function POST(req: Request) {
-  // Auth check (optional for public registration uploads in prototype).
   const session = await auth();
 
   const formData = await req.formData();
@@ -47,6 +48,24 @@ export async function POST(req: Request) {
   }
 
   const opaqueName = `${crypto.randomUUID()}.${ext}`;
+
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    try {
+      const blob = await put(opaqueName, file, {
+        access: "public",
+        addRandomSuffix: false,
+      });
+      return NextResponse.json({
+        url: blob.url,
+        filename: opaqueName,
+        uploadedBy: session?.user?.email ?? "anonymous",
+      });
+    } catch (err) {
+      console.error("[upload] Vercel Blob failed:", err);
+      return NextResponse.json({ error: "Upload failed. Please try again." }, { status: 500 });
+    }
+  }
+
   const uploadDir = path.join(process.cwd(), "public", "uploads");
   await mkdir(uploadDir, { recursive: true });
   const bytes = Buffer.from(await file.arrayBuffer());

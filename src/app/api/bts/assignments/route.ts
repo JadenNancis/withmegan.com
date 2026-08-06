@@ -14,6 +14,7 @@ const createSchema = z.object({
   quantityAssigned: z.number().int().min(0).default(0),
   quantityCollected: z.number().int().min(0).default(0),
   status: z.enum(statusValues).default("pending"),
+  collectedByName: z.string().optional(),
 });
 
 const patchSchema = z.object({
@@ -22,6 +23,7 @@ const patchSchema = z.object({
   quantityAssigned: z.number().int().min(0).optional(),
   quantityCollected: z.number().int().min(0).optional(),
   status: z.enum(statusValues).optional(),
+  collectedByName: z.string().nullable().optional(),
   collectedAt: z.string().datetime().nullable().optional(),
 });
 
@@ -52,7 +54,7 @@ export async function POST(req: Request) {
     );
   }
 
-  const { dependentId, itemName, quantityAssigned, quantityCollected, status } = parsed.data;
+  const { dependentId, itemName, quantityAssigned, quantityCollected, status, collectedByName } = parsed.data;
 
   try {
     const [created] = await db
@@ -64,6 +66,7 @@ export async function POST(req: Request) {
         quantityCollected,
         status,
         assignedBy: user.id,
+        collectedByName: status === "collected" ? (collectedByName ?? null) : null,
         collectedAt: status === "collected" ? new Date() : null,
       })
       .returning({ id: btsResourceAssignments.id });
@@ -74,7 +77,7 @@ export async function POST(req: Request) {
       action: "assignment.create",
       site: "bts",
       target: `assignment:${created.id}`,
-      details: { dependentId, itemName, quantityAssigned, status },
+      details: { dependentId, itemName, quantityAssigned, status, collectedByName },
     });
 
     return NextResponse.json({ success: true, id: created.id });
@@ -103,16 +106,18 @@ export async function PATCH(req: Request) {
     );
   }
 
-  const { id, itemName, quantityAssigned, quantityCollected, status, collectedAt } = parsed.data;
+  const { id, itemName, quantityAssigned, quantityCollected, status, collectedByName, collectedAt } = parsed.data;
 
   const updates: Record<string, unknown> = { updatedAt: new Date() };
   if (itemName !== undefined) updates.itemName = itemName;
   if (quantityAssigned !== undefined) updates.quantityAssigned = quantityAssigned;
   if (quantityCollected !== undefined) updates.quantityCollected = quantityCollected;
+  if (collectedByName !== undefined) updates.collectedByName = collectedByName;
   if (status !== undefined) {
     updates.status = status;
     updates.collectedAt =
       status === "collected" ? (collectedAt ? new Date(collectedAt) : new Date()) : null;
+    if (status !== "collected") updates.collectedByName = null;
   } else if (collectedAt !== undefined) {
     updates.collectedAt = collectedAt ? new Date(collectedAt) : null;
   }

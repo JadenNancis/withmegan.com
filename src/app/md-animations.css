@@ -1,0 +1,201 @@
+/* ────────────────────────────────────────────────────────────
+   Market Day with Megan — CSS Animations
+   Pure keyframe animations. No JS animation libraries.
+   All animations respect prefers-reduced-motion.
+   ──────────────────────────────────────────────────────────── */
+
+/* ── float — gentle floating for decorative elements ── */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* ── sunset-wave — horizontal scrolling wave for the divider ── */
+@keyframes sunset-wave {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ── fade-in-up — staggered content reveal on page load ── */
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── draw-line — SVG path drawing via stroke-dashoffset ── */
+@keyframes draw-line {
+  0% {
+    stroke-dashoffset: 1000;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ── pulse-warm — soft pulsing warm glow for the CTA button ── */
+@keyframes pulse-warm {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255, 140, 66, 0.5), 0 4px 14px rgba(255, 179, 71, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(255, 140, 66, 0), 0 6px 20px rgba(255, 179, 71, 0.6);
+  }
+}
+
+/* ── sunset-shimmer — animated gradient background for the hero ── */
+@keyframes sunset-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ── celebrate — playful bounce + scale for the success checkmark ── */
+@keyframes celebrate {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+    opacity: 1;
+  }
+  70% {
+    transform: scale(0.9) rotate(-5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* ── basket-sway — gentle rocking for basket illustrations ── */
+@keyframes basket-sway {
+  0%, 100% {
+    transform: rotate(-1.5deg);
+  }
+  50% {
+    transform: rotate(1.5deg);
+  }
+}
+
+/* ── glow-soft — soft pulsing glow for accent cards ── */
+@keyframes glow-soft {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(255, 179, 71, 0.15);
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(255, 179, 71, 0.3);
+  }
+}
+
+/* ── wave-ripple — ripple effect for the wave divider ── */
+@keyframes wave-ripple {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* ── Utility classes ── */
+
+.md-animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.md-animate-float-slow {
+  animation: float 6s ease-in-out infinite;
+}
+
+.md-animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out both;
+}
+
+.md-animate-pulse-warm {
+  animation: pulse-warm 2.5s ease-in-out infinite;
+}
+
+.md-animate-celebrate {
+  animation: celebrate 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.md-animate-basket-sway {
+  animation: basket-sway 6s ease-in-out infinite;
+}
+
+.md-animate-glow {
+  animation: glow-soft 3s ease-in-out infinite;
+}
+
+.md-hero-shimmer {
+  background: linear-gradient(
+    135deg,
+    #ff8c42 0%,
+    #ffb347 20%,
+    #ffd97d 40%,
+    #ff8c42 60%,
+    #e76f51 80%,
+    #ffb347 100%
+  );
+  background-size: 300% 300%;
+  animation: sunset-shimmer 12s ease-in-out infinite;
+}
+
+.md-wave-path {
+  animation: wave-ripple 4s ease-in-out infinite;
+}
+
+.md-wave-path-2 {
+  animation: wave-ripple 5s ease-in-out infinite 1s;
+}
+
+/* Staggered fade-in-up delay helpers */
+.md-delay-1 { animation-delay: 0.1s; }
+.md-delay-2 { animation-delay: 0.2s; }
+.md-delay-3 { animation-delay: 0.3s; }
+.md-delay-4 { animation-delay: 0.4s; }
+.md-delay-5 { animation-delay: 0.5s; }
+.md-delay-6 { animation-delay: 0.6s; }
+
+/* SVG draw-line animation for illustrations */
+.md-draw-line path,
+.md-draw-line circle {
+  stroke-dasharray: 1000;
+  animation: draw-line 2s ease-out forwards;
+}
+
+/* ── prefers-reduced-motion — disable ALL animations ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .md-hero-shimmer {
+    background-size: 100% 100%;
+  }
+}

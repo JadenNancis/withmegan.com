@@ -147,8 +147,8 @@ export function VerifyCounter() {
   return (
     <div className="space-y-6">
       {/* Search */}
-      <div className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
-        <label htmlFor="verify-search" className="block text-sm font-semibold text-gray-700 mb-2">
+      <div className="md-animate-fade-in-up rounded-xl border-2 border-amber-200 bg-white p-4 sm:p-6 shadow-sm">
+        <label htmlFor="verify-search" className="block text-sm font-semibold text-amber-800 mb-2">
           Search by name, THA ID, phone, or household reference
         </label>
         <div className="flex flex-col sm:flex-row gap-2">
@@ -159,22 +159,22 @@ export function VerifyCounter() {
             onChange={(e) => onQueryChange(e.target.value)}
             placeholder="Scan barcode or type name / ID…"
             autoFocus
-            className="flex-1 rounded-lg border-2 border-gray-300 px-4 py-3 text-lg focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
+            className="flex-1 rounded-lg border-2 border-amber-200 px-4 py-3 text-lg focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
           />
           <button
             type="button"
             onClick={clearAll}
-            className="rounded-lg border border-gray-300 bg-white px-5 py-3 text-base font-semibold text-gray-700 hover:bg-gray-50"
+            className="rounded-lg border border-amber-300 bg-amber-50 px-5 py-3 text-base font-semibold text-amber-800 hover:bg-amber-100 transition-colors"
           >
             Clear
           </button>
         </div>
-        {searching && <p className="mt-2 text-sm text-gray-400">Searching…</p>}
+        {searching && <p className="mt-2 text-sm text-amber-600">Searching…</p>}
       </div>
 
       {/* Results list (when multiple) */}
       {results.length > 1 && !selected && (
-        <div className="rounded-xl border border-gray-200 bg-white divide-y divide-gray-100">
+        <div className="md-animate-fade-in-up rounded-xl border border-amber-200 bg-white divide-y divide-amber-50 shadow-sm">
           {results.map((r) => (
             <button
               key={r.id}
@@ -183,11 +183,11 @@ export function VerifyCounter() {
                 setSelected(r);
                 setFeedback({ kind: "idle" });
               }}
-              className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-amber-50"
+              className="flex w-full items-center justify-between px-4 py-3 text-left hover:bg-amber-50 transition-colors"
             >
               <div>
                 <p className="font-medium text-gray-900">{r.fullName}</p>
-                <p className="text-xs font-mono text-gray-500">{r.thaId ?? "—"}</p>
+                <p className="text-xs font-mono text-amber-700">{r.thaId ?? "—"}</p>
               </div>
               <div className="text-right">
                 <p className="text-sm text-gray-600">{r.householdReference ?? "No household"}</p>
@@ -217,7 +217,7 @@ export function VerifyCounter() {
 
       {/* Selected registrant card */}
       {selected && (
-        <div className="rounded-xl border-2 border-gray-300 bg-white p-6 shadow-sm">
+        <div className="md-animate-fade-in-up rounded-xl border-2 border-amber-200 bg-white p-6 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
             <div className="space-y-1">
               <h2 className="text-xl font-bold text-gray-900">{selected.fullName}</h2>
@@ -263,9 +263,14 @@ export function VerifyCounter() {
           {/* Already redeemed warning */}
           {selected.hamperStatus === "redeemed" && (
             <div className="mt-4 rounded-lg border-2 border-red-400 bg-red-50 p-4">
-              <p className="text-base font-bold text-red-700">
-                ⛔ Household already redeemed
-              </p>
+              <div className="flex items-center gap-2">
+                <svg viewBox="0 0 24 24" className="w-6 h-6 text-red-600 flex-none" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
+                  <path d="M 6 6 L 18 18 M 18 6 L 6 18" />
+                </svg>
+                <p className="text-base font-bold text-red-700">
+                  Household already redeemed
+                </p>
+              </div>
               <p className="mt-1 text-sm text-red-600">
                 Redeemed {selected.redeemedAt ? new Date(selected.redeemedAt).toLocaleString("en-TT") : "previously"}
                 {selected.redeemedBy ? ` by ${selected.redeemedBy}` : ""}
@@ -290,8 +295,8 @@ export function VerifyCounter() {
               onClick={() => redeem(selected.householdId!)}
               disabled={pending}
               className={cn(
-                "mt-6 w-full rounded-xl px-6 py-5 text-xl font-bold text-white shadow-lg transition-colors",
-                "bg-green-600 hover:bg-green-700 active:bg-green-800",
+                "mt-6 w-full rounded-xl px-6 py-5 text-xl font-bold text-white shadow-lg transition-all",
+                "bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 active:scale-95",
                 "disabled:opacity-50",
               )}
             >
@@ -301,28 +306,37 @@ export function VerifyCounter() {
         </div>
       )}
 
-      {/* Big feedback banner */}
+      {/* Big feedback banner with animated icons */}
       {feedback.kind !== "idle" && (
         <div
           className={cn(
-            "rounded-xl p-6 text-center shadow-lg",
-            feedback.kind === "success" && "border-2 border-green-500 bg-green-100",
-            feedback.kind === "blocked" && "border-2 border-red-500 bg-red-100",
+            "md-animate-fade-in-up rounded-xl p-6 text-center shadow-lg",
+            feedback.kind === "success" && "border-2 border-green-500 bg-gradient-to-br from-green-50 to-amber-50",
+            feedback.kind === "blocked" && "border-2 border-red-500 bg-red-50",
             feedback.kind === "error" && "border-2 border-gray-400 bg-gray-100",
           )}
         >
           <p
             className={cn(
-              "text-3xl font-bold",
+              "text-3xl font-bold flex items-center justify-center gap-3",
               feedback.kind === "success" && "text-green-700",
               feedback.kind === "blocked" && "text-red-700",
               feedback.kind === "error" && "text-gray-800",
             )}
           >
-            {feedback.kind === "success" && "✓"}
-            {feedback.kind === "blocked" && "⛔"}
-            {feedback.kind === "error" && "⚠"}
-            {" "}
+            {feedback.kind === "success" && (
+              <svg viewBox="0 0 40 40" className="w-10 h-10 md-animate-celebrate" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M 10 20 L 17 27 L 30 13" />
+              </svg>
+            )}
+            {feedback.kind === "blocked" && (
+              <svg viewBox="0 0 40 40" className="w-10 h-10 md-animate-celebrate" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round">
+                <path d="M 10 10 L 30 30 M 30 10 L 10 30" />
+              </svg>
+            )}
+            {feedback.kind === "error" && (
+              <span>⚠</span>
+            )}
             {feedback.message}
           </p>
           {feedback.detail && (

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Field, TextInput, TextArea, Select, SubmitButton } from "@/components/form";
 import { cn } from "@/lib/cn";
+import { BasketIcon, FloatingProduce, SunsetWaveDivider } from "@/components/md-illustrations";
 
 type Errors = Partial<Record<string, string>>;
 
@@ -61,33 +62,40 @@ export default function MdRegisterPage() {
   if (success) {
     return (
       <div className="space-y-6">
-        <div className="rounded-2xl border-2 border-green-300 bg-green-50 p-8 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white text-3xl font-bold">
-            ✓
+        {/* Floating celebration elements */}
+        <FloatingProduce className="absolute top-20 left-4 w-12 h-12 opacity-30 md-animate-float" />
+        <FloatingProduce className="absolute top-32 right-8 w-10 h-10 opacity-25 md-animate-float-slow" />
+        <FloatingProduce className="absolute top-48 left-12 w-8 h-8 opacity-20 md-animate-float" />
+
+        <div className="relative rounded-2xl border-2 border-green-300 bg-gradient-to-br from-green-50 to-amber-50 p-8 text-center shadow-lg overflow-hidden">
+          <div className="md-animate-celebrate mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-500 text-white shadow-lg">
+            <svg viewBox="0 0 40 40" className="w-12 h-12" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M 10 20 L 17 27 L 30 13" />
+            </svg>
           </div>
-          <h1 className="mt-4 text-2xl font-bold text-green-800">Registration successful</h1>
-          <p className="mt-2 text-sm text-green-700">
+          <h1 className="mt-4 text-2xl font-bold text-green-800 md-animate-fade-in-up md-delay-1">Registration successful</h1>
+          <p className="mt-2 text-sm text-green-700 md-animate-fade-in-up md-delay-2">
             Thank you, {success.fullName}. Your registration has been recorded.
           </p>
-          <div className="mt-6 rounded-lg bg-white p-4 border border-green-200">
-            <p className="text-xs uppercase tracking-wide text-gray-500">Your THA ID</p>
-            <p className="mt-1 text-2xl font-mono font-bold text-amber-700 select-all">{success.thaId}</p>
+          <div className="mt-6 rounded-xl bg-white p-5 border border-green-200 shadow-sm md-animate-fade-in-up md-delay-3">
+            <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">Your THA ID</p>
+            <p className="mt-1 text-3xl font-mono font-bold text-amber-700 select-all">{success.thaId}</p>
             <p className="mt-2 text-xs text-gray-500">
               Keep this ID safe &mdash; you&apos;ll need it for verification on event day.
             </p>
           </div>
         </div>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center md-animate-fade-in-up md-delay-4">
           <Link
             href="/md"
-            className="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+            className="inline-flex justify-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
           >
             Back to home
           </Link>
           <button
             type="button"
             onClick={() => setSuccess(null)}
-            className="inline-flex justify-center rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600"
+            className="md-animate-pulse-warm inline-flex justify-center rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 transition-colors"
           >
             Register another person
           </button>
@@ -98,21 +106,28 @@ export default function MdRegisterPage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-xl bg-amber-50 border border-amber-200 p-6">
-        <h1 className="text-2xl font-bold text-amber-900">Hamper Registration</h1>
-        <p className="mt-2 text-sm text-amber-800">
-          Register in advance for the Market Day community hamper distribution.
-          Fields marked with <span className="text-red-500">*</span> are required.
-        </p>
+      {/* Animated header */}
+      <div className="relative overflow-hidden rounded-2xl md-hero-shimmer shadow-lg">
+        <div className="flex items-center gap-4 px-6 py-6">
+          <BasketIcon className="w-14 h-14 flex-none drop-shadow-lg md-animate-basket-sway" />
+          <div className="text-white">
+            <h1 className="text-2xl font-bold drop-shadow md-animate-fade-in-up">Hamper Registration</h1>
+            <p className="mt-1 text-sm text-amber-50 drop-shadow md-animate-fade-in-up md-delay-1">
+              Register in advance for the Market Day community hamper distribution.
+              Fields marked with <span className="text-red-100 font-bold">*</span> are required.
+            </p>
+          </div>
+        </div>
+        <SunsetWaveDivider className="w-full h-[24px] block opacity-70" />
       </div>
 
       {submitError && (
-        <div className="rounded-md border border-red-300 bg-red-50 p-4 text-sm text-red-700">
+        <div className="md-animate-fade-in-up rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-700">
           {submitError}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="rounded-xl border border-gray-200 bg-white p-6 space-y-0" noValidate>
+      <form onSubmit={handleSubmit} className="md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-200 bg-white p-6 space-y-0 shadow-sm" noValidate>
         <Field label="Full name" htmlFor="fullName" required error={errors.fullName}>
           <TextInput id="fullName" name="fullName" autoComplete="name" placeholder="Jane Doe" />
         </Field>
@@ -167,7 +182,7 @@ export default function MdRegisterPage() {
         </div>
 
         <div className="flex gap-3">
-          <SubmitButton className={cn("bg-amber-500 hover:bg-amber-600")} >
+          <SubmitButton className={cn("bg-amber-500 hover:bg-amber-600 md-animate-pulse-warm")} >
             {submitting ? "Submitting…" : "Register"}
           </SubmitButton>
           <Link

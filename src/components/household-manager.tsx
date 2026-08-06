@@ -142,24 +142,24 @@ export function HouseholdManager({
 
   return (
     <div className="space-y-6">
-      {error && <div className="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700">{error}</div>}
-      {msg && <div className="rounded-md border border-green-300 bg-green-50 p-3 text-sm text-green-700">{msg}</div>}
+      {error && <div className="rounded-lg border border-red-300 bg-red-50 p-3 text-sm text-red-700">{error}</div>}
+      {msg && <div className="md-animate-fade-in-up rounded-lg border border-green-300 bg-gradient-to-r from-green-50 to-amber-50 p-3 text-sm text-green-700 font-medium">{msg}</div>}
 
-      <section className="rounded-lg border border-gray-200 bg-white p-4">
-        <h2 className="text-sm font-semibold text-gray-900">Create household</h2>
+      <section className="md-animate-fade-in-up rounded-xl border border-amber-200 bg-white p-4 shadow-sm">
+        <h2 className="text-sm font-semibold text-amber-900">Create household</h2>
         <div className="mt-3 flex flex-col sm:flex-row gap-2">
           <input
             type="text"
             value={newRef}
             onChange={(e) => setNewRef(e.target.value)}
             placeholder="Leave blank for auto-generated (HH-0001)"
-            className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
+            className="flex-1 rounded-md border border-amber-200 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
           />
           <button
             type="button"
             onClick={createHousehold}
             disabled={creating || pending}
-            className="rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-50"
+            className="rounded-md bg-amber-500 px-4 py-2 text-sm font-semibold text-white hover:bg-amber-600 disabled:opacity-50 transition-colors"
           >
             {creating ? "Creating…" : "Create"}
           </button>
@@ -167,16 +167,16 @@ export function HouseholdManager({
       </section>
 
       {unassigned.length > 0 && (
-        <section className="rounded-lg border border-amber-200 bg-amber-50 p-4">
+        <section className="md-animate-fade-in-up md-delay-1 rounded-xl border border-amber-200 bg-gradient-to-br from-amber-50 to-orange-50 p-4">
           <h2 className="text-sm font-semibold text-amber-900">
             Unassigned registrants ({unassigned.length})
           </h2>
           <div className="mt-3 space-y-2">
             {unassigned.map((r) => (
-              <div key={r.id} className="flex flex-col sm:flex-row sm:items-center gap-2 rounded-md bg-white p-3 border border-amber-100">
+              <div key={r.id} className="flex flex-col sm:flex-row sm:items-center gap-2 rounded-lg bg-white p-3 border border-amber-100 shadow-sm">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-gray-900">{r.fullName}</p>
-                  <p className="text-xs font-mono text-gray-500">{r.thaId ?? "—"}</p>
+                  <p className="text-xs font-mono text-amber-700">{r.thaId ?? "—"}</p>
                 </div>
                 <select
                   defaultValue=""
@@ -184,7 +184,7 @@ export function HouseholdManager({
                     if (e.target.value) assign(r.id, e.target.value);
                     e.target.value = "";
                   }}
-                  className="rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
+                  className="rounded-md border border-amber-200 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
                 >
                   <option value="">Assign to household…</option>
                   {households.map((h) => (
@@ -199,25 +199,25 @@ export function HouseholdManager({
         </section>
       )}
 
-      <section>
+      <section className="md-animate-fade-in-up md-delay-2">
         <h2 className="text-lg font-semibold text-gray-900">All households</h2>
         {households.length === 0 ? (
           <p className="mt-2 text-sm text-gray-500">No households yet. Create one above.</p>
         ) : (
-          <div className="mt-3 overflow-x-auto rounded-lg border border-gray-200">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
-              <thead className="bg-gray-50">
+          <div className="mt-3 overflow-x-auto rounded-lg border border-amber-200 shadow-sm">
+            <table className="min-w-full divide-y divide-amber-100 text-sm">
+              <thead className="bg-gradient-to-r from-amber-50 to-orange-50">
                 <tr>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Reference</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Members</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Status</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Redeemed</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Set status</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Reference</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Members</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Status</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Redeemed</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Set status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 bg-white">
+              <tbody className="divide-y divide-amber-50 bg-white">
                 {households.map((h) => (
-                  <tr key={h.id} className="hover:bg-gray-50">
+                  <tr key={h.id} className="hover:bg-amber-50/50 transition-colors">
                     <td className="px-3 py-2 font-mono font-medium text-gray-900">{h.reference}</td>
                     <td className="px-3 py-2 text-gray-700">{h.memberCount}</td>
                     <td className="px-3 py-2">
@@ -233,7 +233,7 @@ export function HouseholdManager({
                         value={h.hamperStatus}
                         onChange={(e) => setStatus(h.id, e.target.value as "unassigned" | "assigned" | "redeemed")}
                         disabled={pending}
-                        className="rounded-md border border-gray-300 px-2 py-1 text-xs focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none disabled:opacity-50"
+                        className="rounded-md border border-amber-200 px-2 py-1 text-xs focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none disabled:opacity-50"
                       >
                         <option value="unassigned">unassigned</option>
                         <option value="assigned">assigned</option>
@@ -248,24 +248,24 @@ export function HouseholdManager({
         )}
       </section>
 
-      <section>
+      <section className="md-animate-fade-in-up md-delay-3">
         <h2 className="text-lg font-semibold text-gray-900">Recent audit trail</h2>
         {audit.length === 0 ? (
           <p className="mt-2 text-sm text-gray-500">No audit entries yet.</p>
         ) : (
-          <div className="mt-3 overflow-x-auto rounded-lg border border-gray-200">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
-              <thead className="bg-gray-50">
+          <div className="mt-3 overflow-x-auto rounded-lg border border-amber-200 shadow-sm">
+            <table className="min-w-full divide-y divide-amber-100 text-sm">
+              <thead className="bg-gradient-to-r from-amber-50 to-orange-50">
                 <tr>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">When</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Actor</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Action</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Target</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">When</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Actor</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Action</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Target</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 bg-white">
+              <tbody className="divide-y divide-amber-50 bg-white">
                 {audit.map((a) => (
-                  <tr key={a.id}>
+                  <tr key={a.id} className="hover:bg-amber-50/50 transition-colors">
                     <td className="px-3 py-2 text-xs text-gray-500">{new Date(a.createdAt).toLocaleString("en-TT")}</td>
                     <td className="px-3 py-2 text-gray-700">{a.actorEmail ?? a.actorId}</td>
                     <td className="px-3 py-2 font-mono text-xs text-gray-700">{a.action}</td>

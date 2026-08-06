@@ -6,6 +6,7 @@ import { cn } from "@/lib/cn";
 import { db } from "@/db/client";
 import { mdRegistrants, mdHouseholds } from "@/db/schema";
 import { eq, count } from "drizzle-orm";
+import { SunsetWaveDivider } from "@/components/md-illustrations";
 
 export const runtime = "nodejs";
 
@@ -78,33 +79,34 @@ export default async function MdAdminReportsPage({
   return (
     <div className="space-y-6">
       <AdminNav current="/md/admin/reports" />
-      <h1 className="text-2xl font-bold text-gray-900">Reports</h1>
+      <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
+      <h1 className="text-2xl font-bold text-gray-900 md-animate-fade-in-up">Reports</h1>
 
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <ReportCard label="Individual registrations" value={regCount?.n ?? 0} />
         <ReportCard label="Households assigned" value={assigned?.n ?? 0} accent />
         <ReportCard label="Households unassigned" value={unassigned?.n ?? 0} />
-        <ReportCard label="Households redeemed" value={redeemedN} />
+        <ReportCard label="Households redeemed" value={redeemedN} accent />
       </section>
 
       <section className="grid sm:grid-cols-2 gap-3">
-        <div className="rounded-lg border border-gray-200 bg-white p-5">
-          <p className="text-sm text-gray-500">Redeemed vs pending</p>
+        <div className="md-animate-fade-in-up md-delay-1 rounded-xl border border-amber-200 bg-white p-5 shadow-sm">
+          <p className="text-sm text-amber-700 font-medium">Redeemed vs pending</p>
           <p className="mt-1 text-3xl font-bold text-gray-900">
             {redeemedN} <span className="text-gray-400 text-xl">/</span> {pendingHh}
           </p>
           {totalHh > 0 && (
-            <div className="mt-3 h-3 w-full rounded-full bg-gray-100 overflow-hidden">
+            <div className="mt-3 h-3 w-full rounded-full bg-amber-100 overflow-hidden">
               <div
-                className="h-full bg-green-500 transition-all"
+                className="h-full bg-gradient-to-r from-amber-500 to-green-500 transition-all"
                 style={{ width: `${redemptionRate}%` }}
               />
             </div>
           )}
           <p className="mt-2 text-xs text-gray-500">{redemptionRate}% redemption rate</p>
         </div>
-        <div className="rounded-lg border border-gray-200 bg-white p-5">
-          <p className="text-sm text-gray-500">Total households</p>
+        <div className="md-animate-fade-in-up md-delay-2 rounded-xl border border-amber-200 bg-white p-5 shadow-sm">
+          <p className="text-sm text-amber-700 font-medium">Total households</p>
           <p className="mt-1 text-3xl font-bold text-gray-900">{totalHh}</p>
           <p className="mt-2 text-xs text-gray-500">
             {regCount?.n ?? 0} registrations across {totalHh} households
@@ -113,7 +115,7 @@ export default async function MdAdminReportsPage({
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900">
+        <h2 className="text-lg font-semibold text-gray-900 md-animate-fade-in-up">
           Registrations {q && `· filtered by "${q}"`}
         </h2>
         <Suspense fallback={<div className="text-sm text-gray-400">Loading search…</div>}>
@@ -125,22 +127,22 @@ export default async function MdAdminReportsPage({
             {q ? "No matching records." : "No registrations yet."}
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-gray-200">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
-              <thead className="bg-gray-50">
+          <div className="md-animate-fade-in-up md-delay-1 overflow-x-auto rounded-lg border border-amber-200 shadow-sm">
+            <table className="min-w-full divide-y divide-amber-100 text-sm">
+              <thead className="bg-gradient-to-r from-amber-50 to-orange-50">
                 <tr>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">THA ID</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Name</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">National ID</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Household</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Status</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Redeemed</th>
-                  <th className="px-3 py-2 text-left font-semibold text-gray-600">Registered</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">THA ID</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Name</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">National ID</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Household</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Status</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Redeemed</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Registered</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 bg-white">
+              <tbody className="divide-y divide-amber-50 bg-white">
                 {filtered.map((r) => (
-                  <tr key={r.id} className="hover:bg-gray-50">
+                  <tr key={r.id} className="hover:bg-amber-50/50 transition-colors">
                     <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "—"}</td>
                     <td className="px-3 py-2 text-gray-900">{r.fullName}</td>
                     <td className="px-3 py-2 text-gray-600">{r.nationalId ?? "—"}</td>
@@ -173,7 +175,10 @@ export default async function MdAdminReportsPage({
 
 function ReportCard({ label, value, accent }: { label: string; value: number; accent?: boolean }) {
   return (
-    <div className={cn("rounded-lg border p-4", accent ? "border-amber-200 bg-amber-50" : "border-gray-200 bg-white")}>
+    <div className={cn(
+      "rounded-xl border p-4 md-animate-glow",
+      accent ? "border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50" : "border-gray-200 bg-white"
+    )}>
       <p className={cn("text-2xl font-bold", accent ? "text-amber-700" : "text-gray-900")}>{value}</p>
       <p className="mt-0.5 text-xs text-gray-500">{label}</p>
     </div>
