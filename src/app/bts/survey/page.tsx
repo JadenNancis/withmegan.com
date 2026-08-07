@@ -76,16 +76,15 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bts-fade-in-up flex flex-col items-center text-center">
-        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
-          <SchoolBookIcon className="h-9 w-9" />
-        </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-cyan-900">Post-Event Survey</h1>
-        <p className="mt-2 max-w-md text-sm text-gray-600">
+      <div className="bts-fade-in-up text-center">
+        <h1 className="text-2xl sm:text-3xl font-bold text-brand-900">
+          Post-Event Survey
+        </h1>
+        <p className="mt-3 text-base text-gray-600 max-w-lg mx-auto leading-relaxed">
           Tell us how the Back to School book drive went for your family.
         </p>
         {aid && (
-          <p className="mt-3 rounded-full bg-cyan-50 px-4 py-1.5 text-xs font-mono font-medium text-cyan-700">
+          <p className="mt-4 inline-block rounded-full bg-brand-50 px-4 py-1.5 text-xs font-mono font-medium text-brand-700">
             Application ID: {aid}
           </p>
         )}
@@ -94,7 +93,7 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
       {/* Form card */}
       <form
         onSubmit={handleSubmit}
-        className="bts-fade-in-up mx-auto max-w-lg space-y-6 rounded-2xl border border-cyan-100 bg-white p-6 shadow-sm sm:p-8"
+        className="bts-fade-in-up mx-auto max-w-lg space-y-6 rounded-2xl border border-brand-100 bg-white p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] sm:p-8"
       >
         {/* Received needed */}
         <fieldset>
@@ -109,10 +108,10 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
             ].map((opt) => (
               <label
                 key={opt.value}
-                className={`flex cursor-pointer items-center justify-center rounded-xl border-2 px-3 py-3 text-sm font-medium transition-all ${
+                className={`flex cursor-pointer items-center justify-center rounded-xl border-2 px-3 py-3.5 text-sm font-semibold transition-all ${
                   receivedNeeded === opt.value
-                    ? "border-cyan-500 bg-cyan-50 text-cyan-800"
-                    : "border-gray-200 text-gray-600 hover:border-cyan-300"
+                    ? "border-brand-500 bg-brand-50 text-brand-800"
+                    : "border-gray-200 text-gray-600 hover:border-brand-300 hover:bg-brand-50/30"
                 }`}
               >
                 <input
@@ -164,7 +163,7 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
             onChange={(e) => setComments(e.target.value)}
             rows={4}
             placeholder="Share what worked well or what could be improved…"
-            className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm shadow-sm focus:border-transparent focus:ring-2 focus:ring-cyan-500 focus:outline-none transition-shadow"
+            className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-brand-500 focus:shadow-[0_0_0_4px_rgba(8,145,178,0.12)] focus:outline-none transition-all"
           />
         </div>
 
@@ -179,9 +178,9 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
         <button
           type="submit"
           disabled={submitting}
-          className="inline-flex w-full min-h-[52px] items-center justify-center rounded-xl bg-cyan-600 px-6 py-3.5 text-base font-bold text-white shadow-sm transition-colors hover:bg-cyan-700 disabled:opacity-60"
+          className="w-full inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 hover:-translate-y-px active:translate-y-0 disabled:opacity-60 disabled:pointer-events-none disabled:shadow-sm transition-all duration-150"
         >
-          {submitting ? "Submitting…" : "Submit Survey"}
+          {submitting ? "Submitting…" : "Submit survey"}
         </button>
       </form>
     </div>

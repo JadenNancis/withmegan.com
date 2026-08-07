@@ -12,6 +12,7 @@ const LINKS: Record<AdminSite, { href: string; label: string }[]> = {
     { href: "/bts/admin/inventory", label: "Inventory" },
     { href: "/bts/admin/gallery", label: "Gallery" },
     { href: "/bts/admin/reports", label: "Reports" },
+    { href: "/bts/recover", label: "Find My ID" },
   ],
   md: [
     { href: "/md/admin", label: "Dashboard" },
@@ -25,9 +26,19 @@ const LINKS: Record<AdminSite, { href: string; label: string }[]> = {
   ],
 };
 
+const TAB_BAR: Record<AdminSite, string> = {
+  bts: "bg-brand-800",
+  md: "bg-amber-700",
+};
+
 const ACTIVE_STYLES: Record<AdminSite, string> = {
-  bts: "bg-cyan-50 text-cyan-700 border-b-2 border-cyan-500",
-  md: "bg-amber-50 text-amber-700 border-b-2 border-amber-500",
+  bts: "bg-white text-brand-800 shadow-sm",
+  md: "bg-white text-amber-800 shadow-sm",
+};
+
+const IDLE_STYLES: Record<AdminSite, string> = {
+  bts: "text-white/70 hover:text-white hover:bg-white/10",
+  md: "text-white/70 hover:text-white hover:bg-white/10",
 };
 
 export function AdminNav({
@@ -39,24 +50,28 @@ export function AdminNav({
 }) {
   const links = LINKS[site];
   return (
-    <nav
-      aria-label="Admin sections"
-      className="flex gap-1 border-b border-gray-200 -mx-4 px-4 overflow-x-auto sm:mx-0 sm:px-0 sm:flex-wrap no-scrollbar"
-    >
-      {links.map((l) => (
-        <Link
-          key={l.href}
-          href={l.href}
-          className={cn(
-            "whitespace-nowrap px-4 py-3 text-sm font-medium rounded-t-md min-h-[44px] flex items-center transition-colors",
-            current === l.href
-              ? ACTIVE_STYLES[site]
-              : "text-gray-600 hover:text-gray-900 hover:bg-gray-50",
-          )}
+    <div className={cn("-mx-4 -mt-6 sm:-mt-8 mb-6", TAB_BAR[site])}>
+      <div className="mx-auto max-w-4xl px-4">
+        <nav
+          aria-label="Admin sections"
+          className="flex gap-1 overflow-x-auto no-scrollbar pt-3 pb-0"
         >
-          {l.label}
-        </Link>
-      ))}
-    </nav>
+          {links.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className={cn(
+                "whitespace-nowrap rounded-t-lg px-4 py-2.5 text-sm font-medium min-h-[40px] flex items-center transition-all",
+                current === l.href
+                  ? ACTIVE_STYLES[site]
+                  : IDLE_STYLES[site],
+              )}
+            >
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+    </div>
   );
 }

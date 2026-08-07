@@ -75,7 +75,7 @@ export function btsRegistrationConfirmationHtml(params: {
 <body style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#1f2937;">
   <div style="background:linear-gradient(135deg,#0e7490,#164e63);border-radius:16px;padding:32px;text-align:center;">
     <h1 style="color:#fff;font-size:24px;margin:0;">Back to School with Megan</h1>
-    <p style="color:#cffafe;margin:8px 0 0;font-size:14px;">Book Drive — The Electoral District of Mt. St. George/Goodwood, Tobago</p>
+    <p style="color:#cffafe;margin:8px 0 0;font-size:14px;">Book Drive — Mt. St. George/Goodwood, Tobago</p>
   </div>
   <div style="margin-top:24px;">
     <p>Hi ${escapeHtml(params.guardianName)},</p>

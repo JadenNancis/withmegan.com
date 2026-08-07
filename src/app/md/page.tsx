@@ -74,11 +74,11 @@ export default function MdLanding() {
       {/* ──────── Stats Cards ──────── */}
       <section className="mx-auto max-w-4xl px-4 py-10">
         <div className="grid gap-4 sm:grid-cols-3">
-          <div className="md-animate-fade-in-up rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 sm:p-6 shadow-sm">
+          <div className="card-hover md-animate-fade-in-up rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 sm:p-6 shadow-sm">
             <p className="text-base sm:text-lg font-bold text-amber-900 leading-snug">{formattedDate}</p>
             <p className="mt-1 text-sm font-medium text-amber-600">Event date</p>
           </div>
-          <div className="md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 sm:p-6 shadow-sm">
+          <div className="card-hover md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 sm:p-6 shadow-sm">
             <p className="text-2xl font-bold text-amber-900">1</p>
             <p className="mt-1 text-sm font-medium text-amber-600">Distribution centre</p>
           </div>
@@ -142,7 +142,7 @@ export default function MdLanding() {
           </div>
           <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
             Market Day with Megan is a community hamper distribution initiative serving
-            residents of the Electoral District of Mt. St. George/Goodwood, Tobago. Each eligible household
+            residents of Mt. St. George/Goodwood, Tobago. Each eligible household
             receives a hamper of essential goods. Registration is open in advance &mdash;
             once registered, you&apos;ll be assigned to a household group for verification
             and collection on the day.
@@ -204,11 +204,11 @@ export default function MdLanding() {
 
 function PhotoCard({ src, alt, span }: { src: string; alt: string; span: string }) {
   return (
-    <div className={`group relative overflow-hidden rounded-2xl shadow-md ${span}`}>
+    <div className={`card-hover group relative overflow-hidden rounded-2xl shadow-md ${span}`}>
       <img
         src={src}
         alt={alt}
-        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 min-h-[160px] sm:min-h-[200px]"
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 min-h-[160px] sm:min-h-[200px]"
         loading="lazy"
       />
     </div>

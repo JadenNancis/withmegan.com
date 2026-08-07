@@ -90,11 +90,11 @@ export function DependentsStep({
   }
 
   return (
-    <section className="space-y-4">
-      <div className="rounded-card border border-brand-100 bg-white p-5 sm:p-6 shadow-sm">
-        <h2 className="text-lg font-bold text-brand-900">Your students</h2>
+    <section className="space-y-5">
+      <div className="rounded-2xl border border-brand-100 bg-white p-6 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)]">
+        <h2 className="text-xl font-bold text-brand-900">Add your students</h2>
         <p className="mt-1 text-sm text-brand-700">
-          Fill in each child&rsquo;s details below. Book list is optional.
+          Schools and grades — that&rsquo;s all this step needs from you.
         </p>
       </div>
 
@@ -104,25 +104,30 @@ export function DependentsStep({
         return (
           <article
             key={i}
-            className="rounded-card border border-brand-100 bg-white shadow-sm overflow-hidden"
+            className="rounded-2xl border border-brand-100 bg-white shadow-[0_2px_16px_-4px_rgba(0,0,0,0.06)] overflow-hidden"
           >
             <button
               type="button"
               onClick={() => toggleCollapsed(i)}
-              className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-brand-50/50 transition-colors"
+              className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-brand-50/50 transition-colors"
               aria-expanded={!isCollapsed}
             >
-              <span className="text-sm font-bold text-brand-900">
-                {dep.studentName.trim() ? dep.studentName : `Student ${i + 1}`}
-                {dep.gradeLevel && (
-                  <span className="ml-2 text-xs font-medium text-gray-500">
-                    · {dep.gradeLevel}
-                  </span>
-                )}
-              </span>
+              <div className="flex items-center gap-3 min-w-0">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-700">
+                  {i + 1}
+                </span>
+                <span className="truncate font-bold text-brand-900">
+                  {dep.studentName.trim() ? dep.studentName : "Student details"}
+                  {dep.gradeLevel && (
+                    <span className="ml-2 text-xs font-medium text-gray-500">
+                      · {dep.gradeLevel}
+                    </span>
+                  )}
+                </span>
+              </div>
               <svg
                 viewBox="0 0 24 24"
-                className={`h-5 w-5 text-brand-600 transition-transform ${isCollapsed ? "" : "rotate-180"}`}
+                className={`h-5 w-5 shrink-0 text-brand-600 transition-transform ${isCollapsed ? "" : "rotate-180"}`}
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="2"
@@ -134,16 +139,17 @@ export function DependentsStep({
             </button>
 
             {!isCollapsed && (
-              <div className="px-5 pb-5 pt-1 border-t border-brand-50 space-y-1">
-                <Field label="Student full name" required>
+              <div className="px-6 pb-6 pt-4 border-t border-brand-50 space-y-1">
+                <Field label="Student&rsquo;s full name" required>
                   <TextInput
                     value={dep.studentName}
                     onChange={(e) => update(i, { studentName: e.target.value })}
                     autoFocus={i === dependents.length - 1 && !dep.studentName}
+                    placeholder="Full name"
                   />
                 </Field>
 
-                <Field label="Grade level" required>
+                <Field label="Grade or form" required>
                   <TextInput
                     value={dep.gradeLevel}
                     onChange={(e) => update(i, { gradeLevel: e.target.value })}
@@ -172,48 +178,51 @@ export function DependentsStep({
 
                 {isOther && (
                   <>
-                    <Field label="School name (manual entry)" required>
+                    <Field label="School name" required>
                       <TextInput
                         value={dep.manualSchoolName}
                         onChange={(e) => update(i, { manualSchoolName: e.target.value })}
+                        placeholder="School name"
                       />
                     </Field>
                     <Field label="School address (optional)">
                       <TextInput
                         value={dep.manualSchoolAddress}
                         onChange={(e) => update(i, { manualSchoolAddress: e.target.value })}
+                        placeholder="Street or area"
                       />
                     </Field>
                   </>
                 )}
 
-                <Field label="Book list (PDF or Word, optional)">
+                <Field label="Book list (optional)">
                   <BookListUpload
                     dep={dep}
                     uploading={uploadingIdx === i}
                     onSelect={(file) => uploadBookList(i, file)}
                   />
                   {uploadErr && uploadingIdx === null && (
-                    <p className="mt-1 text-xs text-red-600">{uploadErr}</p>
+                    <p className="mt-1.5 text-sm text-red-600">{uploadErr}</p>
                   )}
                 </Field>
 
-                <Field label="Notes — special needs, items you already have (optional)">
+                <Field label="Notes (optional)">
                   <TextArea
                     value={dep.notes}
                     onChange={(e) => update(i, { notes: e.target.value })}
                     rows={2}
+                    placeholder="Special needs, items you already have, anything we should know"
                   />
                 </Field>
 
                 {dependents.length > 1 && (
-                  <div className="flex justify-end pt-2">
+                  <div className="flex justify-end pt-3 border-t border-brand-50 mt-4">
                     <button
                       type="button"
                       onClick={() => remove(i)}
-                      className="text-xs font-bold text-red-600 hover:text-red-800"
+                      className="text-sm font-semibold text-red-600 hover:text-red-800 transition-colors"
                     >
-                      Remove this student
+                      Remove student
                     </button>
                   </div>
                 )}
@@ -224,20 +233,26 @@ export function DependentsStep({
       })}
 
       {/* Nav */}
-      <div className="flex flex-col-reverse sm:flex-row gap-3 pt-2">
+      <div className="flex flex-col-reverse sm:flex-row gap-3 pt-3">
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-gray-300 bg-white px-6 text-base font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+          className="inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-6 text-base font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-150"
         >
-          ← Back
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+          Back
         </button>
         <button
           type="button"
           onClick={onNext}
-          className="flex-1 inline-flex min-h-[52px] items-center justify-center rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-sm hover:bg-brand-700 transition-colors"
+          className="flex-1 inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
         >
-          Continue → Review
+          Continue
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
         </button>
       </div>
     </section>

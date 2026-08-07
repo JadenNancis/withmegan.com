@@ -6,7 +6,7 @@ const supporters = [
     role: "Government partner — funding & logistical support",
   },
   {
-    name: "Mount St. George Community Council",
+    name: "Mt. St. George Community Council",
     role: "Community outreach & volunteer coordination",
   },
   {
@@ -88,7 +88,7 @@ export default function MdSupportersPage() {
               <span className="font-semibold">Email:</span> marketday@withmegan.tha.tt
             </p>
             <p>
-              <span className="font-semibold">Visit:</span> Mount St. George Community Centre
+              <span className="font-semibold">Visit:</span> Mt. St. George Community Centre
             </p>
           </div>
         </div>

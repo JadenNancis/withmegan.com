@@ -12,14 +12,14 @@ export default async function BtsDashboardPage() {
   const eventDate = new Date(site.eventDate);
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white flex flex-col">
+    <div className="min-h-screen bg-neutral-950 text-white flex flex-col">
       {/* Header */}
-      <header className="border-b border-slate-800 bg-slate-950/60 px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <header className="border-b border-neutral-800/80 bg-neutral-900/50 px-6 py-6 backdrop-blur-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-cyan-300">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-cyan-200">
             {site.name}
           </h1>
-          <p className="text-sm text-slate-400">Event-Day Dashboard · Live</p>
+          <p className="text-sm text-neutral-400 mt-0.5">Event-Day Dashboard · Live</p>
         </div>
         <div className="text-right">
           <p className="text-lg sm:text-xl font-semibold text-white">
@@ -30,7 +30,7 @@ export default async function BtsDashboardPage() {
               day: "numeric",
             })}
           </p>
-          <p className="text-xs text-slate-400">Projected view · auto-refresh every 10s</p>
+          <p className="text-xs text-neutral-500 mt-0.5">Auto-refresh every 10s</p>
         </div>
       </header>
 
@@ -38,7 +38,7 @@ export default async function BtsDashboardPage() {
         <LiveStats site="bts" />
       </main>
 
-      <footer className="border-t border-slate-800 bg-slate-950/60 px-6 py-3 text-center text-xs text-slate-500">
+      <footer className="border-t border-neutral-800/80 px-6 py-4 text-center text-xs text-neutral-600">
         {site.name} · {site.tagline}
       </footer>
     </div>

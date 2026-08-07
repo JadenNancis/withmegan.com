@@ -44,14 +44,14 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
           Skip to content
         </a>
         <header className={cn(a.header, a.headerText)}>
-          <div className="mx-auto max-w-4xl px-4 py-3.5 flex items-center justify-between">
-            <Link href={site.nav[0].href} className="flex flex-col" onClick={() => setMenuOpen(false)}>
-              <span className="text-lg font-bold leading-tight">{site.name}</span>
-              <span className="text-xs opacity-80">{site.tagline}</span>
+          <div className="mx-auto max-w-6xl px-4 py-3.5 flex items-center justify-between gap-4">
+            <Link href={site.nav[0].href} className="flex flex-col shrink-0 max-w-[38%] md:max-w-[32%]" onClick={() => setMenuOpen(false)}>
+              <span className="text-lg font-bold leading-tight truncate">{site.name}</span>
+              <span className="text-xs opacity-80 truncate">{site.tagline}</span>
             </Link>
 
-            {/* Desktop nav */}
-            <nav className="hidden md:flex gap-1 items-center" aria-label="Site">
+            {/* Desktop nav — scrolls horizontally instead of wrapping */}
+            <nav className="hidden md:flex gap-0.5 items-center overflow-x-auto no-scrollbar min-w-0" aria-label="Site">
               {site.nav.map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} />
               ))}
@@ -124,7 +124,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
                 day: "numeric",
               })}
             </p>
-            <p className="mt-1">The Electoral District of Mt. St. George/Goodwood, Tobago · A THA-supported community initiative</p>
+            <p className="mt-1">Mt. St. George/Goodwood, Tobago · A THA-supported community initiative</p>
           </div>
         </footer>
       </div>
@@ -134,7 +134,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
 
 function NavLink({ href, label }: { href: string; label: string }) {
   return (
-    <Link href={href} className="text-sm px-3 py-2 rounded-md hover:bg-white/10 transition-colors">
+    <Link href={href} className="text-sm px-2.5 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap">
       {label}
     </Link>
   );

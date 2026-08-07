@@ -29,7 +29,7 @@ export default async function BtsVerifyPage({
 
       <Suspense
         fallback={
-          <div className="rounded-card border border-brand-100 bg-white p-6 text-center text-sm text-gray-500 shadow-sm">
+          <div className="rounded-2xl border border-brand-100 bg-white p-6 text-center text-sm text-gray-500 shadow-sm">
             Looking up registration…
           </div>
         }
@@ -42,7 +42,7 @@ export default async function BtsVerifyPage({
 
 function MissingAid() {
   return (
-    <section className="rounded-card border border-red-200 bg-red-50 p-6 text-center shadow-sm">
+    <section className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center shadow-sm">
       <RedX />
       <h2 className="mt-4 text-lg font-bold text-red-800">No Application ID provided</h2>
       <p className="mt-2 text-sm text-red-700">
@@ -66,7 +66,7 @@ async function VerifyResult({ aid }: { aid: string }) {
 
   if (!guardian) {
     return (
-      <section className="rounded-card border border-red-200 bg-red-50 p-6 text-center shadow-sm">
+      <section className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center shadow-sm">
         <RedX />
         <h2 className="mt-4 text-lg font-bold text-red-800">Registration not found</h2>
         <p className="mt-2 text-sm text-red-700">
@@ -102,7 +102,7 @@ async function VerifyResult({ aid }: { aid: string }) {
     <div className="space-y-4">
       {/* Collected banner — the volunteer glance test */}
       {collected && (
-        <div className="rounded-card bg-green-600 p-5 text-center shadow-md">
+        <div className="rounded-2xl bg-green-600 p-5 text-center shadow-md">
           <p className="text-lg font-bold text-white sm:text-xl">
             ✓ Resources collected
           </p>
@@ -110,7 +110,7 @@ async function VerifyResult({ aid }: { aid: string }) {
         </div>
       )}
 
-      <section className="bts-card-enter rounded-card border border-green-200 bg-green-50/60 p-5 shadow-sm">
+      <section className="bts-card-enter rounded-2xl border border-green-200 bg-green-50/60 p-5 shadow-sm">
         <div className="flex items-center gap-3">
           <GreenCheck />
           <div>
@@ -120,7 +120,7 @@ async function VerifyResult({ aid }: { aid: string }) {
         </div>
       </section>
 
-      <section className="rounded-card border-2 border-dashed border-brand-300 bg-brand-50/50 p-5 text-center">
+      <section className="rounded-2xl border-2 border-dashed border-brand-300 bg-brand-50/50 p-5 text-center">
         <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">
           Application ID
         </p>
@@ -129,7 +129,7 @@ async function VerifyResult({ aid }: { aid: string }) {
         </p>
       </section>
 
-      <section className="rounded-card border border-brand-100 bg-white p-5 shadow-sm">
+      <section className="rounded-2xl border border-brand-100 bg-white p-5 shadow-sm">
         <h3 className="border-b border-brand-100 pb-3 text-base font-bold text-brand-900">
           Guardian
         </h3>
@@ -141,7 +141,7 @@ async function VerifyResult({ aid }: { aid: string }) {
         </dl>
       </section>
 
-      <section className="rounded-card border border-brand-100 bg-white p-5 shadow-sm">
+      <section className="rounded-2xl border border-brand-100 bg-white p-5 shadow-sm">
         <h3 className="border-b border-brand-100 pb-3 text-base font-bold text-brand-900">
           Students ({dependents.length})
         </h3>

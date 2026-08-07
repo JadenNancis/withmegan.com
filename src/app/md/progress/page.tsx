@@ -49,7 +49,7 @@ export default async function MdProgressPage() {
           </h1>
           <p className="md-animate-fade-in-up md-delay-2 mt-3 text-base sm:text-lg text-amber-50 max-w-2xl mx-auto leading-relaxed">
             See how Market Day hamper distribution is reaching residents across
-            the Electoral District of Mt. St. George/Goodwood, Tobago.
+            Mt. St. George/Goodwood, Tobago.
           </p>
         </div>
         <SunsetWaveDivider className="w-full h-[40px] block -mt-1" />

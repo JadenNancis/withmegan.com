@@ -9,7 +9,7 @@
 
 /** Communities in the Mt. St. George/Goodwood electoral district (Megan Morrison). */
 export const PRIORITY_DISTRICT_VILLAGES = [
-  "Mount St. George",
+  "Mt. St. George",
   "Goodwood",
   "Hope",
   "John Dial",

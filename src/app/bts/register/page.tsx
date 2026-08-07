@@ -174,50 +174,70 @@ export default function BtsRegisterPage() {
 
   return (
     <div className="space-y-5">
+      <div
+        className="bts-fade-in-up -mx-4 -mt-6 sm:-mt-8 -mb-6 rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat opacity-90"
+        style={{ backgroundImage: "url('/images/tobago/bts-child-reading.jpg')" }}
+      >
+        <div className="bg-brand-900/45 backdrop-blur-sm px-6 py-10 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white leading-snug">
+            Register a family for Back to School
+          </h2>
+          <p className="mt-2 text-sm sm:text-base text-brand-100 max-w-xl mx-auto">
+            Free books and supplies for every student. Three minutes, three steps.
+          </p>
+        </div>
+      </div>
       {/* Wizard header */}
-      <header className="bts-fade-in-up">
-        <h1 className="text-title text-brand-900">Register a Student</h1>
-        <p className="mt-1 text-body text-brand-700">
-          Step {stepNum} of 3 — <span className="font-semibold">{STEPS[state.step]}</span>
-        </p>
+      <header className="bts-fade-in-up pt-2">
 
-        {/* Progress dots */}
-        <ol className="mt-4 flex items-center gap-2" aria-label="Progress">
-          {STEPS.map((label, i) => (
-            <li key={label} className="flex items-center gap-2 flex-1">
-              <div
-                className={[
-                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-colors",
-                  i < state.step
-                    ? "bg-brand-600 text-white"
-                    : i === state.step
-                      ? "bg-white text-brand-700 ring-2 ring-brand-600"
-                      : "bg-white text-gray-400 ring-1 ring-gray-300",
-                ].join(" ")}
-                aria-current={i === state.step ? "step" : undefined}
-              >
-                {i < stepNum - 1 ? "✓" : i + 1}
-              </div>
-              <span
-                className={[
-                  "text-xs font-medium hidden sm:inline",
-                  i === state.step ? "text-brand-900" : "text-gray-500",
-                ].join(" ")}
-              >
-                {label}
-              </span>
-              {i < STEPS.length - 1 && (
+        {/* Progress tracker */}
+        <nav aria-label="Registration progress" className="mt-6">
+          <ol className="flex items-center gap-0">
+            {STEPS.map((label, i) => (
+              <li key={label} className="flex items-center flex-1 min-w-0">
+                {/* Step bubble */}
                 <div
-                  aria-hidden="true"
                   className={[
-                    "h-0.5 flex-1 rounded",
-                    i < state.step ? "bg-brand-600" : "bg-gray-200",
+                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-all duration-200",
+                    i < state.step
+                      ? "bg-brand-600 text-white"
+                      : i === state.step
+                        ? "bg-brand-600 text-white ring-4 ring-brand-100"
+                        : "bg-gray-100 text-gray-400 ring-1 ring-gray-200",
                   ].join(" ")}
-                />
-              )}
-            </li>
-          ))}
-        </ol>
+                  aria-current={i === state.step ? "step" : undefined}
+                >
+                  {i < state.step ? "✓" : i + 1}
+                </div>
+
+                {/* Step label */}
+                <span
+                  className={[
+                    "ml-3 text-sm font-medium truncate transition-colors",
+                    i < state.step
+                      ? "text-brand-600"
+                      : i === state.step
+                        ? "text-brand-900"
+                        : "text-gray-400",
+                  ].join(" ")}
+                >
+                  {label}
+                </span>
+
+                {/* Connector line */}
+                {i < STEPS.length - 1 && (
+                  <div
+                    aria-hidden="true"
+                    className={[
+                      "ml-4 h-px flex-1 transition-colors duration-300",
+                      i < state.step ? "bg-brand-500" : "bg-gray-200",
+                    ].join(" ")}
+                  />
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
       </header>
 
       {/* Draft resume banner */}
@@ -245,8 +265,8 @@ export default function BtsRegisterPage() {
         </div>
       )}
 
-      {/* Steps */}
-      <div className="bts-fade-in-up">
+      {/* Steps — transitions animated between states */}
+      <div className="bts-card-enter" key={state.step}>
         {state.step === 0 && (
           <GuardianStep
             state={{

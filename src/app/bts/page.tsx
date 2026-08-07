@@ -46,7 +46,7 @@ export default async function BtsLanding() {
 
         <div className="relative mx-auto max-w-4xl px-4 py-14 sm:py-20 text-center text-white">
           <span className="bts-fade-in-up bts-stagger-1 inline-block rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-100 ring-1 ring-inset ring-white/25 backdrop-blur-sm">
-            The Electoral District of Mt. St. George/Goodwood
+            Mt. St. George/Goodwood, Tobago
           </span>
           <h1 className="bts-fade-in-up bts-stagger-2 mt-4 text-4xl sm:text-5xl font-bold tracking-tight">
             Back to School with Megan
@@ -147,11 +147,11 @@ export default async function BtsLanding() {
               <h2 className="text-title text-brand-900">About the initiative</h2>
               <p className="mt-3 text-body text-brand-800/90 leading-relaxed">
                 Back to School with Megan is a THA-supported community initiative serving
-                the Electoral District of Mt. St. George/Goodwood. We connect students with the books and learning
+                Mt. St. George/Goodwood, Tobago. We connect students with the books and learning
                 materials they need, and every registration gets a trackable Application ID.
               </p>
               <ul className="mt-6 grid gap-2.5">
-                <TrustPill icon={<PalmTreeIcon className="h-6 w-6" />} text="The Electoral District of Mt. St. George/Goodwood" />
+                <TrustPill icon={<PalmTreeIcon className="h-6 w-6" />} text="Mt. St. George/Goodwood, Tobago" />
                 <TrustPill icon={<SchoolBookIcon className="h-6 w-6" />} text="Primary and secondary students" />
                 <TrustPill icon={<PelicanIcon className="h-6 w-6" />} text="Free for every registered family" />
               </ul>
@@ -202,8 +202,8 @@ export default async function BtsLanding() {
 
 function StepCard({ step, title, body }: { step: string; title: string; body: string }) {
   return (
-    <div className="snap-start shrink-0 w-[80vw] sm:w-auto rounded-card border border-brand-100 bg-white p-5 shadow-sm">
-      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">
+    <div className="card-hover snap-start shrink-0 w-[80vw] sm:w-auto rounded-2xl border border-brand-100 bg-white p-5 shadow-sm hover:border-brand-300">
+      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-sm font-bold text-white shadow-sm">
         {step}
       </div>
       <h3 className="mt-3 text-base font-bold text-brand-900">{title}</h3>
@@ -214,7 +214,7 @@ function StepCard({ step, title, body }: { step: string; title: string; body: st
 
 function TrustPill({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <li className="flex items-center gap-3 rounded-xl border border-brand-200 bg-white px-4 py-3 shadow-sm">
+    <li className="card-hover flex items-center gap-3 rounded-xl border border-brand-200 bg-white px-4 py-3 shadow-sm hover:border-brand-300">
       <span className="flex-shrink-0" aria-hidden="true">{icon}</span>
       <span className="text-sm font-medium text-brand-800">{text}</span>
     </li>
@@ -223,14 +223,14 @@ function TrustPill({ icon, text }: { icon: React.ReactNode; text: string }) {
 
 function GalleryThumb({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-sm">
+    <div className="card-hover relative aspect-[4/3] overflow-hidden rounded-xl shadow-sm group">
       <Image
         src={src}
         alt={alt}
         fill
         sizes="(max-width: 640px) 33vw, 300px"
         loading="lazy"
-        className="object-cover"
+        className="object-cover transition-transform duration-500 group-hover:scale-110"
       />
     </div>
   );

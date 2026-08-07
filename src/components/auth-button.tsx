@@ -12,7 +12,7 @@ export function AuthButton() {
     return (
       <Link
         href="/auth/signin"
-        className="text-sm px-3 py-2 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap"
+        className="text-sm px-2.5 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap font-medium"
       >
         Sign In
       </Link>
@@ -26,7 +26,7 @@ export function AuthButton() {
       </span>
       <button
         onClick={() => signOut({ callbackUrl: "/" })}
-        className="text-sm px-3 py-2 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap"
+        className="text-sm px-2.5 py-1.5 rounded-md hover:bg-white/10 transition-colors whitespace-nowrap font-medium"
       >
         Sign Out
       </button>

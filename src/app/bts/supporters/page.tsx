@@ -6,7 +6,7 @@ const supporters = [
     role: "Government partner — funding & logistical support",
   },
   {
-    name: "Mount St. George Community Council",
+    name: "Mt. St. George Community Council",
     role: "Community outreach & volunteer coordination",
   },
   {
@@ -31,12 +31,12 @@ export default function BtsSupportersPage() {
   return (
     <div className="space-y-0">
       {/* Header */}
-      <section className="bts-fade-in-up flex flex-col items-center text-center py-8">
+      <section className="bts-fade-in-up flex flex-col items-center text-center py-10">
         <div className="mb-6 bts-float">
           <TobagoMapBadge className="h-24 w-24 drop-shadow-lg" />
         </div>
-        <h1 className="text-2xl sm:text-4xl font-bold text-cyan-900">Our Supporters</h1>
-        <p className="mt-3 max-w-2xl text-sm sm:text-base text-cyan-800 leading-relaxed">
+        <h1 className="text-2xl sm:text-4xl font-bold text-brand-900">Our Supporters</h1>
+        <p className="mt-4 max-w-2xl text-base text-gray-600 leading-relaxed">
           Back to School with Megan is made possible by the generosity of partners who believe every
           student in Tobago deserves to start the school year ready to learn.
         </p>
@@ -46,8 +46,8 @@ export default function BtsSupportersPage() {
       <section className="-mx-4 bg-gradient-to-b from-cyan-50 to-white py-12">
         <div className="mx-auto max-w-4xl px-4">
           <div className="bts-fade-in-up mb-8 text-center">
-            <h2 className="text-xl sm:text-2xl font-bold text-cyan-900">This initiative is supported by</h2>
-            <p className="mt-2 text-sm text-cyan-700">
+            <h2 className="text-xl sm:text-2xl font-bold text-brand-900">This initiative is supported by</h2>
+            <p className="mt-2 text-sm text-gray-600">
               We are deeply grateful to every organization and individual listed below.
             </p>
           </div>
@@ -56,12 +56,12 @@ export default function BtsSupportersPage() {
             {supporters.map((s, i) => (
               <div
                 key={s.name}
-                className={`bts-fade-in-up bts-stagger-${Math.min(i + 1, 6)} rounded-2xl border border-cyan-200 bg-white p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5`}
+                className={`bts-fade-in-up bts-stagger-${Math.min(i + 1, 6)} rounded-2xl border border-brand-100 bg-white p-6 shadow-[0_2px_16px_-4px_rgba(0,0,0,0.06)] hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}
               >
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-100 to-cyan-50">
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-50">
                   <PalmTreeIcon className="h-7 w-7" />
                 </div>
-                <h3 className="text-sm font-bold text-cyan-900 leading-snug">{s.name}</h3>
+                <h3 className="text-sm font-bold text-brand-900 leading-snug">{s.name}</h3>
                 <p className="mt-1 text-xs text-gray-600">{s.role}</p>
               </div>
             ))}
@@ -69,18 +69,20 @@ export default function BtsSupportersPage() {
         </div>
       </section>
 
-      {/* How to support CTA */}
+      {/* How to support CTA — same gradient background treatment */}
       <section className="py-12">
-        <div className="bts-fade-in-up mx-auto max-w-2xl rounded-2xl border border-cyan-200 bg-gradient-to-br from-cyan-50 to-white p-6 shadow-sm sm:p-8 text-center">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm mx-auto">
+        <div
+          className="bts-fade-in-up mx-auto max-w-2xl rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50 to-white p-6 shadow-lg sm:p-8 text-center"
+        >
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-brand-50 shadow-sm mx-auto">
             <SchoolBookIcon className="h-9 w-9" />
           </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-cyan-900">How to Support</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-brand-900">How to Support</h2>
           <p className="mt-3 text-sm text-gray-600 leading-relaxed">
             Want to help next year&rsquo;s book drive? There are many ways to contribute — donate books
             or stationery, sponsor a student&rsquo;s supplies, or volunteer on event day.
           </p>
-          <div className="mt-6 space-y-2 text-sm text-cyan-800">
+          <div className="mt-6 space-y-2 text-sm text-brand-800">
             <p>
               <span className="font-semibold">Phone:</span> (868) 639-XXXX
             </p>
@@ -88,7 +90,7 @@ export default function BtsSupportersPage() {
               <span className="font-semibold">Email:</span> backtoschool@withmegan.tha.tt
             </p>
             <p>
-              <span className="font-semibold">Visit:</span> Mount St. George Community Centre
+              <span className="font-semibold">Visit:</span> Mt. St. George Community Centre
             </p>
           </div>
         </div>

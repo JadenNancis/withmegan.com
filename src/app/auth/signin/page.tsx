@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { RotatingBackground } from "@/components/rotating-background";
 
 function SignInForm() {
   const router = useRouter();
@@ -35,7 +36,8 @@ function SignInForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center tha-warm-bg px-4">
+    <div className="relative min-h-screen flex items-center justify-center px-4">
+      <RotatingBackground />
       <div className="w-full max-w-sm rounded-xl border border-white/15 bg-white p-8 shadow-2xl">
         <h1 className="text-xl font-bold text-gray-900">Admin Sign In</h1>
         <p className="mt-1 text-sm text-gray-600">Shared login for both initiative portals.</p>
@@ -95,7 +97,14 @@ function SignInForm() {
 
 export default function SignInPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center tha-warm-bg">Loading…</div>}>
+    <Suspense
+      fallback={
+        <div className="relative min-h-screen flex items-center justify-center px-4">
+          <RotatingBackground />
+          <span className="sr-only">Loading…</span>
+        </div>
+      }
+    >
       <SignInForm />
     </Suspense>
   );

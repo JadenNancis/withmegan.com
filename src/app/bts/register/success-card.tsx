@@ -51,7 +51,7 @@ export function SuccessCard({
       `DTEND:${stamp(end)}`,
       "SUMMARY:Back to School with Megan — Collection Day",
       `DESCRIPTION:Your Application ID is ${result.thaId}. Show it (or the QR code we sent) at the distribution counter.`,
-      "LOCATION:Mount St. George Community Centre\\, Tobago",
+      "LOCATION:Mt. St. George Community Centre\\, Tobago",
       "END:VEVENT",
       "END:VCALENDAR",
     ].join("\r\n");
@@ -65,33 +65,34 @@ export function SuccessCard({
   }
 
   return (
-    <div className="space-y-5 py-4">
+    <div className="mx-auto max-w-xl space-y-6 py-6">
+      {/* Celebration header */}
       <div className="text-center">
-        <div className="bts-bounce-in mx-auto mb-5 flex h-20 w-20 items-center justify-center">
-          <SuccessCheckmark className="h-20 w-20 drop-shadow-xl" />
+        <div className="bts-bounce-in mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-brand-200 drop-shadow-lg">
+          <SuccessCheckmark className="h-24 w-24 drop-shadow-xl" />
         </div>
-        <h1 className="text-title text-brand-900">Registration submitted</h1>
-        <p className="mt-2 text-body text-gray-600 max-w-md mx-auto">
-          We&rsquo;ve sent confirmation to <span className="font-semibold">{phone}</span>.
-          Keep your Application ID safe — you&rsquo;ll need it on event day.
+        <h1 className="text-title text-brand-900">You&rsquo;re all set</h1>
+        <p className="mt-3 text-body text-gray-600 max-w-md mx-auto leading-relaxed">
+          Confirmation is on its way to <span className="font-semibold text-gray-900">{phone}</span>.
+          {" "}Keep your Application ID somewhere safe — you&rsquo;ll show it on collection day.
         </p>
       </div>
 
       {/* ID card */}
-      <div className="rounded-card border-2 border-dashed border-brand-300 bg-gradient-to-br from-brand-50 to-white p-6 text-center shadow-md">
-        <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">
+      <div className="rounded-2xl border-2 border-dashed border-brand-300 bg-gradient-to-br from-brand-50 to-white p-8 text-center shadow-lg">
+        <p className="text-xs font-bold uppercase tracking-widest text-brand-600">
           Your Application ID
         </p>
-        <p className="mt-2 text-3xl font-bold font-mono tracking-wider text-brand-900 break-all">
+        <p className="mt-3 text-4xl font-bold font-mono tracking-wider text-brand-900 break-all leading-tight">
           {result.thaId}
         </p>
         {result.qrCode && (
-          <div className="mt-4 inline-block rounded-lg bg-white p-3 shadow-sm ring-1 ring-brand-100">
+          <div className="mt-5 inline-block rounded-2xl bg-white p-4 shadow-md ring-1 ring-brand-100">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={result.qrCode} alt="QR code — scan on event day" width={180} height={180} />
+            <img src={result.qrCode} alt="QR code — scan on event day" width={200} height={200} />
           </div>
         )}
-        <p className="mt-3 text-xs text-gray-500">
+        <p className="mt-4 text-sm text-gray-500">
           {result.dependentsCount}{" "}
           {result.dependentsCount === 1 ? "student" : "students"} registered
         </p>
@@ -101,7 +102,7 @@ export function SuccessCard({
       <div className="grid gap-3 sm:grid-cols-3">
         <ActionButton
           label="Text me my ID"
-          sub="Send the ID + QR as SMS"
+          sub="Send ID + QR as SMS"
           onClick={textMyId}
           state={sentText}
         />
@@ -115,7 +116,7 @@ export function SuccessCard({
         />
         <Link
           href="/bts"
-          className="flex flex-col items-center justify-center rounded-xl border border-gray-300 bg-white px-4 py-4 text-center shadow-sm hover:bg-gray-50 transition-colors min-h-[72px]"
+          className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-4 text-center shadow-sm hover:bg-gray-50 hover:border-gray-300 hover:shadow transition-all duration-150 min-h-[80px]"
         >
           <span className="text-sm font-bold text-gray-800">Back home</span>
           <span className="text-xs text-gray-500 mt-0.5">Return to the site</span>
@@ -123,22 +124,23 @@ export function SuccessCard({
       </div>
 
       {sentText === "error" && (
-        <p className="text-center text-xs text-red-600">
+        <p className="text-center text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
           Couldn&rsquo;t send right now. Your ID above is still valid — write it down.
         </p>
       )}
-      <p className="text-center text-xs text-gray-500">
+
+      <p className="text-center text-sm text-gray-500 pt-2">
         Lost your ID later?{" "}
-        <Link href="/bts/recover" className="font-semibold text-brand-700 underline">
+        <Link href="/bts/recover" className="font-semibold text-brand-700 underline hover:text-brand-800">
           Recover it here
         </Link>
       </p>
 
-      <div className="pt-2 text-center">
+      <div className="text-center">
         <button
           type="button"
           onClick={onRegisterAnother}
-          className="text-sm font-semibold text-brand-700 underline hover:text-brand-900"
+          className="text-sm font-semibold text-brand-700 underline hover:text-brand-900 transition-colors"
         >
           Register another family
         </button>
@@ -163,7 +165,7 @@ function ActionButton({
       type="button"
       onClick={onClick}
       disabled={state === "sending" || state === "sent"}
-      className="flex flex-col items-center justify-center rounded-xl bg-brand-600 px-4 py-4 text-center shadow-sm hover:bg-brand-700 transition-colors min-h-[72px] disabled:opacity-70 text-white"
+      className="flex flex-col items-center justify-center rounded-xl bg-brand-600 px-4 py-4 text-center shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 hover:-translate-y-px active:translate-y-0 transition-all duration-150 min-h-[80px] disabled:opacity-70 text-white"
     >
       <span className="text-sm font-bold">
         {state === "sending" ? "Sending…" : state === "sent" ? "Sent ✓" : label}

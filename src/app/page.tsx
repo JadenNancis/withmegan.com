@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SITES } from "@/sites/site-registry";
+import { RotatingBackground } from "@/components/rotating-background";
 
 /**
  * Dev-only index. In production, each domain is routed by middleware to its
@@ -8,10 +9,11 @@ import { SITES } from "@/sites/site-registry";
  */
 export default function DevIndex() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center gap-8 p-8 bg-gray-50">
+    <div className="relative min-h-screen flex flex-col items-center justify-center gap-8 p-8">
+      <RotatingBackground />
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-gray-900">With Megan — Dev Index</h1>
-        <p className="mt-2 text-sm text-gray-600">
+        <h1 className="text-2xl font-bold text-white">With Megan — Dev Index</h1>
+        <p className="mt-2 text-sm text-white/80">
           Pick a site to preview. In production each domain routes automatically.
         </p>
       </div>

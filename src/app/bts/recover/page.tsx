@@ -64,14 +64,17 @@ export default function BtsRecoverPage() {
 
   return (
     <div className="space-y-6">
-      {/* Header — coherent with other BTS subpages */}
-      <div className="-mx-4 -mt-6 sm:-mt-8 px-4 pt-8 pb-6 bg-gradient-to-b from-brand-800 to-transparent">
-        <div className="bts-fade-in-up flex flex-col items-center text-center">
+      {/* Header — photo + gradient, coherent with other BTS subpages */}
+      <div
+        className="-mx-4 -mt-6 sm:-mt-8 overflow-hidden bg-cover bg-center bg-no-repeat opacity-90"
+        style={{ backgroundImage: "url('/images/tobago/bts-child-reading.jpg')" }}
+      >
+        <div className="bg-brand-900/50 backdrop-blur-sm px-4 pt-10 pb-8 flex flex-col items-center text-center">
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
             <TobagoMapBadge className="h-9 w-9" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-white">Find my Application ID</h1>
-          <p className="mt-2 max-w-md text-sm text-brand-100">
+          <p className="mt-3 max-w-md text-sm text-brand-100">
             Enter the phone number you registered with. If we have it on file, we&rsquo;ll
             text your ID and QR code.
           </p>
@@ -80,7 +83,7 @@ export default function BtsRecoverPage() {
 
       <form
         onSubmit={handleSubmit}
-        className="bts-fade-in-up mx-auto max-w-md rounded-2xl border border-cyan-100 bg-white p-5 shadow-sm space-y-4"
+        className="bts-fade-in-up mx-auto max-w-md rounded-2xl border border-brand-100 bg-white p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] space-y-4"
       >
         <Field label="Registered phone number" required>
           <TextInput
@@ -103,7 +106,7 @@ export default function BtsRecoverPage() {
         <button
           type="submit"
           disabled={submitting || phone.replace(/\D/g, "").length < 7}
-          className="w-full inline-flex min-h-[52px] items-center justify-center rounded-xl bg-cyan-600 px-6 text-base font-bold text-white shadow-sm hover:bg-cyan-700 transition-colors disabled:opacity-60"
+          className="w-full inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 hover:-translate-y-px active:translate-y-0 disabled:opacity-60 disabled:pointer-events-none disabled:shadow-sm transition-all duration-150"
         >
           {submitting ? "Sending…" : "Text me my ID"}
         </button>
