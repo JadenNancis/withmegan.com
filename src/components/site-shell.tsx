@@ -1,20 +1,22 @@
+"use client";
+
 import Link from "next/link";
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { SiteConfig } from "@/sites/site-registry";
 import { SiteProvider } from "@/sites/site-context";
 import { AuthButton } from "@/components/auth-button";
 import { cn } from "@/lib/cn";
 
 const accentMap = {
-  blue: {
-    header: "bg-blue-700",
+  cyan: {
+    header: "bg-brand-800",
     headerText: "text-white",
-    button: "bg-blue-600 hover:bg-blue-700 text-white",
-    focusRing: "focus:ring-blue-500",
-    badge: "bg-blue-100 text-blue-800",
+    button: "bg-brand-600 hover:bg-brand-700 text-white",
+    focusRing: "focus:ring-brand-500",
+    badge: "bg-brand-100 text-brand-800",
   },
   amber: {
-    header: "bg-amber-600",
+    header: "bg-amber-700",
     headerText: "text-white",
     button: "bg-amber-500 hover:bg-amber-600 text-white",
     focusRing: "focus:ring-amber-500",
@@ -23,41 +25,100 @@ const accentMap = {
 } as const;
 
 /**
- * Shared layout shell. Takes the resolved SiteConfig and renders a
- * site-branded header + footer with the site's nav items. Every page
- * in /bts and /md wraps its content in this.
+ * Shared layout shell. Header collapses into a disclosure menu on
+ * mobile — four+ nav links plus auth overflow a 390px viewport.
  */
 export function SiteShell({ site, children }: { site: SiteConfig; children: ReactNode }) {
   const a = accentMap[site.accent];
+  const [menuOpen, setMenuOpen] = useState(false);
+  const pageLinks = site.nav.filter((n) => n.href !== "/auth/signin");
+  const signIn = site.nav.find((n) => n.href === "/auth/signin");
+
   return (
     <SiteProvider site={site}>
-      <div className="min-h-screen flex flex-col bg-gray-50">
+      <div className="min-h-screen flex flex-col bg-brand-50/40">
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
+        >
+          Skip to content
+        </a>
         <header className={cn(a.header, a.headerText)}>
-          <div className="mx-auto max-w-4xl px-4 py-4 flex items-center justify-between">
-            <Link href={site.nav[0].href} className="flex flex-col">
+          <div className="mx-auto max-w-4xl px-4 py-3.5 flex items-center justify-between">
+            <Link href={site.nav[0].href} className="flex flex-col" onClick={() => setMenuOpen(false)}>
               <span className="text-lg font-bold leading-tight">{site.name}</span>
               <span className="text-xs opacity-80">{site.tagline}</span>
             </Link>
-            <nav className="flex gap-1 sm:gap-4 items-center">
+
+            {/* Desktop nav */}
+            <nav className="hidden md:flex gap-1 items-center" aria-label="Site">
               {site.nav.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-sm px-3 py-2 rounded-md hover:bg-white/10 transition-colors"
-                >
-                  {item.label}
-                </Link>
+                <NavLink key={item.href} href={item.href} label={item.label} />
               ))}
-              <AuthButton accent={site.accent} />
+              <AuthButton />
             </nav>
+
+            {/* Mobile menu button */}
+            <button
+              type="button"
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-nav"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              className="md:hidden inline-flex h-11 w-11 items-center justify-center rounded-lg hover:bg-white/10 transition-colors"
+            >
+              <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                {menuOpen ? (
+                  <path d="M6 6l12 12M18 6L6 18" />
+                ) : (
+                  <>
+                    <line x1="4" y1="7" x2="20" y2="7" />
+                    <line x1="4" y1="12" x2="20" y2="12" />
+                    <line x1="4" y1="17" x2="20" y2="17" />
+                  </>
+                )}
+              </svg>
+            </button>
           </div>
+
+          {/* Mobile disclosure nav */}
+          {menuOpen && (
+            <nav id="mobile-nav" className="md:hidden border-t border-white/15 px-4 pb-4 pt-2" aria-label="Site">
+              <ul className="space-y-1">
+                {pageLinks.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      onClick={() => setMenuOpen(false)}
+                      className="block rounded-lg px-3 py-3 text-base font-medium hover:bg-white/10 transition-colors min-h-[44px]"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+                <li className="pt-2 border-t border-white/15">
+                  {signIn ? (
+                    <Link
+                      href={signIn.href}
+                      onClick={() => setMenuOpen(false)}
+                      className="block rounded-lg px-3 py-3 text-base font-medium hover:bg-white/10 transition-colors min-h-[44px]"
+                    >
+                      {signIn.label}
+                    </Link>
+                  ) : (
+                    <AuthButton />
+                  )}
+                </li>
+              </ul>
+            </nav>
+          )}
         </header>
-        <main className="flex-1 mx-auto max-w-4xl w-full px-4 py-8">{children}</main>
+        <main id="main" className="flex-1 mx-auto max-w-4xl w-full px-4 py-6 sm:py-8">{children}</main>
         <footer className="border-t border-gray-200 bg-white">
           <div className="mx-auto max-w-4xl px-4 py-4 text-xs text-gray-500">
             <p>
               {site.name} · Event date:{" "}
-              {new Date(site.eventDate).toLocaleDateString("en-TT", {
+              {new Date(site.eventDate + "T12:00:00").toLocaleDateString("en-TT", {
                 year: "numeric",
                 month: "long",
                 day: "numeric",
@@ -71,9 +132,12 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
   );
 }
 
-export function useAccentClasses() {
-  // Re-export for client components that need accent classes.
-  return accentMap;
+function NavLink({ href, label }: { href: string; label: string }) {
+  return (
+    <Link href={href} className="text-sm px-3 py-2 rounded-md hover:bg-white/10 transition-colors">
+      {label}
+    </Link>
+  );
 }
 
 export { accentMap };

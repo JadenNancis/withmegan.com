@@ -69,12 +69,13 @@ export async function registrationEmailHtml(
   const qrSvg = await generateQrCodeSvg(verifyUrl);
 
   const accentColor = siteKey === "bts" ? "#0e7490" : "#d97706";
+  const accentDeep = siteKey === "bts" ? "#164e63" : "#92400e";
   const accentLight = siteKey === "bts" ? "#ecfeff" : "#fffbeb";
   const accentBorder = siteKey === "bts" ? "#67e8f9" : "#fcd34d";
 
   return `
   <div style="font-family:system-ui,-apple-system,sans-serif;max-width:600px;margin:0 auto;">
-    <div style="background:linear-gradient(135deg,${accentColor},#1e3a8a);color:white;padding:24px;border-radius:12px 12px 0 0;">
+    <div style="background:linear-gradient(135deg,${accentColor},${accentDeep});color:white;padding:24px;border-radius:12px 12px 0 0;">
       <h1 style="margin:0;font-size:22px;">${site.name}</h1>
       <p style="margin:4px 0 0;font-size:14px;opacity:0.9;">${site.tagline}</p>
     </div>
@@ -86,7 +87,7 @@ export async function registrationEmailHtml(
       </p>
       <div style="margin:20px 0;border:2px dashed ${accentBorder};background:${accentLight};border-radius:12px;padding:20px;text-align:center;">
         <p style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:${accentColor};margin:0;">Your Application ID</p>
-        <p style="font-size:28px;font-weight:700;color:#1e3a8a;letter-spacing:0.1em;margin:4px 0 12px;">${escapeHtml(applicationId)}</p>
+        <p style="font-size:28px;font-weight:700;color:${accentDeep};letter-spacing:0.1em;margin:4px 0 12px;">${escapeHtml(applicationId)}</p>
         <div style="display:flex;justify-content:center;margin:12px 0;">
           ${qrSvg}
         </div>

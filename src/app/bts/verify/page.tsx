@@ -7,19 +7,9 @@ import {
   btsResourceAssignments,
 } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
-import { WaveDivider } from "@/components/bts-illustrations";
 
 export const dynamic = "force-dynamic";
 
-/**
- * Public BTS verify page — reached by scanning the QR code on a
- * registration confirmation. No auth required: possession of the
- * Application ID (which contains a cryptographically-random suffix) is
- * the trust token.
- *
- * Looks up the guardian by thaId and renders a read-only view of the
- * registration. Shows a green checkmark when found, red X when not.
- */
 export default async function BtsVerifyPage({
   searchParams,
 }: {
@@ -29,23 +19,17 @@ export default async function BtsVerifyPage({
   const aid = typeof sp.aid === "string" ? sp.aid.trim() : "";
 
   return (
-    <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-700 to-cyan-500 p-6 shadow-lg">
-        <div className="relative">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">
-            Registration Verification
-          </h1>
-          <p className="mt-2 text-sm text-cyan-50">
-            Back to School with Megan &mdash; scan-to-verify. Present this screen at the
-            distribution counter on event day.
-          </p>
-        </div>
-        <WaveDivider className="w-full h-[24px] block opacity-70 -mb-6" />
-      </div>
+    <div className="space-y-5 py-2">
+      <header className="text-center">
+        <h1 className="text-title text-brand-900">Verify a Registration</h1>
+        <p className="mt-1 text-sm text-brand-700">
+          Back to School with Megan · show this at the distribution counter.
+        </p>
+      </header>
 
       <Suspense
         fallback={
-          <div className="rounded-2xl border border-cyan-100 bg-white p-6 shadow-sm text-sm text-gray-500">
+          <div className="rounded-card border border-brand-100 bg-white p-6 text-center text-sm text-gray-500 shadow-sm">
             Looking up registration…
           </div>
         }
@@ -58,20 +42,18 @@ export default async function BtsVerifyPage({
 
 function MissingAid() {
   return (
-    <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center shadow-sm">
+    <section className="rounded-card border border-red-200 bg-red-50 p-6 text-center shadow-sm">
       <RedX />
       <h2 className="mt-4 text-lg font-bold text-red-800">No Application ID provided</h2>
       <p className="mt-2 text-sm text-red-700">
-        This link is missing the <code className="font-mono">?aid=</code> parameter. Scan the
-        QR code on your registration confirmation to view your details.
+        This link needs an <code className="font-mono">?aid=</code> parameter. Scan your
+        registration QR code, or{" "}
+        <Link href="/bts/recover" className="font-semibold underline">
+          recover your ID
+        </Link>
+        .
       </p>
-      <Link
-        href="/bts"
-        className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors"
-      >
-        Back to Home
-      </Link>
-    </div>
+    </section>
   );
 }
 
@@ -84,21 +66,18 @@ async function VerifyResult({ aid }: { aid: string }) {
 
   if (!guardian) {
     return (
-      <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-center shadow-sm">
+      <section className="rounded-card border border-red-200 bg-red-50 p-6 text-center shadow-sm">
         <RedX />
         <h2 className="mt-4 text-lg font-bold text-red-800">Registration not found</h2>
         <p className="mt-2 text-sm text-red-700">
-          No BTS registration matches Application ID{" "}
-          <code className="font-mono font-semibold">{aid}</code>. Check the ID and try again,
-          or ask a volunteer for help.
+          Nothing matches <code className="font-mono font-semibold">{aid}</code>. Double-check
+          the ID, or{" "}
+          <Link href="/bts/recover" className="font-semibold underline">
+            recover by phone number
+          </Link>
+          .
         </p>
-        <Link
-          href="/bts"
-          className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors"
-        >
-          Back to Home
-        </Link>
-      </div>
+      </section>
     );
   }
 
@@ -121,113 +100,90 @@ async function VerifyResult({ aid }: { aid: string }) {
 
   return (
     <div className="space-y-4">
-      {/* Found banner */}
-      <div className="bts-fade-in-up rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-cyan-50 p-6 shadow-sm">
-        <div className="flex items-center gap-4">
-          <GreenCheck />
-          <div>
-            <h2 className="text-lg font-bold text-green-800">Registration verified</h2>
-            <p className="text-sm text-green-700">
-              This is a valid Back to School registration.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Application ID */}
-      <div className="bts-fade-in-up rounded-2xl border-2 border-dashed border-cyan-300 bg-gradient-to-br from-cyan-50 to-white p-6 shadow-sm">
-        <p className="text-xs font-semibold uppercase tracking-wider text-cyan-600">
-          Application ID
-        </p>
-        <p className="mt-1 break-all font-mono text-2xl font-bold tracking-wider text-cyan-900">
-          {guardian.thaId ?? aid}
-        </p>
-        {collected && (
-          <p className="mt-3 inline-block rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800">
+      {/* Collected banner — the volunteer glance test */}
+      {collected && (
+        <div className="rounded-card bg-green-600 p-5 text-center shadow-md">
+          <p className="text-lg font-bold text-white sm:text-xl">
             ✓ Resources collected
           </p>
-        )}
-      </div>
+          <p className="mt-1 text-sm text-green-100">All assignments on this ID are collected.</p>
+        </div>
+      )}
 
-      {/* Guardian details */}
-      <section className="bts-fade-in-up rounded-2xl border border-cyan-100 bg-white p-6 shadow-sm">
-        <h3 className="border-b border-cyan-100 pb-3 text-lg font-bold text-cyan-900">
+      <section className="bts-card-enter rounded-card border border-green-200 bg-green-50/60 p-5 shadow-sm">
+        <div className="flex items-center gap-3">
+          <GreenCheck />
+          <div>
+            <h2 className="text-base font-bold text-green-800">Registration verified</h2>
+            <p className="text-sm text-green-700">Valid Back to School registration.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="rounded-card border-2 border-dashed border-brand-300 bg-brand-50/50 p-5 text-center">
+        <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">
+          Application ID
+        </p>
+        <p className="mt-1.5 break-all font-mono text-2xl font-bold tracking-wider text-brand-900">
+          {guardian.thaId ?? aid}
+        </p>
+      </section>
+
+      <section className="rounded-card border border-brand-100 bg-white p-5 shadow-sm">
+        <h3 className="border-b border-brand-100 pb-3 text-base font-bold text-brand-900">
           Guardian
         </h3>
-        <dl className="mt-4 grid gap-x-6 gap-y-4 sm:grid-cols-2">
+        <dl className="mt-3 space-y-3">
           <Detail label="Full name" value={guardian.fullName} />
           <Detail label="Community" value={guardian.address} />
-          <Detail label="Contact number" value={guardian.contactNumber} />
-          <Detail label="Email" value={guardian.email} />
+          <Detail label="Contact" value={guardian.contactNumber} />
+          {guardian.email && <Detail label="Email" value={guardian.email} />}
         </dl>
       </section>
 
-      {/* Dependents */}
-      <section className="bts-fade-in-up rounded-2xl border border-cyan-100 bg-white p-6 shadow-sm">
-        <div className="flex items-center justify-between border-b border-cyan-100 pb-3">
-          <h3 className="text-lg font-bold text-cyan-900">
-            Dependents ({dependents.length})
-          </h3>
-        </div>
+      <section className="rounded-card border border-brand-100 bg-white p-5 shadow-sm">
+        <h3 className="border-b border-brand-100 pb-3 text-base font-bold text-brand-900">
+          Students ({dependents.length})
+        </h3>
         {dependents.length === 0 ? (
-          <p className="mt-4 text-sm text-gray-500">No dependents on file.</p>
+          <p className="mt-3 text-sm text-gray-500">None on file.</p>
         ) : (
-          <ul className="mt-4 space-y-3">
+          <ul className="mt-3 space-y-2">
             {dependents.map((d, i) => (
               <li
                 key={d.id}
-                className="rounded-xl border border-gray-200 bg-gradient-to-br from-cyan-50/30 to-gray-50/30 p-4"
+                className="rounded-lg border border-brand-100 bg-brand-50/40 p-3"
               >
-                <p className="text-sm font-bold text-cyan-800">
+                <p className="text-sm font-bold text-brand-900">
                   {i + 1}. {d.studentName}
                 </p>
-                <dl className="mt-2 grid gap-x-4 gap-y-1 sm:grid-cols-2">
-                  <Detail label="School" value={d.schoolName} compact />
-                  <Detail label="Grade" value={d.gradeLevel} compact />
-                </dl>
+                <p className="mt-0.5 text-xs text-gray-600">
+                  {d.schoolName} · {d.gradeLevel}
+                </p>
               </li>
             ))}
           </ul>
         )}
       </section>
-
-      <div className="bts-fade-in-up flex flex-col gap-3 sm:flex-row sm:justify-center">
-        <Link
-          href="/bts"
-          className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-colors"
-        >
-          Back to Home
-        </Link>
-      </div>
     </div>
   );
 }
 
-function Detail({
-  label,
-  value,
-  compact = false,
-}: {
-  label: string;
-  value: string;
-  compact?: boolean;
-}) {
+function Detail({ label, value }: { label: string; value: string }) {
   return (
-    <div>
-      <dt className={compact ? "text-xs text-gray-500" : "text-xs font-semibold uppercase tracking-wide text-gray-500"}>
+    <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-3">
+      <dt className="w-28 shrink-0 text-xs font-semibold uppercase tracking-wide text-gray-500">
         {label}
       </dt>
-      <dd className={compact ? "text-sm text-gray-900" : "mt-0.5 text-sm font-medium text-gray-900"}>
-        {value || "—"}
-      </dd>
+      <dd className="text-sm font-medium text-gray-900">{value}</dd>
     </div>
   );
 }
 
 function GreenCheck() {
   return (
-    <div className="flex h-14 w-14 flex-none items-center justify-center rounded-full bg-green-500 text-white shadow-md">
-      <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <div className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-green-500 text-white shadow-sm">
+      <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
         <path d="M5 13l4 4L19 7" />
       </svg>
     </div>
@@ -236,8 +192,8 @@ function GreenCheck() {
 
 function RedX() {
   return (
-    <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-500 text-white shadow-md">
-      <svg viewBox="0 0 24 24" className="h-9 w-9" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <div className="mx-auto flex h-14 w-14 w-fit items-center justify-center rounded-full bg-red-500 text-white shadow-md">
+      <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
         <path d="M6 6l12 12M18 6L6 18" />
       </svg>
     </div>

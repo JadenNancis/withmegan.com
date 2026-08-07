@@ -1,127 +1,116 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { Field, TextInput, TextArea, Select, SubmitButton } from "@/components/form";
-import { cn } from "@/lib/cn";
-import { BTS_SCHOOLS, OTHER_SCHOOL_VALUE, schoolsByCategory } from "@/lib/bts-schools";
-import { formatTtPhone, isValidTtPhone } from "@/lib/tt-phone";
-import { BTS_LOCATIONS, OTHER_LOCATION_VALUE } from "@/lib/bts-locations";
-import { SchoolBookIcon, PalmTreeIcon, PelicanIcon, SuccessCheckmark } from "@/components/bts-illustrations";
+import { GuardianStep } from "./steps/guardian-step";
+import { DependentsStep, type DependentForm, emptyDependent } from "./steps/dependents-step";
+import { ReviewStep, type SubmitResult } from "./steps/review-step";
+import { SuccessCard } from "./success-card";
+import { useWizardDraft } from "./draft";
+import { OTHER_LOCATION_VALUE } from "@/lib/bts-locations";
+import { OTHER_SCHOOL_VALUE } from "@/lib/bts-schools";
 
-interface DependentForm {
-  studentName: string;
-  schoolName: string;
-  manualSchoolName: string;
-  manualSchoolAddress: string;
-  gradeLevel: string;
-  notes: string;
-  bookListUrl: string;
-  bookListFileName: string;
-  uploading: boolean;
+const STEPS = ["About You", "Students", "Review"] as const;
+type StepIndex = 0 | 1 | 2;
+
+interface WizardState {
+  fullName: string;
+  contactNumber: string;
+  email: string;
+  address: string;
+  manualAddress: string;
+  consent: boolean;
+  dependents: DependentForm[];
+  step: StepIndex;
 }
 
-function emptyDependent(): DependentForm {
-  return {
-    studentName: "",
-    schoolName: "",
-    manualSchoolName: "",
-    manualSchoolAddress: "",
-    gradeLevel: "",
-    notes: "",
-    bookListUrl: "",
-    bookListFileName: "",
-    uploading: false,
-  };
-}
-
-type SubmitError = { message?: string; error?: string; issues?: unknown };
+const initialState: WizardState = {
+  fullName: "",
+  contactNumber: "",
+  email: "",
+  address: "",
+  manualAddress: "",
+  consent: false,
+  dependents: [emptyDependent()],
+  step: 0,
+};
 
 export default function BtsRegisterPage() {
-  const [fullName, setFullName] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [manualAddress, setManualAddress] = useState("");
-  const [consent, setConsent] = useState(false);
-  const [dependents, setDependents] = useState<DependentForm[]>([emptyDependent()]);
+  const draft = useWizardDraft<WizardState>("bts-draft-v1", initialState);
+  const state = draft.value;
+  const setState = draft.setValue;
+
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
-  const [success, setSuccess] = useState<{ thaId: string } | null>(null);
-  const [qrCode, setQrCode] = useState<string | null>(null);
+  const [result, setResult] = useState<(SubmitResult & { phone: string }) | null>(null);
 
-  function addDependent() {
-    setDependents((d) => [...d, emptyDependent()]);
+  function patch(p: Partial<WizardState>) {
+    setState((prev) => ({ ...prev, ...p }));
   }
 
-  function removeDependent(index: number) {
-    setDependents((d) => (d.length > 1 ? d.filter((_, i) => i !== index) : d));
-  }
-
-  function updateDependent(index: number, patch: Partial<DependentForm>) {
-    setDependents((d) => d.map((dep, i) => (i === index ? { ...dep, ...patch } : dep)));
-  }
-
-  async function uploadBookList(index: number, file: File) {
-    updateDependent(index, { uploading: true });
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error((data as { error?: string }).error ?? "Upload failed");
-      }
-      const { url, filename } = data as { url: string; filename: string };
-      updateDependent(index, { bookListUrl: url, bookListFileName: filename });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed");
-    } finally {
-      updateDependent(index, { uploading: false });
-    }
-  }
-
-  function validate(): Record<string, string> {
-    const errs: Record<string, string> = {};
-    if (!fullName.trim()) errs.fullName = "Full name is required";
-    if (!contactNumber.trim()) errs.contactNumber = "Contact number is required";
-    else if (!isValidTtPhone(contactNumber)) errs.contactNumber = "Enter a valid TT number, e.g. (868) 123-4567";
-    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = "Invalid email";
-    if (!address) errs.address = "Select your community";
-    else if (address === OTHER_LOCATION_VALUE && !manualAddress.trim()) errs.address = "Enter your community";
-    if (!consent) errs.consent = "You must consent to continue";
-    dependents.forEach((d, i) => {
-      if (!d.studentName.trim()) errs[`dep-${i}-name`] = "Student name is required";
-      if (!d.schoolName) errs[`dep-${i}-school`] = "School is required";
-      if (d.schoolName === OTHER_SCHOOL_VALUE && !d.manualSchoolName.trim())
-        errs[`dep-${i}-manual`] = "Enter the school name";
-      if (!d.gradeLevel.trim()) errs[`dep-${i}-grade`] = "Grade level is required";
-    });
-    return errs;
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  function goTo(step: StepIndex) {
+    patch({ step });
     setError(null);
-    const errs = validate();
-    setFieldErrors(errs);
-    if (Object.keys(errs).length > 0) {
-      setError("Please fix the highlighted fields.");
+  }
+
+  function validateCurrentStep(): string | null {
+    if (state.step === 0) {
+      if (!state.fullName.trim()) return "Full name is required.";
+      if (!state.contactNumber.trim()) return "Contact number is required.";
+      if (!state.address) return "Select your community.";
+      if (state.address === OTHER_LOCATION_VALUE && !state.manualAddress.trim())
+        return "Enter your community.";
+      return null;
+    }
+    if (state.step === 1) {
+      for (let i = 0; i < state.dependents.length; i++) {
+        const d = state.dependents[i];
+        if (!d.studentName.trim()) return `Student ${i + 1}: name is required.`;
+        if (!d.gradeLevel.trim()) return `Student ${i + 1}: grade level is required.`;
+        if (!d.schoolName) return `Student ${i + 1}: school is required.`;
+        if (d.schoolName === OTHER_SCHOOL_VALUE && !d.manualSchoolName.trim())
+          return `Student ${i + 1}: enter the school name.`;
+      }
+      return null;
+    }
+    if (state.step === 2) {
+      if (!state.consent) return "Please tick the consent box to continue.";
+      return null;
+    }
+    return null;
+  }
+
+  function next() {
+    const err = validateCurrentStep();
+    if (err) {
+      setError(err);
       return;
     }
+    if (state.step < 2) goTo((state.step + 1) as StepIndex);
+  }
 
+  function back() {
+    if (state.step > 0) goTo((state.step - 1) as StepIndex);
+  }
+
+  async function submit() {
+    const err = validateCurrentStep();
+    if (err) {
+      setError(err);
+      return;
+    }
     setSubmitting(true);
+    setError(null);
     try {
       const payload = {
         guardian: {
-          fullName,
-          contactNumber,
-          email,
-          address: address === OTHER_LOCATION_VALUE ? manualAddress : address,
-          consent,
+          fullName: state.fullName,
+          contactNumber: state.contactNumber,
+          email: state.email,
+          address: state.address === OTHER_LOCATION_VALUE ? state.manualAddress : state.address,
+          consent: state.consent,
         },
-        dependents: dependents.map((d) => ({
+        dependents: state.dependents.map((d) => ({
           studentName: d.studentName,
           schoolName:
             d.schoolName === OTHER_SCHOOL_VALUE ? d.manualSchoolName : d.schoolName,
@@ -136,366 +125,163 @@ export default function BtsRegisterPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        const errData = data as SubmitError;
-        throw new Error(errData.message ?? errData.error ?? "Registration failed");
+      const data = (await res.json()) as { thaId?: string; error?: string; message?: string };
+      if (!res.ok || !data.thaId) {
+        throw new Error(data.message ?? data.error ?? "Registration failed. Please try again.");
       }
-      setSuccess(data as { thaId: string });
-      // Fetch QR code
+
+      // Fetch QR in parallel with showing success (non-blocking).
+      let qrCode: string | null = null;
       try {
-        const qrRes = await fetch(`/api/qr?aid=${encodeURIComponent((data as { thaId: string }).thaId)}&site=bts`);
+        const qrRes = await fetch(
+          `/api/qr?aid=${encodeURIComponent(data.thaId)}&site=bts`,
+        );
         if (qrRes.ok) {
-          const qrData = await qrRes.json() as { dataUrl?: string };
-          if (qrData.dataUrl) setQrCode(qrData.dataUrl);
+          const qrData = (await qrRes.json()) as { dataUrl?: string };
+          qrCode = qrData.dataUrl ?? null;
         }
-      } catch { /* QR is nice-to-have */ }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Registration failed");
+      } catch {
+        // QR is nice-to-have
+      }
+
+      setResult({
+        thaId: data.thaId,
+        qrCode,
+        phone: state.contactNumber,
+        dependentsCount: state.dependents.length,
+      });
+      draft.clear();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Registration failed. Please try again.");
     } finally {
       setSubmitting(false);
     }
   }
 
-  if (success) {
-    return (
-      <div className="relative mx-auto max-w-lg overflow-hidden text-center py-12">
-        {/* Floating celebration elements */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="bts-float bts-float-delay-1 absolute left-[10%] top-[15%] opacity-30">
-            <PalmTreeIcon className="h-12 w-12" />
-          </div>
-          <div className="bts-float bts-float-delay-3 absolute right-[10%] top-[20%] opacity-30">
-            <PelicanIcon className="h-14 w-12" />
-          </div>
-          <div className="bts-float-sm bts-float-delay-2 absolute left-[15%] bottom-[10%] opacity-25">
-            <SchoolBookIcon className="h-10 w-10" />
-          </div>
-          <div className="bts-float-sm bts-float-delay-4 absolute right-[15%] bottom-[15%] opacity-25">
-            <PalmTreeIcon className="h-10 w-10" />
-          </div>
-        </div>
-
-        {/* Success checkmark with bounce-in */}
-        <div className="relative">
-          <div className="bts-bounce-in mx-auto mb-6 flex h-24 w-24 items-center justify-center">
-            <SuccessCheckmark className="h-24 w-24 drop-shadow-xl" />
-          </div>
-          <h1 className="bts-fade-in-up bts-stagger-2 text-2xl sm:text-3xl font-bold text-cyan-900">
-            Registration Submitted!
-          </h1>
-          <p className="bts-fade-in-up bts-stagger-3 mt-3 text-sm text-gray-600">
-            Your registration has been received. Save your Application ID &mdash; you&rsquo;ll need it to collect
-            resources on event day.
-          </p>
-
-          {/* Application ID card */}
-          <div className="bts-fade-in-up bts-stagger-4 mt-6 rounded-2xl border-2 border-dashed border-cyan-300 bg-gradient-to-br from-cyan-50 to-white p-6 shadow-md">
-            <p className="text-xs font-semibold uppercase tracking-wider text-cyan-600">Your Application ID</p>
-            <p className="mt-2 text-3xl font-bold text-cyan-900 tracking-wider font-mono">
-              {success.thaId}
-            </p>
-            {qrCode && (
-              <div className="mt-4 flex flex-col items-center gap-2">
-                <img src={qrCode} alt="QR code for verification" className="rounded-lg shadow-sm" width={200} height={200} />
-                <p className="text-xs text-gray-500">Scan this at the distribution counter on event day</p>
-              </div>
-            )}
-          </div>
-
-          <div className="bts-fade-in-up bts-stagger-5 mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <Link
-              href="/bts"
-              className="inline-flex items-center justify-center rounded-xl bg-cyan-600 px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-cyan-700 transition-all hover:scale-105 active:scale-95"
-            >
-              Back to Home
-            </Link>
-            <button
-              type="button"
-              onClick={() => {
-                setSuccess(null);
-                setQrCode(null);
-                setFullName("");
-                setContactNumber("");
-                setEmail("");
-                setAddress("");
-                setManualAddress("");
-                setConsent(false);
-                setDependents([emptyDependent()]);
-              }}
-              className="inline-flex items-center justify-center rounded-xl border border-gray-300 bg-white px-6 py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all hover:scale-105 active:scale-95"
-            >
-              Register Another Family
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+  function resetForAnother() {
+    setResult(null);
+    setState({ ...initialState, dependents: [emptyDependent()] });
+    window.scrollTo({ top: 0 });
   }
 
-  return (
-    <div className="space-y-6">
-      {/* Animated header */}
-      <div className="bts-fade-in-up bts-stagger-1 relative overflow-hidden rounded-2xl bg-gradient-to-br from-cyan-700 to-cyan-500 p-6 shadow-lg">
-        <div className="pointer-events-none absolute right-4 top-2 opacity-20">
-          <SchoolBookIcon className="h-16 w-16 bts-float-sm" />
-        </div>
-        <div className="relative">
-          <div className="mb-3 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
-            <SchoolBookIcon className="h-10 w-10" />
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Register a Student</h1>
-          <p className="mt-2 text-sm text-cyan-50">
-            Complete the form below to register your dependents for the book drive. Fields marked{" "}
-            <span className="font-bold text-red-200">*</span> are required.
-          </p>
-        </div>
-      </div>
+  if (result) {
+    return <SuccessCard result={result} onRegisterAnother={resetForAnother} phone={result.phone} />;
+  }
 
-      <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Guardian section */}
-        <section className="bts-fade-in-up bts-stagger-2 rounded-2xl border border-cyan-100 bg-white p-6 shadow-sm transition-all hover:shadow-md">
-          <h2 className="text-lg font-bold text-cyan-900 border-b border-cyan-100 pb-3 mb-4">
-            Guardian Information
-          </h2>
-          <div className="grid gap-1 sm:grid-cols-2">
-            <Field label="Full name" htmlFor="fullName" required error={fieldErrors.fullName}>
-              <TextInput
-                id="fullName"
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                autoComplete="name"
-              />
-            </Field>
-            <Field label="Contact number" htmlFor="contactNumber" required error={fieldErrors.contactNumber}>
-              <TextInput
-                id="contactNumber"
-                value={contactNumber}
-                onChange={(e) => setContactNumber(formatTtPhone(e.target.value))}
-                type="tel"
-                autoComplete="tel"
-                placeholder="(868) 123-4567"
-              />
-            </Field>
-            <Field label="Email address" htmlFor="email" error={fieldErrors.email}>
-              <TextInput
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                type="email"
-                autoComplete="email"
-              />
-            </Field>
-            <Field label="Community" htmlFor="address" required error={fieldErrors.address}>
-              <Select
-                id="address"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
+  const stepNum = state.step + 1;
+
+  return (
+    <div className="space-y-5">
+      {/* Wizard header */}
+      <header className="bts-fade-in-up">
+        <h1 className="text-title text-brand-900">Register a Student</h1>
+        <p className="mt-1 text-body text-brand-700">
+          Step {stepNum} of 3 — <span className="font-semibold">{STEPS[state.step]}</span>
+        </p>
+
+        {/* Progress dots */}
+        <ol className="mt-4 flex items-center gap-2" aria-label="Progress">
+          {STEPS.map((label, i) => (
+            <li key={label} className="flex items-center gap-2 flex-1">
+              <div
+                className={[
+                  "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-colors",
+                  i < state.step
+                    ? "bg-brand-600 text-white"
+                    : i === state.step
+                      ? "bg-white text-brand-700 ring-2 ring-brand-600"
+                      : "bg-white text-gray-400 ring-1 ring-gray-300",
+                ].join(" ")}
+                aria-current={i === state.step ? "step" : undefined}
               >
-                <option value="">Select your community…</option>
-                {BTS_LOCATIONS.filter((l) => l !== OTHER_LOCATION_VALUE).map((loc) => (
-                  <option key={loc} value={loc}>{loc}</option>
-                ))}
-                <option value={OTHER_LOCATION_VALUE}>{OTHER_LOCATION_VALUE}</option>
-              </Select>
-            </Field>
-            {address === OTHER_LOCATION_VALUE && (
-              <Field label="Specify your community" htmlFor="manualAddress" required error={fieldErrors.address}>
-                <TextInput
-                  id="manualAddress"
-                  value={manualAddress}
-                  onChange={(e) => setManualAddress(e.target.value)}
-                  placeholder="Enter your community name"
+                {i < stepNum - 1 ? "✓" : i + 1}
+              </div>
+              <span
+                className={[
+                  "text-xs font-medium hidden sm:inline",
+                  i === state.step ? "text-brand-900" : "text-gray-500",
+                ].join(" ")}
+              >
+                {label}
+              </span>
+              {i < STEPS.length - 1 && (
+                <div
+                  aria-hidden="true"
+                  className={[
+                    "h-0.5 flex-1 rounded",
+                    i < state.step ? "bg-brand-600" : "bg-gray-200",
+                  ].join(" ")}
                 />
-              </Field>
-            )}
-          </div>
-          <div className="mt-2 flex items-start gap-2">
-            <input
-              id="consent"
-              type="checkbox"
-              checked={consent}
-              onChange={(e) => setConsent(e.target.checked)}
-              className="mt-1 h-4 w-4 rounded border-gray-300 text-cyan-600 focus:ring-cyan-500"
-            />
-            <label htmlFor="consent" className="text-sm text-gray-700">
-              I consent to the collection of my data and my dependents&rsquo; data for the purpose of
-              participating in the Back to School with Megan book drive.{" "}
-              <span className="text-red-500">*</span>
-            </label>
-          </div>
-          {fieldErrors.consent && <p className="mt-1 text-xs text-red-600">{fieldErrors.consent}</p>}
-        </section>
-
-        {/* Dependents section */}
-        <section className="bts-fade-in-up bts-stagger-3 rounded-2xl border border-cyan-100 bg-white p-6 shadow-sm transition-all hover:shadow-md">
-          <div className="flex items-center justify-between border-b border-cyan-100 pb-3 mb-4">
-            <h2 className="text-lg font-bold text-cyan-900">Dependents</h2>
-            <button
-              type="button"
-              onClick={addDependent}
-              className="rounded-lg bg-cyan-100 px-4 py-2 text-sm font-bold text-cyan-700 hover:bg-cyan-200 transition-colors"
-            >
-              + Add dependent
-            </button>
-          </div>
-
-          {dependents.map((dep, index) => (
-            <DependentCard
-              key={index}
-              index={index}
-              dep={dep}
-              onChange={(patch) => updateDependent(index, patch)}
-              onRemove={dependents.length > 1 ? () => removeDependent(index) : null}
-              onUpload={(file) => uploadBookList(index, file)}
-              errors={fieldErrors}
-            />
+              )}
+            </li>
           ))}
-        </section>
+        </ol>
+      </header>
 
-        {error && (
-          <div className="bts-fade-in-up rounded-xl bg-red-50 border border-red-200 p-4 text-sm text-red-800 shadow-sm">
-            {error}
-          </div>
-        )}
-
-        <div className="bts-fade-in-up bts-stagger-4 flex items-center gap-4">
-          <SubmitButton className={cn(submitting && "opacity-60 cursor-not-allowed")}>
-            {submitting ? "Submitting…" : "Submit Registration"}
-          </SubmitButton>
-          <Link
-            href="/bts"
-            className="text-sm font-medium text-gray-600 hover:text-cyan-700 transition-colors"
-          >
-            Cancel
-          </Link>
-        </div>
-      </form>
-    </div>
-  );
-}
-
-function DependentCard({
-  index,
-  dep,
-  onChange,
-  onRemove,
-  onUpload,
-  errors,
-}: {
-  index: number;
-  dep: DependentForm;
-  onChange: (patch: Partial<DependentForm>) => void;
-  onRemove: (() => void) | null;
-  onUpload: (file: File) => void;
-  errors: Record<string, string>;
-}) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const categories = schoolsByCategory();
-  const isOther = dep.schoolName === OTHER_SCHOOL_VALUE;
-
-  return (
-    <div className="mb-6 rounded-xl border border-gray-200 bg-gradient-to-br from-cyan-50/30 to-gray-50/30 p-4 last:mb-0 transition-all hover:shadow-sm">
-      <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-sm font-bold text-cyan-800">Dependent {index + 1}</h3>
-        {onRemove && (
+      {/* Draft resume banner */}
+      {draft.hadDraft && (
+        <div className="bts-card-enter rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm text-brand-900 flex flex-wrap items-center gap-3">
+          <p className="flex-1 min-w-[200px]">
+            We restored the draft you started earlier.
+          </p>
           <button
             type="button"
-            onClick={onRemove}
-            className="text-xs font-bold text-red-600 hover:text-red-800 transition-colors"
+            onClick={() => draft.dismissDraft()}
+            className="text-xs font-bold text-brand-700 underline hover:text-brand-900"
           >
-            Remove
+            Start fresh
           </button>
+        </div>
+      )}
+
+      {error && (
+        <div
+          className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          role="alert"
+        >
+          {error}
+        </div>
+      )}
+
+      {/* Steps */}
+      <div className="bts-fade-in-up">
+        {state.step === 0 && (
+          <GuardianStep
+            state={{
+              fullName: state.fullName,
+              contactNumber: state.contactNumber,
+              email: state.email,
+              address: state.address,
+              manualAddress: state.manualAddress,
+            }}
+            onChange={(p) => patch(p)}
+            onNext={next}
+          />
+        )}
+        {state.step === 1 && (
+          <DependentsStep
+            dependents={state.dependents}
+            onChange={(deps) => patch({ dependents: deps })}
+            onNext={next}
+            onBack={back}
+          />
+        )}
+        {state.step === 2 && (
+          <ReviewStep
+            state={state}
+            onChangeConsent={(v) => patch({ consent: v })}
+            onBack={back}
+            onSubmit={submit}
+            submitting={submitting}
+          />
         )}
       </div>
-      <div className="grid gap-1 sm:grid-cols-2">
-        <Field label="Student full name" required error={errors[`dep-${index}-name`]}>
-          <TextInput
-            value={dep.studentName}
-            onChange={(e) => onChange({ studentName: e.target.value })}
-          />
-        </Field>
-        <Field label="Grade level" required error={errors[`dep-${index}-grade`]}>
-          <TextInput
-            value={dep.gradeLevel}
-            onChange={(e) => onChange({ gradeLevel: e.target.value })}
-            placeholder="e.g. Standard 3, Form 2, Year 1"
-          />
-        </Field>
-        <Field label="School" required error={errors[`dep-${index}-school`]}>
-          <Select
-            value={dep.schoolName}
-            onChange={(e) => onChange({ schoolName: e.target.value })}
-          >
-            <option value="">Select a school…</option>
-            {categories.map((cat) => (
-              <optgroup key={cat.category} label={cat.category}>
-                {cat.schools.map((s) => (
-                  <option key={s.name} value={s.name}>
-                    {s.name}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-            <option value={OTHER_SCHOOL_VALUE}>Other (enter manually)</option>
-          </Select>
-        </Field>
-        <div className="sm:col-span-2">
-          <Field label="Book list document (PDF or Word)">
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) onUpload(file);
-              }}
-              className="block w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-cyan-50 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-cyan-700 hover:file:bg-cyan-100 file:transition-colors"
-            />
-            {dep.uploading && (
-              <p className="mt-1 text-xs text-cyan-600">Uploading…</p>
-            )}
-            {dep.bookListUrl && !dep.uploading && (
-              <p className="mt-1 text-xs text-green-600">
-                ✓ Uploaded{" "}
-                <a
-                  href={dep.bookListUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline"
-                >
-                  {dep.bookListFileName || "document"}
-                </a>
-              </p>
-            )}
-          </Field>
-        </div>
-        {isOther && (
-          <>
-            <Field label="School name (manual entry)" required error={errors[`dep-${index}-manual`]}>
-              <TextInput
-                value={dep.manualSchoolName}
-                onChange={(e) => onChange({ manualSchoolName: e.target.value })}
-              />
-            </Field>
-            <Field label="School address (optional)">
-              <TextInput
-                value={dep.manualSchoolAddress}
-                onChange={(e) => onChange({ manualSchoolAddress: e.target.value })}
-              />
-            </Field>
-          </>
-        )}
-        <div className="sm:col-span-2">
-          <Field label="Notes on required items or special needs (optional)">
-            <TextArea
-              value={dep.notes}
-              onChange={(e) => onChange({ notes: e.target.value })}
-              rows={2}
-            />
-          </Field>
-        </div>
-      </div>
+
+      <p className="text-xs text-gray-500">
+        <Link href="/bts" className="underline hover:text-brand-700">
+          &larr; Back to home
+        </Link>
+      </p>
     </div>
   );
 }

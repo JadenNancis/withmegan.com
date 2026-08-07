@@ -1,452 +1,165 @@
 /* ==================================================================
-   BTS Portal — Custom CSS Animations
-   Pure CSS keyframes, no JS animation libraries.
-   All animations respect prefers-reduced-motion.
+   BTS Portal — Animation layer.
+   Contract: content is ALWAYS visible by default. Animations only
+   engage under (prefers-reduced-motion: no-preference). No !important
+   recovery needed because nothing starts hidden.
    ================================================================== */
 
-/* --- float: gentle vertical floating for decorative elements ------ */
+/* --- keyframes --------------------------------------------------- */
 @keyframes bts-float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
-
 @keyframes bts-float-sm {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes bts-wave-move {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes bts-wave-move-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+@keyframes bts-fade-in-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes bts-bounce-in {
+  0% { opacity: 0; transform: scale(0.3); }
+  50% { opacity: 1; transform: scale(1.12); }
+  70% { transform: scale(0.94); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes bts-check-draw {
+  from { stroke-dashoffset: 60; }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes bts-ocean-shimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes bts-sun-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+@keyframes bts-glow-breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+@keyframes bts-cloud-drift-anim {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(30px); }
+}
+@keyframes bts-palm-sway {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(2deg); }
+}
+@keyframes bts-book-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+@keyframes bts-page-flutter {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-2px) rotate(-1deg); }
+}
+@keyframes bts-cap-float-anim {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-2deg); }
+}
+@keyframes bts-float-book-anim {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-10px) rotate(3deg); }
+}
+@keyframes bts-count-up {
+  from { opacity: 0; transform: translateY(10px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes bts-card-enter {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-.bts-float {
-  animation: bts-float 4s ease-in-out infinite;
+/* --- shimmer background is a *style*, not motion-gated content ---- */
+.bts-ocean-shimmer {
+  background: linear-gradient(
+    135deg,
+    #164e63 0%,
+    #155e75 20%,
+    #0e7490 40%,
+    #0891b2 50%,
+    #0e7490 60%,
+    #155e75 80%,
+    #164e63 100%
+  );
+  background-size: 300% 100%;
 }
 
-.bts-float-sm {
-  animation: bts-float-sm 3s ease-in-out infinite;
-}
-
-/* Staggered delays for floating elements */
+/* Stagger delays are plain classes — they only matter when an
+   animation is applied under no-preference below. */
+.bts-stagger-1 { animation-delay: 0.08s; }
+.bts-stagger-2 { animation-delay: 0.18s; }
+.bts-stagger-3 { animation-delay: 0.28s; }
+.bts-stagger-4 { animation-delay: 0.38s; }
+.bts-stagger-5 { animation-delay: 0.48s; }
+.bts-stagger-6 { animation-delay: 0.58s; }
+.bts-stagger-7 { animation-delay: 0.68s; }
 .bts-float-delay-1 { animation-delay: 0.5s; }
 .bts-float-delay-2 { animation-delay: 1s; }
 .bts-float-delay-3 { animation-delay: 1.5s; }
 .bts-float-delay-4 { animation-delay: 2s; }
-
-/* --- wave-move: horizontal scrolling for wave divider layers ------- */
-@keyframes bts-wave-move {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes bts-wave-move-reverse {
-  0% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-.bts-wd-wave.bts-wd-back {
-  animation: bts-wave-move 16s linear infinite;
-}
-
-.bts-wd-wave.bts-wd-mid {
-  animation: bts-wave-move-reverse 12s linear infinite;
-}
-
-.bts-wd-wave.bts-wd-front {
-  animation: bts-wave-move 10s linear infinite;
-}
-
-/* Wave layers in the hero illustration */
-.bts-wave-layer.bts-wave-1 {
-  animation: bts-wave-move 8s ease-in-out infinite;
-}
-
-.bts-wave-layer.bts-wave-2 {
-  animation: bts-wave-move-reverse 10s ease-in-out infinite;
-}
-
-.bts-wave-layer.bts-wave-3 {
-  animation: bts-wave-move 6s ease-in-out infinite;
-}
-
-/* --- fade-in-up: staggered content reveal on page load ------------- */
-@keyframes bts-fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.bts-fade-in-up {
-  opacity: 0;
-  animation: bts-fade-in-up 0.6s ease-out forwards;
-}
-
-/* Staggered children — apply .bts-fade-in-up to each element, */
-/* then add one of these delay classes for the cascade effect   */
-.bts-stagger-1 { animation-delay: 0.1s; }
-.bts-stagger-2 { animation-delay: 0.25s; }
-.bts-stagger-3 { animation-delay: 0.4s; }
-.bts-stagger-4 { animation-delay: 0.55s; }
-.bts-stagger-5 { animation-delay: 0.7s; }
-.bts-stagger-6 { animation-delay: 0.85s; }
-.bts-stagger-7 { animation-delay: 1s; }
-
-/* --- draw-line: SVG path drawing animation (stroke-dashoffset) ----- */
-@keyframes bts-draw-line {
-  from {
-    stroke-dashoffset: 200;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.bts-draw-line {
-  stroke-dasharray: 200;
-  stroke-dashoffset: 200;
-  animation: bts-draw-line 1.5s ease-out forwards;
-}
-
-.bts-draw-line-delay {
-  animation-delay: 0.3s;
-}
-
-/* Checkmark draw for success screen */
-@keyframes bts-check-draw {
-  from {
-    stroke-dashoffset: 60;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.bts-check-draw {
-  stroke-dasharray: 60;
-  stroke-dashoffset: 60;
-  animation: bts-check-draw 0.6s ease-out 0.3s forwards;
-}
-
-/* --- pulse-glow: soft pulsing glow for the CTA button -------------- */
-@keyframes bts-pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4), 0 4px 12px rgba(8, 145, 178, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 0 8px rgba(34, 211, 238, 0), 0 4px 16px rgba(8, 145, 178, 0.5);
-  }
-}
-
-.bts-pulse-glow {
-  animation: bts-pulse-glow 2.5s ease-in-out infinite;
-}
-
-/* --- ocean-shimmer: animated gradient background for the hero ----- */
-@keyframes bts-ocean-shimmer {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.bts-ocean-shimmer {
-  background: linear-gradient(
-    135deg,
-    #0c4a6e 0%,
-    #0e7490 20%,
-    #0891b2 40%,
-    #06b6d4 50%,
-    #0891b2 60%,
-    #0e7490 80%,
-    #0c4a6e 100%
-  );
-  background-size: 300% 100%;
-  animation: bts-ocean-shimmer 12s ease-in-out infinite;
-}
-
-/* --- bounce-in: playful bounce for success checkmark -------------- */
-@keyframes bts-bounce-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.3);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.15);
-  }
-  70% {
-    transform: scale(0.92);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.bts-bounce-in {
-  opacity: 0;
-  animation: bts-bounce-in 0.7s cubic-bezier(0.215, 0.610, 0.355, 1.000) forwards;
-}
-
-/* --- Hero-specific decorative animations -------------------------- */
-
-/* Sun rays pulsing */
-@keyframes bts-sun-pulse {
-  0%, 100% {
-    opacity: 0.4;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-.bts-sun-rays {
-  animation: bts-sun-pulse 4s ease-in-out infinite;
-  transform-origin: 470px 90px;
-}
-
-/* Sun glow breathing */
-@keyframes bts-glow-breathe {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-}
-
-.bts-hero-glow {
-  animation: bts-glow-breathe 5s ease-in-out infinite;
-  transform-origin: 470px 90px;
-}
-
-/* Cloud drift */
-@keyframes bts-cloud-drift-anim {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(30px);
-  }
-}
-
-.bts-cloud-drift {
-  animation: bts-cloud-drift-anim 18s ease-in-out infinite alternate;
-}
-
-.bts-cloud-drift-slow {
-  animation: bts-cloud-drift-anim 25s ease-in-out infinite alternate-reverse;
-}
-
-/* Palm frond sway */
-@keyframes bts-palm-sway {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  50% {
-    transform: rotate(2deg);
-  }
-}
-
-.bts-palm-sway {
-  animation: bts-palm-sway 4s ease-in-out infinite;
-  transform-origin: 125px 100px;
-}
-
-/* Book stack subtle float */
-@keyframes bts-book-float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
-.bts-book-stack {
-  animation: bts-book-float 5s ease-in-out infinite;
-}
-
-/* Open book gentle page flutter */
-@keyframes bts-page-flutter {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-2px) rotate(-1deg);
-  }
-}
-
-.bts-open-book {
-  animation: bts-page-flutter 3s ease-in-out infinite;
-  transform-origin: 365px 130px;
-}
-
-/* Graduation cap float */
-@keyframes bts-cap-float-anim {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-8px) rotate(-2deg);
-  }
-}
-
-.bts-cap-float {
-  animation: bts-cap-float-anim 4s ease-in-out infinite;
-}
-
-/* Floating decorative books in hero */
-@keyframes bts-float-book-anim {
-  0%, 100% {
-    transform: translateY(0) rotate(-5deg);
-  }
-  50% {
-    transform: translateY(-10px) rotate(3deg);
-  }
-}
-
-.bts-float-book-1 {
-  animation: bts-float-book-anim 5s ease-in-out infinite;
-}
-
-.bts-float-book-2 {
-  animation: bts-float-book-anim 6s ease-in-out infinite;
-  animation-delay: 1s;
-}
-
-.bts-float-book-3 {
-  animation: bts-float-book-anim 5.5s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
-/* --- Admin dashboard: CSS-only count-up feel ----------------------- */
-@keyframes bts-count-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.bts-count-up {
-  opacity: 0;
-  animation: bts-count-up 0.5s ease-out forwards;
-}
-
-/* Card entrance with slight scale */
-@keyframes bts-card-enter {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.bts-card-enter {
-  opacity: 0;
-  animation: bts-card-enter 0.5s ease-out forwards;
-}
-
-/* --- Icon hover pulse for trust indicators ------------------------- */
-@keyframes bts-icon-pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-}
-
-.bts-icon-pulse {
-  animation: bts-icon-pulse 2s ease-in-out infinite;
-}
+.bts-draw-line-delay { animation-delay: 0.3s; }
 
 /* ==================================================================
-   prefers-reduced-motion: disable all animations
+   All motion lives behind no-preference. Elements never start hidden.
    ================================================================== */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+@media (prefers-reduced-motion: no-preference) {
+  .bts-float { animation: bts-float 4s ease-in-out infinite; }
+  .bts-float-sm { animation: bts-float-sm 3s ease-in-out infinite; }
 
-  .bts-float,
-  .bts-float-sm,
-  .bts-wd-wave,
-  .bts-wave-layer,
-  .bts-fade-in-up,
-  .bts-draw-line,
-  .bts-check-draw,
-  .bts-pulse-glow,
-  .bts-ocean-shimmer,
-  .bts-bounce-in,
-  .bts-sun-rays,
-  .bts-hero-glow,
-  .bts-cloud-drift,
-  .bts-cloud-drift-slow,
-  .bts-palm-sway,
-  .bts-book-stack,
-  .bts-open-book,
-  .bts-cap-float,
-  .bts-float-book-1,
-  .bts-float-book-2,
-  .bts-float-book-3,
-  .bts-count-up,
-  .bts-card-enter,
-  .bts-icon-pulse {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-    stroke-dashoffset: 0 !important;
-  }
+  .bts-wd-wave.bts-wd-back { animation: bts-wave-move 16s linear infinite; }
+  .bts-wd-wave.bts-wd-mid { animation: bts-wave-move-reverse 12s linear infinite; }
+  .bts-wd-wave.bts-wd-front { animation: bts-wave-move 10s linear infinite; }
 
-  /* Keep fade-in-up content visible even with animations off */
-  .bts-fade-in-up,
-  .bts-card-enter,
-  .bts-count-up,
+  .bts-wave-layer.bts-wave-1 { animation: bts-wave-move 8s ease-in-out infinite; }
+  .bts-wave-layer.bts-wave-2 { animation: bts-wave-move-reverse 10s ease-in-out infinite; }
+  .bts-wave-layer.bts-wave-3 { animation: bts-wave-move 6s ease-in-out infinite; }
+
+  .bts-fade-in-up {
+    opacity: 0;
+    animation: bts-fade-in-up 0.4s ease-out forwards;
+  }
+  .bts-count-up {
+    opacity: 0;
+    animation: bts-count-up 0.45s ease-out forwards;
+  }
+  .bts-card-enter {
+    opacity: 0;
+    animation: bts-card-enter 0.45s ease-out forwards;
+  }
   .bts-bounce-in {
-    opacity: 1 !important;
-    transform: none !important;
+    opacity: 0;
+    animation: bts-bounce-in 0.6s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+  }
+  .bts-check-draw {
+    stroke-dasharray: 60;
+    stroke-dashoffset: 60;
+    animation: bts-check-draw 0.5s ease-out 0.3s forwards;
   }
 
-  /* Keep draw-line visible */
-  .bts-draw-line,
-  .bts-check-draw {
-    stroke-dashoffset: 0 !important;
-  }
+  .bts-ocean-shimmer { animation: bts-ocean-shimmer 12s ease-in-out infinite; }
+
+  .bts-sun-rays { animation: bts-sun-pulse 4s ease-in-out infinite; transform-origin: 470px 90px; }
+  .bts-hero-glow { animation: bts-glow-breathe 5s ease-in-out infinite; transform-origin: 470px 90px; }
+  .bts-cloud-drift { animation: bts-cloud-drift-anim 18s ease-in-out infinite alternate; }
+  .bts-cloud-drift-slow { animation: bts-cloud-drift-anim 25s ease-in-out infinite alternate-reverse; }
+  .bts-palm-sway { animation: bts-palm-sway 4s ease-in-out infinite; transform-origin: 125px 100px; }
+  .bts-book-stack { animation: bts-book-float 5s ease-in-out infinite; }
+  .bts-open-book { animation: bts-page-flutter 3s ease-in-out infinite; transform-origin: 365px 130px; }
+  .bts-cap-float { animation: bts-cap-float-anim 4s ease-in-out infinite; }
+  .bts-float-book-1 { animation: bts-float-book-anim 5s ease-in-out infinite; }
+  .bts-float-book-2 { animation: bts-float-book-anim 6s ease-in-out infinite; animation-delay: 1s; }
+  .bts-float-book-3 { animation: bts-float-book-anim 5.5s ease-in-out infinite; animation-delay: 2s; }
 }

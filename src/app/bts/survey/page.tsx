@@ -184,7 +184,7 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
         <button
           type="submit"
           disabled={submitting}
-          className="bts-pulse-glow inline-flex w-full items-center justify-center rounded-xl bg-cyan-600 px-6 py-3.5 text-base font-bold text-white shadow-sm transition-all hover:bg-cyan-700 hover:scale-[1.02] active:scale-95 disabled:opacity-60 disabled:hover:scale-100"
+          className="inline-flex w-full min-h-[52px] items-center justify-center rounded-xl bg-cyan-600 px-6 py-3.5 text-base font-bold text-white shadow-sm transition-colors hover:bg-cyan-700 disabled:opacity-60"
         >
           {submitting ? "Submitting…" : "Submit Survey"}
         </button>

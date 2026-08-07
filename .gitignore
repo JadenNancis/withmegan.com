@@ -38,3 +38,6 @@ next-env.d.ts
 
 # local uploads (prototype file storage)
 /uploads
+
+# Agent / design screenshots (local artifacts, not app code)
+screenshots/

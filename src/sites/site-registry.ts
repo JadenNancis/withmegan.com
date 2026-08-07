@@ -19,10 +19,12 @@ export interface SiteConfig {
   tagline: string;
   /** ISO date of the initiative event. */
   eventDate: string;
-  /** Primary brand colour (Tailwind class fragment, e.g. "blue"). */
-  accent: "blue" | "amber";
+  /** Primary brand colour. */
+  accent: "cyan" | "amber";
   /** Root path prefix the site is mounted under internally. */
   routePrefix: string;
+  /** Community registration goal shown on the progress page and landing teaser. */
+  goalFamilies: number;
   /** Nav items shown in the header. */
   nav: NavItem[];
 }
@@ -39,15 +41,15 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     name: "Back to School with Megan",
     tagline: "Book Drive — Mount St. George & Goodwood, Tobago",
     eventDate: "2026-08-30",
-    accent: "blue",
+    accent: "cyan",
     routePrefix: "/bts",
+    goalFamilies: 200,
     nav: [
       { label: "Home", href: "/bts" },
       { label: "Register", href: "/bts/register" },
+      { label: "Find My ID", href: "/bts/recover" },
       { label: "Progress", href: "/bts/progress" },
       { label: "Gallery", href: "/bts/gallery" },
-      { label: "Supporters", href: "/bts/supporters" },
-      { label: "Admin", href: "/bts/admin" },
     ],
   },
   md: {
@@ -58,13 +60,13 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     eventDate: "2026-09-06",
     accent: "amber",
     routePrefix: "/md",
+    goalFamilies: 150,
     nav: [
       { label: "Home", href: "/md" },
       { label: "Register", href: "/md/register" },
       { label: "Progress", href: "/md/progress" },
       { label: "Gallery", href: "/md/gallery" },
       { label: "Supporters", href: "/md/supporters" },
-      { label: "Admin", href: "/md/admin" },
     ],
   },
 };

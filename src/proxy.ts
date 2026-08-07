@@ -12,7 +12,7 @@ import { resolveSite } from "@/sites/site-registry";
  * In dev (localhost:3000) the root renders a small index that lets you pick
  * a site, and `?site=bts|md` overrides the host for testing.
  */
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname, search } = req.nextUrl;
   const searchParams = req.nextUrl.searchParams;
 

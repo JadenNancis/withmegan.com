@@ -1,5 +1,48 @@
 @import "tailwindcss";
 
+/* ==================================================================
+   Design tokens — semantic layer over Tailwind palette.
+   Both sites consume these; per-site accents map onto --color-brand-*.
+   ================================================================== */
+@theme {
+  /* Brand (cyan — BTS identity). MD overrides via amber utilities. */
+  --color-brand-50: #ecfeff;
+  --color-brand-100: #cffafe;
+  --color-brand-200: #a5f3fc;
+  --color-brand-300: #67e8f9;
+  --color-brand-400: #22d3ee;
+  --color-brand-500: #06b6d4;
+  --color-brand-600: #0891b2;
+  --color-brand-700: #0e7490;
+  --color-brand-800: #155e75;
+  --color-brand-900: #164e63;
+  --color-brand-950: #083344;
+
+  /* Typography scale — mobile-first, scales at sm: breakpoint */
+  --text-display: 2rem;
+  --text-display--line-height: 2.5rem;
+  --text-display--font-weight: 700;
+  --text-title: 1.5rem;
+  --text-title--line-height: 2rem;
+  --text-title--font-weight: 700;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.5rem;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+
+  /* Shape */
+  --radius-card: 1rem;
+}
+
+@media (min-width: 640px) {
+  @theme inline {
+    --text-display: 3rem;
+    --text-display--line-height: 3.25rem;
+    --text-title: 1.875rem;
+    --text-title--line-height: 2.25rem;
+  }
+}
+
 html {
   -webkit-font-smoothing: antialiased;
 }

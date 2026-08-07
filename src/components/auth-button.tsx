@@ -3,11 +3,7 @@
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 
-/**
- * Shows a Sign In link when unauthenticated, or the user's email +
- * Sign Out button when authenticated. Rendered in the SiteShell header.
- */
-export function AuthButton({ accent }: { accent: "blue" | "amber" }) {
+export function AuthButton() {
   const { data: session, status } = useSession();
 
   if (status === "loading") return null;
