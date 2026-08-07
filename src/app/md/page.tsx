@@ -23,73 +23,69 @@ export default function MdLanding() {
 
   return (
     <div className="space-y-0">
-      {/* ──────── Hero Section ──────── */}
-      {/* Bold exotic fruit market — food distribution purpose */}
-      <section
-        className="relative overflow-hidden rounded-2xl shadow-2xl bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/tobago/md-exotic-fruits.jpg')" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/90 via-orange-900/85 to-amber-700/80" />
-        <div className="md-hero-shimmer absolute inset-0 opacity-20" />
-        <FloatingProduce className="absolute top-8 left-4 w-10 h-10 opacity-60 md-animate-float" />
-        <FloatingProduce className="absolute top-16 right-6 w-8 h-8 opacity-50 md-animate-float-slow" />
-        <FloatingProduce className="absolute bottom-12 left-8 w-6 h-6 opacity-40 md-animate-float" />
+      {/* ──────── Hero Section — full-bleed ──────── */}
+      <section className="-mx-4 -mt-8 mb-0 relative overflow-hidden">
+        <div
+          className="relative bg-cover bg-center min-h-[440px] sm:min-h-[540px]"
+          style={{ backgroundImage: "url('/images/tobago/md-exotic-fruits.jpg')" }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-900/90 via-orange-900/85 to-amber-700/80" />
+          <div className="md-hero-shimmer absolute inset-0 opacity-20 pointer-events-none" />
+          <FloatingProduce className="absolute top-8 left-4 w-10 h-10 opacity-60 md-animate-float" />
+          <FloatingProduce className="absolute top-16 right-6 w-8 h-8 opacity-50 md-animate-float-slow" />
+          <FloatingProduce className="absolute bottom-12 left-8 w-6 h-6 opacity-40 md-animate-float" />
 
-        <div className="relative grid items-center gap-6 px-6 py-10 sm:px-12 sm:py-16 lg:grid-cols-2">
-          <div className="text-white space-y-4">
-            <p className="text-amber-100 text-sm font-bold uppercase tracking-wider md-animate-fade-in-up">
-              THA-Supported Community Initiative
-            </p>
-            <h1 className="text-3xl sm:text-5xl font-bold leading-tight drop-shadow-lg md-animate-fade-in-up md-delay-1">
-              {site.name}
-            </h1>
-            <p className="text-lg sm:text-xl text-amber-50 max-w-xl drop-shadow md-animate-fade-in-up md-delay-2">
-              {site.tagline}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 pt-2 md-animate-fade-in-up md-delay-3">
-              <Link
-                href="/md/register"
-                className="md-animate-pulse-warm inline-flex justify-center rounded-xl bg-white px-7 py-3.5 text-base font-bold text-amber-700 shadow-lg hover:bg-amber-50 transition-all hover:scale-105 active:scale-95"
-              >
-                Register for a hamper
-              </Link>
-              <Link
-                href="/md/admin"
-                className="inline-flex justify-center rounded-xl border-2 border-white/50 px-7 py-3.5 text-base font-bold text-white hover:bg-white/15 transition-all hover:scale-105 active:scale-95"
-              >
-                Admin dashboard
-              </Link>
+          <div className="relative mx-auto max-w-4xl px-4 py-12 sm:py-20">
+            <div className="text-center text-white space-y-4">
+              <p className="text-amber-100 text-sm font-bold uppercase tracking-wider md-animate-fade-in-up">
+                THA-Supported Community Initiative
+              </p>
+              <h1 className="text-3xl sm:text-5xl font-bold leading-tight drop-shadow-lg md-animate-fade-in-up md-delay-1">
+                {site.name}
+              </h1>
+              <p className="text-lg sm:text-xl text-amber-50 max-w-2xl mx-auto drop-shadow md-animate-fade-in-up md-delay-2">
+                {site.tagline}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2 md-animate-fade-in-up md-delay-3">
+                <Link
+                  href="/md/register"
+                  className="md-animate-pulse-warm inline-flex justify-center rounded-xl bg-white px-7 py-3.5 text-base font-bold text-amber-700 shadow-lg hover:bg-amber-50 transition-all hover:scale-105 active:scale-95"
+                >
+                  Register for a hamper &rarr;
+                </Link>
+                <Link
+                  href="/md/admin"
+                  className="inline-flex justify-center rounded-xl border-2 border-white/50 px-7 py-3.5 text-base font-bold text-white hover:bg-white/15 transition-all hover:scale-105 active:scale-95"
+                >
+                  Admin dashboard
+                </Link>
+              </div>
+            </div>
+
+            <div className="relative mx-auto max-w-sm pt-8 md-animate-fade-in-up md-delay-4 hidden sm:block">
+              <TobagoHamperHero className="w-full h-auto drop-shadow-2xl" />
             </div>
           </div>
-
-          <div className="relative mx-auto max-w-sm lg:max-w-md md-animate-fade-in-up md-delay-4">
-            <TobagoHamperHero className="w-full h-auto drop-shadow-2xl" />
-          </div>
         </div>
+
+        <SunsetWaveDivider className="w-full h-[40px] block -mt-1" />
       </section>
 
-      {/* ──────── Sunset Wave Divider ──────── */}
-      <SunsetWaveDivider className="w-full h-[40px] block -mt-1" />
-
-      {/* ──────── Stats Cards with Photo ──────── */}
-      <section
-        className="relative overflow-hidden rounded-2xl -mt-2"
-        style={{ backgroundImage: "url('/images/tobago/md-fruit-market.jpg')" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-900/90 to-orange-800/85" />
-        <div className="relative grid gap-4 sm:grid-cols-3 p-4 sm:p-6">
-          <div className="md-animate-fade-in-up rounded-2xl border border-amber-200/40 bg-white/10 p-5 sm:p-6 backdrop-blur-md">
-            <p className="text-base sm:text-2xl font-bold text-white leading-snug">{formattedDate}</p>
-            <p className="mt-1 text-sm font-medium text-amber-100">Event date</p>
+      {/* ──────── Stats Cards ──────── */}
+      <section className="mx-auto max-w-4xl px-4 py-10">
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="md-animate-fade-in-up rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 sm:p-6 shadow-sm">
+            <p className="text-base sm:text-lg font-bold text-amber-900 leading-snug">{formattedDate}</p>
+            <p className="mt-1 text-sm font-medium text-amber-600">Event date</p>
           </div>
-          <div className="md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-200/40 bg-white/10 p-5 sm:p-6 backdrop-blur-md">
-            <p className="text-2xl font-bold text-white">1</p>
-            <p className="mt-1 text-sm font-medium text-amber-100">Distribution centre</p>
+          <div className="md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 sm:p-6 shadow-sm">
+            <p className="text-2xl font-bold text-amber-900">1</p>
+            <p className="mt-1 text-sm font-medium text-amber-600">Distribution centre</p>
           </div>
-          <div className="md-animate-fade-in-up md-delay-2 rounded-2xl border border-amber-200/40 bg-white/10 p-5 sm:p-6 backdrop-blur-md flex flex-col justify-center">
+          <div className="md-animate-fade-in-up md-delay-2 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 sm:p-6 shadow-sm flex flex-col justify-center">
             <Link
               href="/md/register"
-              className="md-animate-pulse-warm inline-flex justify-center rounded-xl bg-white px-6 py-3 text-base font-bold text-amber-700 shadow-lg hover:bg-amber-50 transition-all hover:scale-105 active:scale-95"
+              className="md-animate-pulse-warm inline-flex justify-center rounded-xl bg-amber-500 px-6 py-3 text-base font-bold text-white shadow-lg hover:bg-amber-600 transition-all hover:scale-105 active:scale-95"
             >
               Register for a hamper &rarr;
             </Link>
@@ -98,55 +94,53 @@ export default function MdLanding() {
       </section>
 
       {/* ──────── Tobago Food & Community Photo Gallery ──────── */}
-      <section className="mt-4">
-        <div className="mb-3 text-center">
-          <h2 className="text-xl font-bold text-amber-800">Tobago: Food &amp; Community</h2>
-          <p className="text-sm text-amber-600">Fresh produce, local markets, shared abundance</p>
-        </div>
-        <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          <PhotoCard
-            src="/images/tobago/md-fresh-veg.jpg"
-            alt="Fresh vegetables at market"
-            span="col-span-2 sm:col-span-2"
-          />
-          <PhotoCard
-            src="/images/tobago/produce-market.jpg"
-            alt="Produce market — Debe Market, Trinidad & Tobago"
-            span="col-span-1"
-          />
-          <PhotoCard
-            src="/images/tobago/coconut-vendor.jpg"
-            alt="Coconut vendor, Trinidad & Tobago"
-            span="col-span-1"
-          />
-          <PhotoCard
-            src="/images/tobago/tobago-cuisine.jpg"
-            alt="Tobago cuisine — local food"
-            span="col-span-1"
-          />
-          <PhotoCard
-            src="/images/tobago/scarborough-market.jpg"
-            alt="Scarborough Market, Tobago"
-            span="col-span-1"
-          />
+      <section className="-mx-4 bg-gradient-to-b from-amber-50 to-white py-12">
+        <div className="mx-auto max-w-4xl px-4">
+          <div className="mb-6 text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold text-amber-900">Tobago: Food &amp; Community</h2>
+            <p className="mt-2 text-sm text-amber-600">Fresh produce, local markets, shared abundance</p>
+          </div>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <PhotoCard
+              src="/images/tobago/md-fresh-veg.jpg"
+              alt="Fresh vegetables at market"
+              span="col-span-2 sm:col-span-2"
+            />
+            <PhotoCard
+              src="/images/tobago/produce-market.jpg"
+              alt="Produce market — Debe Market, Trinidad & Tobago"
+              span="col-span-1"
+            />
+            <PhotoCard
+              src="/images/tobago/coconut-vendor.jpg"
+              alt="Coconut vendor, Trinidad & Tobago"
+              span="col-span-1"
+            />
+            <PhotoCard
+              src="/images/tobago/tobago-cuisine.jpg"
+              alt="Tobago cuisine — local food"
+              span="col-span-1"
+            />
+            <PhotoCard
+              src="/images/tobago/scarborough-market.jpg"
+              alt="Scarborough Market, Tobago"
+              span="col-span-1"
+            />
+          </div>
         </div>
       </section>
 
-      {/* ──────── About / How It Works with Photo ──────── */}
-      <section
-        className="mt-4 relative overflow-hidden rounded-2xl"
-        style={{ backgroundImage: "url('/images/tobago/md-produce-2.jpg')" }}
-      >
-        <div className="absolute inset-0 bg-white/92 backdrop-blur-sm" />
-        <div className="relative p-6 sm:p-8 md-animate-fade-in-up md-delay-3">
+      {/* ──────── About / How It Works ──────── */}
+      <section className="mx-auto max-w-4xl px-4 py-12">
+        <div className="md-animate-fade-in-up md-delay-3">
           <div className="flex items-center gap-4 mb-4">
             <TobagoMapBadge className="w-12 h-12 flex-none" />
             <div>
-              <h2 className="text-xl font-bold text-gray-900">About the initiative</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-amber-900">About the initiative</h2>
               <p className="text-sm text-amber-700 font-medium">Rooted in Tobago, grown for community</p>
             </div>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
             Market Day with Megan is a community hamper distribution initiative serving
             residents of the Electoral District of Mt. St. George/Goodwood, Tobago. Each eligible household
             receives a hamper of essential goods. Registration is open in advance &mdash;
@@ -154,7 +148,7 @@ export default function MdLanding() {
             and collection on the day.
           </p>
 
-          <h3 className="mt-6 text-sm font-bold text-gray-900 uppercase tracking-wide">How it works</h3>
+          <h3 className="mt-8 text-sm font-bold text-gray-900 uppercase tracking-wide">How it works</h3>
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { icon: <BasketIcon className="w-10 h-10 mx-auto" />, step: "1", text: "Register online with your name, address, and contact details.", delay: "" },
@@ -177,37 +171,37 @@ export default function MdLanding() {
         </div>
       </section>
 
-      {/* ──────── Bottom CTA ──────── */}
-      <section
-        className="relative overflow-hidden rounded-2xl shadow-xl bg-cover bg-center mt-4"
-        style={{ backgroundImage: "url('/images/tobago/tobago-cuisine.jpg')" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-900/90 via-orange-900/85 to-amber-700/80" />
-        <div className="md-hero-shimmer absolute inset-0 opacity-15" />
-        <FloatingProduce className="absolute top-4 left-6 w-8 h-8 opacity-50 md-animate-float" />
-        <FloatingProduce className="absolute bottom-4 right-6 w-10 h-10 opacity-40 md-animate-float-slow" />
-        <SunsetWaveDivider className="w-full h-[30px] block opacity-60" />
-        <div className="px-6 py-10 text-center text-white">
-          <p className="text-2xl font-bold drop-shadow-lg md-animate-fade-in-up">Ready to register?</p>
-          <p className="mt-2 text-base text-amber-50 drop-shadow md-animate-fade-in-up md-delay-1">
-            It takes less than five minutes to secure your hamper.
-          </p>
-          <Link
-            href="/md/register"
-            className="md-animate-pulse-warm mt-5 inline-flex rounded-xl bg-white px-8 py-3.5 text-lg font-bold text-amber-700 shadow-lg hover:bg-amber-50 transition-all hover:scale-105 active:scale-95 md-animate-fade-in-up md-delay-2"
-          >
-            Register now
-          </Link>
+      {/* ──────── Bottom CTA — full-bleed ──────── */}
+      <section className="-mx-4 relative overflow-hidden">
+        <div
+          className="relative bg-cover bg-center min-h-[280px] sm:min-h-[340px] flex items-center justify-center"
+          style={{ backgroundImage: "url('/images/tobago/tobago-cuisine.jpg')" }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-900/90 via-orange-900/85 to-amber-700/80" />
+          <div className="md-hero-shimmer absolute inset-0 opacity-15 pointer-events-none" />
+          <FloatingProduce className="absolute top-4 left-6 w-8 h-8 opacity-50 md-animate-float" />
+          <FloatingProduce className="absolute bottom-4 right-6 w-10 h-10 opacity-40 md-animate-float-slow" />
+
+          <div className="relative mx-auto max-w-4xl px-4 py-16 text-center text-white">
+            <p className="text-2xl sm:text-4xl font-bold drop-shadow-lg md-animate-fade-in-up">Ready to register?</p>
+            <p className="mt-3 text-base text-amber-50 drop-shadow md-animate-fade-in-up md-delay-1">
+              It takes less than five minutes to secure your hamper.
+            </p>
+            <Link
+              href="/md/register"
+              className="md-animate-pulse-warm mt-6 inline-flex rounded-xl bg-white px-8 py-3.5 text-lg font-bold text-amber-700 shadow-lg hover:bg-amber-50 transition-all hover:scale-105 active:scale-95 md-animate-fade-in-up md-delay-2"
+            >
+              Register now &rarr;
+            </Link>
+          </div>
         </div>
-        <SunsetWaveDivider className="w-full h-[30px] block opacity-60 -scale-y-100" />
+
+        <SunsetWaveDivider className="w-full h-[40px] block opacity-60 -scale-y-100" />
       </section>
     </div>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Photo Card — Tobago food & community photography                   */
-/* ------------------------------------------------------------------ */
 function PhotoCard({ src, alt, span }: { src: string; alt: string; span: string }) {
   return (
     <div className={`group relative overflow-hidden rounded-2xl shadow-md ${span}`}>

@@ -139,6 +139,7 @@ export default async function BtsProgressPage() {
           </div>
         </div>
       </section>
+
     </div>
   );
 }

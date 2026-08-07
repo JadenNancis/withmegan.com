@@ -1,4 +1,4 @@
-import { SunsetWaveDivider, BasketIcon } from "@/components/md-illustrations";
+import { BasketIcon } from "@/components/md-illustrations";
 
 async function getPhotos(site: string): Promise<string[]> {
   try {
@@ -21,8 +21,6 @@ export default async function MdGalleryPage() {
 
   return (
     <div className="space-y-6">
-      <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
-
       {/* Header */}
       <div className="md-animate-fade-in-up flex flex-col items-center text-center">
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 shadow-sm">
@@ -62,7 +60,6 @@ export default async function MdGalleryPage() {
         </div>
       )}
 
-      <SunsetWaveDivider className="w-full h-[20px] block opacity-60" />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { SunsetWaveDivider, BasketIcon, CommunityIcon, TobagoMapBadge } from "@/components/md-illustrations";
+import { BasketIcon, CommunityIcon, TobagoMapBadge } from "@/components/md-illustrations";
 
 const supporters = [
   {
@@ -30,8 +30,6 @@ const supporters = [
 export default function MdSupportersPage() {
   return (
     <div className="space-y-0">
-      <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
-
       {/* Header */}
       <section className="md-animate-fade-in-up flex flex-col items-center text-center py-8">
         <div className="mb-6 md-animate-float">
@@ -44,10 +42,8 @@ export default function MdSupportersPage() {
         </p>
       </section>
 
-      <SunsetWaveDivider className="w-full h-[20px] block opacity-60" />
-
-      {/* Supporters heading */}
-      <section className="bg-gradient-to-b from-amber-50 to-white py-12">
+      {/* Supporters heading — full-bleed background */}
+      <section className="-mx-4 bg-gradient-to-b from-amber-50 to-white py-12">
         <div className="mx-auto max-w-4xl px-4">
           <div className="md-animate-fade-in-up mb-8 text-center">
             <h2 className="text-xl sm:text-2xl font-bold text-amber-900">This initiative is supported by</h2>
@@ -73,8 +69,6 @@ export default function MdSupportersPage() {
         </div>
       </section>
 
-      <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -scale-y-100" />
-
       {/* How to support CTA */}
       <section className="py-12">
         <div className="md-animate-fade-in-up mx-auto max-w-2xl rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-6 shadow-sm sm:p-8 text-center">
@@ -99,8 +93,6 @@ export default function MdSupportersPage() {
           </div>
         </div>
       </section>
-
-      <SunsetWaveDivider className="w-full h-[20px] block opacity-60" />
     </div>
   );
 }

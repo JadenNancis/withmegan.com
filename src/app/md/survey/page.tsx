@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, use } from "react";
-import { SunsetWaveDivider, BasketIcon } from "@/components/md-illustrations";
+import { BasketIcon } from "@/components/md-illustrations";
 
 export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{ aid?: string }> }) {
   const params = use(searchParams);
@@ -86,8 +86,6 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
 
   return (
     <div className="space-y-6">
-      <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
-
       {/* Header */}
       <div className="md-animate-fade-in-up flex flex-col items-center text-center">
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 shadow-sm">

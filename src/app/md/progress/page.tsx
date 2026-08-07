@@ -1,7 +1,7 @@
 import { db } from "@/db/client";
 import { mdRegistrants } from "@/db/schema";
 import { count, sql } from "drizzle-orm";
-import { SunsetWaveDivider, TobagoMapBadge } from "@/components/md-illustrations";
+import { TobagoMapBadge, SunsetWaveDivider } from "@/components/md-illustrations";
 
 export const runtime = "nodejs";
 
@@ -142,8 +142,6 @@ export default async function MdProgressPage() {
         </div>
       </section>
 
-      {/* ===== Bottom wave divider ===== */}
-      <SunsetWaveDivider className="w-full h-[40px] block -scale-y-100 opacity-60" />
     </div>
   );
 }

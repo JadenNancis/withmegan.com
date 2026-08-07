@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, use } from "react";
-import { SuccessCheckmark, WaveDivider, SchoolBookIcon } from "@/components/bts-illustrations";
+import { SuccessCheckmark, SchoolBookIcon } from "@/components/bts-illustrations";
 
 export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<{ aid?: string }> }) {
   const params = use(searchParams);
@@ -75,11 +75,6 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
 
   return (
     <div className="space-y-6">
-      {/* Subtle wave divider at top */}
-      <div className="-mx-4 -mt-8 mb-2 h-10 overflow-hidden">
-        <WaveDivider className="h-10 w-full" preserveAspectRatio="none" />
-      </div>
-
       {/* Header */}
       <div className="bts-fade-in-up flex flex-col items-center text-center">
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
