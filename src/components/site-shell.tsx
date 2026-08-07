@@ -124,7 +124,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
                 day: "numeric",
               })}
             </p>
-            <p className="mt-1">Mount St. George &amp; Goodwood, Tobago · A THA-supported community initiative</p>
+            <p className="mt-1">The Electoral District of Mt. St. George/Goodwood, Tobago · A THA-supported community initiative</p>
           </div>
         </footer>
       </div>
