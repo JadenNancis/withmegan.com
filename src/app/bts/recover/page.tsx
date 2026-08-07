@@ -37,24 +37,26 @@ export default function BtsRecoverPage() {
 
   if (done) {
     return (
-      <div className="space-y-5 py-6">
-        <div className="bts-fade-in-up flex flex-col items-center text-center">
-          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
-            <TobagoMapBadge className="h-9 w-9" />
+      <div className="space-y-5">
+        <div className="-mx-4 -mt-6 sm:-mt-8 px-4 pt-8 pb-6 bg-gradient-to-b from-brand-800 to-transparent">
+          <div className="bts-fade-in-up flex flex-col items-center text-center">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
+              <TobagoMapBadge className="h-9 w-9" />
+            </div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">Check your messages</h1>
+            <p className="mt-2 max-w-md text-sm text-brand-100">
+              If a registration exists for{" "}
+              <span className="font-semibold text-white">{phone}</span>, we&rsquo;ve sent
+              your Application ID by SMS{""} and email (if you gave us one).
+            </p>
+            <p className="mt-3 text-sm text-brand-200">
+              Still nothing after a few minutes?{" "}
+              <Link href="/bts/register" className="font-semibold text-white underline">
+                Register again
+              </Link>{" "}
+              or ask a volunteer on event day.
+            </p>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-cyan-900">Check your messages</h1>
-          <p className="mt-2 max-w-md text-sm text-gray-600">
-            If a registration exists for{" "}
-            <span className="font-semibold text-cyan-900">{phone}</span>, we&rsquo;ve sent
-            your Application ID by SMS{""} and email (if you gave us one).
-          </p>
-          <p className="mt-3 text-sm text-gray-500">
-            Still nothing after a few minutes?{" "}
-            <Link href="/bts/register" className="font-semibold text-cyan-700 underline">
-              Register again
-            </Link>{" "}
-            or ask a volunteer on event day.
-          </p>
         </div>
       </div>
     );
@@ -63,15 +65,17 @@ export default function BtsRecoverPage() {
   return (
     <div className="space-y-6">
       {/* Header — coherent with other BTS subpages */}
-      <div className="bts-fade-in-up flex flex-col items-center text-center">
-        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
-          <TobagoMapBadge className="h-9 w-9" />
+      <div className="-mx-4 -mt-6 sm:-mt-8 px-4 pt-8 pb-6 bg-gradient-to-b from-brand-800 to-transparent">
+        <div className="bts-fade-in-up flex flex-col items-center text-center">
+          <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
+            <TobagoMapBadge className="h-9 w-9" />
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Find my Application ID</h1>
+          <p className="mt-2 max-w-md text-sm text-brand-100">
+            Enter the phone number you registered with. If we have it on file, we&rsquo;ll
+            text your ID and QR code.
+          </p>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-cyan-900">Find my Application ID</h1>
-        <p className="mt-2 max-w-md text-sm text-gray-600">
-          Enter the phone number you registered with. If we have it on file, we&rsquo;ll
-          text your ID and QR code.
-        </p>
       </div>
 
       <form
