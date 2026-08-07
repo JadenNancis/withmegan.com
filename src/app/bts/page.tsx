@@ -42,7 +42,7 @@ export default async function BtsLanding() {
           sizes="100vw"
           className="object-cover object-center opacity-40"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-950/70 via-brand-900/60 to-brand-950/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/65 to-brand-950/92" />
 
         <div className="relative mx-auto max-w-4xl px-4 py-14 sm:py-20 text-center text-white">
           <span className="bts-fade-in-up bts-stagger-1 inline-block rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-100 ring-1 ring-inset ring-white/25 backdrop-blur-sm">
@@ -53,7 +53,7 @@ export default async function BtsLanding() {
           </h1>
           <p className="bts-fade-in-up bts-stagger-3 mt-4 text-base sm:text-lg text-brand-100 max-w-xl mx-auto leading-relaxed">
             Free books and supplies for every student in the constituency.
-            Register in three minutes — we&rsquo;ll match each child with what they need.
+            Register in three minutes. We&rsquo;ll match each child with what they need.
           </p>
 
           <div className="bts-fade-in-up bts-stagger-3 mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-brand-50 ring-1 ring-inset ring-white/20">
@@ -86,7 +86,7 @@ export default async function BtsLanding() {
       </section>
 
       {/* ===== Live progress teaser ===== */}
-      <section className="bg-white border-b border-brand-100">
+      <section className="bg-white/95 backdrop-blur-sm border-b border-white/10">
         <Link
           href="/bts/progress"
           className="mx-auto max-w-4xl px-4 py-6 flex items-center gap-4 group"
@@ -112,8 +112,8 @@ export default async function BtsLanding() {
 
       {/* ===== How it works — snap-scroll cards on mobile ===== */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
-        <h2 className="text-title text-brand-900 text-center">Three steps, three minutes</h2>
-        <p className="mt-2 text-body text-brand-700 text-center">
+        <h2 className="text-title text-white drop-shadow-md text-center">Three steps, three minutes</h2>
+        <p className="mt-2 text-body text-brand-100/90 text-center drop-shadow-sm">
           Everything happens right here on your phone.
         </p>
 
@@ -126,7 +126,7 @@ export default async function BtsLanding() {
           <StepCard
             step="2"
             title="Add your students"
-            body="Each child&rsquo;s school and grade. Attach their book list if you have one — or skip it."
+            body="Each child's school and grade. Attach their book list if you have one, or skip it."
           />
           <StepCard
             step="3"
@@ -137,16 +137,16 @@ export default async function BtsLanding() {
       </section>
 
       {/* ===== About — the SVG hero lives here, away from the photo ===== */}
-      <section className="bg-gradient-to-b from-brand-50 to-white">
+      <section className="bg-white/95 backdrop-blur-sm border-y border-white/10">
         <div className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
           <div className="grid gap-8 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-center">
             <div className="bts-float order-first sm:order-last mx-auto max-w-xs sm:max-w-none">
               <TobagoBooksHero className="w-full h-auto drop-shadow-xl" />
             </div>
             <div>
-              <h2 className="text-title text-brand-900">About the initiative</h2>
+              <h2 className="text-title text-brand-900">About the programme</h2>
               <p className="mt-3 text-body text-brand-800/90 leading-relaxed">
-                Back to School with Megan is a THA-supported community initiative serving
+                Back to School with Megan is a THA-supported community programme serving
                 Mt. St. George/Goodwood, Tobago. We connect students with the books and learning
                 materials they need, and every registration gets a trackable Application ID.
               </p>
@@ -163,8 +163,8 @@ export default async function BtsLanding() {
       {/* ===== Gallery strip — 3 photos, optimized ===== */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
         <div className="flex items-end justify-between">
-          <h2 className="text-title text-brand-900">Our Tobago</h2>
-          <Link href="/bts/gallery" className="text-sm font-semibold text-brand-600 hover:text-brand-700">
+          <h2 className="text-title text-white drop-shadow-md">Our Tobago</h2>
+          <Link href="/bts/gallery" className="text-sm font-semibold text-brand-200 hover:text-white drop-shadow-sm transition-colors">
             Full gallery &rarr;
           </Link>
         </div>
@@ -176,7 +176,7 @@ export default async function BtsLanding() {
       </section>
 
       {/* ===== Bottom CTA — short, decisive ===== */}
-      <section className="bg-brand-800 text-white">
+      <section className="bg-gradient-to-br from-brand-900/92 to-brand-950/95 backdrop-blur-md text-white border-t border-white/10">
         <div className="mx-auto max-w-4xl px-4 py-12 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold">Ready when you are</h2>
           <p className="mt-2 text-body text-brand-100">
@@ -202,8 +202,8 @@ export default async function BtsLanding() {
 
 function StepCard({ step, title, body }: { step: string; title: string; body: string }) {
   return (
-    <div className="card-hover snap-start shrink-0 w-[80vw] sm:w-auto rounded-2xl border border-brand-100 bg-white p-5 shadow-sm hover:border-brand-300">
-      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-sm font-bold text-white shadow-sm">
+    <div className="card-hover snap-start shrink-0 w-[80vw] sm:w-auto rounded-2xl border border-brand-100/60 bg-white/95 backdrop-blur-sm p-5 shadow-lg hover:border-brand-300">
+      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-sm font-bold text-white shadow-md">
         {step}
       </div>
       <h3 className="mt-3 text-base font-bold text-brand-900">{title}</h3>
@@ -214,7 +214,7 @@ function StepCard({ step, title, body }: { step: string; title: string; body: st
 
 function TrustPill({ icon, text }: { icon: React.ReactNode; text: string }) {
   return (
-    <li className="card-hover flex items-center gap-3 rounded-xl border border-brand-200 bg-white px-4 py-3 shadow-sm hover:border-brand-300">
+    <li className="card-hover flex items-center gap-3 rounded-xl border border-brand-200 bg-white/90 backdrop-blur-sm px-4 py-3 shadow-md hover:border-brand-300">
       <span className="flex-shrink-0" aria-hidden="true">{icon}</span>
       <span className="text-sm font-medium text-brand-800">{text}</span>
     </li>

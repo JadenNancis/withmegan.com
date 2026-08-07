@@ -65,7 +65,7 @@ export function GuardianStep({
           placeholder="backup@youremail.com"
         />
         <p className="mt-1.5 text-sm text-gray-500">
-          Optional — helpful if SMS doesn&rsquo;t reach you.
+          Optional. Helpful if SMS doesn&rsquo;t reach you.
         </p>
       </Field>
 
@@ -109,7 +109,7 @@ export function GuardianStep({
           className="w-28"
         />
         <p className="mt-1.5 text-sm text-gray-500">
-          Add every child in your household — you&rsquo;ll fill their details next.
+          Add every child in your household. You&rsquo;ll fill their details next.
         </p>
       </Field>
 

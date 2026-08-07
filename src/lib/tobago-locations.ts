@@ -1,5 +1,5 @@
 /**
- * Communities served by the With Megan platform initiatives in Tobago.
+ * Communities served by the With Megan platform programmes in Tobago.
  *
  * Villages in the electoral district of Mt. St. George/Goodwood
  * (Secretary Megan Morrison) appear first, followed by the rest of

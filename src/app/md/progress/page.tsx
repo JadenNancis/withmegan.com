@@ -81,7 +81,7 @@ export default async function MdProgressPage() {
           </div>
           <p className="mt-3 text-xs text-amber-600">
             Goal: {GOAL} families served across Tobago communities.
-            {total >= GOAL ? " Goal reached — thank you, Tobago!" : ` ${GOAL - total} to go.`}
+            {total >= GOAL ? " Goal reached. Thank you, Tobago!" : ` ${GOAL - total} to go.`}
           </p>
         </div>
       </section>

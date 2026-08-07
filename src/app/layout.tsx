@@ -4,11 +4,11 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "With Megan — Community Initiatives",
+    default: "With Megan · Community Programmes",
     template: "%s · With Megan",
   },
   description:
-    "Community initiative portals for Tobago — Back to School Book Drive & Market Day Hamper Distribution.",
+    "Community programme portals for Tobago: Back to School Book Drive & Market Day Hamper Distribution.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ?? "https://withmegan.com",
   ),
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
         url: "/images/tobago/bts-child-reading.jpg",
         width: 1200,
         height: 630,
-        alt: "Child reading — Back to School with Megan",
+        alt: "Child reading, Back to School with Megan",
       },
     ],
   },

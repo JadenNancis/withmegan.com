@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for working on withmegan.com — the dual-domain community initiative platform for Tobago.
+Thanks for working on withmegan.com, the dual-domain community programme platform for Tobago.
 
 ## Setup
 
@@ -23,7 +23,7 @@ Open `http://localhost:3000` and use `?site=bts` or `?site=md` to preview each p
 
 ## Deployment flow
 
-**Pushing to `main` triggers a production deployment** via the GitHub Actions workflow in `.github/workflows/deploy.yml` (Vercel deploy). There is no separate deployment per site — both domains are served from one Vercel project.
+**Pushing to `main` triggers a production deployment** via the GitHub Actions workflow in `.github/workflows/deploy.yml` (Vercel deploy). There is no separate deployment per site. Both domains are served from one Vercel project.
 
 If the workflow's required secrets (`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`) are not set, the workflow will skip and Vercel's native Git integration (if enabled on the imported repo) handles auto-deploy instead.
 
@@ -33,7 +33,7 @@ See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for the full deployment guide.
 
 - **TypeScript strict.** No `any` without a stated reason in a comment.
 - **Auth before mutation.** Admin routes call `requireAdmin()` at the top. Never trust client-supplied `userId`, `role`, or `orgId`.
-- **Parameterized SQL only.** Use Drizzle's query builder — never string-interpolate SQL.
+- **Parameterized SQL only.** Use Drizzle's query builder, never string-interpolate SQL.
 - **Server-side ID generation.** Application IDs come from `src/lib/tha-id.ts`; never accept them from the client.
 - **Audit sensitive changes.** Call `logAudit()` from `src/lib/audit.ts` for state-changing admin operations.
 - **No secrets in code.** `.env.local` is gitignored. Never commit real connection strings, tokens, or passwords. `.env.example` (placeholder values only) is safe to commit.
@@ -41,7 +41,7 @@ See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for the full deployment guide.
 ## Verification before PR
 
 ```bash
-pnpm typecheck    # tsc --noEmit — must pass
+pnpm typecheck    # tsc --noEmit, must pass
 pnpm lint         # next lint
 pnpm build        # production build must succeed
 ```

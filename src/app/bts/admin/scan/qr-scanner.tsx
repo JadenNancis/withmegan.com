@@ -230,7 +230,7 @@ export function BtsQrScanner() {
         {detectedHint && (
           <div className="mt-4 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">
             ✓ Detected Application ID{" "}
-            <code className="font-mono font-semibold">{detectedHint}</code> — opening verify…
+            <code className="font-mono font-semibold">{detectedHint}</code>, opening verify…
           </div>
         )}
       </div>

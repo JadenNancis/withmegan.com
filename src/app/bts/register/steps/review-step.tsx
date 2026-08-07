@@ -37,7 +37,7 @@ export function ReviewStep({
       <div className="rounded-2xl border border-brand-100 bg-white p-6 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)]">
         <h2 className="text-xl font-bold text-brand-900">Almost done</h2>
         <p className="mt-1 text-sm text-brand-700">
-          Give everything one last look — your Application ID arrives as soon as you submit.
+          Give everything one last look. Your Application ID arrives as soon as you submit.
         </p>
 
         <dl className="mt-6 grid gap-4 sm:grid-cols-2">

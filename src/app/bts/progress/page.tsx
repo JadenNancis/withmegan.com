@@ -36,7 +36,7 @@ export default async function BtsProgressPage() {
   return (
     <div className="-mx-4 -my-6 sm:-my-8 space-y-0">
       {/* ===== Hero ===== */}
-      <section className="bg-brand-800 text-white">
+      <section className="bg-gradient-to-b from-brand-950/85 to-brand-900/80 backdrop-blur-md text-white border-b border-white/10">
         <div className="mx-auto max-w-4xl px-4 py-10 sm:py-14 text-center">
           <div className="mx-auto mb-4 w-fit">
             <TobagoMapBadge className="h-16 w-16 drop-shadow-lg" />
@@ -76,7 +76,7 @@ export default async function BtsProgressPage() {
           <p className="mt-3 text-xs text-brand-600">
             Goal: {GOAL} families served.
             {total >= GOAL
-              ? " Goal reached — thank you, Tobago!"
+              ? " Goal reached. Thank you, Tobago!"
               : ` ${GOAL - total} to go.`}
           </p>
         </div>
@@ -138,7 +138,7 @@ export default async function BtsProgressPage() {
       </section>
 
       {/* ===== CTA ===== */}
-      <section className="bg-brand-800 text-white">
+      <section className="bg-gradient-to-b from-brand-900/85 to-brand-950/90 backdrop-blur-md text-white border-t border-white/10">
         <div className="mx-auto max-w-4xl px-4 py-10 text-center">
           <h2 className="text-xl sm:text-2xl font-bold">Be one of the {GOAL}</h2>
           <p className="mt-2 text-sm text-brand-100">

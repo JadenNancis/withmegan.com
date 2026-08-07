@@ -122,7 +122,7 @@ export default function MdRegisterPage() {
               </div>
             )}
             <p className="mt-2 text-xs text-gray-500">
-              Keep this ID safe &mdash; you&apos;ll need it for verification on event day.
+              Keep this ID safe. You&apos;ll need it for verification on event day.
             </p>
           </div>
         </div>
@@ -261,7 +261,7 @@ export default function MdRegisterPage() {
             value={productCategory}
             onChange={(e) => setProductCategory(e.target.value)}
           >
-            <option value="">— None selected —</option>
+            <option value="">None selected</option>
             <option value="produce">Fresh produce</option>
             <option value="dry-goods">Dry goods</option>
             <option value="household">Household essentials</option>
@@ -288,7 +288,7 @@ export default function MdRegisterPage() {
             />
             <span>
               I consent to the collection and use of my data for the purpose of this
-              hamper distribution initiative. <span className="text-red-500">*</span>
+              hamper distribution programme. <span className="text-red-500">*</span>
             </span>
           </label>
           {errors.consent && <p className="mt-1 text-xs text-red-600">{errors.consent}</p>}

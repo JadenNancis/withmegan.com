@@ -222,7 +222,7 @@ export function MdQrScanner() {
         {detectedHint && (
           <div className="mt-4 rounded-lg border border-green-300 bg-green-50 p-4 text-sm text-green-800">
             ✓ Detected Application ID{" "}
-            <code className="font-mono font-semibold">{detectedHint}</code> — opening verify…
+            <code className="font-mono font-semibold">{detectedHint}</code>, opening verify…
           </div>
         )}
       </div>

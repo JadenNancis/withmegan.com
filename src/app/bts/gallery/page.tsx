@@ -42,7 +42,7 @@ export default async function BtsGalleryPage() {
             <SchoolBookIcon className="h-9 w-9" />
           </div>
           <p className="text-sm font-medium text-gray-500">
-            Photos arrive after the event — check back soon.
+            Photos arrive after the event. Check back soon!
           </p>
         </div>
       ) : (

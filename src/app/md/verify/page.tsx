@@ -34,7 +34,7 @@ export default async function MdVerifyPage({
             Registration Verification
           </h1>
           <p className="mt-2 text-sm text-amber-50 drop-shadow">
-            Market Day with Megan &mdash; scan-to-verify. Present this screen at the
+            Market Day with Megan · scan-to-verify. Present this screen at the
             hamper distribution counter on event day.
           </p>
         </div>
@@ -204,7 +204,7 @@ function Detail({
         {label}
       </dt>
       <dd className="mt-0.5 text-sm font-medium text-gray-900">
-        {value || "—"}
+        {value || "N/A"}
       </dd>
     </div>
   );

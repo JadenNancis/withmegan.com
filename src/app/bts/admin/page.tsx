@@ -119,7 +119,7 @@ export default async function BtsAdminDashboard({
                     className={`hover:bg-cyan-50/40 transition-colors bts-fade-in-up bts-stagger-${Math.min(i + 1, 7)}`}
                   >
                     <td className="px-4 py-3 text-sm font-mono font-medium text-cyan-700">
-                      {g.thaId ?? "—"}
+                      {g.thaId ?? "N/A"}
                     </td>
                     <td className="px-4 py-3 text-sm">
                       <div className="font-medium text-gray-900">{g.fullName}</div>

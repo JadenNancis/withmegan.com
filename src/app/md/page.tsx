@@ -38,7 +38,7 @@ export default function MdLanding() {
           <div className="relative mx-auto max-w-4xl px-4 py-12 sm:py-20">
             <div className="text-center text-white space-y-4">
               <p className="text-amber-100 text-sm font-bold uppercase tracking-wider md-animate-fade-in-up">
-                THA-Supported Community Initiative
+                THA-Supported Community Programme
               </p>
               <h1 className="text-3xl sm:text-5xl font-bold leading-tight drop-shadow-lg md-animate-fade-in-up md-delay-1">
                 {site.name}
@@ -108,7 +108,7 @@ export default function MdLanding() {
             />
             <PhotoCard
               src="/images/tobago/produce-market.jpg"
-              alt="Produce market — Debe Market, Trinidad & Tobago"
+              alt="Produce market, Debe Market, Trinidad & Tobago"
               span="col-span-1"
             />
             <PhotoCard
@@ -118,7 +118,7 @@ export default function MdLanding() {
             />
             <PhotoCard
               src="/images/tobago/tobago-cuisine.jpg"
-              alt="Tobago cuisine — local food"
+              alt="Tobago cuisine, local food"
               span="col-span-1"
             />
             <PhotoCard
@@ -136,14 +136,14 @@ export default function MdLanding() {
           <div className="flex items-center gap-4 mb-4">
             <TobagoMapBadge className="w-12 h-12 flex-none" />
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-amber-900">About the initiative</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-amber-900">About the programme</h2>
               <p className="text-sm text-amber-700 font-medium">Rooted in Tobago, grown for community</p>
             </div>
           </div>
           <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-            Market Day with Megan is a community hamper distribution initiative serving
+            Market Day with Megan is a community hamper distribution programme serving
             residents of Mt. St. George/Goodwood, Tobago. Each eligible household
-            receives a hamper of essential goods. Registration is open in advance &mdash;
+            receives a hamper of essential goods. Registration is open in advance.
             once registered, you&apos;ll be assigned to a household group for verification
             and collection on the day.
           </p>
@@ -154,7 +154,7 @@ export default function MdLanding() {
               { icon: <BasketIcon className="w-10 h-10 mx-auto" />, step: "1", text: "Register online with your name, address, and contact details.", delay: "" },
               { icon: <MangoIcon className="w-10 h-10 mx-auto" />, step: "2", text: "Receive your unique Application ID and household reference.", delay: "md-delay-1" },
               { icon: <CommunityIcon className="w-12 h-10 mx-auto" />, step: "3", text: "Bring your ID on event day for verification at the distribution counter.", delay: "md-delay-2" },
-              { icon: <BreadfruitIcon className="w-10 h-10 mx-auto" />, step: "4", text: "Collect your hamper &mdash; one per household.", delay: "md-delay-3" },
+              { icon: <BreadfruitIcon className="w-10 h-10 mx-auto" />, step: "4", text: "Collect your hamper. One per household.", delay: "md-delay-3" },
             ].map((item) => (
               <div
                 key={item.step}

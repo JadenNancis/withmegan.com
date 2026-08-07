@@ -1,6 +1,6 @@
-# With Megan — Community Initiative Portals
+# With Megan · Community Programme Portals
 
-One deployment, one database, two community initiative portals served from different domains.
+One deployment, one database, two community programme portals served from different domains.
 
 ## Sites
 

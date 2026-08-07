@@ -55,7 +55,7 @@ export async function notifyRegistrationConfirmed(
       });
       void sendEmail({
         to: email,
-        subject: `Registration Confirmation — ${applicationId}`,
+        subject: `Registration Confirmation · ${applicationId}`,
         html,
       }).catch((e) => console.error("[notify] Email failed:", e));
     } catch (e) {
@@ -73,7 +73,7 @@ export async function notifyEventReminder(
 ): Promise<void> {
   const { siteKey, applicationId, recipientName, phoneNumber } = params;
   const e164 = toE164(phoneNumber);
-  const body = `Reminder: ${recipientName}, your Application ID ${applicationId} — event is tomorrow. Bring your ID!`;
+  const body = `Reminder: ${recipientName}, your Application ID ${applicationId}. Event is tomorrow. Bring your ID!`;
 
   if (e164) {
     void sendSms(e164, body).catch((e) =>

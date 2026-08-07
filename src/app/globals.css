@@ -57,16 +57,19 @@ body {
   background-attachment: fixed;
 }
 
-/* Semi-transparent warm wash that lets the body's photo background show through,
-   plus the THA institutional pattern on top. Applied on top of body's photo. */
+/* Content wrapper over the body photo. Translucent frosted-dark veil keeps text
+   readable; the body photo still bleeds through for warmth. */
 .tha-warm-bg {
-  background-image:
-    radial-gradient(ellipse at top, rgba(217, 119, 6, 0.10) 0%, transparent 50%),
-    radial-gradient(ellipse at bottom, rgba(6, 182, 212, 0.07) 0%, transparent 50%),
-    url("/img_assets/hero-pattern.svg");
-  background-color: transparent;
-  background-attachment: fixed;
-  backdrop-filter: blur(2px);
+  background-color: rgba(8, 12, 16, 0.72);
+  backdrop-filter: blur(14px) saturate(1.1);
+}
+
+/* Hero pattern utility used on dark photo banners to add a subtle texture */
+.bg-hero-pattern {
+  background-image: url("/img_assets/hero-pattern.svg");
+  background-size: 1800px auto;
+  background-position: center top;
+  background-repeat: repeat;
 }
 
 /* Hide scrollbar for horizontally scrollable tab navs while keeping scroll behaviour */

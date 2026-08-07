@@ -89,7 +89,7 @@ function header(doc: PDFKit.PDFDocument, siteName: string, eventDate: string) {
     .fontSize(14)
     .font("Helvetica-Bold")
     .fillColor("#000")
-    .text("THA Community Initiative Report", { align: "center" });
+    .text("THA Community Programme Report", { align: "center" });
   doc.moveDown(0.5);
   doc.moveTo(56, doc.y).lineTo(doc.page.width - 56, doc.y).strokeColor("#ccc").stroke();
   doc.moveDown(0.8);

@@ -40,7 +40,7 @@ function SignInForm() {
       <RotatingBackground />
       <div className="w-full max-w-sm rounded-xl border border-white/15 bg-white p-8 shadow-2xl">
         <h1 className="text-xl font-bold text-gray-900">Admin Sign In</h1>
-        <p className="mt-1 text-sm text-gray-600">Shared login for both initiative portals.</p>
+        <p className="mt-1 text-sm text-gray-600">Shared login for both programme portals.</p>
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>

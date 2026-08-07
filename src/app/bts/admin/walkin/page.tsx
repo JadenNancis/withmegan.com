@@ -19,7 +19,7 @@ export default async function BtsWalkInPage() {
         <div>
           <h1 className="text-2xl font-bold text-cyan-900">Walk-In Quick Registration</h1>
           <p className="mt-1 text-sm text-gray-600">
-            For guardians who arrive on event day without pre-registering. One dependent only — add more later from the detail page.
+            For guardians who arrive on event day without pre-registering. One dependent only. Add more later from the detail page.
           </p>
         </div>
         <a

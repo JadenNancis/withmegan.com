@@ -3,7 +3,7 @@ import { BasketIcon, CommunityIcon, TobagoMapBadge } from "@/components/md-illus
 const supporters = [
   {
     name: "THA Division of Health, Wellness and Social Protection",
-    role: "Government partner — funding & logistical support",
+    role: "Government partner: funding & logistical support",
   },
   {
     name: "Mt. St. George Community Council",
@@ -46,7 +46,7 @@ export default function MdSupportersPage() {
       <section className="-mx-4 bg-gradient-to-b from-amber-50 to-white py-12">
         <div className="mx-auto max-w-4xl px-4">
           <div className="md-animate-fade-in-up mb-8 text-center">
-            <h2 className="text-xl sm:text-2xl font-bold text-amber-900">This initiative is supported by</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-amber-900">This programme is supported by</h2>
             <p className="mt-2 text-sm text-amber-700">
               We are deeply grateful to every organization and individual listed below.
             </p>
@@ -77,7 +77,7 @@ export default function MdSupportersPage() {
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-amber-900">How to Support</h2>
           <p className="mt-3 text-sm text-gray-600 leading-relaxed">
-            Want to help future distributions? There are many ways to contribute — sponsor a hamper,
+            Want to help future distributions? There are many ways to contribute: sponsor a hamper,
             donate provisions, or volunteer on event day.
           </p>
           <div className="mt-6 space-y-2 text-sm text-amber-800">

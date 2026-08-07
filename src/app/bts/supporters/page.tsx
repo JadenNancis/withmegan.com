@@ -3,7 +3,7 @@ import { PalmTreeIcon, SchoolBookIcon, TobagoMapBadge } from "@/components/bts-i
 const supporters = [
   {
     name: "THA Division of Health, Wellness and Social Protection",
-    role: "Government partner — funding & logistical support",
+    role: "Government partner: funding & logistical support",
   },
   {
     name: "Mt. St. George Community Council",
@@ -46,7 +46,7 @@ export default function BtsSupportersPage() {
       <section className="-mx-4 bg-gradient-to-b from-cyan-50 to-white py-12">
         <div className="mx-auto max-w-4xl px-4">
           <div className="bts-fade-in-up mb-8 text-center">
-            <h2 className="text-xl sm:text-2xl font-bold text-brand-900">This initiative is supported by</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-brand-900">This programme is supported by</h2>
             <p className="mt-2 text-sm text-gray-600">
               We are deeply grateful to every organization and individual listed below.
             </p>
@@ -79,7 +79,7 @@ export default function BtsSupportersPage() {
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-brand-900">How to Support</h2>
           <p className="mt-3 text-sm text-gray-600 leading-relaxed">
-            Want to help next year&rsquo;s book drive? There are many ways to contribute — donate books
+            Want to help next year&rsquo;s book drive? There are many ways to contribute: donate books
             or stationery, sponsor a student&rsquo;s supplies, or volunteer on event day.
           </p>
           <div className="mt-6 space-y-2 text-sm text-brand-800">

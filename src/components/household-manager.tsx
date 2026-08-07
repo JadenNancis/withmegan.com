@@ -176,7 +176,7 @@ export function HouseholdManager({
               <div key={r.id} className="flex flex-col sm:flex-row sm:items-center gap-2 rounded-lg bg-white p-3 border border-amber-100 shadow-sm">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 truncate">{r.fullName}</p>
-                  <p className="text-xs font-mono text-amber-700 mt-0.5">{r.thaId ?? "—"}</p>
+                  <p className="text-xs font-mono text-amber-700 mt-0.5">{r.thaId ?? "N/A"}</p>
                 </div>
                 <select
                   defaultValue=""
@@ -226,7 +226,7 @@ export function HouseholdManager({
                       </span>
                     </td>
                     <td className="px-3 py-2 text-xs text-gray-500">
-                      {h.redeemedAt ? new Date(h.redeemedAt).toLocaleString("en-TT") : "—"}
+                      {h.redeemedAt ? new Date(h.redeemedAt).toLocaleString("en-TT") : "N/A"}
                     </td>
                     <td className="px-3 py-2">
                       <select
@@ -269,7 +269,7 @@ export function HouseholdManager({
                     <td className="px-3 py-2 text-xs text-gray-500">{new Date(a.createdAt).toLocaleString("en-TT")}</td>
                     <td className="px-3 py-2 text-gray-700">{a.actorEmail ?? a.actorId}</td>
                     <td className="px-3 py-2 font-mono text-xs text-gray-700">{a.action}</td>
-                    <td className="px-3 py-2 font-mono text-xs text-gray-500">{a.target ?? "—"}</td>
+                    <td className="px-3 py-2 font-mono text-xs text-gray-500">{a.target ?? "N/A"}</td>
                   </tr>
                 ))}
               </tbody>

@@ -17,7 +17,7 @@ export interface SiteConfig {
   name: string;
   /** Short tagline for the hero. */
   tagline: string;
-  /** ISO date of the initiative event. */
+  /** ISO date of the programme event. */
   eventDate: string;
   /** Primary brand colour. */
   accent: "cyan" | "amber";
@@ -39,7 +39,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     key: "bts",
     host: "backtoschoolwithmegan.tha.tt",
     name: "Back to School with Megan",
-    tagline: "Book Drive — Mt. St. George/Goodwood, Tobago",
+    tagline: "Book Drive · Mt. St. George/Goodwood, Tobago",
     eventDate: "2026-08-30",
     accent: "cyan",
     routePrefix: "/bts",
@@ -57,7 +57,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     key: "md",
     host: "marketdaywithmegan.tha.tt",
     name: "Market Day with Megan",
-    tagline: "Hamper Distribution — Mt. St. George/Goodwood, Tobago",
+    tagline: "Hamper Distribution · Mt. St. George/Goodwood, Tobago",
     eventDate: "2026-09-06",
     accent: "amber",
     routePrefix: "/md",

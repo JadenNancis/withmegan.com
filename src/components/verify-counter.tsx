@@ -187,7 +187,7 @@ export function VerifyCounter() {
             >
               <div className="min-w-0 flex-1">
                 <p className="font-medium text-gray-900 truncate">{r.fullName}</p>
-                <p className="text-xs font-mono text-amber-700 mt-0.5">{r.thaId ?? "—"}</p>
+                <p className="text-xs font-mono text-amber-700 mt-0.5">{r.thaId ?? "N/A"}</p>
               </div>
               <div className="text-right flex-none">
                 <p className="text-sm text-gray-600">{r.householdReference ?? "No household"}</p>
@@ -240,11 +240,11 @@ export function VerifyCounter() {
           <dl className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
             <div>
               <dt className="text-xs uppercase text-gray-400">National ID</dt>
-              <dd className="text-gray-700">{selected.nationalId ?? "—"}</dd>
+              <dd className="text-gray-700">{selected.nationalId ?? "N/A"}</dd>
             </div>
             <div>
               <dt className="text-xs uppercase text-gray-400">Date of birth</dt>
-              <dd className="text-gray-700">{selected.dateOfBirth ?? "—"}</dd>
+              <dd className="text-gray-700">{selected.dateOfBirth ?? "N/A"}</dd>
             </div>
             <div>
               <dt className="text-xs uppercase text-gray-400">Phone</dt>

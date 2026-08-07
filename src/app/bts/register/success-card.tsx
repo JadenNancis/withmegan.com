@@ -49,7 +49,7 @@ export function SuccessCard({
       `DTSTAMP:${stamp(new Date())}`,
       `DTSTART:${stamp(d)}`,
       `DTEND:${stamp(end)}`,
-      "SUMMARY:Back to School with Megan — Collection Day",
+      "SUMMARY:Back to School with Megan · Collection Day",
       `DESCRIPTION:Your Application ID is ${result.thaId}. Show it (or the QR code we sent) at the distribution counter.`,
       "LOCATION:Mt. St. George Community Centre\\, Tobago",
       "END:VEVENT",
@@ -74,7 +74,7 @@ export function SuccessCard({
         <h1 className="text-title text-brand-900">You&rsquo;re all set</h1>
         <p className="mt-3 text-body text-gray-600 max-w-md mx-auto leading-relaxed">
           Confirmation is on its way to <span className="font-semibold text-gray-900">{phone}</span>.
-          {" "}Keep your Application ID somewhere safe — you&rsquo;ll show it on collection day.
+          {" "}Keep your Application ID somewhere safe. You&rsquo;ll show it on collection day.
         </p>
       </div>
 
@@ -89,7 +89,7 @@ export function SuccessCard({
         {result.qrCode && (
           <div className="mt-5 inline-block rounded-2xl bg-white p-4 shadow-md ring-1 ring-brand-100">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={result.qrCode} alt="QR code — scan on event day" width={200} height={200} />
+            <img src={result.qrCode} alt="QR code for event day" width={200} height={200} />
           </div>
         )}
         <p className="mt-4 text-sm text-gray-500">
@@ -125,7 +125,7 @@ export function SuccessCard({
 
       {sentText === "error" && (
         <p className="text-center text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
-          Couldn&rsquo;t send right now. Your ID above is still valid — write it down.
+          Couldn&rsquo;t send right now. Your ID above is still valid. Write it down.
         </p>
       )}
 

@@ -153,17 +153,17 @@ export default async function MdAdminReportsPage({
               <tbody className="divide-y divide-amber-50 bg-white">
                 {filtered.map((r) => (
                   <tr key={r.id} className="hover:bg-amber-50/50 transition-colors">
-                    <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "—"}</td>
+                    <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "N/A"}</td>
                     <td className="px-3 py-2 text-gray-900">{r.fullName}</td>
-                    <td className="px-3 py-2 text-gray-600">{r.nationalId ?? "—"}</td>
-                    <td className="px-3 py-2 font-mono text-xs text-gray-600">{r.householdReference ?? "—"}</td>
+                    <td className="px-3 py-2 text-gray-600">{r.nationalId ?? "N/A"}</td>
+                    <td className="px-3 py-2 font-mono text-xs text-gray-600">{r.householdReference ?? "N/A"}</td>
                     <td className="px-3 py-2">
                       <span className={cn("inline-block rounded-full px-2 py-0.5 text-xs font-medium", statusBadge[r.hamperStatus ?? "unassigned"])}>
                         {r.hamperStatus ?? "unassigned"}
                       </span>
                     </td>
                     <td className="px-3 py-2 text-xs text-gray-500">
-                      {r.redeemedAt ? new Date(r.redeemedAt).toLocaleDateString("en-TT") : "—"}
+                      {r.redeemedAt ? new Date(r.redeemedAt).toLocaleDateString("en-TT") : "N/A"}
                     </td>
                     <td className="px-3 py-2 text-xs text-gray-500">
                       {new Date(r.createdAt).toLocaleDateString("en-TT")}

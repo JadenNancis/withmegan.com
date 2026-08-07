@@ -124,7 +124,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
                 day: "numeric",
               })}
             </p>
-            <p className="mt-1">Mt. St. George/Goodwood, Tobago · A THA-supported community initiative</p>
+            <p className="mt-1">Mt. St. George/Goodwood, Tobago · A THA-supported community programme</p>
           </div>
         </footer>
       </div>

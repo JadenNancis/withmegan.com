@@ -12,7 +12,7 @@ export default function DevIndex() {
     <div className="relative min-h-screen flex flex-col items-center justify-center gap-8 p-8">
       <RotatingBackground />
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-white">With Megan — Dev Index</h1>
+        <h1 className="text-2xl font-bold text-white">With Megan · Dev Index</h1>
         <p className="mt-2 text-sm text-white/80">
           Pick a site to preview. In production each domain routes automatically.
         </p>

@@ -82,7 +82,7 @@ export async function registrationEmailHtml(
     <div style="padding:24px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;">
       <p style="margin:0 0 16px;font-size:15px;color:#374151;">Hi ${escapeHtml(recipientName)},</p>
       <p style="margin:0 0 16px;font-size:15px;color:#374151;">
-        Your registration has been received. Save your Application ID — you'll need it to collect
+        Your registration has been received. Save your Application ID. You'll need it to collect
         resources on event day.
       </p>
       <div style="margin:20px 0;border:2px dashed ${accentBorder};background:${accentLight};border-radius:12px;padding:20px;text-align:center;">
@@ -114,7 +114,7 @@ export function eventReminderEmailHtml(params: RegistrationMessageParams): strin
   return `
   <div style="font-family:system-ui,-apple-system,sans-serif;max-width:600px;margin:0 auto;">
     <div style="background:${accentColor};color:white;padding:20px;border-radius:12px 12px 0 0;">
-      <h1 style="margin:0;font-size:20px;">${site.name} — Event Reminder</h1>
+      <h1 style="margin:0;font-size:20px;">${site.name} · Event Reminder</h1>
     </div>
     <div style="padding:24px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;">
       <p style="margin:0 0 16px;font-size:15px;color:#374151;">Hi ${escapeHtml(recipientName)},</p>

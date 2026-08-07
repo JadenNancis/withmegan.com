@@ -33,7 +33,7 @@ export function LiveStats({ site }: Props) {
       const res = await fetch(`/api/dashboard?site=${site}`, { cache: "no-store" });
       if (!res.ok) {
         if (res.status === 401) {
-          setError("Unauthorized — please sign in.");
+          setError("Unauthorized. Please sign in.");
         } else {
           setError(`Failed to load (HTTP ${res.status}).`);
         }

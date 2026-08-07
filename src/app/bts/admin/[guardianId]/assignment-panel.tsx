@@ -180,7 +180,7 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
                         className="w-32 sm:w-40 rounded-md border border-gray-300 px-2 py-1.5 text-xs"
                       />
                     ) : (
-                      <span className="text-xs text-gray-300">—</span>
+                      <span className="text-xs text-gray-300">N/A</span>
                     )}
                   </td>
                 </tr>

@@ -94,7 +94,7 @@ export function DependentsStep({
       <div className="rounded-2xl border border-brand-100 bg-white p-6 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)]">
         <h2 className="text-xl font-bold text-brand-900">Add your students</h2>
         <p className="mt-1 text-sm text-brand-700">
-          Schools and grades — that&rsquo;s all this step needs from you.
+          Schools and grades. That&rsquo;s all this step needs from you.
         </p>
       </div>
 
@@ -316,7 +316,7 @@ function BookListUpload({
       <p className="text-sm font-semibold text-brand-700">
         {uploading ? "Uploading…" : "Tap to attach a book list"}
       </p>
-      <p className="mt-1 text-xs text-brand-600">PDF or Word — or skip this step</p>
+      <p className="mt-1 text-xs text-brand-600">PDF or Word, or skip this step</p>
       <input
         ref={inputRef}
         type="file"

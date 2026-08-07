@@ -14,7 +14,7 @@ export default async function MdAdminVerifyPage() {
       <div className="md-animate-fade-in-up">
         <h1 className="text-2xl font-bold text-gray-900">Verification Counter</h1>
         <p className="mt-1 text-sm text-gray-600">
-          Real-time hamper distribution control. Search, verify, and authorize — one hamper per household.
+          Real-time hamper distribution control. Search, verify, and authorize. One hamper per household.
         </p>
       </div>
       <VerifyCounter />

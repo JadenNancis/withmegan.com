@@ -198,12 +198,12 @@ export default function BtsRegisterPage() {
                 {/* Step bubble */}
                 <div
                   className={[
-                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-all duration-200",
+                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-all duration-200 shadow-md",
                     i < state.step
-                      ? "bg-brand-600 text-white"
+                      ? "bg-brand-500 text-white ring-2 ring-brand-300/60"
                       : i === state.step
-                        ? "bg-brand-600 text-white ring-4 ring-brand-100"
-                        : "bg-gray-100 text-gray-400 ring-1 ring-gray-200",
+                        ? "bg-brand-500 text-white ring-4 ring-brand-400/40 scale-110"
+                        : "bg-white/20 text-brand-200 ring-1 ring-white/30",
                   ].join(" ")}
                   aria-current={i === state.step ? "step" : undefined}
                 >
@@ -215,10 +215,10 @@ export default function BtsRegisterPage() {
                   className={[
                     "ml-3 text-sm font-medium truncate transition-colors",
                     i < state.step
-                      ? "text-brand-600"
+                      ? "text-brand-300"
                       : i === state.step
-                        ? "text-brand-900"
-                        : "text-gray-400",
+                        ? "text-white"
+                        : "text-brand-200/70",
                   ].join(" ")}
                 >
                   {label}
@@ -230,7 +230,7 @@ export default function BtsRegisterPage() {
                     aria-hidden="true"
                     className={[
                       "ml-4 h-px flex-1 transition-colors duration-300",
-                      i < state.step ? "bg-brand-500" : "bg-gray-200",
+                      i < state.step ? "bg-brand-400" : "bg-white/25",
                     ].join(" ")}
                   />
                 )}
@@ -242,14 +242,14 @@ export default function BtsRegisterPage() {
 
       {/* Draft resume banner */}
       {draft.hadDraft && (
-        <div className="bts-card-enter rounded-xl border border-brand-200 bg-brand-50 p-4 text-sm text-brand-900 flex flex-wrap items-center gap-3">
+        <div className="bts-card-enter rounded-xl border border-brand-500/40 bg-brand-900/60 backdrop-blur-md p-4 text-sm text-white flex flex-wrap items-center gap-3 shadow-lg">
           <p className="flex-1 min-w-[200px]">
             We restored the draft you started earlier.
           </p>
           <button
             type="button"
             onClick={() => draft.dismissDraft()}
-            className="text-xs font-bold text-brand-700 underline hover:text-brand-900"
+            className="text-xs font-bold text-brand-300 underline hover:text-white transition-colors"
           >
             Start fresh
           </button>
@@ -308,8 +308,8 @@ export default function BtsRegisterPage() {
         )}
       </div>
 
-      <p className="text-xs text-gray-500">
-        <Link href="/bts" className="underline hover:text-brand-700">
+      <p className="text-xs text-white/70">
+        <Link href="/bts" className="underline hover:text-brand-200 transition-colors">
           &larr; Back to home
         </Link>
       </p>

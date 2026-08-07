@@ -361,7 +361,7 @@ export function InventoryManager({ initialItems }: InventoryManagerProps) {
                           </span>
                         </td>
                         <td className="px-4 py-3 text-sm text-gray-600">
-                          {item.donorName ?? "—"}
+                          {item.donorName ?? "N/A"}
                         </td>
                         <td className="px-4 py-3 text-sm">
                           <div className="flex items-center gap-2">
@@ -489,7 +489,7 @@ function EditRow({
         </button>
       </div>
       <p className="mt-2 text-xs text-gray-400">
-        {item.quantityAssigned} already assigned — reducing below this will show negative availability.
+        {item.quantityAssigned} already assigned. Reducing below this will show negative availability.
       </p>
     </td>
   );

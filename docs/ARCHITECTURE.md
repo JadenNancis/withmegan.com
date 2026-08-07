@@ -1,6 +1,6 @@
 # Architecture
 
-One deployment. One database. Two community initiative portals served from different domains.
+One deployment. One database. Two community programme portals served from different domains.
 
 ```
                     ┌─────────────────────────────────────┐
@@ -30,13 +30,13 @@ One deployment. One database. Two community initiative portals served from diffe
 - **One codebase, two brands.** Each domain shows its own name, colour, nav, and event details without forking the app.
 - **Shared auth.** A single admin account works across both sites. No duplicate logins.
 - **Shared data layer.** One Neon database. Site-specific tables are prefixed `bts_` or `md_`; auth and audit tables are shared.
-- **Cheap to extend.** A third initiative would be a new entry in the site registry, a new route prefix, and a new set of prefixed tables — no new deployment.
+- **Cheap to extend.** A third programme would be a new entry in the site registry, a new route prefix, and a new set of prefixed tables. No new deployment.
 
 ## Request lifecycle
 
 1. **DNS:** Both `*.tha.tt` domains point at the same Vercel deployment via CNAME/A records.
 2. **Middleware** (`src/middleware.ts`) inspects the `Host` header and calls `resolveSite()` from the site registry.
-3. **Rewrite:** The request path is rewritten to the site's internal prefix — `/bts` or `/md`. Shared paths (`/auth`, `/api`, `/_next`, static files) pass through untouched.
+3. **Rewrite:** The request path is rewritten to the site's internal prefix, `/bts` or `/md`. Shared paths (`/auth`, `/api`, `/_next`, static files) pass through untouched.
 4. **Route handler:** The App Router serves the matching page under `src/app/bts/` or `src/app/md/`, wrapped in that site's layout (branding, nav, accent colour).
 5. **Data:** Server components and route handlers read/write via the single Drizzle client (`src/db/client.ts`), using site-prefixed tables.
 
@@ -78,7 +78,7 @@ Each `SiteConfig` carries the display name, tagline, event date, accent colour, 
 ## Authentication
 
 - **Auth.js v5** (NextAuth) with the Drizzle adapter, configured in `src/auth.ts`.
-- **Database sessions** (not JWT) — the `sessions` table holds active sessions.
+- **Database sessions** (not JWT). The `sessions` table holds active sessions.
 - **Single realm:** one `users` table, one set of sessions. A user's `role` column (`"admin"` or `"staff"`) gates access to admin routes on **both** sites.
 - **Sign-in page:** `/auth/signin` (shared, not site-prefixed).
 - **Admin gate:** `requireAdmin()` (`src/lib/require-admin.ts`) is called at the top of any server component or route handler that needs elevation. It redirects unauthenticated / unauthorized users to sign-in.
@@ -96,7 +96,7 @@ Full table reference in [DATABASE.md](./DATABASE.md).
 
 ## Audit trail
 
-`src/lib/audit.ts` exposes `logAudit()` — a fire-and-forget writer that records the actor, action, site, and target. It never blocks the mutation on audit failure (errors are logged to console only). Every state-changing admin operation on a sensitive resource should call it.
+`src/lib/audit.ts` exposes `logAudit()`, a fire-and-forget writer that records the actor, action, site, and target. It never blocks the mutation on audit failure (errors are logged to console only). Every state-changing admin operation on a sensitive resource should call it.
 
 ## Application ID generation
 

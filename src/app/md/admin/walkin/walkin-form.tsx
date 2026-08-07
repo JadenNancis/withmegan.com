@@ -124,7 +124,7 @@ export function WalkInForm() {
             </div>
           )}
           <p className="mt-2 text-xs text-gray-500">
-            Keep this ID safe — you&rsquo;ll need it for verification on event day.
+            Keep this ID safe. You&rsquo;ll need it for verification on event day.
           </p>
         </div>
 
