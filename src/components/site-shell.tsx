@@ -36,7 +36,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
 
   return (
     <SiteProvider site={site}>
-      <div className="min-h-screen flex flex-col bg-brand-50/40">
+      <div className="min-h-screen flex flex-col tha-warm-bg">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
