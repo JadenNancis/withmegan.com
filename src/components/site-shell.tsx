@@ -114,8 +114,8 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
           )}
         </header>
         <main id="main" className="flex-1 mx-auto max-w-4xl w-full px-4 py-6 sm:py-8">{children}</main>
-        <footer className="border-t border-gray-200 bg-white">
-          <div className="mx-auto max-w-4xl px-4 py-4 text-xs text-gray-500">
+        <footer className="border-t border-white/10">
+          <div className="mx-auto max-w-4xl px-4 py-4 text-xs text-white/50">
             <p>
               {site.name} · Event date:{" "}
               {new Date(site.eventDate + "T12:00:00").toLocaleDateString("en-TT", {
