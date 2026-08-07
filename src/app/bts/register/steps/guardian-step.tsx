@@ -23,7 +23,7 @@ export function GuardianStep({
 }) {
   return (
     <section className="rounded-card border border-brand-100 bg-white p-5 sm:p-6 shadow-sm space-y-1">
-      <h2 className="text-lg font-bold text-brand-900 mb-4">About you (the parent or guardian)</h2>
+      <h2 className="text-lg font-bold text-brand-900 mb-4">Parent/Guardian details</h2>
 
       <Field label="Full name" required>
         <TextInput

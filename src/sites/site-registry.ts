@@ -50,6 +50,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
       { label: "Find My ID", href: "/bts/recover" },
       { label: "Progress", href: "/bts/progress" },
       { label: "Gallery", href: "/bts/gallery" },
+      { label: "Admin", href: "/bts/admin" },
     ],
   },
   md: {
@@ -67,6 +68,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
       { label: "Progress", href: "/md/progress" },
       { label: "Gallery", href: "/md/gallery" },
       { label: "Supporters", href: "/md/supporters" },
+      { label: "Admin", href: "/md/admin" },
     ],
   },
 };

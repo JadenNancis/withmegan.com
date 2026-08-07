@@ -4,6 +4,7 @@ import { count, sql } from "drizzle-orm";
 import { TobagoMapBadge, SunsetWaveDivider } from "@/components/md-illustrations";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const GOAL = 150;
 

@@ -15,6 +15,8 @@ import { count } from "drizzle-orm";
 const site = SITES.bts;
 const EVENT_DATE = new Date(site.eventDate + "T12:00:00");
 
+export const dynamic = "force-dynamic";
+
 async function getRegistrationCount(): Promise<number> {
   try {
     const [row] = await db.select({ n: count() }).from(btsGuardians);
@@ -149,7 +151,7 @@ export default async function BtsLanding() {
                 materials they need, and every registration gets a trackable Application ID.
               </p>
               <ul className="mt-6 grid gap-2.5">
-                <TrustPill icon={<PalmTreeIcon className="h-6 w-6" />} text="The Electoral District of Mt. St. George/Goodwood only" />
+                <TrustPill icon={<PalmTreeIcon className="h-6 w-6" />} text="The Electoral District of Mt. St. George/Goodwood" />
                 <TrustPill icon={<SchoolBookIcon className="h-6 w-6" />} text="Primary and secondary students" />
                 <TrustPill icon={<PelicanIcon className="h-6 w-6" />} text="Free for every registered family" />
               </ul>

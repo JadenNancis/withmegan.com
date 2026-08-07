@@ -6,6 +6,7 @@ import { TobagoMapBadge } from "@/components/bts-illustrations";
 import { SITES } from "@/sites/site-registry";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const GOAL = SITES.bts.goalFamilies;
 

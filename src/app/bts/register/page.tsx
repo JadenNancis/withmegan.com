@@ -10,7 +10,7 @@ import { useWizardDraft } from "./draft";
 import { OTHER_LOCATION_VALUE } from "@/lib/bts-locations";
 import { OTHER_SCHOOL_VALUE } from "@/lib/bts-schools";
 
-const STEPS = ["About You", "Students", "Review"] as const;
+const STEPS = ["Parent/Guardian", "Students", "Review"] as const;
 type StepIndex = 0 | 1 | 2;
 
 interface WizardState {
