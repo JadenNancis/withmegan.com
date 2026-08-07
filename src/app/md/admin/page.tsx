@@ -3,7 +3,11 @@ import { Suspense } from "react";
 import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
 import { SearchBar } from "@/components/search-bar";
-import { getDashboardStats, getRecentRegistrations, searchRegistrants } from "@/lib/md-queries";
+import { AssignmentPanel } from "@/components/assignment-panel";
+import { getDashboardStats, getRecentRegistrations, searchRegistrants, getHouseholds } from "@/lib/md-queries";
+import { mdRegistrants } from "@/db/schema";
+import { db } from "@/db/client";
+import { isNull } from "drizzle-orm";
 import { cn } from "@/lib/cn";
 import { SunsetWaveDivider } from "@/components/md-illustrations";
 
@@ -24,13 +28,37 @@ export default async function MdAdminPage({
   const sp = await searchParams;
   const q = typeof sp.q === "string" ? sp.q.trim() : "";
 
-  const [stats, recent, searchResults] = await Promise.all([
+  const [stats, recent, searchResults, households, unassignedRows] = await Promise.all([
     getDashboardStats(),
     getRecentRegistrations(15),
     q ? searchRegistrants(q, 50) : Promise.resolve(null),
+    getHouseholds(),
+    db
+      .select({
+        id: mdRegistrants.id,
+        thaId: mdRegistrants.thaId,
+        fullName: mdRegistrants.fullName,
+        address: mdRegistrants.address,
+        createdAt: mdRegistrants.createdAt,
+      })
+      .from(mdRegistrants)
+      .where(isNull(mdRegistrants.householdId))
+      .orderBy(mdRegistrants.createdAt),
   ]);
 
   const rows = searchResults ?? recent;
+
+  const unassigned = unassignedRows.map((r) => ({
+    ...r,
+    createdAt: r.createdAt.toISOString(),
+  }));
+
+  const householdsData = households.map((h) => ({
+    id: h.id,
+    reference: h.reference,
+    hamperStatus: h.hamperStatus,
+    memberCount: h.memberCount,
+  }));
 
   return (
     <div className="space-y-6">
@@ -58,6 +86,21 @@ export default async function MdAdminPage({
         <Link href="/md/admin/reports" className="min-h-[44px] flex items-center justify-center rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 text-center transition-colors">
           Reports
         </Link>
+      </section>
+
+      {/* ===== Household Assignment Panel ===== */}
+      <section className="space-y-3">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-lg font-semibold text-gray-900">
+            Unassigned applicants
+            {unassigned.length > 0 && (
+              <span className="ml-2 inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-800">
+                {unassigned.length}
+              </span>
+            )}
+          </h2>
+        </div>
+        <AssignmentPanel applicants={unassigned} households={householdsData} />
       </section>
 
       <section className="space-y-4">
