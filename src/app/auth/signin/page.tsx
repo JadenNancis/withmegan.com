@@ -10,6 +10,7 @@ function SignInForm() {
   const callbackUrl = params.get("callbackUrl") ?? "/";
   const [email, setEmail] = useState("admin@withmegan.local");
   const [password, setPassword] = useState("admin");
+  const [role, setRole] = useState("admin");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -20,6 +21,7 @@ function SignInForm() {
     const res = await signIn("credentials", {
       email,
       password,
+      role,
       redirect: false,
       callbackUrl,
     });
@@ -57,6 +59,22 @@ function SignInForm() {
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
             />
+          </div>
+          <div>
+            <label htmlFor="role" className="block text-sm font-medium text-gray-700">Sign in as</label>
+            <select
+              id="role"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white"
+            >
+              <option value="admin">Administrator</option>
+              <option value="staff">Staff</option>
+              <option value="viewer">Viewer</option>
+            </select>
+            <p className="mt-1 text-xs text-gray-400">
+              Administrator: full access · Staff: event-day access · Viewer: read-only
+            </p>
           </div>
           {error && <p className="text-sm text-red-600">{error}</p>}
           <button

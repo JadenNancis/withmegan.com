@@ -122,6 +122,30 @@ export const btsResourceAssignments = pgTable("bts_resource_assignments", {
   updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
 });
 
+export const btsInventoryCategory = pgEnum("bts_inventory_category", [
+  "Books",
+  "Stationery",
+  "Uniforms",
+  "Backpacks",
+  "Other",
+]);
+
+export const btsInventory = pgTable("bts_inventory", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  itemName: text("item_name").notNull(),
+  category: btsInventoryCategory("category").notNull().default("Other"),
+  quantityReceived: integer("quantity_received").notNull().default(0),
+  /** Free-text condition notes, e.g. "slightly worn", "brand new". */
+  condition: text("condition"),
+  /** Optional donor name for acknowledgement. */
+  donorName: text("donor_name"),
+  /** Staff member who logged the item. */
+  receivedBy: text("received_by").references(() => users.id, { onDelete: "set null" }),
+  notes: text("notes"),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+});
+
 // ── MD: Market Day ─────────────────────────────────────────────
 
 export const mdRegistrants = pgTable("md_registrants", {
@@ -173,6 +197,10 @@ export const assignmentRelations = relations(btsResourceAssignments, ({ one }) =
   dependent: one(btsDependents, { fields: [btsResourceAssignments.dependentId], references: [btsDependents.id] }),
 }));
 
+export const inventoryRelations = relations(btsInventory, ({ one }) => ({
+  receivedByUser: one(users, { fields: [btsInventory.receivedBy], references: [users.id] }),
+}));
+
 export const registrantRelations = relations(mdRegistrants, ({ one }) => ({
   household: one(mdHouseholds, { fields: [mdRegistrants.householdId], references: [mdHouseholds.id] }),
 }));
@@ -181,11 +209,25 @@ export const householdRelations = relations(mdHouseholds, ({ many }) => ({
   registrants: many(mdRegistrants),
 }));
 
+// ── Survey Responses (shared, site-tagged) ─────────────────────
+
+export const surveyResponses = pgTable("survey_responses", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  applicationId: text("application_id").notNull(),
+  site: text("site").notNull(),
+  receivedNeeded: text("received_needed").notNull(),
+  rating: integer("rating").notNull(),
+  comments: text("comments"),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+});
+
 // ── Types ──────────────────────────────────────────────────────
 
 export type User = typeof users.$inferSelect;
 export type BtsGuardian = typeof btsGuardians.$inferSelect;
 export type BtsDependent = typeof btsDependents.$inferSelect;
 export type BtsResourceAssignment = typeof btsResourceAssignments.$inferSelect;
+export type BtsInventoryItem = typeof btsInventory.$inferSelect;
 export type MdRegistrant = typeof mdRegistrants.$inferSelect;
 export type MdHousehold = typeof mdHouseholds.$inferSelect;
+export type SurveyResponse = typeof surveyResponses.$inferSelect;

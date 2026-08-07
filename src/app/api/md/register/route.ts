@@ -6,6 +6,8 @@ import { generateApplicationId } from "@/lib/tha-id";
 import { logAudit } from "@/lib/audit";
 import { registrationSchema } from "@/lib/md-schemas";
 import { normalizeTtPhone } from "@/lib/tt-phone";
+import { notifyRegistrationConfirmed } from "@/lib/notify";
+import { findDuplicates } from "@/lib/dedup";
 
 export const runtime = "nodejs";
 
@@ -94,5 +96,24 @@ export async function POST(req: Request): Promise<Response> {
     details: { thaId: registrant.thaId, householdId },
   });
 
-  return NextResponse.json({ success: true, thaId: registrant.thaId });
+  void notifyRegistrationConfirmed({
+    siteKey: "md",
+    applicationId: registrant.thaId ?? "",
+    recipientName: data.fullName.trim(),
+    phoneNumber: normalizedPhone,
+    email: data.email ?? null,
+  });
+
+  // Fuzzy duplicate check — warning only, registration still succeeds.
+  // Admins can review flagged near-matches without blocking the submitter.
+  let duplicateWarning: Awaited<ReturnType<typeof findDuplicates>> = [];
+  try {
+    duplicateWarning = await findDuplicates("md", data.fullName.trim(), normalizedPhone, data.address.trim());
+    // Exclude the record we just created (exact phone self-match).
+    duplicateWarning = duplicateWarning.filter((m) => m.id !== registrant.id);
+  } catch (err) {
+    console.error("[md/register] fuzzy dup check failed:", err);
+  }
+
+  return NextResponse.json({ success: true, thaId: registrant.thaId, duplicateWarning });
 }

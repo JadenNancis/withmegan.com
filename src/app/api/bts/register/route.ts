@@ -8,6 +8,8 @@ import { logAudit } from "@/lib/audit";
 import { sendEmail, btsRegistrationConfirmationHtml } from "@/lib/email";
 import { SITES } from "@/sites/site-registry";
 import { normalizeTtPhone, isValidTtPhone } from "@/lib/tt-phone";
+import { notifyRegistrationConfirmed } from "@/lib/notify";
+import { findDuplicates } from "@/lib/dedup";
 
 const dependentSchema = z.object({
   studentName: z.string().min(1, "Student name is required"),
@@ -114,28 +116,24 @@ export async function POST(req: Request) {
     },
   });
 
-  const eventDate = new Date(SITES.bts.eventDate).toLocaleDateString("en-TT", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
+  void notifyRegistrationConfirmed({
+    siteKey: "bts",
+    applicationId: thaId,
+    recipientName: guardian.fullName,
+    phoneNumber: normalizedPhone,
+    email: guardian.email || null,
   });
 
-  if (guardian.email && guardian.email.trim()) {
-    void sendEmail({
-      to: guardian.email,
-      subject: `Registration Confirmation — ${thaId}`,
-      html: btsRegistrationConfirmationHtml({
-        guardianName: guardian.fullName,
-        thaId,
-        dependents: input.dependents.map((d) => ({
-          studentName: d.studentName,
-          schoolName: d.schoolName,
-        })),
-        eventDate,
-      }),
-    });
+  // Fuzzy duplicate check — warning only, registration still succeeds.
+  // Admins can review flagged near-matches without blocking the submitter.
+  let duplicateWarning: Awaited<ReturnType<typeof findDuplicates>> = [];
+  try {
+    duplicateWarning = await findDuplicates("bts", guardian.fullName, normalizedPhone, guardian.address);
+    // Exclude the record we just created (exact phone self-match).
+    duplicateWarning = duplicateWarning.filter((m) => m.id !== guardianId);
+  } catch (err) {
+    console.error("[bts/register] fuzzy dup check failed:", err);
   }
 
-  return NextResponse.json({ success: true, thaId });
+  return NextResponse.json({ success: true, thaId, duplicateWarning });
 }

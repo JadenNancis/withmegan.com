@@ -35,3 +35,6 @@ next-env.d.ts
 
 # drizzle
 /drizzle/meta
+
+# local uploads (prototype file storage)
+/uploads

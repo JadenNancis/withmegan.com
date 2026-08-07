@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/require-admin";
+import { AdminNav } from "@/components/admin-nav";
 import { getAllGuardians } from "@/lib/bts-queries";
 import { WaveDivider, SchoolBookIcon } from "@/components/bts-illustrations";
 
@@ -18,6 +19,8 @@ export default async function BtsAdminDashboard({
 
   return (
     <div className="space-y-6">
+      <AdminNav current="/bts/admin" site="bts" />
+
       {/* Subtle wave divider at top */}
       <div className="-mx-4 -mt-8 mb-2 h-10 overflow-hidden">
         <WaveDivider className="h-10 w-full" preserveAspectRatio="none" />
@@ -37,6 +40,12 @@ export default async function BtsAdminDashboard({
           </div>
         </div>
         <div className="flex gap-2">
+          <Link
+            href="/bts/admin/inventory"
+            className="inline-flex items-center justify-center rounded-lg border border-cyan-200 bg-white px-4 py-2.5 text-sm font-bold text-cyan-700 shadow-sm hover:bg-cyan-50 transition-colors min-h-[44px]"
+          >
+            Inventory &rarr;
+          </Link>
           <Link
             href="/bts/admin/reports"
             className="inline-flex items-center justify-center rounded-lg border border-cyan-200 bg-white px-4 py-2.5 text-sm font-bold text-cyan-700 shadow-sm hover:bg-cyan-50 transition-colors min-h-[44px]"

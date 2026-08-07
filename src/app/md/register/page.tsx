@@ -20,6 +20,7 @@ export default function MdRegisterPage() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState<SuccessResult | null>(null);
+  const [qrCode, setQrCode] = useState<string | null>(null);
 
   // Controlled fields
   const [fullName, setFullName] = useState("");
@@ -75,6 +76,14 @@ export default function MdRegisterPage() {
       const json = (await res.json()) as { success?: boolean; thaId?: string; error?: string };
       if (res.ok && json.success && json.thaId) {
         setSuccess({ thaId: json.thaId, fullName });
+        // Fetch QR code
+        try {
+          const qrRes = await fetch(`/api/qr?aid=${encodeURIComponent(json.thaId)}&site=md`);
+          if (qrRes.ok) {
+            const qrData = await qrRes.json() as { dataUrl?: string };
+            if (qrData.dataUrl) setQrCode(qrData.dataUrl);
+          }
+        } catch { /* QR is nice-to-have */ }
       } else {
         setSubmitError(json.error ?? "Registration failed. Please try again.");
       }
@@ -106,6 +115,12 @@ export default function MdRegisterPage() {
           <div className="mt-6 rounded-xl bg-white p-5 border border-green-200 shadow-sm md-animate-fade-in-up md-delay-3">
             <p className="text-xs uppercase tracking-wide text-gray-500 font-semibold">Your Application ID</p>
             <p className="mt-1 text-2xl sm:text-3xl font-mono font-bold text-amber-700 select-all break-all">{success.thaId}</p>
+            {qrCode && (
+              <div className="mt-3 flex flex-col items-center gap-2">
+                <img src={qrCode} alt="QR code for verification" className="rounded-lg shadow-sm" width={180} height={180} />
+                <p className="text-xs text-gray-500">Scan this at the distribution counter on event day</p>
+              </div>
+            )}
             <p className="mt-2 text-xs text-gray-500">
               Keep this ID safe &mdash; you&apos;ll need it for verification on event day.
             </p>

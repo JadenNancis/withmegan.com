@@ -1,15 +1,17 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/require-admin";
+import { AdminNav } from "@/components/admin-nav";
 import { db } from "@/db/client";
-import { btsGuardians, btsDependents, btsResourceAssignments } from "@/db/schema";
+import { btsGuardians, btsDependents, btsResourceAssignments, btsInventory } from "@/db/schema";
 
 export default async function BtsReportsPage() {
   await requireAdmin("/bts/admin/reports");
 
-  const [guardians, dependents, assignments] = await Promise.all([
+  const [guardians, dependents, assignments, inventory] = await Promise.all([
     db.select().from(btsGuardians),
     db.select().from(btsDependents),
     db.select().from(btsResourceAssignments),
+    db.select().from(btsInventory),
   ]);
 
   const totalGuardians = guardians.length;
@@ -33,12 +35,21 @@ export default async function BtsReportsPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <Link href="/bts/admin" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 py-1">
-          ← Back to dashboard
-        </Link>
-        <h1 className="mt-2 text-2xl font-bold text-gray-900">Reports</h1>
-        <p className="mt-1 text-sm text-gray-600">Summary of all BTS book drive registrations.</p>
+      <AdminNav current="/bts/admin/reports" site="bts" />
+
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Reports</h1>
+          <p className="mt-1 text-sm text-gray-600">Summary of all BTS book drive registrations.</p>
+        </div>
+        <a
+          href="/api/export?site=bts&format=pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
+        >
+          Export PDF
+        </a>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
@@ -103,6 +114,39 @@ export default async function BtsReportsPage() {
             accent="amber"
           />
         </div>
+      </section>
+
+      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold text-gray-900">Inventory Summary</h2>
+          <Link
+            href="/bts/admin/inventory"
+            className="text-sm font-bold text-cyan-600 hover:text-cyan-800 transition-colors"
+          >
+            Manage inventory &rarr;
+          </Link>
+        </div>
+        {inventory.length === 0 ? (
+          <p className="mt-2 text-sm text-gray-500">No inventory items recorded yet.</p>
+        ) : (
+          <div className="mt-3 grid gap-4 sm:grid-cols-3">
+            <StatCard
+              label="Items Received"
+              value={inventory.reduce((sum, i) => sum + i.quantityReceived, 0)}
+              accent="blue"
+            />
+            <StatCard
+              label="Inventory Entries"
+              value={inventory.length}
+              accent="amber"
+            />
+            <StatCard
+              label="Categories"
+              value={new Set(inventory.map((i) => i.category)).size}
+              accent="green"
+            />
+          </div>
+        )}
       </section>
     </div>
   );

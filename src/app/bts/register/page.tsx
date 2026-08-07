@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Field, TextInput, TextArea, Select, SubmitButton } from "@/components/form";
 import { cn } from "@/lib/cn";
@@ -49,6 +49,7 @@ export default function BtsRegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [success, setSuccess] = useState<{ thaId: string } | null>(null);
+  const [qrCode, setQrCode] = useState<string | null>(null);
 
   function addDependent() {
     setDependents((d) => [...d, emptyDependent()]);
@@ -141,6 +142,14 @@ export default function BtsRegisterPage() {
         throw new Error(errData.message ?? errData.error ?? "Registration failed");
       }
       setSuccess(data as { thaId: string });
+      // Fetch QR code
+      try {
+        const qrRes = await fetch(`/api/qr?aid=${encodeURIComponent((data as { thaId: string }).thaId)}&site=bts`);
+        if (qrRes.ok) {
+          const qrData = await qrRes.json() as { dataUrl?: string };
+          if (qrData.dataUrl) setQrCode(qrData.dataUrl);
+        }
+      } catch { /* QR is nice-to-have */ }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Registration failed");
     } finally {
@@ -186,6 +195,12 @@ export default function BtsRegisterPage() {
             <p className="mt-2 text-3xl font-bold text-cyan-900 tracking-wider font-mono">
               {success.thaId}
             </p>
+            {qrCode && (
+              <div className="mt-4 flex flex-col items-center gap-2">
+                <img src={qrCode} alt="QR code for verification" className="rounded-lg shadow-sm" width={200} height={200} />
+                <p className="text-xs text-gray-500">Scan this at the distribution counter on event day</p>
+              </div>
+            )}
           </div>
 
           <div className="bts-fade-in-up bts-stagger-5 mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -199,6 +214,7 @@ export default function BtsRegisterPage() {
               type="button"
               onClick={() => {
                 setSuccess(null);
+                setQrCode(null);
                 setFullName("");
                 setContactNumber("");
                 setEmail("");
