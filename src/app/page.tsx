@@ -12,8 +12,8 @@ export default function DevIndex() {
     <div className="relative min-h-screen flex flex-col items-center justify-center gap-8 p-8">
       <RotatingBackground />
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-white">With Megan · Dev Index</h1>
-        <p className="mt-2 text-sm text-white/80">
+        <h1 className="text-3xl font-bold text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">With Megan · Dev Index</h1>
+        <p className="mt-2 text-sm text-white/90 drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)]">
           Pick a site to preview. In production each domain routes automatically.
         </p>
       </div>
@@ -22,7 +22,7 @@ export default function DevIndex() {
           <Link
             key={site.key}
             href={`${site.routePrefix}?site=${site.key}`}
-            className="block rounded-xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-shadow"
+            className="block rounded-2xl border border-white/20 bg-white/95 backdrop-blur-md p-6 shadow-xl hover:shadow-2xl hover:bg-white hover:-translate-y-0.5 transition-all"
           >
             <h2 className="text-lg font-bold text-gray-900">{site.name}</h2>
             <p className="mt-1 text-sm text-gray-600">{site.tagline}</p>
