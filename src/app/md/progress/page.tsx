@@ -37,8 +37,8 @@ export default async function MdProgressPage() {
   return (
     <div className="space-y-0">
       {/* ===== Hero ===== */}
-      <section className="-mx-4 -mt-8 mb-0 overflow-hidden bg-gradient-to-br from-amber-900 via-orange-900 to-amber-700">
-        <div className="md-hero-shimmer absolute inset-0 opacity-20" />
+      <section className="relative -mx-4 -mt-8 mb-0 overflow-hidden bg-gradient-to-br from-amber-900 via-orange-900 to-amber-700">
+        <div className="md-hero-shimmer absolute inset-0 opacity-20 pointer-events-none" />
         <div className="relative mx-auto max-w-4xl px-4 py-12 text-center text-white">
           <div className="md-animate-fade-in-up mx-auto mb-4">
             <TobagoMapBadge className="h-20 w-20 drop-shadow-lg" />

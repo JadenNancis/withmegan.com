@@ -86,9 +86,13 @@ export default function MdLanding() {
             <p className="text-2xl font-bold text-white">1</p>
             <p className="mt-1 text-sm font-medium text-amber-100">Distribution centre</p>
           </div>
-          <div className="md-animate-fade-in-up md-delay-2 rounded-2xl border border-amber-200/40 bg-white/10 p-5 sm:p-6 backdrop-blur-md">
-            <p className="text-2xl font-bold text-white">Free</p>
-            <p className="mt-1 text-sm font-medium text-amber-100">For registered residents</p>
+          <div className="md-animate-fade-in-up md-delay-2 rounded-2xl border border-amber-200/40 bg-white/10 p-5 sm:p-6 backdrop-blur-md flex flex-col justify-center">
+            <Link
+              href="/md/register"
+              className="md-animate-pulse-warm inline-flex justify-center rounded-xl bg-white px-6 py-3 text-base font-bold text-amber-700 shadow-lg hover:bg-amber-50 transition-all hover:scale-105 active:scale-95"
+            >
+              Register for a hamper &rarr;
+            </Link>
           </div>
         </div>
       </section>

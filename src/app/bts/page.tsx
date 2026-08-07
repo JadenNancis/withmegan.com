@@ -44,7 +44,10 @@ export default function BtsLanding() {
 
             {/* Hero text */}
             <div className="bts-fade-in-up bts-stagger-2 text-center text-white">
-              <h1 className="text-3xl sm:text-5xl font-bold tracking-tight drop-shadow-lg">
+              <span className="inline-block rounded-full bg-cyan-400/20 px-4 py-1.5 text-sm font-bold uppercase tracking-wider text-cyan-100 ring-1 ring-inset ring-cyan-300/40 backdrop-blur-sm">
+                Mount St. George &amp; Goodwood Constituency
+              </span>
+              <h1 className="mt-4 text-3xl sm:text-5xl font-bold tracking-tight drop-shadow-lg">
                 Back to School with Megan
               </h1>
               <p className="mt-4 text-base sm:text-lg text-cyan-50 max-w-2xl mx-auto leading-relaxed">

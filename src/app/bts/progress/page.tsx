@@ -33,8 +33,8 @@ export default async function BtsProgressPage() {
   return (
     <div className="space-y-0">
       {/* ===== Hero ===== */}
-      <section className="-mx-4 -mt-8 mb-0 overflow-hidden bg-gradient-to-br from-cyan-900 via-blue-900 to-cyan-700">
-        <div className="bts-ocean-shimmer absolute inset-0 opacity-15" />
+      <section className="relative -mx-4 -mt-8 mb-0 overflow-hidden bg-gradient-to-br from-cyan-900 via-blue-900 to-cyan-700">
+        <div className="bts-ocean-shimmer absolute inset-0 opacity-15 pointer-events-none" />
         <div className="relative mx-auto max-w-4xl px-4 py-12 text-center text-white">
           <div className="bts-fade-in-up bts-stagger-1 mx-auto mb-4 bts-float">
             <TobagoMapBadge className="h-20 w-20 drop-shadow-lg" />
