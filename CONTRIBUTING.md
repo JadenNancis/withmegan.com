@@ -23,7 +23,7 @@ Open `http://localhost:3000` and use `?site=bts` or `?site=md` to preview each p
 
 ## Deployment flow
 
-**Pushing to `main` triggers a production deployment** via the GitHub Actions workflow in `.github/workflows/deploy.yml` (Vercel deploy). There is no separate deployment per site. Both domains are served from one Vercel project.
+**Pushing to `main` triggers a production deployment** via the GitHub Actions workflow in `.github/workflows/deploy.yml` (Vercel deploy). There is no separate deployment per site. Both domains are served from one Vercel project. Domain routing is handled by `src/proxy.ts` (Next.js 16 proxy, formerly middleware).
 
 If the workflow's required secrets (`VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`) are not set, the workflow will skip and Vercel's native Git integration (if enabled on the imported repo) handles auto-deploy instead.
 
@@ -42,7 +42,6 @@ See [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) for the full deployment guide.
 
 ```bash
 pnpm typecheck    # tsc --noEmit, must pass
-pnpm lint         # next lint
 pnpm build        # production build must succeed
 ```
 

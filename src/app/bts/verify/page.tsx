@@ -21,8 +21,8 @@ export default async function BtsVerifyPage({
   return (
     <div className="space-y-5 py-2">
       <header className="text-center">
-        <h1 className="text-title text-brand-900">Verify a Registration</h1>
-        <p className="mt-1 text-sm text-brand-700">
+        <h1 className="text-title text-white drop-shadow-md">Verify a Registration</h1>
+        <p className="mt-1 text-sm text-brand-100/90 drop-shadow-sm">
           Back to School with Megan · show this at the distribution counter.
         </p>
       </header>
@@ -110,7 +110,7 @@ async function VerifyResult({ aid }: { aid: string }) {
         </div>
       )}
 
-      <section className="bts-card-enter rounded-2xl border border-green-200 bg-green-50/60 p-5 shadow-sm">
+      <section className="bts-card-enter rounded-2xl border border-green-300/60 bg-gradient-to-br from-green-50 to-emerald-50 p-5 shadow-lg">
         <div className="flex items-center gap-3">
           <GreenCheck />
           <div>
@@ -120,11 +120,11 @@ async function VerifyResult({ aid }: { aid: string }) {
         </div>
       </section>
 
-      <section className="rounded-2xl border-2 border-dashed border-brand-300 bg-brand-50/50 p-5 text-center">
-        <p className="text-xs font-semibold uppercase tracking-wider text-brand-600">
+      <section className="rounded-2xl border-2 border-dashed border-brand-400/70 bg-brand-950/50 backdrop-blur-md p-5 text-center shadow-lg">
+        <p className="text-xs font-semibold uppercase tracking-wider text-brand-300">
           Application ID
         </p>
-        <p className="mt-1.5 break-all font-mono text-2xl font-bold tracking-wider text-brand-900">
+        <p className="mt-1.5 break-all font-mono text-2xl font-bold tracking-wider text-white drop-shadow">
           {guardian.thaId ?? aid}
         </p>
       </section>

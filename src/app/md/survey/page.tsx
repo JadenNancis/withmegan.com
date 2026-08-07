@@ -75,8 +75,8 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
             </svg>
           </div>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-amber-900">Thank you!</h1>
-        <p className="mt-3 max-w-md text-sm text-gray-600">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Thank you!</h1>
+        <p className="mt-3 max-w-md text-sm text-amber-100/90 drop-shadow-sm">
           Your feedback helps us improve future hamper distributions. We appreciate you taking the time
           to share your experience.
         </p>
@@ -88,15 +88,15 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
     <div className="space-y-6">
       {/* Header */}
       <div className="md-animate-fade-in-up flex flex-col items-center text-center">
-        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 shadow-sm">
-          <BasketIcon className="h-9 w-9" />
+        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-500/20 ring-1 ring-inset ring-amber-400/40 backdrop-blur-sm shadow-lg">
+          <BasketIcon className="h-9 w-9 text-amber-300" />
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-amber-900">Post-Event Survey</h1>
-        <p className="mt-2 max-w-md text-sm text-gray-600">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Post-Event Survey</h1>
+        <p className="mt-2 max-w-md text-sm text-amber-100/90 drop-shadow-sm">
           Tell us how the Market Day hamper distribution went for your household.
         </p>
         {aid && (
-          <p className="mt-3 rounded-full bg-amber-50 px-4 py-1.5 text-xs font-mono font-medium text-amber-700">
+          <p className="mt-3 rounded-full bg-amber-950/70 backdrop-blur-md border border-amber-400/40 px-4 py-1.5 text-xs font-mono font-medium text-amber-200">
             Application ID: {aid}
           </p>
         )}

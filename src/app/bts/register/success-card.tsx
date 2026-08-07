@@ -129,9 +129,9 @@ export function SuccessCard({
         </p>
       )}
 
-      <p className="text-center text-sm text-gray-500 pt-2">
+      <p className="text-center text-sm text-white/75 pt-2">
         Lost your ID later?{" "}
-        <Link href="/bts/recover" className="font-semibold text-brand-700 underline hover:text-brand-800">
+        <Link href="/bts/recover" className="font-semibold text-brand-300 underline hover:text-white transition-colors">
           Recover it here
         </Link>
       </p>
@@ -140,7 +140,7 @@ export function SuccessCard({
         <button
           type="button"
           onClick={onRegisterAnother}
-          className="text-sm font-semibold text-brand-700 underline hover:text-brand-900 transition-colors"
+          className="text-sm font-semibold text-brand-200 underline hover:text-white transition-colors"
         >
           Register another family
         </button>

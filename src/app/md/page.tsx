@@ -136,11 +136,11 @@ export default function MdLanding() {
           <div className="flex items-center gap-4 mb-4">
             <TobagoMapBadge className="w-12 h-12 flex-none" />
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-amber-900">About the programme</h2>
-              <p className="text-sm text-amber-700 font-medium">Rooted in Tobago, grown for community</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">About the programme</h2>
+              <p className="text-sm text-amber-100/90 font-medium drop-shadow-sm">Rooted in Tobago, grown for community</p>
             </div>
           </div>
-          <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
+          <p className="text-sm sm:text-base text-amber-50/85 leading-relaxed drop-shadow-sm">
             Market Day with Megan is a community hamper distribution programme serving
             residents of Mt. St. George/Goodwood, Tobago. Each eligible household
             receives a hamper of essential goods. Registration is open in advance.
@@ -148,7 +148,7 @@ export default function MdLanding() {
             and collection on the day.
           </p>
 
-          <h3 className="mt-8 text-sm font-bold text-gray-900 uppercase tracking-wide">How it works</h3>
+          <h3 className="mt-8 text-sm font-bold text-white uppercase tracking-wide drop-shadow-sm">How it works</h3>
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {[
               { icon: <BasketIcon className="w-10 h-10 mx-auto" />, step: "1", text: "Register online with your name, address, and contact details.", delay: "" },
@@ -158,13 +158,13 @@ export default function MdLanding() {
             ].map((item) => (
               <div
                 key={item.step}
-                className={`md-animate-fade-in-up ${item.delay} rounded-xl border border-amber-100 bg-gradient-to-b from-amber-50/50 to-white p-4 text-center hover:shadow-lg hover:border-amber-300 transition-all hover:-translate-y-1`}
+                className={`md-animate-fade-in-up ${item.delay} rounded-xl border border-white/25 bg-white/92 backdrop-blur-sm p-4 text-center shadow-md hover:shadow-xl hover:border-amber-300/60 transition-all hover:-translate-y-1`}
               >
                 <div className="mb-2">{item.icon}</div>
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-amber-500 text-xs font-bold text-white shadow-sm">
                   {item.step}
                 </span>
-                <p className="mt-2 text-xs text-gray-600 leading-relaxed">{item.text}</p>
+                <p className="mt-2 text-xs text-gray-700 leading-relaxed">{item.text}</p>
               </div>
             ))}
           </div>

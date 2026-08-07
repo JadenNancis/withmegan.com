@@ -23,22 +23,22 @@ export default async function MdGalleryPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="md-animate-fade-in-up flex flex-col items-center text-center">
-        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 shadow-sm">
-          <BasketIcon className="h-9 w-9" />
+        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-500/20 ring-1 ring-inset ring-amber-400/40 backdrop-blur-sm shadow-lg">
+          <BasketIcon className="h-9 w-9 text-amber-300" />
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-amber-900">Event Gallery</h1>
-        <p className="mt-2 max-w-md text-sm text-gray-600">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Event Gallery</h1>
+        <p className="mt-2 max-w-md text-sm text-amber-100/90 drop-shadow-sm">
           Moments from the Market Day hamper distribution in Mt. St. George/Goodwood.
         </p>
       </div>
 
       {/* Gallery grid */}
       {photos.length === 0 ? (
-        <div className="md-animate-fade-in-up rounded-2xl border border-dashed border-amber-300 bg-amber-50/30 p-12 text-center">
-          <div className="mx-auto mb-4 opacity-30">
-            <BasketIcon className="h-16 w-16" />
+        <div className="md-animate-fade-in-up rounded-2xl border border-white/25 bg-amber-950/60 backdrop-blur-md p-12 text-center shadow-xl">
+          <div className="mx-auto mb-4 opacity-50">
+            <BasketIcon className="h-16 w-16 text-amber-300" />
           </div>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-amber-100/85">
             No photos yet. Check back after the event!
           </p>
         </div>

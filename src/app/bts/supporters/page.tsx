@@ -35,8 +35,8 @@ export default function BtsSupportersPage() {
         <div className="mb-6 bts-float">
           <TobagoMapBadge className="h-24 w-24 drop-shadow-lg" />
         </div>
-        <h1 className="text-2xl sm:text-4xl font-bold text-brand-900">Our Supporters</h1>
-        <p className="mt-4 max-w-2xl text-base text-gray-600 leading-relaxed">
+        <h1 className="text-2xl sm:text-4xl font-bold text-white drop-shadow-md">Our Supporters</h1>
+        <p className="mt-4 max-w-2xl text-base text-brand-100/90 leading-relaxed drop-shadow-sm">
           Back to School with Megan is made possible by the generosity of partners who believe every
           student in Tobago deserves to start the school year ready to learn.
         </p>

@@ -7,7 +7,7 @@ This app deploys as a **single Vercel project** that serves both domains. There 
 - A [Vercel](https://vercel.com) account
 - A [Neon](https://neon.tech) Postgres database
 - Both domains registered and DNS-editable (`backtoschoolwithmegan.tha.tt`, `marketdaywithmegan.tha.tt`)
-- The Vercel CLI (`npm i -g vercel`) for the first link, or import via the Vercel dashboard
+- The Vercel CLI (`pnpm add -g vercel`) for the first link, or import via the Vercel dashboard
 
 ## 1. Create the Vercel project
 
@@ -16,7 +16,7 @@ This app deploys as a **single Vercel project** that serves both domains. There 
 **Option B — CLI:**
 
 ```bash
-pnpm i -g vercel
+pnpm add -g vercel
 vercel link        # associate this directory with a Vercel project
 vercel             # preview deployment
 ```
@@ -41,7 +41,7 @@ vercel domains add marketdaywithmegan.tha.tt
 
 Vercel will display the DNS records to add at your registrar (CNAME pointing to `cname.vercel-dns.com`, or A record to `76.76.21.21`). Add them at the `.tha.tt` DNS provider. Once DNS propagates, Vercel issues TLS certificates automatically.
 
-> Both domains point at the **same** deployment. Middleware routes by Host header — see [ARCHITECTURE.md](./ARCHITECTURE.md).
+> Both domains point at the **same** deployment. Proxy routes by Host header — see [ARCHITECTURE.md](./ARCHITECTURE.md).
 
 ## 3. Set environment variables
 
@@ -54,6 +54,9 @@ In **Vercel → Settings → Environment Variables**, add these for the **Produc
 | `AUTH_URL` | `https://backtoschoolwithmegan.tha.tt` (canonical production origin) | Yes |
 | `NEXT_PUBLIC_BTS_HOST` | `backtoschoolwithmegan.tha.tt` | Yes |
 | `NEXT_PUBLIC_MD_HOST` | `marketdaywithmegan.tha.tt` | Yes |
+| `NEXT_PUBLIC_APP_URL` | `https://backtoschoolwithmegan.tha.tt` (OpenGraph metadata base) | Yes |
+| `RESEND_API_KEY` | Resend API key (omit to log emails to console instead) | No |
+| `FROM_EMAIL` | `Back to School with Megan <noreply@withmegan.com>` | No |
 | `BLOB_READ_WRITE_TOKEN` | Vercel Blob token (only when file uploads go to Blob) | No |
 | `ADMIN_EMAIL` | Override prototype admin email | No |
 | `ADMIN_PASSWORD` | Override prototype admin password | No |
@@ -92,13 +95,13 @@ vercel --prod
 
 ## 6. Verify
 
-- Visit `https://backtoschoolwithmegan.tha.tt` → should show the Back to School site (blue accent).
+- Visit `https://backtoschoolwithmegan.tha.tt` → should show the Back to School site (cyan accent).
 - Visit `https://marketdaywithmegan.tha.tt` → should show the Market Day site (amber accent).
 - Visit `https://backtoschoolwithmegan.tha.tt/auth/signin` → shared sign-in page.
 - Sign in with the prototype admin, then hit `/bts/admin` or `/md/admin` to confirm the gate works.
 
 ## Automatic deployments
 
-A GitHub Actions workflow (`.github/workflows/deploy.yml`) triggers a Vercel production deployment on every push to `main`. This requires the `VERCEL_TOKEN` and `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` secrets set in the GitHub repo settings — see the workflow file for details.
+A GitHub Actions workflow (`.github/workflows/deploy.yml`) triggers a Vercel production deployment on every push to `main`. This requires the `VERCEL_TOKEN` secret and `VERCEL_ORG_ID` / `VERCEL_PROJECT_ID` variables set in the GitHub repo settings — see the workflow file for details.
 
 If you prefer Vercel's native Git integration instead, you can delete the workflow and let Vercel auto-deploy on push (the default for imported repos).

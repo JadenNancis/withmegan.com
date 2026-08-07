@@ -11,7 +11,7 @@ One deployment, one database, two community programme portals served from differ
 
 ## Architecture
 
-- **Framework:** Next.js 15 (App Router, TypeScript)
+- **Framework:** Next.js 16 (App Router, TypeScript, Turbopack)
 - **Database:** Neon Postgres (serverless), Drizzle ORM
 - **Auth:** Auth.js v5 (NextAuth), shared across both sites
 - **Styling:** Tailwind CSS v4
@@ -19,7 +19,7 @@ One deployment, one database, two community programme portals served from differ
 
 ### Domain routing
 
-Middleware (`src/middleware.ts`) inspects the `Host` header and rewrites requests to the site's internal route prefix (`/bts` or `/md`). In development, use `?site=bts` or `?site=md` to switch sites on `localhost:3000`.
+Proxy (`src/proxy.ts`) inspects the `Host` header and rewrites requests to the site's internal route prefix (`/bts` or `/md`). In development, use `?site=bts` or `?site=md` to switch sites on `localhost:3000`.
 
 ### Database
 
@@ -52,16 +52,16 @@ src/
 │   ├── bts/              # Back to School routes (domain: backtoschoolwithmegan.tha.tt)
 │   ├── md/               # Market Day routes (domain: marketdaywithmegan.tha.tt)
 │   ├── auth/             # Shared auth (sign-in page + route handler)
-│   ├── api/              # Shared API routes (upload, health)
+│   ├── api/              # Shared API routes (upload, health, export, QR, survey, gallery, progress)
 │   └── layout.tsx        # Root layout
-├── components/           # Shared UI (SiteShell, form primitives)
+├── components/           # Shared UI (SiteShell, form primitives, illustrations, admin nav)
 ├── db/                   # Drizzle schema + Neon client
-├── lib/                  # Shared utilities (tha-id, audit, cn, require-admin)
+├── lib/                  # Shared utilities (tha-id, audit, email, notifications, QR, RBAC, schools, locations)
 ├── sites/                # Site registry + context
 ├── auth.ts               # Auth.js config
-└── middleware.ts         # Domain-based routing
+└── proxy.ts              # Domain-based routing (Next.js 16 proxy, formerly middleware)
 ```
 
 ## Status
 
-🚧 Prototype in progress. See the project documents for full requirements.
+Production-bound. See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the deployment guide and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the architecture overview.

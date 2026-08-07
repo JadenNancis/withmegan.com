@@ -27,21 +27,21 @@ export default async function BtsGalleryPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="bts-fade-in-up text-center">
-        <h1 className="text-2xl sm:text-3xl font-bold text-brand-900">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">
           Event Gallery
         </h1>
-        <p className="mt-3 text-base text-gray-600 max-w-lg mx-auto leading-relaxed">
+        <p className="mt-3 text-base text-brand-100/90 max-w-lg mx-auto leading-relaxed drop-shadow-sm">
           Moments from the Back to School book drive in Mt. St. George/Goodwood.
         </p>
       </div>
 
       {/* Gallery grid */}
       {photos.length === 0 ? (
-        <div className="bts-fade-in-up rounded-2xl border border-dashed border-brand-200 bg-brand-50/30 p-16 text-center">
-          <div className="mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-100/60 text-brand-400">
+        <div className="bts-fade-in-up rounded-2xl border border-white/25 bg-brand-950/60 backdrop-blur-md p-16 text-center shadow-xl">
+          <div className="mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-500/20 text-brand-300 ring-1 ring-inset ring-brand-400/40">
             <SchoolBookIcon className="h-9 w-9" />
           </div>
-          <p className="text-sm font-medium text-gray-500">
+          <p className="text-sm font-medium text-brand-100/85">
             Photos arrive after the event. Check back soon!
           </p>
         </div>

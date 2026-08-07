@@ -112,9 +112,9 @@ export default function BtsRecoverPage() {
         </button>
       </form>
 
-      <p className="text-center text-xs text-gray-500">
+      <p className="text-center text-xs text-white/70">
         Haven&rsquo;t registered yet?{" "}
-        <Link href="/bts/register" className="font-semibold text-cyan-700 underline">
+        <Link href="/bts/register" className="font-semibold text-brand-200 underline hover:text-white transition-colors">
           Start registration
         </Link>
       </p>

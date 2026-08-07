@@ -27,11 +27,12 @@ Always use the **pooled** Neon endpoint (the `-pooler` hostname) for app traffic
 | `sessions` | Database sessions. `sessionToken` (PK), `userId` → `users.id`, `expires`. |
 | `verification_tokens` | Email verification tokens. `identifier`, `token`, `expires`. |
 
-### Shared — Audit
+### Shared — Audit & Surveys
 
 | Table | Purpose |
 |-------|---------|
 | `audit_log` | Fire-and-forget audit trail. `actorId`, `actorEmail`, `action`, `site` (`"bts"` \| `"md"`), `target` (polymorphic ref), `details` (jsonb), `createdAt`. Written by `src/lib/audit.ts`. |
+| `survey_responses` | Post-event survey submissions. `applicationId` (links to registration), `site` (`"bts"` \| `"md"`), `receivedNeeded` (text), `rating` (integer), `comments`, `createdAt`. |
 
 ### BTS — Back to School Book Drive
 
@@ -39,7 +40,8 @@ Always use the **pooled** Neon endpoint (the `-pooler` hostname) for app traffic
 |-------|---------|
 | `bts_guardians` | Guardian registrations. `fullName`, `contactNumber`, `email`, `address`, `consent`, `thaId` (unique server-generated). |
 | `bts_dependents` | Students linked to a guardian. `guardianId` → `bts_guardians.id` (cascade), `studentName`, `schoolName`, `gradeLevel`, `notes`, `bookListUrl`. |
-| `bts_resource_assignments` | Per-dependent book/resource assignments. `dependentId` → `bts_dependents.id` (cascade), `itemName`, `quantityAssigned`, `quantityCollected`, `status` (enum: `pending` \| `partial` \| `full` \| `collected`), `assignedBy` → `users.id` (set null), `collectedAt`. |
+| `bts_resource_assignments` | Per-dependent book/resource assignments. `dependentId` → `bts_dependents.id` (cascade), `itemName`, `quantityAssigned`, `quantityCollected`, `status` (enum: `pending` \| `partial` \| `full` \| `collected`), `assignedBy` → `users.id` (set null), `collectedByName`, `collectedAt`. |
+| `bts_inventory` | Donated inventory stock. `itemName`, `category` (enum: `Books` \| `Stationery` \| `Uniforms` \| `Backpacks` \| `Other`), `quantityReceived`, `condition`, `donorName`, `receivedBy` → `users.id` (set null), `notes`. |
 
 ### MD — Market Day Hamper Distribution
 
@@ -53,6 +55,7 @@ Always use the **pooled** Neon endpoint (the `-pooler` hostname) for app traffic
 | Enum | Values |
 |------|--------|
 | `bts_assignment_status` | `pending`, `partial`, `full`, `collected` |
+| `bts_inventory_category` | `Books`, `Stationery`, `Uniforms`, `Backpacks`, `Other` |
 | `md_hamper_status` | `unassigned`, `assigned`, `redeemed` |
 
 ## Relations
@@ -100,8 +103,10 @@ export type User = typeof users.$inferSelect;
 export type BtsGuardian = typeof btsGuardians.$inferSelect;
 export type BtsDependent = typeof btsDependents.$inferSelect;
 export type BtsResourceAssignment = typeof btsResourceAssignments.$inferSelect;
+export type BtsInventoryItem = typeof btsInventory.$inferSelect;
 export type MdRegistrant = typeof mdRegistrants.$inferSelect;
 export type MdHousehold = typeof mdHouseholds.$inferSelect;
+export type SurveyResponse = typeof surveyResponses.$inferSelect;
 ```
 
 ## Hard rules

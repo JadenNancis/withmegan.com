@@ -64,8 +64,8 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
         <div className="bts-float mb-6">
           <SuccessCheckmark className="h-24 w-24 drop-shadow-lg" />
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-cyan-900">Thank you!</h1>
-        <p className="mt-3 max-w-md text-sm text-gray-600">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Thank you!</h1>
+        <p className="mt-3 max-w-md text-sm text-brand-100/90 drop-shadow-sm">
           Your feedback helps us improve future book drives. We appreciate you taking the time to share
           your experience.
         </p>
@@ -77,14 +77,14 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
     <div className="space-y-6">
       {/* Header */}
       <div className="bts-fade-in-up text-center">
-        <h1 className="text-2xl sm:text-3xl font-bold text-brand-900">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">
           Post-Event Survey
         </h1>
-        <p className="mt-3 text-base text-gray-600 max-w-lg mx-auto leading-relaxed">
+        <p className="mt-3 text-base text-brand-100/90 max-w-lg mx-auto leading-relaxed drop-shadow-sm">
           Tell us how the Back to School book drive went for your family.
         </p>
         {aid && (
-          <p className="mt-4 inline-block rounded-full bg-brand-50 px-4 py-1.5 text-xs font-mono font-medium text-brand-700">
+          <p className="mt-4 inline-block rounded-full bg-brand-950/70 backdrop-blur-md border border-brand-400/40 px-4 py-1.5 text-xs font-mono font-medium text-brand-200">
             Application ID: {aid}
           </p>
         )}

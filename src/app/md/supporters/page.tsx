@@ -35,8 +35,8 @@ export default function MdSupportersPage() {
         <div className="mb-6 md-animate-float">
           <TobagoMapBadge className="h-24 w-24 drop-shadow-lg" />
         </div>
-        <h1 className="text-2xl sm:text-4xl font-bold text-amber-900">Our Supporters</h1>
-        <p className="mt-3 max-w-2xl text-sm sm:text-base text-amber-800 leading-relaxed">
+        <h1 className="text-2xl sm:text-4xl font-bold text-white drop-shadow-md">Our Supporters</h1>
+        <p className="mt-3 max-w-2xl text-sm sm:text-base text-amber-100/90 leading-relaxed drop-shadow-sm">
           Market Day with Megan is made possible by the generosity of partners who believe every
           household in Tobago deserves access to fresh, nutritious food.
         </p>
