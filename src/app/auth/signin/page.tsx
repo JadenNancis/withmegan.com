@@ -35,8 +35,8 @@ function SignInForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="w-full max-w-sm rounded-xl border border-gray-200 bg-white p-8 shadow-sm">
+    <div className="min-h-screen flex items-center justify-center tha-warm-bg px-4">
+      <div className="w-full max-w-sm rounded-xl border border-white/15 bg-white p-8 shadow-2xl">
         <h1 className="text-xl font-bold text-gray-900">Admin Sign In</h1>
         <p className="mt-1 text-sm text-gray-600">Shared login for both initiative portals.</p>
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
@@ -95,7 +95,7 @@ function SignInForm() {
 
 export default function SignInPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50">Loading…</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center tha-warm-bg">Loading…</div>}>
       <SignInForm />
     </Suspense>
   );

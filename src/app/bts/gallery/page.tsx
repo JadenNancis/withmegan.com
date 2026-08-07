@@ -39,7 +39,7 @@ export default async function BtsGalleryPage() {
         </div>
         <h1 className="text-title text-brand-900">Event Gallery</h1>
         <p className="mt-2 max-w-md text-sm text-gray-600">
-          Moments from the Back to School book drive in Mount St. George &amp; Goodwood.
+          Moments from the Back to School book drive in the Electoral District of Mt. St. George/Goodwood.
         </p>
       </header>
 

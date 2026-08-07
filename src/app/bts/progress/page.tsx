@@ -42,8 +42,8 @@ export default async function BtsProgressPage() {
           </div>
           <h1 className="text-title text-white">Community Progress</h1>
           <p className="mt-2 text-body text-brand-100 max-w-2xl mx-auto">
-            How the Back to School book drive is reaching families across Mount St. George
-            &amp; Goodwood.
+            How the Back to School book drive is reaching families across the Electoral District
+            of Mt. St. George/Goodwood.
           </p>
         </div>
       </section>

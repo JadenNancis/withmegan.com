@@ -27,8 +27,9 @@ export default async function MdVerifyPage({
 
   return (
     <div className="space-y-6">
-      <div className="relative overflow-hidden rounded-2xl md-hero-shimmer shadow-lg">
-        <div className="px-6 py-6">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-700 to-amber-500 shadow-lg">
+        <div className="md-hero-shimmer absolute inset-0 opacity-20 pointer-events-none" />
+        <div className="relative px-6 py-6">
           <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow">
             Registration Verification
           </h1>

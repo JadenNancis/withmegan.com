@@ -36,7 +36,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
 
   return (
     <SiteProvider site={site}>
-      <div className="min-h-screen flex flex-col bg-brand-50/40">
+      <div className="min-h-screen flex flex-col tha-warm-bg">
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
@@ -114,8 +114,8 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
           )}
         </header>
         <main id="main" className="flex-1 mx-auto max-w-4xl w-full px-4 py-6 sm:py-8">{children}</main>
-        <footer className="border-t border-gray-200 bg-white">
-          <div className="mx-auto max-w-4xl px-4 py-4 text-xs text-gray-500">
+        <footer className="border-t border-white/10">
+          <div className="mx-auto max-w-4xl px-4 py-4 text-xs text-white/50">
             <p>
               {site.name} · Event date:{" "}
               {new Date(site.eventDate + "T12:00:00").toLocaleDateString("en-TT", {
@@ -124,7 +124,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
                 day: "numeric",
               })}
             </p>
-            <p className="mt-1">Mount St. George &amp; Goodwood, Tobago · A THA-supported community initiative</p>
+            <p className="mt-1">The Electoral District of Mt. St. George/Goodwood, Tobago · A THA-supported community initiative</p>
           </div>
         </footer>
       </div>

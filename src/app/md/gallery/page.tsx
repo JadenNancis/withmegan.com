@@ -30,7 +30,7 @@ export default async function MdGalleryPage() {
         </div>
         <h1 className="text-2xl sm:text-3xl font-bold text-amber-900">Event Gallery</h1>
         <p className="mt-2 max-w-md text-sm text-gray-600">
-          Moments from the Market Day hamper distribution in Mount St. George &amp; Goodwood.
+          Moments from the Market Day hamper distribution in the Electoral District of Mt. St. George/Goodwood.
         </p>
       </div>
 

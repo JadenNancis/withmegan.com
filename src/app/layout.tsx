@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Back to School with Megan",
     description:
-      "Free books and supplies for families in Mount St. George & Goodwood, Tobago. Register in three minutes.",
+      "Free books and supplies for families in the Electoral District of Mt. St. George/Goodwood, Tobago. Register in three minutes.",
     type: "website",
     images: [
       {

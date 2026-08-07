@@ -148,7 +148,7 @@ export default function MdLanding() {
           </div>
           <p className="text-sm text-gray-600 leading-relaxed">
             Market Day with Megan is a community hamper distribution initiative serving
-            residents of Mount St. George and Goodwood, Tobago. Each eligible household
+            residents of the Electoral District of Mt. St. George/Goodwood, Tobago. Each eligible household
             receives a hamper of essential goods. Registration is open in advance &mdash;
             once registered, you&apos;ll be assigned to a household group for verification
             and collection on the day.

@@ -44,7 +44,7 @@ export default async function BtsLanding() {
 
         <div className="relative mx-auto max-w-4xl px-4 py-14 sm:py-20 text-center text-white">
           <span className="bts-fade-in-up bts-stagger-1 inline-block rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-100 ring-1 ring-inset ring-white/25 backdrop-blur-sm">
-            Mount St. George &amp; Goodwood
+            The Electoral District of Mt. St. George/Goodwood
           </span>
           <h1 className="bts-fade-in-up bts-stagger-2 mt-4 text-4xl sm:text-5xl font-bold tracking-tight">
             Back to School with Megan
@@ -145,11 +145,11 @@ export default async function BtsLanding() {
               <h2 className="text-title text-brand-900">About the initiative</h2>
               <p className="mt-3 text-body text-brand-800/90 leading-relaxed">
                 Back to School with Megan is a THA-supported community initiative serving
-                Mount St. George and Goodwood. We connect students with the books and learning
+                the Electoral District of Mt. St. George/Goodwood. We connect students with the books and learning
                 materials they need, and every registration gets a trackable Application ID.
               </p>
               <ul className="mt-6 grid gap-2.5">
-                <TrustPill icon={<PalmTreeIcon className="h-6 w-6" />} text="Mount St. George &amp; Goodwood only" />
+                <TrustPill icon={<PalmTreeIcon className="h-6 w-6" />} text="The Electoral District of Mt. St. George/Goodwood only" />
                 <TrustPill icon={<SchoolBookIcon className="h-6 w-6" />} text="Primary and secondary students" />
                 <TrustPill icon={<PelicanIcon className="h-6 w-6" />} text="Free for every registered family" />
               </ul>

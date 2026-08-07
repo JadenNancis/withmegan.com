@@ -49,6 +49,22 @@ html {
 
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background-color: #1c1410;
+  background-image: url("/img_assets/hero-pattern.svg");
+  background-attachment: fixed;
+}
+
+/* Warm dark background with THA-style hero pattern overlay.
+   Deep warm brown-bronze base (#1c1410) — warmer than THA's cold
+   slate-950 but same institutional pattern approach. Subtle amber
+   and cyan radial glows tie in both domain accent colours. */
+.tha-warm-bg {
+  background-color: #1c1410;
+  background-image:
+    radial-gradient(ellipse at top, rgba(217, 119, 6, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+    url("/img_assets/hero-pattern.svg");
+  background-attachment: fixed;
 }
 
 /* Hide scrollbar for horizontally scrollable tab navs while keeping scroll behaviour */

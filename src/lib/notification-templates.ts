@@ -33,7 +33,7 @@ export function registrationSmsBody(params: RegistrationMessageParams): string {
   const { siteKey, applicationId, recipientName } = params;
   const site = SITES[siteKey];
   const date = formatDate(siteKey);
-  return `${site.name}: Hi ${recipientName}, your registration is confirmed. Application ID: ${applicationId}. Event: ${date}, Mount St. George & Goodwood, Tobago. Bring your ID to collect.`;
+  return `${site.name}: Hi ${recipientName}, your registration is confirmed. Application ID: ${applicationId}. Event: ${date}, The Electoral District of Mt. St. George/Goodwood, Tobago. Bring your ID to collect.`;
 }
 
 /**
@@ -95,7 +95,7 @@ export async function registrationEmailHtml(
       </div>
       <div style="margin-top:24px;background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;">
         <p style="margin:0;font-size:14px;color:#0c4a6e;"><strong>Event date:</strong> ${date}</p>
-        <p style="margin:4px 0 0;font-size:14px;color:#0c4a6e;">Mount St. George &amp; Goodwood, Tobago</p>
+        <p style="margin:4px 0 0;font-size:14px;color:#0c4a6e;">The Electoral District of Mt. St. George/Goodwood, Tobago</p>
       </div>
       <p style="margin-top:24px;font-size:12px;color:#6b7280;">If you did not register, you can ignore this email.</p>
     </div>
@@ -120,7 +120,7 @@ export function eventReminderEmailHtml(params: RegistrationMessageParams): strin
       <p style="margin:0 0 16px;font-size:15px;color:#374151;">Hi ${escapeHtml(recipientName)},</p>
       <p style="margin:0 0 16px;font-size:15px;color:#374151;">
         This is a reminder that the event is on <strong>${date}</strong> at
-        Mount St. George &amp; Goodwood, Tobago.
+        The Electoral District of Mt. St. George/Goodwood, Tobago.
       </p>
       <p style="font-size:14px;color:#374151;">Bring your Application ID: <strong>${escapeHtml(applicationId)}</strong></p>
       <p style="margin-top:24px;font-size:12px;color:#6b7280;">See you there!</p>
