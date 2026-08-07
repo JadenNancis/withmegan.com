@@ -49,10 +49,6 @@ export function DependentsStep({
     onChange(dependents.map((d, idx) => (idx === i ? { ...d, ...patch } : d)));
   }
 
-  function add() {
-    onChange([...dependents, emptyDependent()]);
-  }
-
   function remove(i: number) {
     if (dependents.length <= 1) return;
     const next = dependents.filter((_, idx) => idx !== i);
@@ -98,7 +94,7 @@ export function DependentsStep({
       <div className="rounded-card border border-brand-100 bg-white p-5 sm:p-6 shadow-sm">
         <h2 className="text-lg font-bold text-brand-900">Your students</h2>
         <p className="mt-1 text-sm text-brand-700">
-          Add every child you&rsquo;re registering. Book list is optional.
+          Fill in each child&rsquo;s details below. Book list is optional.
         </p>
       </div>
 
@@ -226,14 +222,6 @@ export function DependentsStep({
           </article>
         );
       })}
-
-      <button
-        type="button"
-        onClick={add}
-        className="w-full rounded-card border-2 border-dashed border-brand-300 bg-white px-4 py-4 text-sm font-bold text-brand-700 hover:bg-brand-50 hover:border-brand-400 transition-colors"
-      >
-        + Add another student
-      </button>
 
       {/* Nav */}
       <div className="flex flex-col-reverse sm:flex-row gap-3 pt-2">

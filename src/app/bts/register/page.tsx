@@ -19,6 +19,7 @@ interface WizardState {
   email: string;
   address: string;
   manualAddress: string;
+  studentCount: number;
   consent: boolean;
   dependents: DependentForm[];
   step: StepIndex;
@@ -30,6 +31,7 @@ const initialState: WizardState = {
   email: "",
   address: "",
   manualAddress: "",
+  studentCount: 1,
   consent: false,
   dependents: [emptyDependent()],
   step: 0,
@@ -253,8 +255,17 @@ export default function BtsRegisterPage() {
               email: state.email,
               address: state.address,
               manualAddress: state.manualAddress,
+              studentCount: state.studentCount,
             }}
             onChange={(p) => patch(p)}
+            onStudentCountChange={(count) => {
+              setState((prev) => {
+                const deps = [...prev.dependents];
+                while (deps.length < count) deps.push(emptyDependent());
+                while (deps.length > count) deps.pop();
+                return { ...prev, studentCount: count, dependents: deps };
+              });
+            }}
             onNext={next}
           />
         )}

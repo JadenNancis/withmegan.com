@@ -10,15 +10,18 @@ export interface GuardianState {
   email: string;
   address: string;
   manualAddress: string;
+  studentCount: number;
 }
 
 export function GuardianStep({
   state,
   onChange,
+  onStudentCountChange,
   onNext,
 }: {
   state: GuardianState;
   onChange: (p: Partial<GuardianState>) => void;
+  onStudentCountChange: (count: number) => void;
   onNext: () => void;
 }) {
   return (
@@ -83,6 +86,25 @@ export function GuardianStep({
           />
         </Field>
       )}
+
+      <Field label="Number of students" required>
+        <TextInput
+          type="number"
+          inputMode="numeric"
+          min={1}
+          max={20}
+          value={state.studentCount}
+          onChange={(e) => {
+            const n = Math.max(1, Math.min(20, parseInt(e.target.value, 10) || 1));
+            onChange({ studentCount: n });
+            onStudentCountChange(n);
+          }}
+          className="w-24"
+        />
+        <p className="mt-1 text-xs text-gray-500">
+          How many children are you registering?
+        </p>
+      </Field>
 
       <div className="pt-4">
         <button
