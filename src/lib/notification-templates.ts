@@ -33,7 +33,7 @@ export function registrationSmsBody(params: RegistrationMessageParams): string {
   const { siteKey, applicationId, recipientName } = params;
   const site = SITES[siteKey];
   const date = formatDate(siteKey);
-  return `${site.name}: Hi ${recipientName}, your registration is confirmed. Application ID: ${applicationId}. Event: ${date}, the Electoral District of Mt. St. George/Goodwood, Tobago. Bring your ID to collect.`;
+  return `${site.name}: Hi ${recipientName}, your registration is confirmed. Application ID: ${applicationId}. Event: ${date}, The Electoral District of Mt. St. George/Goodwood, Tobago. Bring your ID to collect.`;
 }
 
 /**
@@ -120,7 +120,7 @@ export function eventReminderEmailHtml(params: RegistrationMessageParams): strin
       <p style="margin:0 0 16px;font-size:15px;color:#374151;">Hi ${escapeHtml(recipientName)},</p>
       <p style="margin:0 0 16px;font-size:15px;color:#374151;">
         This is a reminder that the event is on <strong>${date}</strong> at
-        the Electoral District of Mt. St. George/Goodwood, Tobago.
+        The Electoral District of Mt. St. George/Goodwood, Tobago.
       </p>
       <p style="font-size:14px;color:#374151;">Bring your Application ID: <strong>${escapeHtml(applicationId)}</strong></p>
       <p style="margin-top:24px;font-size:12px;color:#6b7280;">See you there!</p>

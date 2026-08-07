@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SITES } from "@/sites/site-registry";
 import {
@@ -5,291 +6,230 @@ import {
   PalmTreeIcon,
   PelicanIcon,
   SchoolBookIcon,
-  WaveDivider,
   TobagoMapBadge,
 } from "@/components/bts-illustrations";
+import { db } from "@/db/client";
+import { btsGuardians } from "@/db/schema";
+import { count } from "drizzle-orm";
 
-const EVENT_DATE = new Date(SITES.bts.eventDate);
+const site = SITES.bts;
+const EVENT_DATE = new Date(site.eventDate + "T12:00:00");
 
-export default function BtsLanding() {
+async function getRegistrationCount(): Promise<number> {
+  try {
+    const [row] = await db.select({ n: count() }).from(btsGuardians);
+    return row?.n ?? 0;
+  } catch {
+    return 0;
+  }
+}
+
+export default async function BtsLanding() {
+  const registered = await getRegistrationCount();
+  const pct = Math.min(100, Math.round((registered / site.goalFamilies) * 100));
+
   return (
-    <div className="space-y-0">
-      {/* ===== Hero Section — full-bleed ===== */}
-      <section className="-mx-4 -mt-8 mb-0 relative overflow-hidden">
-        <div
-          className="relative bg-cover bg-center min-h-[440px] sm:min-h-[540px]"
-          style={{ backgroundImage: "url('/images/tobago/bts-child-reading.jpg')" }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/90 via-blue-900/85 to-cyan-700/75" />
-          <div className="bts-ocean-shimmer absolute inset-0 opacity-15 pointer-events-none" />
-          <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="bts-float bts-float-delay-1 absolute left-[5%] top-[10%] opacity-20">
-              <PalmTreeIcon className="h-16 w-16" />
-            </div>
-            <div className="bts-float bts-float-delay-3 absolute right-[8%] top-[15%] opacity-25">
-              <PelicanIcon className="h-20 w-16" />
-            </div>
-            <div className="bts-float-sm bts-float-delay-2 absolute left-[15%] top-[55%] opacity-15">
-              <SchoolBookIcon className="h-12 w-12" />
-            </div>
+    <div className="-mx-4 -my-6 sm:-my-8 space-y-0">
+      {/* ===== Hero — single photo, one message, two actions ===== */}
+      <section className="relative overflow-hidden bg-brand-950">
+        <Image
+          src="/images/tobago/bts-child-reading.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-950/70 via-brand-900/60 to-brand-950/90" />
+
+        <div className="relative mx-auto max-w-4xl px-4 py-14 sm:py-20 text-center text-white">
+          <span className="bts-fade-in-up bts-stagger-1 inline-block rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-100 ring-1 ring-inset ring-white/25 backdrop-blur-sm">
+            The Electoral District of Mt. St. George/Goodwood
+          </span>
+          <h1 className="bts-fade-in-up bts-stagger-2 mt-4 text-4xl sm:text-5xl font-bold tracking-tight">
+            Back to School with Megan
+          </h1>
+          <p className="bts-fade-in-up bts-stagger-3 mt-4 text-base sm:text-lg text-brand-100 max-w-xl mx-auto leading-relaxed">
+            Free books and supplies for every student in the constituency.
+            Register in three minutes — we&rsquo;ll match each child with what they need.
+          </p>
+
+          <div className="bts-fade-in-up bts-stagger-3 mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-brand-50 ring-1 ring-inset ring-white/20">
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="16" rx="2" />
+              <path d="M8 3v4M16 3v4M3 10h18" />
+            </svg>
+            {EVENT_DATE.toLocaleDateString("en-TT", {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+            })}
           </div>
 
-          <div className="relative mx-auto max-w-4xl px-4 py-12 sm:py-20">
-            <div className="bts-fade-in-up bts-stagger-1 mx-auto mb-6 max-w-md sm:max-w-lg">
-              <TobagoBooksHero className="w-full h-auto drop-shadow-2xl" />
-            </div>
-
-            <div className="bts-fade-in-up bts-stagger-2 text-center text-white">
-              <span className="inline-block rounded-full bg-cyan-400/20 px-4 py-1.5 text-sm font-bold uppercase tracking-wider text-cyan-100 ring-1 ring-inset ring-cyan-300/40 backdrop-blur-sm">
-                The Electoral District of Mt. St. George/Goodwood
-              </span>
-              <h1 className="mt-4 text-3xl sm:text-5xl font-bold tracking-tight drop-shadow-lg">
-                Back to School with Megan
-              </h1>
-              <p className="mt-4 text-base sm:text-lg text-cyan-50 max-w-2xl mx-auto leading-relaxed">
-                A community book drive ensuring every student in the Electoral District of Mt. St. George/Goodwood, Tobago
-                starts the school year ready to learn. Register your dependents, upload their book lists,
-                and we&rsquo;ll help match them with the resources they need.
-              </p>
-            </div>
-
-            <div className="bts-fade-in-up bts-stagger-3 mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-              <Link
-                href="/bts/register"
-                className="bts-pulse-glow inline-flex items-center justify-center rounded-xl bg-white px-8 py-4 text-base font-bold text-cyan-800 shadow-lg hover:bg-cyan-50 transition-all hover:scale-105 active:scale-95"
-              >
-                Register a Student &rarr;
-              </Link>
-              <div className="inline-flex items-center justify-center rounded-xl bg-cyan-600/30 px-6 py-4 text-base font-medium text-white ring-1 ring-inset ring-white/30 backdrop-blur-sm">
-                <span className="mr-2 text-lg">&#128197;</span>
-                {EVENT_DATE.toLocaleDateString("en-TT", {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </div>
-            </div>
+          <div className="bts-fade-in-up bts-stagger-4 mt-8 flex flex-col sm:flex-row gap-3 justify-center sm:items-center">
+            <Link
+              href="/bts/register"
+              className="inline-flex min-h-[56px] items-center justify-center rounded-xl bg-white px-8 text-base font-bold text-brand-800 shadow-lg hover:bg-brand-50 transition-colors"
+            >
+              Register a Student
+            </Link>
+            <Link
+              href="/bts/recover"
+              className="inline-flex min-h-[56px] items-center justify-center rounded-xl bg-transparent px-8 text-base font-semibold text-white ring-2 ring-inset ring-white/40 hover:bg-white/10 transition-colors"
+            >
+              Find My Application ID
+            </Link>
           </div>
-        </div>
-
-        <div className="-mt-2 h-16 overflow-hidden">
-          <WaveDivider className="h-16 w-full" preserveAspectRatio="none" />
         </div>
       </section>
 
-      {/* ===== How It Works ===== */}
-      <section className="mx-auto max-w-4xl px-4 py-12">
-        <div className="bts-fade-in-up bts-stagger-1 mb-8 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-cyan-900">
-            How It Works
-          </h2>
-          <p className="mt-2 text-sm text-cyan-700">
-            Three simple steps to get your student ready for the new school year.
-          </p>
-        </div>
+      {/* ===== Live progress teaser ===== */}
+      <section className="bg-white border-b border-brand-100">
+        <Link
+          href="/bts/progress"
+          className="mx-auto max-w-4xl px-4 py-6 flex items-center gap-4 group"
+        >
+          <div className="flex-1">
+            <div className="flex items-baseline justify-between gap-2">
+              <p className="text-sm font-semibold text-brand-900">
+                <span className="text-2xl font-bold">{registered}</span>
+                <span className="text-brand-500"> / {site.goalFamilies} families registered</span>
+              </p>
+              <p className="text-sm font-bold text-brand-600">{pct}%</p>
+            </div>
+            <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-brand-100">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-600 transition-all duration-700"
+                style={{ width: `${Math.max(3, pct)}%` }}
+              />
+            </div>
+          </div>
+          <span className="text-brand-400 group-hover:translate-x-0.5 transition-transform" aria-hidden="true">&rarr;</span>
+        </Link>
+      </section>
 
-        <div className="grid gap-6 sm:grid-cols-3">
-          <StepPhotoCard
+      {/* ===== How it works — snap-scroll cards on mobile ===== */}
+      <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
+        <h2 className="text-title text-brand-900 text-center">Three steps, three minutes</h2>
+        <p className="mt-2 text-body text-brand-700 text-center">
+          Everything happens right here on your phone.
+        </p>
+
+        <div className="mt-8 flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:overflow-visible">
+          <StepCard
             step="1"
             title="Register"
-            body="Submit your details and your dependents' information through our secure form."
-            src="/images/tobago/bts-school-supplies.jpg"
-            alt="School supplies and backpack"
+            body="Your name, phone number, and community. That&rsquo;s all we need about you."
           />
-          <StepPhotoCard
+          <StepCard
             step="2"
-            title="Upload Book Lists"
-            body="Attach each student's book list (PDF or Word) so we know exactly what's needed."
-            src="/images/tobago/bts-colorful-books.jpg"
-            alt="Stack of colorful books"
+            title="Add your students"
+            body="Each child&rsquo;s school and grade. Attach their book list if you have one — or skip it."
           />
-          <StepPhotoCard
+          <StepCard
             step="3"
-            title="Collect Resources"
-            body="Receive an Application ID and collect matched books and supplies at the distribution event."
-            src="/images/tobago/bts-classroom.jpg"
-            alt="Classroom with students"
+            title="Get your ID"
+            body="We message you an Application ID with a QR code. Show it on event day to collect."
           />
         </div>
       </section>
 
-      {/* ===== Tobago Photo Gallery — full-bleed background ===== */}
-      <section className="-mx-4 bg-gradient-to-b from-cyan-50 to-white py-12">
-        <div className="mx-auto max-w-4xl px-4">
-          <div className="bts-fade-in-up bts-stagger-1 mb-6 text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold text-cyan-900">
-              Tobago: Our Community
-            </h2>
-            <p className="mt-2 text-sm text-cyan-700">
-              Serving the families of the Electoral District of Mt. St. George/Goodwood
-            </p>
-          </div>
-          <div className="bts-fade-in-up bts-stagger-2 grid grid-cols-2 gap-3 sm:gap-4">
-            <PhotoCard
-              src="/images/tobago/bts-child-reading.jpg"
-              alt="Child reading a book"
-              span="col-span-2 sm:col-span-2"
-            />
-            <PhotoCard
-              src="/images/tobago/fort-george-sunset.jpg"
-              alt="Sunset at Fort King George, Tobago"
-              span="col-span-1"
-            />
-            <PhotoCard
-              src="/images/tobago/pigeon-point.jpg"
-              alt="Pigeon Point beach, Tobago"
-              span="col-span-1"
-            />
-            <PhotoCard
-              src="/images/tobago/bts-classroom.jpg"
-              alt="Classroom ready for learning"
-              span="col-span-1"
-            />
-            <PhotoCard
-              src="/images/tobago/tobago-rainforest.jpg"
-              alt="Tobago rainforest — Main Ridge Forest Reserve"
-              span="col-span-1"
-            />
+      {/* ===== About — the SVG hero lives here, away from the photo ===== */}
+      <section className="bg-gradient-to-b from-brand-50 to-white">
+        <div className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
+          <div className="grid gap-8 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-center">
+            <div className="bts-float order-first sm:order-last mx-auto max-w-xs sm:max-w-none">
+              <TobagoBooksHero className="w-full h-auto drop-shadow-xl" />
+            </div>
+            <div>
+              <h2 className="text-title text-brand-900">About the initiative</h2>
+              <p className="mt-3 text-body text-brand-800/90 leading-relaxed">
+                Back to School with Megan is a THA-supported community initiative serving
+                the Electoral District of Mt. St. George/Goodwood. We connect students with the books and learning
+                materials they need, and every registration gets a trackable Application ID.
+              </p>
+              <ul className="mt-6 grid gap-2.5">
+                <TrustPill icon={<PalmTreeIcon className="h-6 w-6" />} text="The Electoral District of Mt. St. George/Goodwood only" />
+                <TrustPill icon={<SchoolBookIcon className="h-6 w-6" />} text="Primary and secondary students" />
+                <TrustPill icon={<PelicanIcon className="h-6 w-6" />} text="Free for every registered family" />
+              </ul>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* ===== About the Initiative ===== */}
-      <section className="mx-auto max-w-4xl px-4 py-12">
-        <div className="bts-fade-in-up bts-stagger-1 flex flex-col items-center text-center">
-          <div className="mb-6 bts-float">
-            <TobagoMapBadge className="h-24 w-24 drop-shadow-lg" />
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-cyan-900">
-            About the Initiative
-          </h2>
-          <p className="mt-4 max-w-2xl text-sm sm:text-base text-gray-600 leading-relaxed">
-            Back to School with Megan is a THA-supported community initiative serving families in
-            the Electoral District of Mt. St. George/Goodwood, Tobago. Our goal is to reduce the financial burden of
-            back-to-school season by connecting students with the books and learning materials they
-            need to succeed. Every registration generates a unique Application ID you can use to track your
-            request and collect your resources on event day.
+      {/* ===== Gallery strip — 3 photos, optimized ===== */}
+      <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
+        <div className="flex items-end justify-between">
+          <h2 className="text-title text-brand-900">Our Tobago</h2>
+          <Link href="/bts/gallery" className="text-sm font-semibold text-brand-600 hover:text-brand-700">
+            Full gallery &rarr;
+          </Link>
+        </div>
+        <div className="mt-5 grid grid-cols-3 gap-3">
+          <GalleryThumb src="/images/tobago/fort-george-sunset.jpg" alt="Sunset at Fort King George, Tobago" />
+          <GalleryThumb src="/images/tobago/pigeon-point.jpg" alt="Pigeon Point beach, Tobago" />
+          <GalleryThumb src="/images/tobago/tobago-rainforest.jpg" alt="Main Ridge Forest Reserve, Tobago" />
+        </div>
+      </section>
+
+      {/* ===== Bottom CTA — short, decisive ===== */}
+      <section className="bg-brand-800 text-white">
+        <div className="mx-auto max-w-4xl px-4 py-12 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold">Ready when you are</h2>
+          <p className="mt-2 text-body text-brand-100">
+            {EVENT_DATE.toLocaleDateString("en-TT", { month: "long", day: "numeric" })} closes registration.
+          </p>
+          <Link
+            href="/bts/register"
+            className="mt-6 inline-flex min-h-[56px] items-center justify-center rounded-xl bg-white px-10 text-lg font-bold text-brand-800 shadow-lg hover:bg-brand-50 transition-colors"
+          >
+            Register a Student
+          </Link>
+          <p className="mt-4 text-xs text-brand-200">
+            Already registered?{" "}
+            <Link href="/bts/recover" className="underline font-semibold">
+              Find your Application ID
+            </Link>
           </p>
         </div>
-
-        <div className="bts-fade-in-up bts-stagger-3 mt-8 grid gap-4 sm:grid-cols-3">
-          <TrustIndicator
-            icon={<PalmTreeIcon className="h-8 w-8" />}
-            text="The Electoral District of Mt. St. George/Goodwood, Tobago"
-          />
-          <TrustIndicator
-            icon={<SchoolBookIcon className="h-8 w-8" />}
-            text="Primary · Secondary"
-          />
-          <TrustIndicator
-            icon={<PelicanIcon className="h-8 w-8" />}
-            text="Free for registered families"
-          />
-        </div>
-      </section>
-
-      {/* ===== Bottom CTA — full-bleed ===== */}
-      <section className="-mx-4 relative overflow-hidden">
-        <div
-          className="relative bg-cover bg-center min-h-[280px] sm:min-h-[340px] flex items-center justify-center"
-          style={{ backgroundImage: "url('/images/tobago/fort-george-sunset.jpg')" }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-900/90 via-blue-900/85 to-cyan-700/80" />
-          <div className="bts-ocean-shimmer absolute inset-0 opacity-15 pointer-events-none" />
-          <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="bts-float bts-float-delay-1 absolute left-[10%] top-[20%] opacity-20">
-              <SchoolBookIcon className="h-14 w-14" />
-            </div>
-            <div className="bts-float bts-float-delay-3 absolute right-[12%] top-[30%] opacity-20">
-              <PalmTreeIcon className="h-16 w-16" />
-            </div>
-          </div>
-
-          <div className="relative mx-auto max-w-4xl px-4 py-16 text-center">
-            <div className="bts-fade-in-up bts-stagger-1">
-              <h2 className="text-2xl sm:text-4xl font-bold text-white drop-shadow-lg">
-                Ready to Register?
-              </h2>
-              <p className="mt-3 text-base text-cyan-50">
-                Join families across Tobago in preparing our students for success.
-              </p>
-            </div>
-            <div className="bts-fade-in-up bts-stagger-2 mt-8">
-              <Link
-                href="/bts/register"
-                className="bts-pulse-glow inline-flex items-center justify-center rounded-xl bg-white px-10 py-4 text-lg font-bold text-cyan-800 shadow-xl hover:bg-cyan-50 transition-all hover:scale-105 active:scale-95"
-              >
-                Register a Student Now
-              </Link>
-              <p className="mt-4 text-xs text-cyan-100/80">
-                Questions? Visit us at the community centre or ask on event day.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="-mt-2 h-16 overflow-hidden">
-          <WaveDivider className="h-16 w-full" preserveAspectRatio="none" />
-        </div>
       </section>
     </div>
   );
 }
 
-function PhotoCard({ src, alt, span }: { src: string; alt: string; span: string }) {
+function StepCard({ step, title, body }: { step: string; title: string; body: string }) {
   return (
-    <div className={`group relative overflow-hidden rounded-2xl shadow-md ${span}`}>
-      <img
+    <div className="snap-start shrink-0 w-[80vw] sm:w-auto rounded-card border border-brand-100 bg-white p-5 shadow-sm">
+      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">
+        {step}
+      </div>
+      <h3 className="mt-3 text-base font-bold text-brand-900">{title}</h3>
+      <p className="mt-1.5 text-sm text-gray-600 leading-relaxed">{body}</p>
+    </div>
+  );
+}
+
+function TrustPill({ icon, text }: { icon: React.ReactNode; text: string }) {
+  return (
+    <li className="flex items-center gap-3 rounded-xl border border-brand-200 bg-white px-4 py-3 shadow-sm">
+      <span className="flex-shrink-0" aria-hidden="true">{icon}</span>
+      <span className="text-sm font-medium text-brand-800">{text}</span>
+    </li>
+  );
+}
+
+function GalleryThumb({ src, alt }: { src: string; alt: string }) {
+  return (
+    <div className="relative aspect-[4/3] overflow-hidden rounded-xl shadow-sm">
+      <Image
         src={src}
         alt={alt}
-        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 min-h-[160px] sm:min-h-[200px]"
+        fill
+        sizes="(max-width: 640px) 33vw, 300px"
         loading="lazy"
+        className="object-cover"
       />
-    </div>
-  );
-}
-
-function StepPhotoCard({
-  step,
-  title,
-  body,
-  src,
-  alt,
-}: {
-  step: string;
-  title: string;
-  body: string;
-  src: string;
-  alt: string;
-}) {
-  return (
-    <div className="bts-fade-in-up group relative overflow-hidden rounded-2xl shadow-lg transition-all hover:shadow-xl hover:-translate-y-1">
-      <div className="relative h-40 overflow-hidden">
-        <img
-          src={src}
-          alt={alt}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-cyan-900/80 via-cyan-900/30 to-transparent" />
-        <div className="absolute -top-3 -right-3 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-cyan-500 to-cyan-700 text-sm font-bold text-white shadow-md">
-          {step}
-        </div>
-        <h3 className="absolute bottom-2 left-3 text-base font-bold text-white drop-shadow-lg">{title}</h3>
-      </div>
-      <div className="bg-white p-4">
-        <p className="text-sm text-gray-600 leading-relaxed">{body}</p>
-      </div>
-    </div>
-  );
-}
-
-function TrustIndicator({ icon, text }: { icon: React.ReactNode; text: string }) {
-  return (
-    <div className="flex items-center gap-3 rounded-xl border border-cyan-200 bg-white px-4 py-3 shadow-sm">
-      <div className="bts-icon-pulse flex-shrink-0">{icon}</div>
-      <span className="text-sm font-medium text-cyan-800">{text}</span>
     </div>
   );
 }
