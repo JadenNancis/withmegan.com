@@ -57,11 +57,13 @@ body {
   background-attachment: fixed;
 }
 
-/* Content wrapper over the body photo. Translucent frosted-dark veil keeps text
-   readable; the body photo still bleeds through for warmth. */
+/*
+  Content wrapper over the body photo. Translucent dark veil keeps text readable
+  and lets the photo still bleed through. NO backdrop-filter — applied at this
+  level it blurs all children (form fields, cards), producing a muddy look.
+*/
 .tha-warm-bg {
   background-color: rgba(8, 12, 16, 0.72);
-  backdrop-filter: blur(14px) saturate(1.1);
 }
 
 /* Hero pattern utility used on dark photo banners to add a subtle texture */
