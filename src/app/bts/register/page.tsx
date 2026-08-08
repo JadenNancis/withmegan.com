@@ -187,11 +187,12 @@ export default function BtsRegisterPage() {
           </p>
         </div>
       </div>
-      {/* Wizard header */}
+      {/* Wizard header — glass card so the step tracker reads on photo */}
       <header className="motion-safe:bts-fade-in-up pt-2">
-
-        {/* Progress tracker — compact on mobile */}
-        <nav aria-label="Registration progress" className="mt-4">
+        <nav
+          aria-label="Registration progress"
+          className="mt-2 rounded-2xl border border-white/25 bg-brand-950/55 backdrop-blur-md px-4 py-3 shadow-lg"
+        >
           <ol className="flex items-center gap-0">
             {STEPS.map((label, i) => (
               <li key={label} className="flex items-center flex-1 min-w-0">
@@ -230,7 +231,7 @@ export default function BtsRegisterPage() {
                     aria-hidden="true"
                     className={[
                       "ml-2 sm:ml-4 h-px flex-1 transition-colors duration-300",
-                      i < state.step ? "bg-brand-400" : "bg-white/25",
+                      i < state.step ? "bg-brand-400" : "bg-white/30",
                     ].join(" ")}
                   />
                 )}

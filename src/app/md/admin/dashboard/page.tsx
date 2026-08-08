@@ -1,5 +1,6 @@
 import { requireAdmin } from "@/lib/require-admin";
 import { SITES } from "@/sites/site-registry";
+import { AdminNav } from "@/components/admin-nav";
 import { LiveStats } from "./live-stats";
 
 export const runtime = "nodejs";
@@ -13,6 +14,8 @@ export default async function MdDashboardPage() {
 
   return (
     <div className="min-h-screen bg-slate-900 text-white flex flex-col">
+      <AdminNav current="/md/admin/dashboard" />
+
       {/* Header */}
       <header className="border-b border-slate-800 bg-slate-950/60 px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
         <div>

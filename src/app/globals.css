@@ -58,12 +58,13 @@ body {
 }
 
 /*
-  Content wrapper over the body photo. Translucent dark veil keeps text readable
-  and lets the photo still bleed through. NO backdrop-filter — applied at this
-  level it blurs all children (form fields, cards), producing a muddy look.
+  Content wrapper sits over the body photo. Just a subtle cooling tint to
+  soften direct sunlight glare in the photo without blocking card backgrounds.
+  Pages must wrap readable content in white or gradient cards; hero sections
+  carry their own dark overlay.
 */
 .tha-warm-bg {
-  background-color: rgba(8, 12, 16, 0.72);
+  background-color: rgba(255, 250, 240, 0.10);
 }
 
 /* Hero pattern utility used on dark photo banners to add a subtle texture */

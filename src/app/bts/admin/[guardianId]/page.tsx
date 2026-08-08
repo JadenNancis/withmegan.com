@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/require-admin";
 import { getGuardianWithDependents, getAuditTrailForGuardian } from "@/lib/bts-queries";
+import { AdminNav } from "@/components/admin-nav";
 import { AssignmentPanel } from "./assignment-panel";
 import { BookListViewer } from "./book-list-viewer";
 
@@ -20,11 +20,7 @@ export default async function GuardianDetailPage({
 
   return (
     <div className="space-y-6">
-      <div>
-        <Link href="/bts/admin" className="inline-flex items-center text-sm text-white/60 hover:text-white py-1">
-          ← Back to dashboard
-        </Link>
-      </div>
+      <AdminNav current="/bts/admin" site="bts" />
 
       {/* Guardian summary */}
       <section className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">

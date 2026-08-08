@@ -1,5 +1,6 @@
 import { requireAdmin } from "@/lib/require-admin";
 import { SITES } from "@/sites/site-registry";
+import { AdminNav } from "@/components/admin-nav";
 import { LiveStats } from "./live-stats";
 
 export const runtime = "nodejs";
@@ -13,6 +14,8 @@ export default async function BtsDashboardPage() {
 
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col">
+      <AdminNav current="/bts/admin/dashboard" site="bts" />
+
       {/* Header */}
       <header className="border-b border-neutral-800/80 bg-neutral-900/50 px-4 py-4 sm:px-6 sm:py-6 backdrop-blur-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>

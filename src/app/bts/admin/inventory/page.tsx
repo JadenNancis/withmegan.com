@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/require-admin";
 import { getAllInventory, getInventorySummary } from "@/lib/bts-inventory-queries";
-import { WaveDivider, SchoolBookIcon } from "@/components/bts-illustrations";
+import { AdminNav } from "@/components/admin-nav";
+import { SchoolBookIcon } from "@/components/bts-illustrations";
 import { InventoryManager } from "./inventory-manager";
 
 export default async function BtsInventoryPage({
@@ -20,10 +21,7 @@ export default async function BtsInventoryPage({
 
   return (
     <div className="space-y-6">
-      {/* Subtle wave divider at top */}
-      <div className="-mx-4 -mt-5 sm:-mt-8 mb-2 h-10 overflow-hidden">
-        <WaveDivider className="h-10 w-full" preserveAspectRatio="none" />
-      </div>
+      <AdminNav current="/bts/admin/inventory" site="bts" />
 
       {/* Header */}
       <div className="bts-fade-in-up bts-stagger-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

@@ -71,7 +71,6 @@ export default function MdLanding() {
               <TobagoHamperHero className="w-full h-auto drop-shadow-2xl" />
             </div>
           </div>
-        </div>
 
         <SunsetWaveDivider className="w-full h-[40px] block -mt-1" />
       </section>
