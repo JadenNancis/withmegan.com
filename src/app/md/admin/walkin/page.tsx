@@ -1,6 +1,5 @@
 import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
-import { SunsetWaveDivider } from "@/components/md-illustrations";
 import { WalkInForm } from "./walkin-form";
 
 export default async function MdWalkInPage() {
@@ -10,12 +9,11 @@ export default async function MdWalkInPage() {
   return (
     <div className="space-y-6">
       <AdminNav current="/md/admin/walkin" />
-      <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="rounded-2xl border border-white/25 bg-amber-950/55 backdrop-blur-md px-5 py-4 shadow-lg">
-          <h1 className="text-2xl font-bold text-white drop-shadow-md md-animate-fade-in-up">Walk-In Quick Registration</h1>
-          <p className="mt-1 text-sm text-amber-100/90">
+        <div className="px-5 py-4">
+          <h1 className="text-2xl font-bold text-white md-animate-fade-in-up [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Walk-In Quick Registration</h1>
+          <p className="mt-1 text-sm text-amber-100/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">
             For people who arrive on event day without pre-registering. Quick entry with minimal fields.
           </p>
         </div>

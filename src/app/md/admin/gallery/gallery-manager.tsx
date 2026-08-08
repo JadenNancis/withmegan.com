@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { SunsetWaveDivider, BasketIcon } from "@/components/md-illustrations";
+import { BasketIcon } from "@/components/md-illustrations";
 import { cn } from "@/lib/cn";
 
 export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] }) {
@@ -60,17 +60,15 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] })
 
   return (
     <div className="space-y-6">
-      <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
-
       {/* Header */}
       <div className="md-animate-fade-in-up flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-amber-100 to-amber-50 shadow-sm">
             <BasketIcon className="h-8 w-8" />
           </div>
-          <div className="rounded-2xl border border-white/25 bg-amber-950/55 backdrop-blur-md px-5 py-4 shadow-lg">
-            <h1 className="text-2xl font-bold text-white drop-shadow-md">Gallery Manager</h1>
-            <p className="mt-0.5 text-sm text-amber-100/90">
+          <div className="px-5 py-4">
+            <h1 className="text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Gallery Manager</h1>
+            <p className="mt-0.5 text-sm text-amber-100/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">
               {photos.length} photo{photos.length === 1 ? "" : "s"}
             </p>
           </div>

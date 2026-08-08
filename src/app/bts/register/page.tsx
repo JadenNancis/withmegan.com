@@ -187,12 +187,9 @@ export default function BtsRegisterPage() {
           </p>
         </div>
       </div>
-      {/* Wizard header — glass card so the step tracker reads on photo */}
+      {/* Wizard header — step tracker floats on the photo, text reads via strong shadow */}
       <header className="motion-safe:bts-fade-in-up pt-2">
-        <nav
-          aria-label="Registration progress"
-          className="mt-2 rounded-2xl border border-white/25 bg-brand-950/55 backdrop-blur-md px-4 py-3 shadow-lg"
-        >
+        <nav aria-label="Registration progress" className="mt-2">
           <ol className="flex items-center gap-0">
             {STEPS.map((label, i) => (
               <li key={label} className="flex items-center flex-1 min-w-0">
@@ -204,7 +201,7 @@ export default function BtsRegisterPage() {
                       ? "bg-brand-500 text-white ring-2 ring-brand-300/60"
                       : i === state.step
                         ? "bg-brand-500 text-white ring-4 ring-brand-400/40 scale-110"
-                        : "bg-white/20 text-brand-200 ring-1 ring-white/30",
+                        : "bg-brand-950/70 text-white ring-1 ring-white/30",
                   ].join(" ")}
                   aria-current={i === state.step ? "step" : undefined}
                 >
@@ -216,10 +213,10 @@ export default function BtsRegisterPage() {
                   className={[
                     "ml-2 sm:ml-3 text-xs sm:text-sm font-medium truncate transition-colors hidden sm:block",
                     i < state.step
-                      ? "text-brand-300"
+                      ? "text-brand-200 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]"
                       : i === state.step
-                        ? "text-white"
-                        : "text-brand-200/70",
+                        ? "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]"
+                        : "text-white/60 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]",
                   ].join(" ")}
                 >
                   {label}
@@ -312,7 +309,7 @@ export default function BtsRegisterPage() {
       <p className="text-center pt-2">
         <Link
           href="/bts"
-          className="inline-flex items-center justify-center rounded-full border border-white/25 bg-brand-950/55 backdrop-blur-md px-5 py-2.5 text-xs font-semibold text-brand-100 underline underline-offset-2 hover:bg-brand-900/70 hover:text-white transition-colors min-h-[44px]"
+          className="text-xs font-semibold text-white underline underline-offset-2 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)] hover:text-brand-100 transition-colors min-h-[44px] inline-flex items-center"
         >
           &larr; Back to home
         </Link>

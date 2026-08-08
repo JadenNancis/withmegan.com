@@ -1,7 +1,7 @@
 import { db } from "@/db/client";
 import { mdRegistrants } from "@/db/schema";
 import { count, sql } from "drizzle-orm";
-import { TobagoMapBadge, SunsetWaveDivider } from "@/components/md-illustrations";
+import { TobagoMapBadge } from "@/components/md-illustrations";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -52,7 +52,6 @@ export default async function MdProgressPage() {
             Mt. St. George/Goodwood, Tobago.
           </p>
         </div>
-        <SunsetWaveDivider className="w-full h-[40px] block -mt-1" />
       </section>
 
       {/* ===== Total + Progress bar ===== */}

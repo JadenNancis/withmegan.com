@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Field, TextInput, TextArea, Select, SubmitButton } from "@/components/form";
 import { cn } from "@/lib/cn";
-import { BasketIcon, FloatingProduce, SunsetWaveDivider } from "@/components/md-illustrations";
+import { BasketIcon, FloatingProduce } from "@/components/md-illustrations";
 import { TOBAGO_LOCATIONS, OTHER_LOCATION_VALUE } from "@/lib/tobago-locations";
 import { formatTtPhone, isValidTtPhone } from "@/lib/tt-phone";
 
@@ -171,7 +171,6 @@ export default function MdRegisterPage() {
             </p>
           </div>
         </div>
-        <SunsetWaveDivider className="w-full h-[24px] block opacity-70" />
       </div>
 
       {submitError && (

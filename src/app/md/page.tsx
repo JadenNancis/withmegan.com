@@ -7,7 +7,6 @@ import {
   MangoIcon,
   BasketIcon,
   CommunityIcon,
-  SunsetWaveDivider,
   TobagoMapBadge,
   FloatingProduce,
 } from "@/components/md-illustrations";
@@ -72,7 +71,6 @@ export default function MdLanding() {
             </div>
           </div>
 
-        <SunsetWaveDivider className="w-full h-[40px] block -mt-1" />
       </section>
 
       {/* ──────── Stats Cards ──────── */}
@@ -204,7 +202,6 @@ export default function MdLanding() {
           </Link>
         </div>
 
-        <SunsetWaveDivider className="w-full h-[40px] block opacity-60 -scale-y-100" />
       </section>
     </div>
   );

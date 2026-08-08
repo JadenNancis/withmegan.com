@@ -6,8 +6,6 @@ import { cn } from "@/lib/cn";
 import { db } from "@/db/client";
 import { mdRegistrants, mdHouseholds } from "@/db/schema";
 import { eq, count } from "drizzle-orm";
-import { SunsetWaveDivider } from "@/components/md-illustrations";
-
 export const runtime = "nodejs";
 
 const statusBadge: Record<string, string> = {
@@ -79,10 +77,9 @@ export default async function MdAdminReportsPage({
   return (
     <div className="space-y-6">
       <AdminNav current="/md/admin/reports" />
-      <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
       <div className="flex items-center justify-between gap-4">
-        <div className="rounded-2xl border border-white/25 bg-amber-950/55 backdrop-blur-md px-5 py-4 shadow-lg md-animate-fade-in-up">
-          <h1 className="text-2xl font-bold text-white drop-shadow-md">Reports</h1>
+        <div className="px-5 py-4 md-animate-fade-in-up">
+          <h1 className="text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Reports</h1>
         </div>
         <a
           href="/api/export?site=md&format=pdf"

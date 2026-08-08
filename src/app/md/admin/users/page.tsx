@@ -8,9 +8,9 @@ export default async function MdAdminUsersPage() {
   return (
     <div className="space-y-6">
       <AdminNav current="/md/admin/users" />
-      <div className="rounded-2xl border border-white/25 bg-amber-950/55 backdrop-blur-md px-5 py-4 shadow-lg">
-        <h1 className="text-2xl font-bold text-white drop-shadow-md">User Management</h1>
-        <p className="mt-1 text-sm text-amber-100/90">
+      <div className="px-5 py-4">
+        <h1 className="text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">User Management</h1>
+        <p className="mt-1 text-sm text-amber-100/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">
           Approve, revoke, and manage staff accounts. Admin only.
         </p>
       </div>

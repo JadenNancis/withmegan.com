@@ -3,8 +3,6 @@ import Link from "next/link";
 import { db } from "@/db/client";
 import { mdRegistrants, mdHouseholds } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { SunsetWaveDivider } from "@/components/md-illustrations";
-
 export const dynamic = "force-dynamic";
 
 /**
@@ -38,7 +36,6 @@ export default async function MdVerifyPage({
             hamper distribution counter on event day.
           </p>
         </div>
-        <SunsetWaveDivider className="w-full h-[24px] block opacity-70" />
       </div>
 
       <Suspense

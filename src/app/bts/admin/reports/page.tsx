@@ -38,9 +38,9 @@ export default async function BtsReportsPage() {
       <AdminNav current="/bts/admin/reports" site="bts" />
 
       <div className="flex items-center justify-between gap-3">
-        <div className="rounded-2xl border border-white/25 bg-brand-950/55 backdrop-blur-md px-5 py-4 shadow-lg">
-          <h1 className="text-xl sm:text-2xl font-bold text-white drop-shadow-md">Reports</h1>
-          <p className="mt-1 text-sm text-brand-100/90">Summary of all BTS book drive registrations.</p>
+        <div className="px-5 py-4">
+          <h1 className="text-xl sm:text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Reports</h1>
+          <p className="mt-1 text-sm text-brand-100/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">Summary of all BTS book drive registrations.</p>
         </div>
         <a
           href="/api/export?site=bts&format=pdf"

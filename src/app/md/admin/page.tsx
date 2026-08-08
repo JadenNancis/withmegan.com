@@ -9,8 +9,6 @@ import { mdRegistrants } from "@/db/schema";
 import { db } from "@/db/client";
 import { isNull } from "drizzle-orm";
 import { cn } from "@/lib/cn";
-import { SunsetWaveDivider } from "@/components/md-illustrations";
-
 const statusBadge: Record<string, string> = {
   unassigned: "bg-gray-100 text-gray-700",
   assigned: "bg-amber-100 text-amber-800",
@@ -64,10 +62,8 @@ export default async function MdAdminPage({
     <div className="space-y-6">
       <AdminNav current="/md/admin" />
 
-      <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
-
-      <div className="rounded-2xl border border-white/25 bg-amber-950/55 backdrop-blur-md px-5 py-4 shadow-lg md-animate-fade-in-up">
-        <h1 className="text-2xl font-bold text-white drop-shadow-md">Admin Dashboard</h1>
+      <div className="px-5 py-4 md-animate-fade-in-up">
+        <h1 className="text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Admin Dashboard</h1>
       </div>
 
       <section className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">

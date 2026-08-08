@@ -60,7 +60,7 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
 
   if (submitted) {
     return (
-      <div className="motion-safe:md-animate-fade-in-up flex flex-col items-center justify-center rounded-2xl border border-white/25 bg-amber-950/55 backdrop-blur-md py-12 px-6 text-center shadow-xl">
+      <div className="motion-safe:md-animate-fade-in-up flex flex-col items-center justify-center py-12 px-6 text-center">
         <div className="mb-6 motion-safe:md-animate-float">
           <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-lg">
             <svg viewBox="0 0 64 64" className="h-14 w-14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,8 +75,8 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
             </svg>
           </div>
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Thank you!</h1>
-        <p className="mt-3 max-w-md text-sm text-amber-100/90">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Thank you!</h1>
+        <p className="mt-3 max-w-md text-sm text-amber-100/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">
           Your feedback helps us improve future hamper distributions. We appreciate you taking the time
           to share your experience.
         </p>
@@ -87,12 +87,12 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="motion-safe:md-animate-fade-in-up flex flex-col items-center text-center rounded-2xl border border-white/25 bg-amber-950/55 backdrop-blur-md px-6 py-6 shadow-lg">
+      <div className="motion-safe:md-animate-fade-in-up flex flex-col items-center text-center px-6 py-6">
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-500/20 ring-1 ring-inset ring-amber-400/40 backdrop-blur-sm shadow-lg">
           <BasketIcon className="h-9 w-9 text-amber-300" />
         </div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Post-Event Survey</h1>
-        <p className="mt-2 max-w-md text-sm text-amber-100/90">
+        <h1 className="text-2xl sm:text-3xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Post-Event Survey</h1>
+        <p className="mt-2 max-w-md text-sm text-amber-100/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">
           Tell us how the Market Day hamper distribution went for your household.
         </p>
         {aid && (

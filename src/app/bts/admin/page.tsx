@@ -2,7 +2,7 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
 import { getAllGuardians } from "@/lib/bts-queries";
-import { WaveDivider, SchoolBookIcon } from "@/components/bts-illustrations";
+import { SchoolBookIcon } from "@/components/bts-illustrations";
 
 export default async function BtsAdminDashboard({
   searchParams,
@@ -21,20 +21,15 @@ export default async function BtsAdminDashboard({
     <div className="space-y-6">
       <AdminNav current="/bts/admin" site="bts" />
 
-      {/* Subtle wave divider at top */}
-      <div className="-mx-4 -mt-5 sm:-mt-8 mb-2 h-10 overflow-hidden">
-        <WaveDivider className="h-10 w-full" preserveAspectRatio="none" />
-      </div>
-
       {/* Header */}
       <div className="bts-fade-in-up bts-stagger-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm shrink-0">
             <SchoolBookIcon className="h-8 w-8" />
           </div>
-          <div className="min-w-0 rounded-2xl border border-white/25 bg-brand-950/55 backdrop-blur-md px-5 py-4 shadow-lg">
-            <h1 className="text-xl sm:text-2xl font-bold text-white drop-shadow-md truncate">Admin Dashboard</h1>
-            <p className="mt-0.5 text-sm text-brand-100/90">
+          <div className="min-w-0 px-5 py-4">
+            <h1 className="text-xl sm:text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)] truncate">Admin Dashboard</h1>
+            <p className="mt-0.5 text-sm text-brand-100/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">
               {guardians.length} registration{guardians.length === 1 ? "" : "s"}
             </p>
           </div>

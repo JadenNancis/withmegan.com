@@ -1,6 +1,5 @@
 import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
-import { WaveDivider } from "@/components/bts-illustrations";
 import { BtsQrScanner } from "./qr-scanner";
 
 export const dynamic = "force-dynamic";
@@ -12,8 +11,6 @@ export default async function BtsAdminScanPage() {
   return (
     <div className="space-y-6">
       <AdminNav current="/bts/admin/scan" site="bts" />
-
-      <WaveDivider className="-mx-4 -mt-5 sm:-mt-8 mb-2 h-10 w-[calc(100%+2rem)] overflow-hidden" />
 
       <div className="bts-fade-in-up">
         <h1 className="text-xl sm:text-2xl font-bold text-cyan-900">Scan to Verify</h1>

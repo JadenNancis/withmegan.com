@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
-import { WaveDivider, SchoolBookIcon } from "@/components/bts-illustrations";
+import { SchoolBookIcon } from "@/components/bts-illustrations";
 import { cn } from "@/lib/cn";
 
 export function BtsGalleryManager({ initialPhotos }: { initialPhotos: string[] }) {
@@ -60,20 +60,15 @@ export function BtsGalleryManager({ initialPhotos }: { initialPhotos: string[] }
 
   return (
     <div className="space-y-6">
-      {/* Subtle wave divider at top */}
-      <div className="-mx-4 -mt-8 mb-2 h-10 overflow-hidden">
-        <WaveDivider className="h-10 w-full" preserveAspectRatio="none" />
-      </div>
-
       {/* Header */}
       <div className="bts-fade-in-up flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
             <SchoolBookIcon className="h-8 w-8" />
           </div>
-          <div className="rounded-2xl border border-white/25 bg-brand-950/55 backdrop-blur-md px-5 py-4 shadow-lg">
-            <h1 className="text-2xl font-bold text-white drop-shadow-md">Gallery Manager</h1>
-            <p className="mt-0.5 text-sm text-brand-100/90">
+          <div className="px-5 py-4">
+            <h1 className="text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Gallery Manager</h1>
+            <p className="mt-0.5 text-sm text-brand-100/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">
               {photos.length} photo{photos.length === 1 ? "" : "s"}
             </p>
           </div>

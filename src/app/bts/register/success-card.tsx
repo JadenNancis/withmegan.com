@@ -132,7 +132,7 @@ export function SuccessCard({
       <p className="text-center pt-2">
         <Link
           href="/bts/recover"
-          className="inline-flex items-center justify-center rounded-full border border-white/25 bg-brand-950/55 backdrop-blur-md px-5 py-2.5 text-xs font-semibold text-brand-100 underline underline-offset-2 hover:bg-brand-900/70 hover:text-white transition-colors min-h-[44px]"
+          className="text-xs font-semibold text-white underline underline-offset-2 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)] hover:text-brand-100 transition-colors min-h-[44px] inline-flex items-center"
         >
           Lost your ID later? Recover it here
         </Link>
@@ -142,7 +142,7 @@ export function SuccessCard({
         <button
           type="button"
           onClick={onRegisterAnother}
-          className="inline-flex items-center justify-center rounded-full border border-white/25 bg-brand-950/55 backdrop-blur-md px-5 py-2.5 text-xs font-semibold text-brand-100 hover:bg-brand-900/70 hover:text-white transition-colors min-h-[44px]"
+          className="text-xs font-semibold text-white underline underline-offset-2 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)] hover:text-brand-100 transition-colors min-h-[44px] inline-flex items-center"
         >
           Register another family
         </button>
