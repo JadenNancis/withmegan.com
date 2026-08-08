@@ -86,8 +86,8 @@ export function ReviewStep({
         </label>
       </div>
 
-      {/* Nav */}
-      <div className="flex flex-col-reverse sm:flex-row gap-3 pt-3">
+      {/* Nav — primary action pinned to the thumb on mobile */}
+      <div className="sticky-cta flex flex-col-reverse sm:flex-row gap-3 pt-3">
         <button
           type="button"
           onClick={onBack}

@@ -21,6 +21,8 @@ export function RotatingBackground() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    // Respect reduced-motion: keep the first photo static.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const id = setInterval(() => {
       setIndex((i) => (i + 1) % BACKGROUND_IMAGES.length);
     }, ROTATE_MS);
@@ -32,7 +34,7 @@ export function RotatingBackground() {
       {BACKGROUND_IMAGES.map((src, layer) => (
         <div
           key={src}
-          className={`absolute inset-0 transition-opacity duration-[4000ms] ease-in-out ${
+          className={`absolute inset-0 transition-opacity duration-[4000ms] ease-in-out motion-reduce:transition-none ${
             layer === index ? "opacity-100" : "opacity-0"
           }`}
         >

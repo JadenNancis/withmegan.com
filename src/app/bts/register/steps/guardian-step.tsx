@@ -113,7 +113,7 @@ export function GuardianStep({
         </p>
       </Field>
 
-      <div className="pt-6">
+      <div className="pt-6 sticky-cta">
         <button
           type="button"
           onClick={onNext}

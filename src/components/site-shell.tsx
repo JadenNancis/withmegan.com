@@ -132,7 +132,10 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
         >
           Skip to content
         </a>
-        <header className={cn(a.header, a.headerText, "sticky top-0 z-40")}>
+        <header
+          className={cn(a.header, a.headerText, "sticky top-0 z-40")}
+          style={{ paddingTop: "env(safe-area-inset-top)" }}
+        >
           <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-3">
             <Link
               href={site.nav[0].href}
@@ -170,11 +173,11 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
             </button>
           </div>
 
-          {/* Mobile disclosure nav — slide-down panel */}
+          {/* Mobile disclosure nav — slide-down panel (gated by reduced-motion) */}
           {menuOpen && (
             <nav
               id="mobile-nav"
-              className="md:hidden border-t border-white/15 px-4 pb-4 pt-2 animate-[slide-down_0.2s_ease-out]"
+              className="md:hidden border-t border-white/15 px-4 pb-4 pt-2 motion-safe:animate-[slide-down_0.2s_ease-out]"
               aria-label="Site"
             >
               <ul className="space-y-0.5">
@@ -214,12 +217,12 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
 
         <main
           id="main"
-          className="flex-1 mx-auto max-w-4xl w-full px-4 py-5 sm:py-8 pb-24 md:pb-8"
+          className="flex-1 mx-auto max-w-4xl w-full px-4 py-5 sm:py-8 pb-28 md:pb-8"
         >
           {children}
         </main>
 
-        <footer className="border-t border-white/10 pb-20 md:pb-0">
+        <footer className="border-t border-white/10 pb-24 md:pb-0">
           <div className="mx-auto max-w-4xl px-4 py-4 text-xs text-white/50">
             <p>
               {site.name} · Event date:{" "}
@@ -241,7 +244,11 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
             "backdrop-blur-lg",
           )}
           aria-label="Quick navigation"
-          style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
+          style={{
+            paddingBottom: "env(safe-area-inset-bottom)",
+            paddingLeft: "env(safe-area-inset-left)",
+            paddingRight: "env(safe-area-inset-right)",
+          }}
         >
           <ul className="flex items-stretch justify-around max-w-lg mx-auto">
             {bottomNavLinks.map((item) => {

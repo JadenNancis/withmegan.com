@@ -31,8 +31,8 @@ export default function MdSupportersPage() {
   return (
     <div className="space-y-0">
       {/* Header */}
-      <section className="md-animate-fade-in-up flex flex-col items-center text-center py-8">
-        <div className="mb-6 md-animate-float">
+      <section className="motion-safe:md-animate-fade-in-up flex flex-col items-center text-center py-8">
+        <div className="mb-6 motion-safe:md-animate-float">
           <TobagoMapBadge className="h-24 w-24 drop-shadow-lg" />
         </div>
         <h1 className="text-2xl sm:text-4xl font-bold text-white drop-shadow-md">Our Supporters</h1>
@@ -45,7 +45,7 @@ export default function MdSupportersPage() {
       {/* Supporters heading — full-bleed background */}
       <section className="-mx-4 bg-gradient-to-b from-amber-50 to-white py-12">
         <div className="mx-auto max-w-4xl px-4">
-          <div className="md-animate-fade-in-up mb-8 text-center">
+          <div className="motion-safe:md-animate-fade-in-up mb-8 text-center">
             <h2 className="text-xl sm:text-2xl font-bold text-amber-900">This programme is supported by</h2>
             <p className="mt-2 text-sm text-amber-700">
               We are deeply grateful to every organization and individual listed below.
@@ -56,7 +56,7 @@ export default function MdSupportersPage() {
             {supporters.map((s, i) => (
               <div
                 key={s.name}
-                className={`md-animate-fade-in-up md-delay-${Math.min(i + 1, 5)} rounded-2xl border border-amber-200 bg-white p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5`}
+                className={`motion-safe:md-animate-fade-in-up md-delay-${Math.min(i + 1, 5)} rounded-2xl border border-amber-200 bg-white p-5 shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5`}
               >
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-100 to-amber-50">
                   <BasketIcon className="h-7 w-7" />
@@ -71,7 +71,7 @@ export default function MdSupportersPage() {
 
       {/* How to support CTA */}
       <section className="py-12">
-        <div className="md-animate-fade-in-up mx-auto max-w-2xl rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-6 shadow-sm sm:p-8 text-center">
+        <div className="motion-safe:md-animate-fade-in-up mx-auto max-w-2xl rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-6 shadow-sm sm:p-8 text-center">
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 shadow-sm mx-auto">
             <CommunityIcon className="h-9 w-9" />
           </div>

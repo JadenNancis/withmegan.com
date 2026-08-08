@@ -60,8 +60,8 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
 
   if (submitted) {
     return (
-      <div className="md-animate-fade-in-up flex flex-col items-center justify-center py-12 text-center">
-        <div className="mb-6 md-animate-float">
+      <div className="motion-safe:md-animate-fade-in-up flex flex-col items-center justify-center py-12 text-center">
+        <div className="mb-6 motion-safe:md-animate-float">
           <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-green-400 to-green-600 shadow-lg">
             <svg viewBox="0 0 64 64" className="h-14 w-14" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -87,7 +87,7 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="md-animate-fade-in-up flex flex-col items-center text-center">
+      <div className="motion-safe:md-animate-fade-in-up flex flex-col items-center text-center">
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-500/20 ring-1 ring-inset ring-amber-400/40 backdrop-blur-sm shadow-lg">
           <BasketIcon className="h-9 w-9 text-amber-300" />
         </div>
@@ -105,7 +105,7 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
       {/* Form card */}
       <form
         onSubmit={handleSubmit}
-        className="md-animate-fade-in-up md-delay-1 mx-auto max-w-lg space-y-6 rounded-2xl border border-amber-100 bg-white p-6 shadow-sm sm:p-8"
+        className="motion-safe:md-animate-fade-in-up motion-safe:md-delay-1 mx-auto max-w-lg space-y-6 rounded-2xl border border-amber-100 bg-white p-6 shadow-sm sm:p-8"
       >
         {/* Received needed */}
         <fieldset>
@@ -120,7 +120,7 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
             ].map((opt) => (
               <label
                 key={opt.value}
-                className={`flex cursor-pointer items-center justify-center rounded-xl border-2 px-3 py-3 text-sm font-medium transition-all ${
+                className={`flex cursor-pointer items-center justify-center rounded-xl border-2 px-2 py-3 text-sm font-medium transition-all min-h-[52px] ${
                   receivedNeeded === opt.value
                     ? "border-amber-500 bg-amber-50 text-amber-800"
                     : "border-gray-200 text-gray-600 hover:border-amber-300"
@@ -145,7 +145,7 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
           <legend className="mb-3 block text-sm font-semibold text-gray-800">
             How would you rate the experience?
           </legend>
-          <div className="flex gap-1">
+          <div className="flex gap-2">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
@@ -153,8 +153,9 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
                 onClick={() => setRating(star)}
                 onMouseEnter={() => setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
-                className="text-3xl transition-transform hover:scale-110"
+                className="text-3xl transition-transform hover:scale-110 flex h-12 w-12 items-center justify-center rounded-lg origin-center"
                 aria-label={`${star} star${star > 1 ? "s" : ""}`}
+                aria-pressed={rating === star}
               >
                 <span className={star <= (hoverRating || rating) ? "text-amber-400" : "text-gray-300"}>
                   &#9733;
@@ -174,8 +175,8 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
             value={comments}
             onChange={(e) => setComments(e.target.value)}
             rows={4}
-            placeholder="Share what worked well or what could be improved…"
-            className="w-full rounded-xl border border-gray-300 px-3 py-2.5 text-sm shadow-sm focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none transition-shadow"
+          placeholder="Share what worked well or what could be improved…"
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 text-base text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-amber-500 focus:shadow-[0_0_0_4px_rgba(217,119,6,0.12)] focus:outline-none transition-all"
           />
         </div>
 
@@ -190,7 +191,7 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
         <button
           type="submit"
           disabled={submitting}
-          className="md-animate-pulse-warm inline-flex w-full items-center justify-center rounded-xl bg-amber-500 px-6 py-3.5 text-base font-bold text-white shadow-sm transition-all hover:bg-amber-600 hover:scale-[1.02] active:scale-95 disabled:opacity-60 disabled:hover:scale-100"
+          className="motion-safe:md-animate-pulse-warm inline-flex w-full min-h-[56px] items-center justify-center rounded-xl bg-amber-500 px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-amber-600/25 transition-all hover:bg-amber-600 active:scale-95 disabled:opacity-60 disabled:shadow-sm"
         >
           {submitting ? "Submitting…" : "Submit Survey"}
         </button>

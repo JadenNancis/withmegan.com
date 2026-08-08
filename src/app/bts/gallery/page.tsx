@@ -26,7 +26,7 @@ export default async function BtsGalleryPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bts-fade-in-up text-center">
+      <div className="motion-safe:bts-fade-in-up text-center">
         <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">
           Event Gallery
         </h1>
@@ -37,12 +37,13 @@ export default async function BtsGalleryPage() {
 
       {/* Gallery grid */}
       {photos.length === 0 ? (
-        <div className="bts-fade-in-up rounded-2xl border border-white/25 bg-brand-950/60 backdrop-blur-md p-16 text-center shadow-xl">
+        <div className="motion-safe:bts-fade-in-up rounded-2xl border border-white/25 bg-brand-950/60 backdrop-blur-md p-8 sm:p-16 text-center shadow-xl">
           <div className="mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-500/20 text-brand-300 ring-1 ring-inset ring-brand-400/40">
             <SchoolBookIcon className="h-9 w-9" />
           </div>
-          <p className="text-sm font-medium text-brand-100/85">
-            Photos arrive after the event. Check back soon!
+          <h2 className="text-lg font-bold text-white">No photos yet</h2>
+          <p className="mt-2 mx-auto max-w-xs text-sm text-brand-100/85 leading-relaxed">
+            Photos arrive after the event. Check back soon — or register now so you&rsquo;re in them.
           </p>
         </div>
       ) : (

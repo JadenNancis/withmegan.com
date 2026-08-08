@@ -43,15 +43,15 @@ export default async function BtsProgressPage() {
           </div>
           <h1 className="text-title text-white">Community Progress</h1>
           <p className="mt-2 text-body text-brand-100 max-w-2xl mx-auto">
-            How the Back to School book drive is reaching families across Mt. St. George/Goodwood
-            of Mt. St. George/Goodwood.
+            How the Back to School book drive is reaching families across
+            Mt. St. George/Goodwood, Tobago.
           </p>
         </div>
       </section>
 
       {/* ===== Total + Progress bar ===== */}
       <section className="mx-auto max-w-4xl px-4 py-8">
-        <div className="bts-card-enter rounded-2xl border border-brand-200 bg-white p-6 sm:p-8 shadow-md">
+        <div className="motion-safe:bts-card-enter rounded-2xl border border-brand-200 bg-white p-6 sm:p-8 shadow-md">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-brand-700">
@@ -85,11 +85,13 @@ export default async function BtsProgressPage() {
       {/* ===== Breakdown cards ===== */}
       <section className="mx-auto max-w-4xl px-4 pb-8">
         <div className="grid gap-5 sm:grid-cols-2">
-          <div className="bts-card-enter rounded-2xl border border-brand-100 bg-white p-5 shadow-sm">
+          <div className="motion-safe:bts-card-enter rounded-2xl border border-brand-100 bg-white p-5 shadow-sm">
             <h2 className="text-base font-bold text-brand-900">By community</h2>
             <p className="mt-1 text-xs text-brand-600">Registrations per area</p>
             {byCommunity.length === 0 ? (
-              <p className="mt-4 text-sm text-gray-500">No registrations yet.</p>
+              <p className="mt-4 rounded-xl border border-dashed border-brand-200 bg-brand-50/60 px-4 py-6 text-center text-sm text-gray-500">
+                No registrations yet. Be the first.
+              </p>
             ) : (
               <ul className="mt-4 space-y-3">
                 {byCommunity.slice(0, 10).map((c) => (
@@ -110,11 +112,13 @@ export default async function BtsProgressPage() {
             )}
           </div>
 
-          <div className="bts-card-enter rounded-2xl border border-brand-100 bg-white p-5 shadow-sm">
+          <div className="motion-safe:bts-card-enter rounded-2xl border border-brand-100 bg-white p-5 shadow-sm">
             <h2 className="text-base font-bold text-brand-900">By grade level</h2>
             <p className="mt-1 text-xs text-brand-600">Students grouped by grade</p>
             {byCategory.length === 0 ? (
-              <p className="mt-4 text-sm text-gray-500">No dependents registered yet.</p>
+              <p className="mt-4 rounded-xl border border-dashed border-brand-200 bg-brand-50/60 px-4 py-6 text-center text-sm text-gray-500">
+                No dependents registered yet.
+              </p>
             ) : (
               <ul className="mt-4 space-y-3">
                 {byCategory.slice(0, 10).map((c) => (

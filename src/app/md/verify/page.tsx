@@ -65,7 +65,7 @@ function MissingAid() {
       </p>
       <Link
         href="/md"
-        className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-lg bg-amber-500 px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-amber-600 transition-colors"
+        className="mt-6 inline-flex min-h-[52px] items-center justify-center rounded-xl bg-amber-500 px-6 py-3 text-base font-bold text-white shadow-md hover:bg-amber-600 transition-colors"
       >
         Back to Home
       </Link>
@@ -105,7 +105,7 @@ async function VerifyResult({ aid }: { aid: string }) {
         </p>
         <Link
           href="/md"
-          className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-lg border border-gray-300 bg-white px-6 py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors"
+          className="mt-6 inline-flex min-h-[52px] items-center justify-center rounded-xl border border-gray-300 bg-white px-6 py-3 text-base font-bold text-gray-700 hover:bg-gray-50 transition-colors"
         >
           Back to Home
         </Link>
@@ -118,7 +118,7 @@ async function VerifyResult({ aid }: { aid: string }) {
   return (
     <div className="space-y-4">
       {/* Found banner */}
-      <div className="md-animate-fade-in-up rounded-2xl border border-green-300 bg-gradient-to-br from-green-50 to-amber-50 p-6 shadow-sm">
+      <div className="motion-safe:md-animate-fade-in-up rounded-2xl border border-green-300 bg-gradient-to-br from-green-50 to-amber-50 p-6 shadow-sm">
         <div className="flex items-center gap-4">
           <GreenCheck />
           <div>
@@ -131,7 +131,7 @@ async function VerifyResult({ aid }: { aid: string }) {
       </div>
 
       {/* Application ID */}
-      <div className="md-animate-fade-in-up rounded-2xl border-2 border-dashed border-amber-400 bg-gradient-to-br from-amber-50 to-orange-50 p-6 shadow-sm">
+      <div className="motion-safe:md-animate-fade-in-up rounded-2xl border-2 border-dashed border-amber-400 bg-gradient-to-br from-amber-50 to-orange-50 p-6 shadow-sm">
         <p className="text-xs font-semibold uppercase tracking-wider text-amber-600">
           Application ID
         </p>
@@ -146,7 +146,7 @@ async function VerifyResult({ aid }: { aid: string }) {
       </div>
 
       {/* Registrant details */}
-      <section className="md-animate-fade-in-up rounded-2xl border border-amber-200 bg-white p-6 shadow-sm">
+      <section className="motion-safe:md-animate-fade-in-up rounded-2xl border border-amber-200 bg-white p-6 shadow-sm">
         <h3 className="border-b border-amber-100 pb-3 text-lg font-bold text-amber-800">
           Registrant
         </h3>
@@ -162,7 +162,7 @@ async function VerifyResult({ aid }: { aid: string }) {
       </section>
 
       {/* Household info */}
-      <section className="md-animate-fade-in-up rounded-2xl border border-amber-200 bg-white p-6 shadow-sm">
+      <section className="motion-safe:md-animate-fade-in-up rounded-2xl border border-amber-200 bg-white p-6 shadow-sm">
         <h3 className="border-b border-amber-100 pb-3 text-lg font-bold text-amber-800">
           Household & Hamper
         </h3>
@@ -179,10 +179,10 @@ async function VerifyResult({ aid }: { aid: string }) {
         </dl>
       </section>
 
-      <div className="md-animate-fade-in-up flex flex-col gap-3 sm:flex-row sm:justify-center">
+      <div className="motion-safe:md-animate-fade-in-up flex flex-col gap-3 sm:flex-row sm:justify-center">
         <Link
           href="/md"
-          className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-amber-500 px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-amber-600 transition-colors"
+          className="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-amber-500 px-6 py-3 text-base font-bold text-white shadow-md hover:bg-amber-600 transition-colors"
         >
           Back to Home
         </Link>

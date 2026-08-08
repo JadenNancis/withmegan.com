@@ -68,7 +68,7 @@ export function SuccessCard({
     <div className="mx-auto max-w-xl space-y-5 py-2 sm:py-6">
       {/* Celebration header */}
       <div className="text-center">
-        <div className="bts-bounce-in mx-auto mb-6 flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-brand-200 drop-shadow-lg">
+        <div className="motion-safe:bts-bounce-in mx-auto mb-6 flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-brand-200 drop-shadow-lg">
           <SuccessCheckmark className="h-20 w-20 sm:h-24 sm:w-24 drop-shadow-xl" />
         </div>
         <h1 className="text-title text-brand-900">You&rsquo;re all set</h1>

@@ -40,6 +40,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
+  interactiveWidget: "resizes-content",
   themeColor: [
     // BTS brand — used when the mobile browser chrome picks a tint.
     { media: "(prefers-color-scheme: light)", color: "#155e75" },

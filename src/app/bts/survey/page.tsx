@@ -60,8 +60,8 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
 
   if (submitted) {
     return (
-      <div className="bts-fade-in-up flex flex-col items-center justify-center py-12 text-center">
-        <div className="bts-float mb-6">
+      <div className="motion-safe:bts-fade-in-up flex flex-col items-center justify-center py-12 text-center">
+        <div className="motion-safe:bts-float mb-6">
           <SuccessCheckmark className="h-24 w-24 drop-shadow-lg" />
         </div>
         <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Thank you!</h1>
@@ -76,7 +76,7 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bts-fade-in-up text-center">
+      <div className="motion-safe:bts-fade-in-up text-center">
         <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">
           Post-Event Survey
         </h1>
@@ -93,7 +93,7 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
       {/* Form card */}
       <form
         onSubmit={handleSubmit}
-        className="bts-fade-in-up mx-auto max-w-lg space-y-6 rounded-2xl border border-brand-100 bg-white p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] sm:p-8"
+        className="motion-safe:bts-fade-in-up mx-auto max-w-lg space-y-6 rounded-2xl border border-brand-100 bg-white p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] sm:p-8"
       >
         {/* Received needed */}
         <fieldset>
@@ -108,7 +108,7 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
             ].map((opt) => (
               <label
                 key={opt.value}
-                className={`flex cursor-pointer items-center justify-center rounded-xl border-2 px-3 py-3.5 text-sm font-semibold transition-all ${
+                className={`flex cursor-pointer items-center justify-center rounded-xl border-2 px-2 py-3 text-sm font-semibold transition-all min-h-[52px] ${
                   receivedNeeded === opt.value
                     ? "border-brand-500 bg-brand-50 text-brand-800"
                     : "border-gray-200 text-gray-600 hover:border-brand-300 hover:bg-brand-50/30"
@@ -133,7 +133,7 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
           <legend className="mb-3 block text-sm font-semibold text-gray-800">
             How would you rate the experience?
           </legend>
-          <div className="flex gap-1">
+          <div className="flex gap-2">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
@@ -141,8 +141,9 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
                 onClick={() => setRating(star)}
                 onMouseEnter={() => setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
-                className="text-3xl transition-transform hover:scale-110"
+                className="text-3xl transition-transform hover:scale-110 flex h-12 w-12 items-center justify-center rounded-lg origin-center"
                 aria-label={`${star} star${star > 1 ? "s" : ""}`}
+                aria-pressed={rating === star}
               >
                 <span className={star <= (hoverRating || rating) ? "text-amber-400" : "text-gray-300"}>
                   &#9733;

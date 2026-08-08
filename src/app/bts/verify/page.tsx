@@ -110,7 +110,7 @@ async function VerifyResult({ aid }: { aid: string }) {
         </div>
       )}
 
-      <section className="bts-card-enter rounded-2xl border border-green-300/60 bg-gradient-to-br from-green-50 to-emerald-50 p-5 shadow-lg">
+      <section className="motion-safe:bts-card-enter rounded-2xl border border-green-300/60 bg-gradient-to-br from-green-50 to-emerald-50 p-5 shadow-lg">
         <div className="flex items-center gap-3">
           <GreenCheck />
           <div>

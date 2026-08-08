@@ -45,18 +45,18 @@ export default async function BtsLanding() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-brand-950/92" />
 
         <div className="relative mx-auto max-w-4xl px-5 py-12 sm:py-20 text-center text-white">
-          <span className="bts-fade-in-up bts-stagger-1 inline-block rounded-full bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-wider text-brand-100 ring-1 ring-inset ring-white/25 backdrop-blur-sm">
+          <span className="motion-safe:bts-fade-in-up motion-safe:bts-stagger-1 inline-block rounded-full bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-wider text-brand-100 ring-1 ring-inset ring-white/25 backdrop-blur-sm">
             Mt. St. George/Goodwood, Tobago
           </span>
-          <h1 className="bts-fade-in-up bts-stagger-2 mt-5 text-3xl sm:text-5xl font-bold tracking-tight drop-shadow-lg">
+          <h1 className="motion-safe:bts-fade-in-up motion-safe:bts-stagger-2 mt-5 text-3xl sm:text-5xl font-bold tracking-tight drop-shadow-lg">
             Back to School with Megan
           </h1>
-          <p className="bts-fade-in-up bts-stagger-3 mt-4 text-base sm:text-lg text-brand-100 max-w-xl mx-auto leading-relaxed drop-shadow-md">
+          <p className="motion-safe:bts-fade-in-up motion-safe:bts-stagger-3 mt-4 text-base sm:text-lg text-brand-100 max-w-xl mx-auto leading-relaxed drop-shadow-md">
             Free books and supplies for every student in the constituency.
             Register in three minutes. We&rsquo;ll match each child with what they need.
           </p>
 
-          <div className="bts-fade-in-up bts-stagger-3 mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-brand-50 ring-1 ring-inset ring-white/20 backdrop-blur-sm">
+          <div className="motion-safe:bts-fade-in-up motion-safe:bts-stagger-3 mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-brand-50 ring-1 ring-inset ring-white/20 backdrop-blur-sm">
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <rect x="3" y="5" width="18" height="16" rx="2" />
               <path d="M8 3v4M16 3v4M3 10h18" />
@@ -68,7 +68,7 @@ export default async function BtsLanding() {
             })}
           </div>
 
-          <div className="bts-fade-in-up bts-stagger-4 mt-8 flex flex-col gap-3 justify-center sm:flex-row sm:items-center">
+          <div className="motion-safe:bts-fade-in-up motion-safe:bts-stagger-4 mt-8 flex flex-col gap-3 justify-center sm:flex-row sm:items-center">
             <Link
               href="/bts/register"
               className="inline-flex min-h-[56px] items-center justify-center rounded-xl bg-white px-8 text-base font-bold text-brand-800 shadow-lg active:scale-95 hover:bg-brand-50 transition-all"
@@ -117,7 +117,7 @@ export default async function BtsLanding() {
           Everything happens right here on your phone.
         </p>
 
-        <div className="mt-8 flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:overflow-visible">
+        <div className="snap-row mt-8 flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:overflow-visible">
           <StepCard
             step="1"
             title="Register"
@@ -134,13 +134,19 @@ export default async function BtsLanding() {
             body="We message you an Application ID with a QR code. Show it on event day to collect."
           />
         </div>
+        {/* Scroll affordance — dot indicator, mobile only */}
+        <div className="mt-4 flex justify-center gap-1.5 sm:hidden" aria-hidden="true">
+          <span className="h-1.5 w-6 rounded-full bg-brand-300" />
+          <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+          <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
+        </div>
       </section>
 
       {/* ===== About — the SVG hero lives here, away from the photo ===== */}
       <section className="bg-white/95 backdrop-blur-sm border-y border-white/10">
         <div className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
           <div className="grid gap-8 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] sm:items-center">
-            <div className="bts-float order-first sm:order-last mx-auto max-w-xs sm:max-w-none">
+            <div className="motion-safe:bts-float order-first sm:order-last mx-auto max-w-xs sm:max-w-none">
               <TobagoBooksHero className="w-full h-auto drop-shadow-xl" />
             </div>
             <div>

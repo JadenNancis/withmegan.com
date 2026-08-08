@@ -31,8 +31,8 @@ export default function BtsSupportersPage() {
   return (
     <div className="space-y-0">
       {/* Header */}
-      <section className="bts-fade-in-up flex flex-col items-center text-center py-10">
-        <div className="mb-6 bts-float">
+      <section className="motion-safe:bts-fade-in-up flex flex-col items-center text-center py-10">
+        <div className="mb-6 motion-safe:bts-float">
           <TobagoMapBadge className="h-24 w-24 drop-shadow-lg" />
         </div>
         <h1 className="text-2xl sm:text-4xl font-bold text-white drop-shadow-md">Our Supporters</h1>
@@ -45,7 +45,7 @@ export default function BtsSupportersPage() {
       {/* Supporters heading — full-bleed background */}
       <section className="-mx-4 bg-gradient-to-b from-cyan-50 to-white py-12">
         <div className="mx-auto max-w-4xl px-4">
-          <div className="bts-fade-in-up mb-8 text-center">
+          <div className="motion-safe:bts-fade-in-up mb-8 text-center">
             <h2 className="text-xl sm:text-2xl font-bold text-brand-900">This programme is supported by</h2>
             <p className="mt-2 text-sm text-gray-600">
               We are deeply grateful to every organization and individual listed below.
@@ -56,7 +56,7 @@ export default function BtsSupportersPage() {
             {supporters.map((s, i) => (
               <div
                 key={s.name}
-                className={`bts-fade-in-up bts-stagger-${Math.min(i + 1, 6)} rounded-2xl border border-brand-100 bg-white p-6 shadow-[0_2px_16px_-4px_rgba(0,0,0,0.06)] hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}
+                className={`motion-safe:bts-fade-in-up bts-stagger-${Math.min(i + 1, 6)} rounded-2xl border border-brand-100 bg-white p-6 shadow-[0_2px_16px_-4px_rgba(0,0,0,0.06)] hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}
               >
                 <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-50">
                   <PalmTreeIcon className="h-7 w-7" />
@@ -72,7 +72,7 @@ export default function BtsSupportersPage() {
       {/* How to support CTA — same gradient background treatment */}
       <section className="py-12">
         <div
-          className="bts-fade-in-up mx-auto max-w-2xl rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50 to-white p-6 shadow-lg sm:p-8 text-center"
+          className="motion-safe:bts-fade-in-up mx-auto max-w-2xl rounded-2xl border border-brand-100 bg-gradient-to-br from-brand-50 to-white p-6 shadow-lg sm:p-8 text-center"
         >
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-brand-50 shadow-sm mx-auto">
             <SchoolBookIcon className="h-9 w-9" />

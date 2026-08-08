@@ -81,6 +81,41 @@ body {
   display: none;
 }
 
+/* Sticky bottom action bar — keeps the primary action one-thumb reachable
+   while the user scrolls a form. Solid on mobile (legible over the photo
+   veil), restored to transparent at sm+. When used inside a p-5 card the
+   negative margins bleed the bar to the card edge; outside a card it
+   bleeds edge-to-edge (clipped by body's overflow-x guard). */
+.sticky-cta {
+  position: sticky;
+  bottom: 0;
+  margin: 0 -1.25rem -1.25rem;
+  padding: 0.75rem 1.25rem;
+  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+  background: #ffffff;
+  border-top: 1px solid rgba(17, 24, 39, 0.08);
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.14);
+  border-radius: 1.25rem 1.25rem 0 0;
+  z-index: 10;
+}
+@media (min-width: 640px) {
+  .sticky-cta {
+    position: static;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border-top: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+}
+
+/* Snap-scroll rows (step cards on the BTS landing, step grid on MD):
+   never contribute to whole-page pull-to-refresh / horizontal overscroll. */
+.snap-row {
+  overscroll-behavior-x: contain;
+}
+
 /* === Global polish — award-winning feel === */
 
 /* Smooth focus ring for all interactive elements */
@@ -195,5 +230,22 @@ button:active:not(:disabled) {
 @media (hover: none) {
   .card-hover:active {
     transform: scale(0.98);
+  }
+}
+
+/* === Reduced motion — every entrance/loop animation has a no-motion variant === */
+/* Force all globals (focus ring excluded — it is functional), tailwind
+   transition-*/scale transforms, and the slide-down/up keyframes to a
+   near-instant duration so content still becomes visible but without motion. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }

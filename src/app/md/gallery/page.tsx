@@ -22,7 +22,7 @@ export default async function MdGalleryPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="md-animate-fade-in-up flex flex-col items-center text-center">
+      <div className="motion-safe:md-animate-fade-in-up flex flex-col items-center text-center">
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-500/20 ring-1 ring-inset ring-amber-400/40 backdrop-blur-sm shadow-lg">
           <BasketIcon className="h-9 w-9 text-amber-300" />
         </div>
@@ -34,12 +34,13 @@ export default async function MdGalleryPage() {
 
       {/* Gallery grid */}
       {photos.length === 0 ? (
-        <div className="md-animate-fade-in-up rounded-2xl border border-white/25 bg-amber-950/60 backdrop-blur-md p-12 text-center shadow-xl">
-          <div className="mx-auto mb-4 opacity-50">
-            <BasketIcon className="h-16 w-16 text-amber-300" />
+        <div className="motion-safe:md-animate-fade-in-up rounded-2xl border border-white/25 bg-amber-950/60 backdrop-blur-md p-8 sm:p-12 text-center shadow-xl">
+          <div className="mx-auto mb-4 inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-500/20 ring-1 ring-inset ring-amber-400/40">
+            <BasketIcon className="h-10 w-10 text-amber-300" />
           </div>
-          <p className="text-sm text-amber-100/85">
-            No photos yet. Check back after the event!
+          <h2 className="text-lg font-bold text-white">No photos yet</h2>
+          <p className="mt-2 mx-auto max-w-xs text-sm text-amber-100/85 leading-relaxed">
+            Photos arrive after the event. Check back soon — or register now so you&rsquo;re in them.
           </p>
         </div>
       ) : (

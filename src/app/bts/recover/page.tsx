@@ -39,7 +39,7 @@ export default function BtsRecoverPage() {
     return (
       <div className="space-y-5">
         <div className="-mx-4 -my-5 sm:-my-8 px-5 pt-8 pb-6 bg-gradient-to-b from-brand-800 to-transparent">
-          <div className="bts-fade-in-up flex flex-col items-center text-center">
+          <div className="motion-safe:bts-fade-in-up flex flex-col items-center text-center">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
               <TobagoMapBadge className="h-9 w-9" />
             </div>
@@ -83,7 +83,7 @@ export default function BtsRecoverPage() {
 
       <form
         onSubmit={handleSubmit}
-        className="bts-fade-in-up mx-auto max-w-md rounded-2xl border border-brand-100 bg-white p-5 sm:p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] space-y-4"
+        className="motion-safe:bts-fade-in-up mx-auto max-w-md rounded-2xl border border-brand-100 bg-white p-5 sm:p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] space-y-4"
       >
         <Field label="Registered phone number" required>
           <TextInput

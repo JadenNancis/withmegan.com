@@ -9,8 +9,8 @@ export default async function BtsAdminUsersPage() {
     <div className="space-y-6">
       <AdminNav current="/bts/admin/users" site="bts" />
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
-        <p className="mt-1 text-sm text-gray-600">
+        <h1 className="text-2xl font-bold text-white drop-shadow-md">User Management</h1>
+        <p className="mt-1 text-sm text-brand-100/90 drop-shadow-sm">
           Approve, revoke, and manage staff accounts. Admin only.
         </p>
       </div>

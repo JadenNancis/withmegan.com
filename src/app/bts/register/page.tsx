@@ -175,7 +175,7 @@ export default function BtsRegisterPage() {
   return (
     <div className="space-y-5">
       <div
-        className="bts-fade-in-up -mx-4 -my-5 sm:-my-8 -mb-5 rounded-none sm:rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat"
+        className="motion-safe:bts-fade-in-up -mx-4 -my-5 sm:-my-8 -mb-5 rounded-none sm:rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/tobago/bts-child-reading.jpg')" }}
       >
         <div className="bg-brand-900/55 backdrop-blur-sm px-5 py-8 sm:px-6 sm:py-10 text-center">
@@ -188,7 +188,7 @@ export default function BtsRegisterPage() {
         </div>
       </div>
       {/* Wizard header */}
-      <header className="bts-fade-in-up pt-2">
+      <header className="motion-safe:bts-fade-in-up pt-2">
 
         {/* Progress tracker — compact on mobile */}
         <nav aria-label="Registration progress" className="mt-4">
@@ -213,7 +213,7 @@ export default function BtsRegisterPage() {
                 {/* Step label — hidden on very small screens to save space */}
                 <span
                   className={[
-                    "ml-2 sm:ml-3 text-xs sm:text-sm font-medium truncate transition-colors hidden xs:block sm:block",
+                    "ml-2 sm:ml-3 text-xs sm:text-sm font-medium truncate transition-colors hidden sm:block",
                     i < state.step
                       ? "text-brand-300"
                       : i === state.step
@@ -242,7 +242,7 @@ export default function BtsRegisterPage() {
 
       {/* Draft resume banner */}
       {draft.hadDraft && (
-        <div className="bts-card-enter rounded-xl border border-brand-500/40 bg-brand-900/60 backdrop-blur-md p-4 text-sm text-white flex flex-wrap items-center gap-3 shadow-lg">
+        <div className="motion-safe:bts-card-enter rounded-xl border border-brand-500/40 bg-brand-900/60 backdrop-blur-md p-4 text-sm text-white flex flex-wrap items-center gap-3 shadow-lg">
           <p className="flex-1 min-w-[200px]">
             We restored the draft you started earlier.
           </p>
@@ -266,7 +266,7 @@ export default function BtsRegisterPage() {
       )}
 
       {/* Steps — transitions animated between states */}
-      <div className="bts-card-enter" key={state.step}>
+      <div className="motion-safe:bts-card-enter" key={state.step}>
         {state.step === 0 && (
           <GuardianStep
             state={{

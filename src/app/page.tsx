@@ -22,7 +22,7 @@ export default function DevIndex() {
           <Link
             key={site.key}
             href={`${site.routePrefix}?site=${site.key}`}
-            className="block rounded-2xl border border-white/20 bg-white/95 backdrop-blur-md p-6 shadow-xl hover:shadow-2xl hover:bg-white hover:-translate-y-0.5 transition-all"
+            className="block rounded-2xl border border-white/20 bg-white/95 backdrop-blur-md p-6 shadow-xl hover:shadow-2xl hover:bg-white hover:-translate-y-0.5 active:scale-[0.98] transition-all min-h-[112px]"
           >
             <h2 className="text-lg font-bold text-gray-900">{site.name}</h2>
             <p className="mt-1 text-sm text-gray-600">{site.tagline}</p>

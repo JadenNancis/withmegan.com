@@ -41,13 +41,13 @@ export default async function MdProgressPage() {
       <section className="relative -mx-4 -mt-8 mb-0 overflow-hidden bg-gradient-to-br from-amber-900 via-orange-900 to-amber-700">
         <div className="md-hero-shimmer absolute inset-0 opacity-20 pointer-events-none" />
         <div className="relative mx-auto max-w-4xl px-4 py-12 text-center text-white">
-          <div className="md-animate-fade-in-up mx-auto mb-4">
+          <div className="motion-safe:md-animate-fade-in-up mx-auto mb-4">
             <TobagoMapBadge className="h-20 w-20 drop-shadow-lg" />
           </div>
-          <h1 className="md-animate-fade-in-up md-delay-1 text-3xl sm:text-4xl font-bold tracking-tight drop-shadow-lg">
+          <h1 className="motion-safe:md-animate-fade-in-up motion-safe:md-delay-1 text-3xl sm:text-4xl font-bold tracking-tight drop-shadow-lg">
             Community Progress
           </h1>
-          <p className="md-animate-fade-in-up md-delay-2 mt-3 text-base sm:text-lg text-amber-50 max-w-2xl mx-auto leading-relaxed">
+          <p className="motion-safe:md-animate-fade-in-up motion-safe:md-delay-2 mt-3 text-base sm:text-lg text-amber-50 max-w-2xl mx-auto leading-relaxed">
             See how Market Day hamper distribution is reaching residents across
             Mt. St. George/Goodwood, Tobago.
           </p>
@@ -57,7 +57,7 @@ export default async function MdProgressPage() {
 
       {/* ===== Total + Progress bar ===== */}
       <section className="mx-auto max-w-4xl px-4 py-10">
-        <div className="md-animate-fade-in-up rounded-2xl border border-amber-200 bg-white p-6 sm:p-8 shadow-lg">
+        <div className="motion-safe:md-animate-fade-in-up rounded-2xl border border-amber-200 bg-white p-6 sm:p-8 shadow-lg">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2">
             <div>
               <p className="text-sm font-medium uppercase tracking-wide text-amber-700">
@@ -90,11 +90,13 @@ export default async function MdProgressPage() {
       <section className="mx-auto max-w-4xl px-4 pb-12">
         <div className="grid gap-6 sm:grid-cols-2">
           {/* By community */}
-          <div className="md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-100 bg-white p-6 shadow-md">
+          <div className="motion-safe:md-animate-fade-in-up motion-safe:md-delay-1 rounded-2xl border border-amber-100 bg-white p-6 shadow-md">
             <h2 className="text-lg font-bold text-amber-900">By Community</h2>
             <p className="mt-1 text-xs text-amber-600">Registrations grouped by address</p>
             {byCommunity.length === 0 ? (
-              <p className="mt-4 text-sm text-gray-500">No registrations yet.</p>
+              <p className="mt-4 rounded-xl border border-dashed border-amber-200 bg-amber-50/60 px-4 py-6 text-center text-sm text-gray-500">
+                No registrations yet. Be the first.
+              </p>
             ) : (
               <ul className="mt-4 space-y-3">
                 {byCommunity.map((c) => (
@@ -116,11 +118,13 @@ export default async function MdProgressPage() {
           </div>
 
           {/* By product category */}
-          <div className="md-animate-fade-in-up md-delay-2 rounded-2xl border border-amber-100 bg-white p-6 shadow-md">
+          <div className="motion-safe:md-animate-fade-in-up motion-safe:md-delay-2 rounded-2xl border border-amber-100 bg-white p-6 shadow-md">
             <h2 className="text-lg font-bold text-amber-900">By Product Category</h2>
             <p className="mt-1 text-xs text-amber-600">Registrations grouped by requested category</p>
             {byCategory.length === 0 ? (
-              <p className="mt-4 text-sm text-gray-500">No categories specified yet.</p>
+              <p className="mt-4 rounded-xl border border-dashed border-amber-200 bg-amber-50/60 px-4 py-6 text-center text-sm text-gray-500">
+                No categories specified yet.
+              </p>
             ) : (
               <ul className="mt-4 space-y-3">
                 {byCategory.map((c) => (
