@@ -51,10 +51,6 @@ html {
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   background-color: #1c1410;
-  background-image: url("/images/tobago/caribbean-warm.jpg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
 }
 
 /*

@@ -9,15 +9,15 @@ import { RotatingBackground } from "@/components/rotating-background";
  */
 export default function DevIndex() {
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center gap-8 p-8">
+    <div className="relative min-h-screen flex flex-col items-center justify-center gap-8 p-8 bg-transparent">
       <RotatingBackground />
-      <div className="text-center">
+      <div className="relative z-10 text-center">
         <h1 className="text-3xl font-bold text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">With Megan · Dev Index</h1>
         <p className="mt-2 text-sm text-white/90 drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)]">
           Pick a site to preview. In production each domain routes automatically.
         </p>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 w-full max-w-2xl">
+      <div className="relative z-10 grid gap-4 sm:grid-cols-2 w-full max-w-2xl">
         {Object.values(SITES).map((site) => (
           <Link
             key={site.key}
