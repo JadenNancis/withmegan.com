@@ -2,6 +2,17 @@ import type { Metadata, Viewport } from "next";
 import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 
+function safeMetadataBase(): URL {
+  const fallback = new URL("https://withmegan.com");
+  try {
+    const raw = process.env.NEXT_PUBLIC_APP_URL;
+    if (raw && /^https?:\/\//.test(raw)) return new URL(raw);
+    return fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export const metadata: Metadata = {
   title: {
     default: "With Megan · Community Programmes",
@@ -9,9 +20,7 @@ export const metadata: Metadata = {
   },
   description:
     "Community programme portals for Tobago: Back to School Book Drive & Market Day Hamper Distribution.",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "https://withmegan.com",
-  ),
+  metadataBase: safeMetadataBase(),
   openGraph: {
     title: "Back to School with Megan",
     description:
