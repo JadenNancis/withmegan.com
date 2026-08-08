@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description:
     "Community programme portals for Tobago: Back to School Book Drive & Market Day Hamper Distribution.",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL ?? "https://withmegan.com",
+    process.env.NEXT_PUBLIC_APP_URL || "https://withmegan.com",
   ),
   openGraph: {
     title: "Back to School with Megan",
