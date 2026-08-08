@@ -22,12 +22,12 @@ export default async function MdGalleryPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="motion-safe:md-animate-fade-in-up flex flex-col items-center text-center">
+      <div className="motion-safe:md-animate-fade-in-up flex flex-col items-center text-center rounded-2xl border border-white/25 bg-amber-950/55 backdrop-blur-md px-6 py-6 shadow-lg">
         <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-500/20 ring-1 ring-inset ring-amber-400/40 backdrop-blur-sm shadow-lg">
           <BasketIcon className="h-9 w-9 text-amber-300" />
         </div>
         <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Event Gallery</h1>
-        <p className="mt-2 max-w-md text-sm text-amber-100/90 drop-shadow-sm">
+        <p className="mt-2 max-w-md text-sm text-amber-100/90">
           Moments from the Market Day hamper distribution in Mt. St. George/Goodwood.
         </p>
       </div>

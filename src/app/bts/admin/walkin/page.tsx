@@ -16,9 +16,9 @@ export default async function BtsWalkInPage() {
       <AdminNav current="/bts/admin/walkin" site="bts" />
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div>
+        <div className="rounded-2xl border border-white/25 bg-brand-950/55 backdrop-blur-md px-5 py-4 shadow-lg">
           <h1 className="text-xl sm:text-2xl font-bold text-white drop-shadow-md">Walk-In Quick Registration</h1>
-          <p className="mt-1 text-sm text-brand-100/90 drop-shadow-sm">
+          <p className="mt-1 text-sm text-brand-100/90">
             For guardians who arrive on event day without pre-registering. One dependent only. Add more later from the detail page.
           </p>
         </div>

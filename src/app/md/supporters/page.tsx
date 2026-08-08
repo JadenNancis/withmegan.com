@@ -31,12 +31,12 @@ export default function MdSupportersPage() {
   return (
     <div className="space-y-0">
       {/* Header */}
-      <section className="motion-safe:md-animate-fade-in-up flex flex-col items-center text-center py-8">
+      <section className="motion-safe:md-animate-fade-in-up flex flex-col items-center text-center py-8 px-6 rounded-2xl border border-white/25 bg-amber-950/55 backdrop-blur-md shadow-xl">
         <div className="mb-6 motion-safe:md-animate-float">
           <TobagoMapBadge className="h-24 w-24 drop-shadow-lg" />
         </div>
         <h1 className="text-2xl sm:text-4xl font-bold text-white drop-shadow-md">Our Supporters</h1>
-        <p className="mt-3 max-w-2xl text-sm sm:text-base text-amber-100/90 leading-relaxed drop-shadow-sm">
+        <p className="mt-3 max-w-2xl text-sm sm:text-base text-amber-100/90 leading-relaxed">
           Market Day with Megan is made possible by the generosity of partners who believe every
           household in Tobago deserves access to fresh, nutritious food.
         </p>

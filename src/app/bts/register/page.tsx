@@ -309,8 +309,11 @@ export default function BtsRegisterPage() {
         )}
       </div>
 
-      <p className="text-xs text-white/70 pt-2">
-        <Link href="/bts" className="underline hover:text-brand-200 transition-colors min-h-[44px] inline-flex items-center">
+      <p className="text-center pt-2">
+        <Link
+          href="/bts"
+          className="inline-flex items-center justify-center rounded-full border border-white/25 bg-brand-950/55 backdrop-blur-md px-5 py-2.5 text-xs font-semibold text-brand-100 underline underline-offset-2 hover:bg-brand-900/70 hover:text-white transition-colors min-h-[44px]"
+        >
           &larr; Back to home
         </Link>
       </p>

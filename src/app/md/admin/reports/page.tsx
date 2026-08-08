@@ -81,7 +81,9 @@ export default async function MdAdminReportsPage({
       <AdminNav current="/md/admin/reports" />
       <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-white drop-shadow-md md-animate-fade-in-up">Reports</h1>
+        <div className="rounded-2xl border border-white/25 bg-amber-950/55 backdrop-blur-md px-5 py-4 shadow-lg md-animate-fade-in-up">
+          <h1 className="text-2xl font-bold text-white drop-shadow-md">Reports</h1>
+        </div>
         <a
           href="/api/export?site=md&format=pdf"
           target="_blank"

@@ -112,10 +112,12 @@ export default async function BtsLanding() {
 
       {/* ===== How it works — snap-scroll cards on mobile ===== */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
-        <h2 className="text-title text-white drop-shadow-md text-center">Three steps, three minutes</h2>
-        <p className="mt-2 text-body text-brand-100/90 text-center drop-shadow-sm">
-          Everything happens right here on your phone.
-        </p>
+        <div className="rounded-2xl border border-white/25 bg-brand-950/55 backdrop-blur-md px-6 py-4 shadow-lg">
+          <h2 className="text-title text-white drop-shadow-md text-center">Three steps, three minutes</h2>
+          <p className="mt-1 text-sm sm:text-body text-brand-100/90 text-center">
+            Everything happens right here on your phone.
+          </p>
+        </div>
 
         <div className="snap-row mt-8 flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:overflow-visible">
           <StepCard
@@ -168,9 +170,9 @@ export default async function BtsLanding() {
 
       {/* ===== Gallery strip — 3 photos, optimized ===== */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
-        <div className="flex items-end justify-between gap-2">
+        <div className="flex items-end justify-between gap-2 rounded-2xl border border-white/25 bg-brand-950/55 backdrop-blur-md px-5 py-3 shadow-lg">
           <h2 className="text-title text-white drop-shadow-md">Our Tobago</h2>
-          <Link href="/bts/gallery" className="text-sm font-semibold text-brand-200 hover:text-white drop-shadow-sm transition-colors min-h-[44px] flex items-center">
+          <Link href="/bts/gallery" className="text-sm font-semibold text-brand-200 hover:text-white transition-colors min-h-[44px] flex items-center">
             Full gallery &rarr;
           </Link>
         </div>

@@ -71,9 +71,9 @@ export function BtsGalleryManager({ initialPhotos }: { initialPhotos: string[] }
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
             <SchoolBookIcon className="h-8 w-8" />
           </div>
-          <div>
+          <div className="rounded-2xl border border-white/25 bg-brand-950/55 backdrop-blur-md px-5 py-4 shadow-lg">
             <h1 className="text-2xl font-bold text-white drop-shadow-md">Gallery Manager</h1>
-            <p className="mt-0.5 text-sm text-brand-100/90 drop-shadow-sm">
+            <p className="mt-0.5 text-sm text-brand-100/90">
               {photos.length} photo{photos.length === 1 ? "" : "s"}
             </p>
           </div>

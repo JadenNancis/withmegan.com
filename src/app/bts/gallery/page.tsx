@@ -26,11 +26,11 @@ export default async function BtsGalleryPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="motion-safe:bts-fade-in-up text-center">
+      <div className="motion-safe:bts-fade-in-up text-center rounded-2xl border border-white/25 bg-brand-950/55 backdrop-blur-md px-6 py-6 shadow-lg">
         <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">
           Event Gallery
         </h1>
-        <p className="mt-3 text-base text-brand-100/90 max-w-lg mx-auto leading-relaxed drop-shadow-sm">
+        <p className="mt-2 text-sm sm:text-base text-brand-100/90 max-w-lg mx-auto leading-relaxed">
           Moments from the Back to School book drive in Mt. St. George/Goodwood.
         </p>
       </div>

@@ -20,9 +20,9 @@ export default async function BtsVerifyPage({
 
   return (
     <div className="space-y-5 py-2">
-      <header className="text-center">
+      <header className="text-center rounded-2xl border border-white/25 bg-brand-950/55 backdrop-blur-md px-6 py-5 shadow-lg">
         <h1 className="text-title text-white drop-shadow-md">Verify a Registration</h1>
-        <p className="mt-1 text-sm text-brand-100/90 drop-shadow-sm">
+        <p className="mt-1 text-sm text-brand-100/90">
           Back to School with Megan · show this at the distribution counter.
         </p>
       </header>
