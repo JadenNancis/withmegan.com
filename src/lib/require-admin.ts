@@ -11,7 +11,6 @@ import { roleAtLeast, asRole, type Role } from "@/lib/rbac";
  * `requiredRole` controls the minimum privilege needed:
  *   - "admin":  only admins pass.
  *   - "staff":  admin and staff pass.
- *   - "viewer": all three roles pass.
  *   - undefined: defaults to "staff" (backward compatible with existing pages).
  *
  * Returns the authenticated user (with role) or redirects to sign-in.

@@ -137,42 +137,68 @@ export default async function MdAdminReportsPage({
             {q ? "No matching records." : "No registrations yet."}
           </p>
         ) : (
-          <div className="md-animate-fade-in-up md-delay-1 overflow-x-auto rounded-lg border border-amber-200 shadow-sm">
-            <table className="min-w-full divide-y divide-amber-100 text-sm">
-              <thead className="bg-gradient-to-r from-amber-50 to-orange-50">
-                <tr>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Application ID</th>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Name</th>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">National ID</th>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Household</th>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Status</th>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Redeemed</th>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Registered</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-amber-50 bg-white">
-                {filtered.map((r) => (
-                  <tr key={r.id} className="hover:bg-amber-50/50 transition-colors">
-                    <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "N/A"}</td>
-                    <td className="px-3 py-2 text-gray-900">{r.fullName}</td>
-                    <td className="px-3 py-2 text-gray-600">{r.nationalId ?? "N/A"}</td>
-                    <td className="px-3 py-2 font-mono text-xs text-gray-600">{r.householdReference ?? "N/A"}</td>
-                    <td className="px-3 py-2">
-                      <span className={cn("inline-block rounded-full px-2 py-0.5 text-xs font-medium", statusBadge[r.hamperStatus ?? "unassigned"])}>
-                        {r.hamperStatus ?? "unassigned"}
-                      </span>
-                    </td>
-                    <td className="px-3 py-2 text-xs text-gray-500">
-                      {r.redeemedAt ? new Date(r.redeemedAt).toLocaleDateString("en-TT") : "N/A"}
-                    </td>
-                    <td className="px-3 py-2 text-xs text-gray-500">
-                      {new Date(r.createdAt).toLocaleDateString("en-TT")}
-                    </td>
+          <>
+            {/* Mobile: card list */}
+            <div className="sm:hidden space-y-3">
+              {filtered.map((r) => (
+                <div key={r.id} className="rounded-xl border border-amber-200 bg-white p-4 shadow-sm">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-gray-900 truncate">{r.fullName}</p>
+                      <p className="text-xs font-mono text-gray-600 mt-0.5 truncate">{r.thaId ?? "N/A"}</p>
+                    </div>
+                    <span className={cn("shrink-0 inline-block rounded-full px-2.5 py-1 text-xs font-medium", statusBadge[r.hamperStatus ?? "unassigned"])}>
+                      {r.hamperStatus ?? "unassigned"}
+                    </span>
+                  </div>
+                  <div className="mt-2 space-y-1 text-xs text-gray-500">
+                    <p>National ID: <span className="font-medium text-gray-700">{r.nationalId ?? "N/A"}</span></p>
+                    <p>Household: <span className="font-mono text-gray-700">{r.householdReference ?? "N/A"}</span></p>
+                    <p>Redeemed: <span className="font-medium text-gray-700">{r.redeemedAt ? new Date(r.redeemedAt).toLocaleDateString("en-TT") : "N/A"}</span></p>
+                    <p>Registered: <span className="font-medium text-gray-700">{new Date(r.createdAt).toLocaleDateString("en-TT")}</span></p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop: table */}
+            <div className="hidden sm:block md-animate-fade-in-up md-delay-1 overflow-x-auto rounded-lg border border-amber-200 shadow-sm">
+              <table className="min-w-full divide-y divide-amber-100 text-sm">
+                <thead className="bg-gradient-to-r from-amber-50 to-orange-50">
+                  <tr>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Application ID</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Name</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">National ID</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Household</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Status</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Redeemed</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Registered</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-amber-50 bg-white">
+                  {filtered.map((r) => (
+                    <tr key={r.id} className="hover:bg-amber-50/50 transition-colors">
+                      <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "N/A"}</td>
+                      <td className="px-3 py-2 text-gray-900">{r.fullName}</td>
+                      <td className="px-3 py-2 text-gray-600">{r.nationalId ?? "N/A"}</td>
+                      <td className="px-3 py-2 font-mono text-xs text-gray-600">{r.householdReference ?? "N/A"}</td>
+                      <td className="px-3 py-2">
+                        <span className={cn("inline-block rounded-full px-2 py-0.5 text-xs font-medium", statusBadge[r.hamperStatus ?? "unassigned"])}>
+                          {r.hamperStatus ?? "unassigned"}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 text-xs text-gray-500">
+                        {r.redeemedAt ? new Date(r.redeemedAt).toLocaleDateString("en-TT") : "N/A"}
+                      </td>
+                      <td className="px-3 py-2 text-xs text-gray-500">
+                        {new Date(r.createdAt).toLocaleDateString("en-TT")}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </section>
 

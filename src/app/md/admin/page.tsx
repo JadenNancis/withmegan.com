@@ -68,7 +68,7 @@ export default async function MdAdminPage({
 
       <h1 className="text-2xl font-bold text-white drop-shadow-md md-animate-fade-in-up">Admin Dashboard</h1>
 
-      <section className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+      <section className="grid grid-cols-2 sm:grid-cols-5 gap-2 sm:gap-3">
         <StatCard label="Registrations" value={stats.totalRegistrations} accent />
         <StatCard label="Households" value={stats.totalHouseholds} />
         <StatCard label="Assigned" value={stats.householdsAssigned} accent />
@@ -76,14 +76,14 @@ export default async function MdAdminPage({
         <StatCard label="Pending" value={stats.householdsPending} />
       </section>
 
-      <section className="flex flex-col sm:flex-row gap-3">
-        <Link href="/md/admin/households" className="min-h-[44px] flex items-center justify-center rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 text-center transition-colors">
+      <section className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+        <Link href="/md/admin/households" className="min-h-[48px] flex items-center justify-center rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 active:scale-95 text-center transition-all">
           Household management
         </Link>
-        <Link href="/md/admin/verify" className="md-animate-pulse-warm min-h-[44px] flex items-center justify-center rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 text-center transition-colors">
+        <Link href="/md/admin/verify" className="md-animate-pulse-warm min-h-[48px] flex items-center justify-center rounded-lg bg-amber-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 active:scale-95 text-center transition-all">
           Verification counter
         </Link>
-        <Link href="/md/admin/reports" className="min-h-[44px] flex items-center justify-center rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 text-center transition-colors">
+        <Link href="/md/admin/reports" className="min-h-[48px] flex items-center justify-center rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-800 hover:bg-amber-100 active:scale-95 text-center transition-all">
           Reports
         </Link>
       </section>
@@ -116,36 +116,62 @@ export default async function MdAdminPage({
             {q ? "No matching records found." : "No registrations yet."}
           </p>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-amber-200">
-            <table className="min-w-full divide-y divide-amber-100 text-sm">
-              <thead className="bg-gradient-to-r from-amber-50 to-orange-50">
-                <tr>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Application ID</th>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Name</th>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Household</th>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Status</th>
-                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Registered</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-amber-50 bg-white">
-                {rows.map((r) => (
-                  <tr key={r.id} className="hover:bg-amber-50/50 transition-colors">
-                    <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "N/A"}</td>
-                    <td className="px-3 py-2 text-gray-900">{r.fullName}</td>
-                    <td className="px-3 py-2 text-gray-600">{r.householdReference ?? "N/A"}</td>
-                    <td className="px-3 py-2">
-                      <span className={cn("inline-block rounded-full px-2 py-0.5 text-xs font-medium", statusBadge[r.hamperStatus ?? "unassigned"])}>
-                        {r.hamperStatus ?? "unassigned"}
-                      </span>
-                    </td>
-                    <td className="px-3 py-2 text-gray-500">
-                      {new Date(r.createdAt).toLocaleDateString("en-TT")}
-                    </td>
+          <>
+            {/* Mobile: card list */}
+            <div className="sm:hidden space-y-3">
+              {rows.map((r) => (
+                <div key={r.id} className="rounded-xl border border-amber-200/40 bg-white/95 backdrop-blur-sm p-4 shadow-sm">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-gray-900 truncate">{r.fullName}</p>
+                      <p className="text-xs font-mono text-gray-600 mt-0.5 truncate">{r.thaId ?? "N/A"}</p>
+                    </div>
+                    <span className={cn("shrink-0 inline-block rounded-full px-2.5 py-1 text-xs font-medium", statusBadge[r.hamperStatus ?? "unassigned"])}>
+                      {r.hamperStatus ?? "unassigned"}
+                    </span>
+                  </div>
+                  <div className="mt-2 text-xs text-gray-500">
+                    Household: <span className="font-medium text-gray-700">{r.householdReference ?? "N/A"}</span>
+                  </div>
+                  <div className="mt-1 text-xs text-gray-400">
+                    {new Date(r.createdAt).toLocaleDateString("en-TT")}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Desktop: table */}
+            <div className="hidden sm:block overflow-x-auto rounded-lg border border-amber-200">
+              <table className="min-w-full divide-y divide-amber-100 text-sm">
+                <thead className="bg-gradient-to-r from-amber-50 to-orange-50">
+                  <tr>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Application ID</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Name</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Household</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Status</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Registered</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-amber-50 bg-white">
+                  {rows.map((r) => (
+                    <tr key={r.id} className="hover:bg-amber-50/50 transition-colors">
+                      <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "N/A"}</td>
+                      <td className="px-3 py-2 text-gray-900">{r.fullName}</td>
+                      <td className="px-3 py-2 text-gray-600">{r.householdReference ?? "N/A"}</td>
+                      <td className="px-3 py-2">
+                        <span className={cn("inline-block rounded-full px-2 py-0.5 text-xs font-medium", statusBadge[r.hamperStatus ?? "unassigned"])}>
+                          {r.hamperStatus ?? "unassigned"}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 text-gray-500">
+                        {new Date(r.createdAt).toLocaleDateString("en-TT")}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
         )}
       </section>
     </div>

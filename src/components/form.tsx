@@ -49,7 +49,7 @@ export function SubmitButton({ children, className, ...rest }: { children: React
       {...rest}
       className={cn(
         "inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 py-4 text-base font-bold text-white " +
-        "shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 hover:-translate-y-px active:translate-y-0 active:shadow-md " +
+        "shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 active:scale-95 " +
         "disabled:opacity-60 disabled:pointer-events-none disabled:shadow-sm transition-all duration-150 min-h-[56px]",
         className,
       )}

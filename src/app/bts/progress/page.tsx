@@ -34,10 +34,10 @@ export default async function BtsProgressPage() {
   const maxCategory = byCategory.reduce((m, c) => Math.max(m, c.count), 1);
 
   return (
-    <div className="-mx-4 -my-6 sm:-my-8 space-y-0">
+    <div className="-mx-4 -my-5 sm:-my-8 space-y-0">
       {/* ===== Hero ===== */}
       <section className="bg-gradient-to-b from-brand-950/85 to-brand-900/80 backdrop-blur-md text-white border-b border-white/10">
-        <div className="mx-auto max-w-4xl px-4 py-10 sm:py-14 text-center">
+        <div className="mx-auto max-w-4xl px-5 py-10 sm:py-14 text-center">
           <div className="mx-auto mb-4 w-fit">
             <TobagoMapBadge className="h-16 w-16 drop-shadow-lg" />
           </div>
@@ -146,7 +146,7 @@ export default async function BtsProgressPage() {
           </p>
           <Link
             href="/bts/register"
-            className="mt-5 inline-flex min-h-[52px] items-center justify-center rounded-xl bg-white px-8 text-base font-bold text-brand-800 shadow-lg hover:bg-brand-50 transition-colors"
+            className="mt-5 inline-flex min-h-[52px] items-center justify-center rounded-xl bg-white px-8 text-base font-bold text-brand-800 shadow-lg active:scale-95 hover:bg-brand-50 transition-all"
           >
             Register your family
           </Link>

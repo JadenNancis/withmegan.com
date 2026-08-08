@@ -3,10 +3,21 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode, type ReactElement } from "react";
+import { useSession } from "next-auth/react";
 import type { SiteConfig } from "@/sites/site-registry";
 import { SiteProvider } from "@/sites/site-context";
 import { AuthButton } from "@/components/auth-button";
 import { cn } from "@/lib/cn";
+
+/**
+ * Returns true if the current session has an admin or staff role.
+ * Used to gate visibility of the Admin nav link and admin overhead bar.
+ */
+function useIsStaff() {
+  const { data: session } = useSession();
+  const role = (session?.user as { role?: string } | undefined)?.role;
+  return role === "admin" || role === "staff";
+}
 
 const accentMap = {
   cyan: {
@@ -91,13 +102,19 @@ const HAMBURGER_ICON = (
 export function SiteShell({ site, children }: { site: SiteConfig; children: ReactNode }) {
   const a = accentMap[site.accent];
   const [menuOpen, setMenuOpen] = useState(false);
+  const isStaff = useIsStaff();
   const pathname = usePathname();
 
-  const pageLinks = site.nav.filter((n) => n.href !== "/auth/signin");
+  // Filter out admin links unless the user is admin/staff.
+  const visibleNav = site.nav.filter((n) => {
+    if (n.href.includes("/admin")) return isStaff;
+    return true;
+  });
+  const pageLinks = visibleNav.filter((n) => n.href !== "/auth/signin");
   const signIn = site.nav.find((n) => n.href === "/auth/signin");
 
   // Bottom nav: first 4 non-admin links, filtered to the most useful ones
-  const bottomNavLinks = site.nav
+  const bottomNavLinks = visibleNav
     .filter((n) => !n.href.includes("/admin") && n.href !== "/auth/signin")
     .slice(0, 4);
 
@@ -128,7 +145,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
 
             {/* Desktop nav */}
             <nav className="hidden md:flex gap-0.5 items-center overflow-x-auto no-scrollbar min-w-0" aria-label="Site">
-              {site.nav.map((item) => (
+              {visibleNav.map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} active={isActive(item.href)} />
               ))}
               <AuthButton />

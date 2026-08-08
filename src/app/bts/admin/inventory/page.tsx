@@ -21,33 +21,33 @@ export default async function BtsInventoryPage({
   return (
     <div className="space-y-6">
       {/* Subtle wave divider at top */}
-      <div className="-mx-4 -mt-8 mb-2 h-10 overflow-hidden">
+      <div className="-mx-4 -mt-5 sm:-mt-8 mb-2 h-10 overflow-hidden">
         <WaveDivider className="h-10 w-full" preserveAspectRatio="none" />
       </div>
 
       {/* Header */}
       <div className="bts-fade-in-up bts-stagger-1 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm shrink-0">
             <SchoolBookIcon className="h-8 w-8" />
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-white drop-shadow-md">Inventory</h1>
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold text-white drop-shadow-md truncate">Inventory</h1>
             <p className="mt-0.5 text-sm text-brand-100/90 drop-shadow-sm">
               {summary.totalItems} item{summary.totalItems === 1 ? "" : "s"} · {summary.totalAvailable} available
             </p>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           <Link
             href="/bts/admin"
-            className="inline-flex items-center justify-center rounded-lg border border-cyan-200 bg-white px-4 py-2.5 text-sm font-bold text-cyan-700 shadow-sm hover:bg-cyan-50 transition-colors min-h-[44px]"
+            className="inline-flex items-center justify-center rounded-lg border border-cyan-200 bg-white px-4 py-2.5 text-sm font-bold text-cyan-700 shadow-sm hover:bg-cyan-50 active:scale-95 transition-all min-h-[44px]"
           >
             &larr; Dashboard
           </Link>
           <Link
             href="/bts/admin/reports"
-            className="inline-flex items-center justify-center rounded-lg border border-cyan-200 bg-white px-4 py-2.5 text-sm font-bold text-cyan-700 shadow-sm hover:bg-cyan-50 transition-colors min-h-[44px]"
+            className="inline-flex items-center justify-center rounded-lg border border-cyan-200 bg-white px-4 py-2.5 text-sm font-bold text-cyan-700 shadow-sm hover:bg-cyan-50 active:scale-95 transition-all min-h-[44px]"
           >
             Reports &rarr;
           </Link>
@@ -55,7 +55,7 @@ export default async function BtsInventoryPage({
       </div>
 
       {/* Stats summary cards */}
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 sm:grid-cols-3">
         <div className="bts-card-enter bts-count-up bts-stagger-2 rounded-2xl border border-cyan-100 bg-gradient-to-br from-cyan-50 to-white p-5 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wide text-cyan-600">Total Received</p>
           <p className="mt-2 text-4xl font-bold text-cyan-900">{summary.totalReceived}</p>

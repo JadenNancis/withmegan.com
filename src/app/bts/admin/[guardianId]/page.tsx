@@ -27,15 +27,15 @@ export default async function GuardianDetailPage({
       </div>
 
       {/* Guardian summary */}
-      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      <section className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{guardian.fullName}</h1>
-            <p className="mt-1 font-mono text-sm font-medium text-blue-700">
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">{guardian.fullName}</h1>
+            <p className="mt-1 font-mono text-sm font-medium text-blue-700 break-all">
               {guardian.thaId ?? "No Application ID"}
             </p>
           </div>
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-gray-600 space-y-0.5">
             <p>📞 {guardian.contactNumber}</p>
             <p>✉️ {guardian.email}</p>
             <p>📍 {guardian.address}</p>
@@ -52,7 +52,7 @@ export default async function GuardianDetailPage({
           Dependents ({guardian.dependents.length})
         </h2>
         {guardian.dependents.map((dep) => (
-          <div key={dep.id} className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm">
+          <div key={dep.id} className="rounded-xl border border-gray-200 bg-white p-4 sm:p-5 shadow-sm">
             {/* Header row — name + school/grade on left, file badge on right */}
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
@@ -97,7 +97,7 @@ export default async function GuardianDetailPage({
       </section>
 
       {/* Audit trail */}
-      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      <section className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900">Audit Trail</h2>
         {auditTrail.length === 0 ? (
           <p className="mt-2 text-sm text-gray-500">No audit entries recorded.</p>

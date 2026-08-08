@@ -12,6 +12,7 @@ const LINKS: Record<AdminSite, { href: string; label: string }[]> = {
     { href: "/bts/admin/inventory", label: "Inventory" },
     { href: "/bts/admin/gallery", label: "Gallery" },
     { href: "/bts/admin/reports", label: "Reports" },
+    { href: "/bts/admin/users", label: "Users" },
     { href: "/bts/recover", label: "Find My ID" },
   ],
   md: [
@@ -23,6 +24,7 @@ const LINKS: Record<AdminSite, { href: string; label: string }[]> = {
     { href: "/md/admin/verify", label: "Verify" },
     { href: "/md/admin/gallery", label: "Gallery" },
     { href: "/md/admin/reports", label: "Reports" },
+    { href: "/md/admin/users", label: "Users" },
   ],
 };
 

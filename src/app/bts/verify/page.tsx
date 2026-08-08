@@ -192,7 +192,7 @@ function GreenCheck() {
 
 function RedX() {
   return (
-    <div className="mx-auto flex h-14 w-14 w-fit items-center justify-center rounded-full bg-red-500 text-white shadow-md">
+    <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-red-500 text-white shadow-md">
       <svg viewBox="0 0 24 24" className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
         <path d="M6 6l12 12M18 6L6 18" />
       </svg>

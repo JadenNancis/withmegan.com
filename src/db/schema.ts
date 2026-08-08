@@ -20,6 +20,11 @@ export const users = pgTable("users", {
   image: text("image"),
   /** "admin" | "staff" — controls access to /admin routes on both sites. */
   role: text("role").notNull().default("staff"),
+  /** Bcrypt-style hash. Null for the bootstrap admin (uses env-var password). */
+  passwordHash: text("password_hash"),
+  /** "pending" | "approved" | "revoked" — admin must approve new sign-ups. */
+  status: text("status").notNull().default("pending"),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
 });
 
 export const accounts = pgTable("accounts", {

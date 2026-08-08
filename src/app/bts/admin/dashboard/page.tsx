@@ -14,15 +14,15 @@ export default async function BtsDashboardPage() {
   return (
     <div className="min-h-screen bg-neutral-950 text-white flex flex-col">
       {/* Header */}
-      <header className="border-b border-neutral-800/80 bg-neutral-900/50 px-6 py-6 backdrop-blur-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      <header className="border-b border-neutral-800/80 bg-neutral-900/50 px-4 py-4 sm:px-6 sm:py-6 backdrop-blur-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-cyan-200">
+          <h1 className="text-xl sm:text-3xl font-bold tracking-tight text-cyan-200">
             {site.name}
           </h1>
           <p className="text-sm text-neutral-400 mt-0.5">Event-Day Dashboard · Live</p>
         </div>
-        <div className="text-right">
-          <p className="text-lg sm:text-xl font-semibold text-white">
+        <div className="sm:text-right">
+          <p className="text-base sm:text-xl font-semibold text-white">
             {eventDate.toLocaleDateString("en-TT", {
               weekday: "long",
               year: "numeric",
@@ -34,7 +34,7 @@ export default async function BtsDashboardPage() {
         </div>
       </header>
 
-      <main className="flex-1 w-full max-w-6xl mx-auto px-6 py-8">
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-6 sm:px-6 sm:py-8">
         <LiveStats site="bts" />
       </main>
 

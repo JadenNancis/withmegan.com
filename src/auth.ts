@@ -1,53 +1,81 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import { eq } from "drizzle-orm";
+import { db } from "@/db/client";
+import { users } from "@/db/schema";
+import { verifyPassword } from "@/lib/password";
 
 /**
  * Shared Auth.js v5 configuration.
  *
- * One auth realm, one set of users. A user's `role` ("admin" | "staff" | "viewer")
- * gates access to admin routes on BOTH sites. The role is selected at sign-in
- * (the single prototype account accepts any of the three roles) and carried in
- * the JWT so downstream `requireAdmin` checks can enforce minimum privilege.
+ * Two ways to authenticate:
+ * 1. Bootstrap admin — env-var email + password (no DB row needed).
+ *    Used only by the platform owner until DB users exist.
+ * 2. DB-backed users — email + password hashed with scrypt.
+ *    New sign-ups are "pending" until an admin approves them.
+ *    Approved users get role "staff" by default; admin can promote.
  *
- * Prototype: JWT-based session with hardcoded admin credentials so auth
- * works without a database connection. Production should swap to database
- * sessions with DrizzleAdapter + an OAuth provider (Google, Azure AD), and
- * source roles from the users table instead of the sign-in form.
+ * Roles: "admin" | "staff" (no viewer).
+ * JWT-based session carries the role for downstream requireAdmin checks.
+ *
+ * Future: swap to email magic-link SSO (passwordless). The signup form
+ * already collects only email + password; the password field can become
+ * optional once email verification is wired up.
  */
 
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? "admin@withmegan.local";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "admin";
 
-const VALID_ROLES = new Set(["admin", "staff", "viewer"]);
-
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   providers: [
     Credentials({
-      name: "Admin",
+      name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
-        role: { label: "Role", type: "text" },
       },
       async authorize(creds) {
-        const email = creds?.email as string | undefined;
+        const email = (creds?.email as string | undefined)?.trim().toLowerCase();
         const password = creds?.password as string | undefined;
-        const requestedRole = (creds?.role as string | undefined) ?? "admin";
         if (!email || !password) return null;
 
-        if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-          // The single prototype account accepts any of the three roles; the
-          // selected role determines what the session can reach after sign-in.
-          const role = VALID_ROLES.has(requestedRole) ? requestedRole : "admin";
+        // 1. Bootstrap admin (env-var fallback).
+        if (email === ADMIN_EMAIL.toLowerCase() && password === ADMIN_PASSWORD) {
           return {
-            id: "admin-prototype",
+            id: "admin-bootstrap",
             email,
             name: "Administrator",
-            role,
+            role: "admin",
           } as any;
         }
-        return null;
+
+        // 2. DB-backed user.
+        try {
+          const rows = await db
+            .select()
+            .from(users)
+            .where(eq(users.email, email))
+            .limit(1);
+
+          const user = rows[0];
+          if (!user || !user.passwordHash) return null;
+
+          // Approval gate.
+          if (user.status !== "approved") return null;
+
+          if (!verifyPassword(password, user.passwordHash)) return null;
+
+          return {
+            id: user.id,
+            email: user.email,
+            name: user.name ?? user.email,
+            role: user.role ?? "staff",
+          } as any;
+        } catch (err) {
+          console.error("[auth] authorize error:", err);
+          return null;
+        }
       },
     }),
   ],

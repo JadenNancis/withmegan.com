@@ -37,28 +37,28 @@ export default async function BtsReportsPage() {
     <div className="space-y-6">
       <AdminNav current="/bts/admin/reports" site="bts" />
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-white drop-shadow-md">Reports</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-white drop-shadow-md">Reports</h1>
           <p className="mt-1 text-sm text-brand-100/90 drop-shadow-sm">Summary of all BTS book drive registrations.</p>
         </div>
         <a
           href="/api/export?site=bts&format=pdf"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700"
+          className="inline-flex items-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 active:scale-95 min-h-[44px]"
         >
           Export PDF
         </a>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-3 sm:gap-4 sm:grid-cols-3">
         <StatCard label="Total Registrations" value={totalGuardians} accent="blue" />
         <StatCard label="Total Dependents" value={totalDependents} accent="blue" />
         <StatCard label="Resource Items Tracked" value={totalItems} accent="amber" />
       </div>
 
-      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      <section className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900">Dependents by School</h2>
         {bySchool.length === 0 ? (
           <p className="mt-2 text-sm text-gray-500">No dependents registered.</p>
@@ -84,7 +84,7 @@ export default async function BtsReportsPage() {
         )}
       </section>
 
-      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      <section className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900">Assignments by Status</h2>
         {byStatus.length === 0 ? (
           <p className="mt-2 text-sm text-gray-500">No resource assignments yet.</p>
@@ -103,9 +103,9 @@ export default async function BtsReportsPage() {
         )}
       </section>
 
-      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+      <section className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900">Requested vs Allocated</h2>
-        <div className="mt-3 grid gap-4 sm:grid-cols-3">
+        <div className="mt-3 grid gap-3 sm:gap-4 sm:grid-cols-3">
           <StatCard label="Items Assigned" value={totalAssigned} accent="blue" />
           <StatCard label="Items Collected" value={totalCollected} accent="green" />
           <StatCard
@@ -116,12 +116,12 @@ export default async function BtsReportsPage() {
         </div>
       </section>
 
-      <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-        <div className="flex items-center justify-between">
+      <section className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
+        <div className="flex items-center justify-between gap-2">
           <h2 className="text-lg font-semibold text-gray-900">Inventory Summary</h2>
           <Link
             href="/bts/admin/inventory"
-            className="text-sm font-bold text-cyan-600 hover:text-cyan-800 transition-colors"
+            className="text-sm font-bold text-cyan-600 hover:text-cyan-800 transition-colors min-h-[44px] flex items-center"
           >
             Manage inventory &rarr;
           </Link>
@@ -129,7 +129,7 @@ export default async function BtsReportsPage() {
         {inventory.length === 0 ? (
           <p className="mt-2 text-sm text-gray-500">No inventory items recorded yet.</p>
         ) : (
-          <div className="mt-3 grid gap-4 sm:grid-cols-3">
+          <div className="mt-3 grid gap-3 sm:gap-4 sm:grid-cols-3">
             <StatCard
               label="Items Received"
               value={inventory.reduce((sum, i) => sum + i.quantityReceived, 0)}
