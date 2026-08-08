@@ -32,8 +32,8 @@ export default async function BtsInventoryPage({
             <SchoolBookIcon className="h-8 w-8" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-cyan-900">Inventory</h1>
-            <p className="mt-0.5 text-sm text-gray-600">
+            <h1 className="text-2xl font-bold text-white drop-shadow-md">Inventory</h1>
+            <p className="mt-0.5 text-sm text-brand-100/90 drop-shadow-sm">
               {summary.totalItems} item{summary.totalItems === 1 ? "" : "s"} · {summary.totalAvailable} available
             </p>
           </div>

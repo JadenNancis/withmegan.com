@@ -175,14 +175,14 @@ export default function BtsRegisterPage() {
   return (
     <div className="space-y-5">
       <div
-        className="bts-fade-in-up -mx-4 -mt-6 sm:-mt-8 -mb-6 rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat opacity-90"
+        className="bts-fade-in-up -mx-4 -my-5 sm:-my-8 -mb-5 rounded-none sm:rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/tobago/bts-child-reading.jpg')" }}
       >
-        <div className="bg-brand-900/45 backdrop-blur-sm px-6 py-10 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white leading-snug">
+        <div className="bg-brand-900/55 backdrop-blur-sm px-5 py-8 sm:px-6 sm:py-10 text-center">
+          <h2 className="text-xl sm:text-3xl font-bold text-white leading-snug drop-shadow-md">
             Register a family for Back to School
           </h2>
-          <p className="mt-2 text-sm sm:text-base text-brand-100 max-w-xl mx-auto">
+          <p className="mt-2 text-sm sm:text-base text-brand-100 drop-shadow-sm">
             Free books and supplies for every student. Three minutes, three steps.
           </p>
         </div>
@@ -190,15 +190,15 @@ export default function BtsRegisterPage() {
       {/* Wizard header */}
       <header className="bts-fade-in-up pt-2">
 
-        {/* Progress tracker */}
-        <nav aria-label="Registration progress" className="mt-6">
+        {/* Progress tracker — compact on mobile */}
+        <nav aria-label="Registration progress" className="mt-4">
           <ol className="flex items-center gap-0">
             {STEPS.map((label, i) => (
               <li key={label} className="flex items-center flex-1 min-w-0">
                 {/* Step bubble */}
                 <div
                   className={[
-                    "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-bold transition-all duration-200 shadow-md",
+                    "flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full text-xs sm:text-sm font-bold transition-all duration-200 shadow-md",
                     i < state.step
                       ? "bg-brand-500 text-white ring-2 ring-brand-300/60"
                       : i === state.step
@@ -210,10 +210,10 @@ export default function BtsRegisterPage() {
                   {i < state.step ? "✓" : i + 1}
                 </div>
 
-                {/* Step label */}
+                {/* Step label — hidden on very small screens to save space */}
                 <span
                   className={[
-                    "ml-3 text-sm font-medium truncate transition-colors",
+                    "ml-2 sm:ml-3 text-xs sm:text-sm font-medium truncate transition-colors hidden xs:block sm:block",
                     i < state.step
                       ? "text-brand-300"
                       : i === state.step
@@ -229,7 +229,7 @@ export default function BtsRegisterPage() {
                   <div
                     aria-hidden="true"
                     className={[
-                      "ml-4 h-px flex-1 transition-colors duration-300",
+                      "ml-2 sm:ml-4 h-px flex-1 transition-colors duration-300",
                       i < state.step ? "bg-brand-400" : "bg-white/25",
                     ].join(" ")}
                   />
@@ -308,8 +308,8 @@ export default function BtsRegisterPage() {
         )}
       </div>
 
-      <p className="text-xs text-white/70">
-        <Link href="/bts" className="underline hover:text-brand-200 transition-colors">
+      <p className="text-xs text-white/70 pt-2">
+        <Link href="/bts" className="underline hover:text-brand-200 transition-colors min-h-[44px] inline-flex items-center">
           &larr; Back to home
         </Link>
       </p>

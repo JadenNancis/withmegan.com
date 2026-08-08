@@ -38,20 +38,20 @@ export default function BtsRecoverPage() {
   if (done) {
     return (
       <div className="space-y-5">
-        <div className="-mx-4 -mt-6 sm:-mt-8 px-4 pt-8 pb-6 bg-gradient-to-b from-brand-800 to-transparent">
+        <div className="-mx-4 -my-5 sm:-my-8 px-5 pt-8 pb-6 bg-gradient-to-b from-brand-800 to-transparent">
           <div className="bts-fade-in-up flex flex-col items-center text-center">
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
               <TobagoMapBadge className="h-9 w-9" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">Check your messages</h1>
-            <p className="mt-2 max-w-md text-sm text-brand-100">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Check your messages</h1>
+            <p className="mt-2 max-w-md text-sm text-brand-100 drop-shadow-sm">
               If a registration exists for{" "}
               <span className="font-semibold text-white">{phone}</span>, we&rsquo;ve sent
               your Application ID by SMS{""} and email (if you gave us one).
             </p>
-            <p className="mt-3 text-sm text-brand-200">
+            <p className="mt-3 text-sm text-brand-200 drop-shadow-sm">
               Still nothing after a few minutes?{" "}
-              <Link href="/bts/register" className="font-semibold text-white underline">
+              <Link href="/bts/register" className="font-semibold text-white underline min-h-[44px] inline-flex items-center">
                 Register again
               </Link>{" "}
               or ask a volunteer on event day.
@@ -63,18 +63,18 @@ export default function BtsRecoverPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Header — photo + gradient, coherent with other BTS subpages */}
       <div
-        className="-mx-4 -mt-6 sm:-mt-8 overflow-hidden bg-cover bg-center bg-no-repeat opacity-90"
+        className="-mx-4 -my-5 sm:-my-8 overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/tobago/bts-child-reading.jpg')" }}
       >
-        <div className="bg-brand-900/50 backdrop-blur-sm px-4 pt-10 pb-8 flex flex-col items-center text-center">
+        <div className="bg-brand-900/60 backdrop-blur-sm px-5 pt-10 pb-8 flex flex-col items-center text-center">
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
             <TobagoMapBadge className="h-9 w-9" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Find my Application ID</h1>
-          <p className="mt-3 max-w-md text-sm text-brand-100">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">Find my Application ID</h1>
+          <p className="mt-3 max-w-md text-sm text-brand-100 drop-shadow-sm">
             Enter the phone number you registered with. If we have it on file, we&rsquo;ll
             text your ID and QR code.
           </p>
@@ -83,7 +83,7 @@ export default function BtsRecoverPage() {
 
       <form
         onSubmit={handleSubmit}
-        className="bts-fade-in-up mx-auto max-w-md rounded-2xl border border-brand-100 bg-white p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] space-y-4"
+        className="bts-fade-in-up mx-auto max-w-md rounded-2xl border border-brand-100 bg-white p-5 sm:p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] space-y-4"
       >
         <Field label="Registered phone number" required>
           <TextInput
@@ -106,7 +106,7 @@ export default function BtsRecoverPage() {
         <button
           type="submit"
           disabled={submitting || phone.replace(/\D/g, "").length < 7}
-          className="w-full inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 hover:-translate-y-px active:translate-y-0 disabled:opacity-60 disabled:pointer-events-none disabled:shadow-sm transition-all duration-150"
+          className="w-full inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 active:scale-95 disabled:opacity-60 disabled:pointer-events-none disabled:shadow-sm transition-all duration-150"
         >
           {submitting ? "Sending…" : "Text me my ID"}
         </button>
@@ -114,7 +114,7 @@ export default function BtsRecoverPage() {
 
       <p className="text-center text-xs text-white/70">
         Haven&rsquo;t registered yet?{" "}
-        <Link href="/bts/register" className="font-semibold text-brand-200 underline hover:text-white transition-colors">
+        <Link href="/bts/register" className="font-semibold text-brand-200 underline hover:text-white transition-colors min-h-[44px] inline-flex items-center">
           Start registration
         </Link>
       </p>

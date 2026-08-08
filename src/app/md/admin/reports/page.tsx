@@ -81,7 +81,7 @@ export default async function MdAdminReportsPage({
       <AdminNav current="/md/admin/reports" />
       <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
       <div className="flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold text-gray-900 md-animate-fade-in-up">Reports</h1>
+        <h1 className="text-2xl font-bold text-white drop-shadow-md md-animate-fade-in-up">Reports</h1>
         <a
           href="/api/export?site=md&format=pdf"
           target="_blank"
@@ -125,15 +125,15 @@ export default async function MdAdminReportsPage({
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900 md-animate-fade-in-up break-words">
+        <h2 className="text-lg font-semibold text-white drop-shadow-md md-animate-fade-in-up break-words">
           Registrations {q && `· filtered by "${q}"`}
         </h2>
-        <Suspense fallback={<div className="text-sm text-gray-400">Loading search…</div>}>
+        <Suspense fallback={<div className="text-sm text-white/50">Loading search…</div>}>
           <SearchBar placeholder="Search by name, Application ID, national ID, or household" />
         </Suspense>
 
         {filtered.length === 0 ? (
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-amber-100/85">
             {q ? "No matching records." : "No registrations yet."}
           </p>
         ) : (
@@ -176,7 +176,7 @@ export default async function MdAdminReportsPage({
         )}
       </section>
 
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-white/50">
         Showing {filtered.length} of {regCount?.n ?? 0} registrations (max 500).
       </p>
     </div>

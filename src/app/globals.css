@@ -25,7 +25,7 @@
   --text-title: 1.5rem;
   --text-title--line-height: 2rem;
   --text-title--font-weight: 700;
-  --text-body: 0.9375rem;
+  --text-body: 1rem;
   --text-body--line-height: 1.5rem;
   --text-caption: 0.75rem;
   --text-caption--line-height: 1rem;
@@ -132,5 +132,68 @@ button:active:not(:disabled) {
   }
   ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* === Mobile-specific enhancements === */
+
+/* Slide-down animation for mobile disclosure menu */
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide-up animation for bottom sheets and card reveals */
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Prevent horizontal scroll on mobile — clip overflow at the root */
+@media (max-width: 767px) {
+  html, body {
+    overflow-x: hidden;
+  }
+}
+
+/* iOS Safari: prevent text auto-zoom on input focus by keeping font-size >= 16px */
+@media (max-width: 767px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="date"],
+  input[type="search"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Smooth scroll with momentum on iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+  .overflow-x-auto,
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Active-press feedback for cards and buttons on touch devices */
+@media (hover: none) {
+  .card-hover:active {
+    transform: scale(0.98);
   }
 }

@@ -66,7 +66,7 @@ export default async function MdAdminPage({
 
       <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
 
-      <h1 className="text-2xl font-bold text-gray-900 md-animate-fade-in-up">Admin Dashboard</h1>
+      <h1 className="text-2xl font-bold text-white drop-shadow-md md-animate-fade-in-up">Admin Dashboard</h1>
 
       <section className="grid grid-cols-2 sm:grid-cols-5 gap-3">
         <StatCard label="Registrations" value={stats.totalRegistrations} accent />
@@ -91,7 +91,7 @@ export default async function MdAdminPage({
       {/* ===== Household Assignment Panel ===== */}
       <section className="space-y-3">
         <div className="flex items-center justify-between gap-2">
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-white drop-shadow-md">
             Unassigned applicants
             {unassigned.length > 0 && (
               <span className="ml-2 inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-800">
@@ -104,15 +104,15 @@ export default async function MdAdminPage({
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900 break-words">
+        <h2 className="text-lg font-semibold text-white drop-shadow-md break-words">
           {q ? `Search results for "${q}"` : "Recent registrations"}
         </h2>
-        <Suspense fallback={<div className="text-sm text-gray-400">Loading search…</div>}>
+        <Suspense fallback={<div className="text-sm text-white/50">Loading search…</div>}>
           <SearchBar placeholder="Search by name, Application ID, phone, or household reference" />
         </Suspense>
 
         {rows.length === 0 ? (
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-amber-100/85">
             {q ? "No matching records found." : "No registrations yet."}
           </p>
         ) : (

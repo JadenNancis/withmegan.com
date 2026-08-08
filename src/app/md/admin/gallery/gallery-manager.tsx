@@ -69,8 +69,8 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] })
             <BasketIcon className="h-8 w-8" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-amber-900">Gallery Manager</h1>
-            <p className="mt-0.5 text-sm text-gray-600">
+            <h1 className="text-2xl font-bold text-white drop-shadow-md">Gallery Manager</h1>
+            <p className="mt-0.5 text-sm text-amber-100/90">
               {photos.length} photo{photos.length === 1 ? "" : "s"}
             </p>
           </div>
@@ -108,10 +108,10 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] })
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
         </div>
-        <p className="text-sm font-semibold text-amber-800">
+        <p className="text-sm font-semibold text-white drop-shadow-sm">
           {uploading ? "Uploading…" : "Click or drag photos to upload"}
         </p>
-        <p className="mt-1 text-xs text-gray-500">JPG, PNG, WebP, or GIF. Up to 8 MB each</p>
+        <p className="mt-1 text-xs text-white/70">JPG, PNG, WebP, or GIF. Up to 8 MB each</p>
         <input
           ref={fileInputRef}
           type="file"
@@ -127,11 +127,11 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] })
 
       {/* Existing photos */}
       {photos.length === 0 ? (
-        <div className="md-animate-fade-in-up rounded-2xl border border-dashed border-amber-300 bg-amber-50/30 p-12 text-center">
-          <div className="mx-auto mb-4 opacity-30">
-            <BasketIcon className="h-16 w-16" />
+        <div className="md-animate-fade-in-up rounded-2xl border border-dashed border-amber-400/50 bg-amber-950/60 backdrop-blur-md p-12 text-center shadow-xl">
+          <div className="mx-auto mb-4 opacity-50">
+            <BasketIcon className="h-16 w-16 text-amber-300" />
           </div>
-          <p className="text-sm text-gray-500">No photos uploaded yet.</p>
+          <p className="text-sm font-medium text-amber-100/85">No photos uploaded yet.</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4">

@@ -21,7 +21,7 @@ export default async function GuardianDetailPage({
   return (
     <div className="space-y-6">
       <div>
-        <Link href="/bts/admin" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 py-1">
+        <Link href="/bts/admin" className="inline-flex items-center text-sm text-white/60 hover:text-white py-1">
           ← Back to dashboard
         </Link>
       </div>
@@ -48,7 +48,7 @@ export default async function GuardianDetailPage({
 
       {/* Dependents + assignments */}
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold text-gray-900">
+        <h2 className="text-lg font-semibold text-white drop-shadow-md">
           Dependents ({guardian.dependents.length})
         </h2>
         {guardian.dependents.map((dep) => (

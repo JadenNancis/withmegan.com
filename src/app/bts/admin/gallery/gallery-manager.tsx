@@ -72,8 +72,8 @@ export function BtsGalleryManager({ initialPhotos }: { initialPhotos: string[] }
             <SchoolBookIcon className="h-8 w-8" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-cyan-900">Gallery Manager</h1>
-            <p className="mt-0.5 text-sm text-gray-600">
+            <h1 className="text-2xl font-bold text-white drop-shadow-md">Gallery Manager</h1>
+            <p className="mt-0.5 text-sm text-brand-100/90 drop-shadow-sm">
               {photos.length} photo{photos.length === 1 ? "" : "s"}
             </p>
           </div>
@@ -130,11 +130,11 @@ export function BtsGalleryManager({ initialPhotos }: { initialPhotos: string[] }
 
       {/* Existing photos */}
       {photos.length === 0 ? (
-        <div className="bts-fade-in-up rounded-2xl border border-dashed border-cyan-300 bg-cyan-50/30 p-12 text-center">
-          <div className="mx-auto mb-4 opacity-30">
-            <SchoolBookIcon className="h-16 w-16" />
+        <div className="bts-fade-in-up rounded-2xl border border-dashed border-brand-400/50 bg-brand-950/60 backdrop-blur-md p-12 text-center shadow-xl">
+          <div className="mx-auto mb-4 opacity-50">
+            <SchoolBookIcon className="h-16 w-16 text-brand-300" />
           </div>
-          <p className="text-sm text-gray-500">No photos uploaded yet.</p>
+          <p className="text-sm font-medium text-brand-100/85">No photos uploaded yet.</p>
         </div>
       ) : (
         <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4">

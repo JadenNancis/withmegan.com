@@ -46,7 +46,7 @@ export default async function MdAdminHouseholdsPage() {
     <div className="space-y-6">
       <AdminNav current="/md/admin/households" />
       <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
-      <h1 className="text-2xl font-bold text-gray-900 md-animate-fade-in-up">Household Management</h1>
+      <h1 className="text-2xl font-bold text-white drop-shadow-md md-animate-fade-in-up">Household Management</h1>
       <HouseholdManager households={hh} unassigned={unassigned} audit={auditSerialised} />
     </div>
   );

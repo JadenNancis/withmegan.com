@@ -113,8 +113,8 @@ export function AssignmentPanel({
             <path d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <p className="text-sm font-semibold text-gray-700">All applicants assigned</p>
-        <p className="mt-1 text-xs text-gray-500">Every registrant has a household.</p>
+        <p className="text-sm font-semibold text-white/70 drop-shadow-sm">All applicants assigned</p>
+        <p className="mt-1 text-xs text-amber-100/85">Every registrant has a household.</p>
       </div>
     );
   }

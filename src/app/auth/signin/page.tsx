@@ -9,8 +9,8 @@ function SignInForm() {
   const router = useRouter();
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl") ?? "/";
-  const [email, setEmail] = useState("admin@withmegan.local");
-  const [password, setPassword] = useState("admin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [role, setRole] = useState("admin");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -87,9 +87,6 @@ function SignInForm() {
             {loading ? "Signing in…" : "Sign in"}
           </button>
         </form>
-        <p className="mt-4 text-xs text-gray-400">
-          Prototype credentials: admin@withmegan.local / admin
-        </p>
       </div>
     </div>
   );

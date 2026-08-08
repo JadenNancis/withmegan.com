@@ -91,7 +91,7 @@ export function DependentsStep({
 
   return (
     <section className="space-y-5">
-      <div className="rounded-2xl border border-brand-100 bg-white p-6 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)]">
+      <div className="rounded-2xl border border-brand-100 bg-white p-5 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)]">
         <h2 className="text-xl font-bold text-brand-900">Add your students</h2>
         <p className="mt-1 text-sm text-brand-700">
           Schools and grades. That&rsquo;s all this step needs from you.
@@ -109,7 +109,7 @@ export function DependentsStep({
             <button
               type="button"
               onClick={() => toggleCollapsed(i)}
-              className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-brand-50/50 transition-colors"
+              className="w-full flex items-center justify-between px-5 py-4 sm:px-6 text-left hover:bg-brand-50/50 active:bg-brand-50/70 transition-colors min-h-[56px]"
               aria-expanded={!isCollapsed}
             >
               <div className="flex items-center gap-3 min-w-0">
@@ -139,7 +139,7 @@ export function DependentsStep({
             </button>
 
             {!isCollapsed && (
-              <div className="px-6 pb-6 pt-4 border-t border-brand-50 space-y-1">
+              <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-4 border-t border-brand-50 space-y-1">
                 <Field label="Student&rsquo;s full name" required>
                   <TextInput
                     value={dep.studentName}
@@ -220,7 +220,7 @@ export function DependentsStep({
                     <button
                       type="button"
                       onClick={() => remove(i)}
-                      className="text-sm font-semibold text-red-600 hover:text-red-800 transition-colors"
+                      className="text-sm font-semibold text-red-600 hover:text-red-800 transition-colors min-h-[44px] px-2"
                     >
                       Remove student
                     </button>
@@ -237,7 +237,7 @@ export function DependentsStep({
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-6 text-base font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-150"
+          className="inline-flex min-h-[52px] sm:min-h-[56px] items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-6 text-base font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 active:scale-95 transition-all duration-150"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
             <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -247,7 +247,7 @@ export function DependentsStep({
         <button
           type="button"
           onClick={onNext}
-          className="flex-1 inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 hover:-translate-y-px active:translate-y-0 transition-all duration-150"
+          className="flex-1 inline-flex min-h-[52px] sm:min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 active:scale-95 transition-all duration-150"
         >
           Continue
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">

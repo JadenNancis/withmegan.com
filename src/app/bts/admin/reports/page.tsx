@@ -39,8 +39,8 @@ export default async function BtsReportsPage() {
 
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Reports</h1>
-          <p className="mt-1 text-sm text-gray-600">Summary of all BTS book drive registrations.</p>
+          <h1 className="text-2xl font-bold text-white drop-shadow-md">Reports</h1>
+          <p className="mt-1 text-sm text-brand-100/90 drop-shadow-sm">Summary of all BTS book drive registrations.</p>
         </div>
         <a
           href="/api/export?site=bts&format=pdf"

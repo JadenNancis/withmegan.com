@@ -12,8 +12,8 @@ export default async function MdAdminVerifyPage() {
       <AdminNav current="/md/admin/verify" />
       <SunsetWaveDivider className="w-full h-[20px] block opacity-60 -mt-2" />
       <div className="md-animate-fade-in-up">
-        <h1 className="text-2xl font-bold text-gray-900">Verification Counter</h1>
-        <p className="mt-1 text-sm text-gray-600">
+        <h1 className="text-2xl font-bold text-white drop-shadow-md">Verification Counter</h1>
+        <p className="mt-1 text-sm text-amber-100/90">
           Real-time hamper distribution control. Search, verify, and authorize. One hamper per household.
         </p>
       </div>

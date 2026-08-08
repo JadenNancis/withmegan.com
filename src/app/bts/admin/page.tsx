@@ -33,8 +33,8 @@ export default async function BtsAdminDashboard({
             <SchoolBookIcon className="h-8 w-8" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-cyan-900">Admin Dashboard</h1>
-            <p className="mt-0.5 text-sm text-gray-600">
+            <h1 className="text-2xl font-bold text-white drop-shadow-md">Admin Dashboard</h1>
+            <p className="mt-0.5 text-sm text-brand-100/90 drop-shadow-sm">
               {guardians.length} registration{guardians.length === 1 ? "" : "s"}
             </p>
           </div>
@@ -87,17 +87,17 @@ export default async function BtsAdminDashboard({
 
       {/* Registrations table */}
       {guardians.length === 0 ? (
-        <div className="bts-fade-in-up bts-stagger-4 rounded-2xl border border-dashed border-cyan-300 bg-cyan-50/30 p-12 text-center">
-          <div className="mx-auto mb-4 opacity-30">
-            <SchoolBookIcon className="h-16 w-16" />
+        <div className="bts-fade-in-up bts-stagger-4 rounded-2xl border border-dashed border-brand-400/50 bg-brand-950/60 backdrop-blur-md p-12 text-center shadow-xl">
+          <div className="mx-auto mb-4 opacity-50">
+            <SchoolBookIcon className="h-16 w-16 text-brand-300" />
           </div>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm font-medium text-brand-100/85">
             {search ? "No registrations match your search." : "No registrations yet."}
           </p>
         </div>
       ) : (
         <div className="bts-fade-in-up bts-stagger-4 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-          <p className="px-4 py-2 text-xs text-gray-400 border-b border-gray-100 sm:hidden">
+          <p className="px-4 py-2 text-xs text-white/40 border-b border-white/10 sm:hidden">
             ← Swipe to see more columns →
           </p>
           <div className="overflow-x-auto">

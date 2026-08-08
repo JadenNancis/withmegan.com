@@ -50,7 +50,7 @@ export function AdminNav({
 }) {
   const links = LINKS[site];
   return (
-    <div className={cn("-mx-4 -mt-6 sm:-mt-8 mb-6", TAB_BAR[site])}>
+    <div className={cn("-mx-4 -my-5 sm:-my-8 mb-4 sm:mb-6", TAB_BAR[site])}>
       <div className="mx-auto max-w-4xl px-4">
         <nav
           aria-label="Admin sections"
@@ -61,7 +61,7 @@ export function AdminNav({
               key={l.href}
               href={l.href}
               className={cn(
-                "whitespace-nowrap rounded-t-lg px-4 py-2.5 text-sm font-medium min-h-[40px] flex items-center transition-all",
+                "whitespace-nowrap rounded-t-lg px-3.5 sm:px-4 py-2.5 text-sm font-medium min-h-[44px] flex items-center transition-all active:scale-95",
                 current === l.href
                   ? ACTIVE_STYLES[site]
                   : IDLE_STYLES[site],

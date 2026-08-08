@@ -65,11 +65,11 @@ export function SuccessCard({
   }
 
   return (
-    <div className="mx-auto max-w-xl space-y-6 py-6">
+    <div className="mx-auto max-w-xl space-y-5 py-2 sm:py-6">
       {/* Celebration header */}
       <div className="text-center">
-        <div className="bts-bounce-in mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-brand-200 drop-shadow-lg">
-          <SuccessCheckmark className="h-24 w-24 drop-shadow-xl" />
+        <div className="bts-bounce-in mx-auto mb-6 flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-brand-200 drop-shadow-lg">
+          <SuccessCheckmark className="h-20 w-20 sm:h-24 sm:w-24 drop-shadow-xl" />
         </div>
         <h1 className="text-title text-brand-900">You&rsquo;re all set</h1>
         <p className="mt-3 text-body text-gray-600 max-w-md mx-auto leading-relaxed">
@@ -79,17 +79,17 @@ export function SuccessCard({
       </div>
 
       {/* ID card */}
-      <div className="rounded-2xl border-2 border-dashed border-brand-300 bg-gradient-to-br from-brand-50 to-white p-8 text-center shadow-lg">
+      <div className="rounded-2xl border-2 border-dashed border-brand-300 bg-gradient-to-br from-brand-50 to-white p-5 sm:p-8 text-center shadow-lg">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-600">
           Your Application ID
         </p>
-        <p className="mt-3 text-4xl font-bold font-mono tracking-wider text-brand-900 break-all leading-tight">
+        <p className="mt-3 text-3xl sm:text-4xl font-bold font-mono tracking-wider text-brand-900 break-all leading-tight">
           {result.thaId}
         </p>
         {result.qrCode && (
-          <div className="mt-5 inline-block rounded-2xl bg-white p-4 shadow-md ring-1 ring-brand-100">
+          <div className="mt-5 inline-block rounded-2xl bg-white p-3 sm:p-4 shadow-md ring-1 ring-brand-100">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={result.qrCode} alt="QR code for event day" width={200} height={200} />
+            <img src={result.qrCode} alt="QR code for event day" width={180} height={180} className="w-40 h-40 sm:w-[180px] sm:h-[180px]" />
           </div>
         )}
         <p className="mt-4 text-sm text-gray-500">
@@ -116,7 +116,7 @@ export function SuccessCard({
         />
         <Link
           href="/bts"
-          className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-4 text-center shadow-sm hover:bg-gray-50 hover:border-gray-300 hover:shadow transition-all duration-150 min-h-[80px]"
+          className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-4 text-center shadow-sm hover:bg-gray-50 hover:border-gray-300 hover:shadow active:scale-95 transition-all duration-150 min-h-[80px]"
         >
           <span className="text-sm font-bold text-gray-800">Back home</span>
           <span className="text-xs text-gray-500 mt-0.5">Return to the site</span>
@@ -140,7 +140,7 @@ export function SuccessCard({
         <button
           type="button"
           onClick={onRegisterAnother}
-          className="text-sm font-semibold text-brand-200 underline hover:text-white transition-colors"
+          className="text-sm font-semibold text-brand-200 underline hover:text-white transition-colors min-h-[44px] px-2"
         >
           Register another family
         </button>
@@ -165,7 +165,7 @@ function ActionButton({
       type="button"
       onClick={onClick}
       disabled={state === "sending" || state === "sent"}
-      className="flex flex-col items-center justify-center rounded-xl bg-brand-600 px-4 py-4 text-center shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 hover:-translate-y-px active:translate-y-0 transition-all duration-150 min-h-[80px] disabled:opacity-70 text-white"
+      className="flex flex-col items-center justify-center rounded-xl bg-brand-600 px-4 py-4 text-center shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 active:scale-95 transition-all duration-150 min-h-[80px] disabled:opacity-70 text-white"
     >
       <span className="text-sm font-bold">
         {state === "sending" ? "Sending…" : state === "sent" ? "Sent ✓" : label}

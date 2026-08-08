@@ -41,3 +41,4 @@ next-env.d.ts
 
 # Agent / design screenshots (local artifacts, not app code)
 screenshots/
+.env*

@@ -96,13 +96,13 @@ export default function MdRegisterPage() {
 
   if (success) {
     return (
-      <div className="relative space-y-6 overflow-hidden">
+      <div className="relative space-y-5 overflow-hidden sm:space-y-6">
         {/* Floating celebration elements */}
         <FloatingProduce className="absolute top-20 left-4 w-12 h-12 opacity-30 md-animate-float" />
         <FloatingProduce className="absolute top-32 right-8 w-10 h-10 opacity-25 md-animate-float-slow" />
         <FloatingProduce className="absolute top-48 left-12 w-8 h-8 opacity-20 md-animate-float" />
 
-        <div className="relative rounded-2xl border-2 border-green-300 bg-gradient-to-br from-green-50 to-amber-50 p-6 sm:p-8 text-center shadow-lg overflow-hidden">
+        <div className="relative rounded-2xl border-2 border-green-300 bg-gradient-to-br from-green-50 to-amber-50 p-5 sm:p-8 text-center shadow-lg overflow-hidden">
           <div className="md-animate-celebrate mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-500 text-white shadow-lg">
             <svg viewBox="0 0 40 40" className="w-12 h-12" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M 10 20 L 17 27 L 30 13" />
@@ -117,7 +117,7 @@ export default function MdRegisterPage() {
             <p className="mt-1 text-2xl sm:text-3xl font-mono font-bold text-amber-700 select-all break-all">{success.thaId}</p>
             {qrCode && (
               <div className="mt-3 flex flex-col items-center gap-2">
-                <img src={qrCode} alt="QR code for verification" className="rounded-lg shadow-sm" width={180} height={180} />
+                <img src={qrCode} alt="QR code for verification" className="rounded-lg shadow-sm w-40 h-40 sm:w-[180px] sm:h-[180px]" width={180} height={180} />
                 <p className="text-xs text-gray-500">Scan this at the distribution counter on event day</p>
               </div>
             )}
@@ -129,7 +129,7 @@ export default function MdRegisterPage() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center md-animate-fade-in-up md-delay-4">
           <Link
             href="/md"
-            className="inline-flex justify-center min-h-[44px] items-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+            className="inline-flex justify-center min-h-[48px] items-center rounded-lg border border-gray-300 bg-white px-5 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 active:scale-95 transition-all"
           >
             Back to home
           </Link>
@@ -148,7 +148,7 @@ export default function MdRegisterPage() {
               setHouseholdReference("");
               setConsent(false);
             }}
-            className="md-animate-pulse-warm inline-flex justify-center min-h-[44px] items-center rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 transition-colors"
+            className="md-animate-pulse-warm inline-flex justify-center min-h-[48px] items-center rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-amber-600 active:scale-95 transition-all"
           >
             Register another person
           </button>
@@ -158,13 +158,13 @@ export default function MdRegisterPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* Animated header */}
       <div className="relative overflow-hidden rounded-2xl md-hero-shimmer shadow-lg">
-        <div className="flex items-center gap-4 px-6 py-6">
-          <BasketIcon className="w-14 h-14 flex-none drop-shadow-lg md-animate-basket-sway" />
+        <div className="flex items-center gap-4 px-5 py-5 sm:px-6 sm:py-6">
+          <BasketIcon className="w-12 h-12 sm:w-14 sm:h-14 flex-none drop-shadow-lg md-animate-basket-sway" />
           <div className="text-white">
-            <h1 className="text-2xl font-bold drop-shadow md-animate-fade-in-up">Hamper Registration</h1>
+            <h1 className="text-xl sm:text-2xl font-bold drop-shadow md-animate-fade-in-up">Hamper Registration</h1>
             <p className="mt-1 text-sm text-amber-50 drop-shadow md-animate-fade-in-up md-delay-1">
               Register in advance for the Market Day community hamper distribution.
               Fields marked with <span className="text-red-100 font-bold">*</span> are required.
@@ -180,7 +180,7 @@ export default function MdRegisterPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-200 bg-white p-6 space-y-0 shadow-sm" noValidate>
+      <form onSubmit={handleSubmit} className="md-animate-fade-in-up md-delay-1 rounded-2xl border border-amber-200 bg-white p-5 sm:p-6 space-y-0 shadow-sm" noValidate>
         <Field label="Full name" htmlFor="fullName" required error={errors.fullName}>
           <TextInput
             id="fullName"
@@ -284,7 +284,7 @@ export default function MdRegisterPage() {
               type="checkbox"
               checked={consent}
               onChange={(e) => setConsent(e.target.checked)}
-              className="mt-1 h-5 w-5 flex-none rounded border-gray-300 text-amber-600 focus:ring-amber-500"
+              className="mt-1 h-6 w-6 flex-none rounded border-gray-300 text-amber-600 focus:ring-amber-500"
             />
             <span>
               I consent to the collection and use of my data for the purpose of this
@@ -295,12 +295,12 @@ export default function MdRegisterPage() {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-3">
-          <SubmitButton className={cn("min-h-[44px] bg-amber-500 hover:bg-amber-600 md-animate-pulse-warm")}>
+          <SubmitButton className={cn("min-h-[48px] bg-amber-500 hover:bg-amber-600 active:scale-95 md-animate-pulse-warm")}>
             {submitting ? "Submitting…" : "Register"}
           </SubmitButton>
           <Link
             href="/md"
-            className="inline-flex min-h-[44px] items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+            className="inline-flex min-h-[48px] items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 active:scale-95 transition-all"
           >
             Cancel
           </Link>

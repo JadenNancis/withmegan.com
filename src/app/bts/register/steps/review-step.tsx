@@ -34,20 +34,20 @@ export function ReviewStep({
 }) {
   return (
     <section className="space-y-5">
-      <div className="rounded-2xl border border-brand-100 bg-white p-6 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)]">
+      <div className="rounded-2xl border border-brand-100 bg-white p-5 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)]">
         <h2 className="text-xl font-bold text-brand-900">Almost done</h2>
         <p className="mt-1 text-sm text-brand-700">
           Give everything one last look. Your Application ID arrives as soon as you submit.
         </p>
 
-        <dl className="mt-6 grid gap-4 sm:grid-cols-2">
+        <dl className="mt-6 grid gap-3 sm:gap-4 sm:grid-cols-2">
           <Row label="Your name" value={state.fullName} />
           <Row label="Contact number" value={state.contactNumber} />
           {state.email && <Row label="Email" value={state.email} />}
           <Row label="Community" value={state.address} />
         </dl>
 
-        <div className="mt-8 border-t border-brand-100 pt-6">
+        <div className="mt-6 border-t border-brand-100 pt-5">
           <h3 className="text-sm font-bold uppercase tracking-wide text-brand-600">
             {state.dependents.length}{" "}
             {state.dependents.length === 1 ? "student" : "students"}
@@ -70,14 +70,14 @@ export function ReviewStep({
       </div>
 
       {/* Consent */}
-      <div className="rounded-2xl border border-brand-100 bg-white p-6 shadow-[0_2px_16px_-4px_rgba(0,0,0,0.06)]">
+      <div className="rounded-2xl border border-brand-100 bg-white p-5 sm:p-6 shadow-[0_2px_16px_-4px_rgba(0,0,0,0.06)]">
         <label className="flex items-start gap-4 cursor-pointer">
           <input
             id="consent"
             type="checkbox"
             checked={state.consent}
             onChange={(e) => onChangeConsent(e.target.checked)}
-            className="mt-1 h-5 w-5 shrink-0 rounded-lg border-gray-300 bg-white text-brand-600 focus:ring-brand-500 focus:ring-offset-2"
+            className="mt-1 h-6 w-6 shrink-0 rounded-lg border-gray-300 bg-white text-brand-600 focus:ring-brand-500 focus:ring-offset-2"
           />
           <span className="text-sm text-gray-700 leading-relaxed">
             I consent to my data and my dependents&rsquo; data being collected for the purposes
@@ -92,7 +92,7 @@ export function ReviewStep({
           type="button"
           onClick={onBack}
           disabled={submitting}
-          className="inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-6 text-base font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-150 disabled:opacity-60"
+          className="inline-flex min-h-[52px] sm:min-h-[56px] items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-6 text-base font-semibold text-gray-700 hover:bg-gray-50 hover:border-gray-300 active:scale-95 transition-all duration-150 disabled:opacity-60"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">
             <path d="M19 12H5M12 19l-7-7 7-7" />
@@ -103,7 +103,7 @@ export function ReviewStep({
           type="button"
           onClick={onSubmit}
           disabled={submitting}
-          className="flex-1 inline-flex min-h-[60px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-lg font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 hover:-translate-y-px active:translate-y-0 transition-all duration-150 disabled:opacity-60"
+          className="flex-1 inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-lg font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 active:scale-95 transition-all duration-150 disabled:opacity-60"
         >
           {submitting ? "Submitting…" : "Submit registration"}
           {!submitting && (

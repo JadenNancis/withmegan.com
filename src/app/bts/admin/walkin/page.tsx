@@ -17,8 +17,8 @@ export default async function BtsWalkInPage() {
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-cyan-900">Walk-In Quick Registration</h1>
-          <p className="mt-1 text-sm text-gray-600">
+          <h1 className="text-2xl font-bold text-white drop-shadow-md">Walk-In Quick Registration</h1>
+          <p className="mt-1 text-sm text-brand-100/90 drop-shadow-sm">
             For guardians who arrive on event day without pre-registering. One dependent only. Add more later from the detail page.
           </p>
         </div>

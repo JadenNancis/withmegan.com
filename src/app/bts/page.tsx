@@ -31,7 +31,7 @@ export default async function BtsLanding() {
   const pct = Math.min(100, Math.round((registered / site.goalFamilies) * 100));
 
   return (
-    <div className="-mx-4 -my-6 sm:-my-8 space-y-0">
+    <div className="-mx-4 -my-5 sm:-my-8 space-y-0">
       {/* ===== Hero — single photo, one message, two actions ===== */}
       <section className="relative overflow-hidden bg-brand-950">
         <Image
@@ -42,21 +42,21 @@ export default async function BtsLanding() {
           sizes="100vw"
           className="object-cover object-center opacity-40"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/65 to-brand-950/92" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-brand-950/92" />
 
-        <div className="relative mx-auto max-w-4xl px-4 py-14 sm:py-20 text-center text-white">
-          <span className="bts-fade-in-up bts-stagger-1 inline-block rounded-full bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-brand-100 ring-1 ring-inset ring-white/25 backdrop-blur-sm">
+        <div className="relative mx-auto max-w-4xl px-5 py-12 sm:py-20 text-center text-white">
+          <span className="bts-fade-in-up bts-stagger-1 inline-block rounded-full bg-white/10 px-4 py-2 text-xs font-bold uppercase tracking-wider text-brand-100 ring-1 ring-inset ring-white/25 backdrop-blur-sm">
             Mt. St. George/Goodwood, Tobago
           </span>
-          <h1 className="bts-fade-in-up bts-stagger-2 mt-4 text-4xl sm:text-5xl font-bold tracking-tight">
+          <h1 className="bts-fade-in-up bts-stagger-2 mt-5 text-3xl sm:text-5xl font-bold tracking-tight drop-shadow-lg">
             Back to School with Megan
           </h1>
-          <p className="bts-fade-in-up bts-stagger-3 mt-4 text-base sm:text-lg text-brand-100 max-w-xl mx-auto leading-relaxed">
+          <p className="bts-fade-in-up bts-stagger-3 mt-4 text-base sm:text-lg text-brand-100 max-w-xl mx-auto leading-relaxed drop-shadow-md">
             Free books and supplies for every student in the constituency.
             Register in three minutes. We&rsquo;ll match each child with what they need.
           </p>
 
-          <div className="bts-fade-in-up bts-stagger-3 mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-brand-50 ring-1 ring-inset ring-white/20">
+          <div className="bts-fade-in-up bts-stagger-3 mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-brand-50 ring-1 ring-inset ring-white/20 backdrop-blur-sm">
             <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <rect x="3" y="5" width="18" height="16" rx="2" />
               <path d="M8 3v4M16 3v4M3 10h18" />
@@ -68,16 +68,16 @@ export default async function BtsLanding() {
             })}
           </div>
 
-          <div className="bts-fade-in-up bts-stagger-4 mt-8 flex flex-col sm:flex-row gap-3 justify-center sm:items-center">
+          <div className="bts-fade-in-up bts-stagger-4 mt-8 flex flex-col gap-3 justify-center sm:flex-row sm:items-center">
             <Link
               href="/bts/register"
-              className="inline-flex min-h-[56px] items-center justify-center rounded-xl bg-white px-8 text-base font-bold text-brand-800 shadow-lg hover:bg-brand-50 transition-colors"
+              className="inline-flex min-h-[56px] items-center justify-center rounded-xl bg-white px-8 text-base font-bold text-brand-800 shadow-lg active:scale-95 hover:bg-brand-50 transition-all"
             >
               Register a Student
             </Link>
             <Link
               href="/bts/recover"
-              className="inline-flex min-h-[56px] items-center justify-center rounded-xl bg-transparent px-8 text-base font-semibold text-white ring-2 ring-inset ring-white/40 hover:bg-white/10 transition-colors"
+              className="inline-flex min-h-[56px] items-center justify-center rounded-xl bg-transparent px-8 text-base font-semibold text-white ring-2 ring-inset ring-white/40 active:scale-95 hover:bg-white/10 transition-all"
             >
               Find My Application ID
             </Link>
@@ -162,13 +162,13 @@ export default async function BtsLanding() {
 
       {/* ===== Gallery strip — 3 photos, optimized ===== */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
-        <div className="flex items-end justify-between">
+        <div className="flex items-end justify-between gap-2">
           <h2 className="text-title text-white drop-shadow-md">Our Tobago</h2>
-          <Link href="/bts/gallery" className="text-sm font-semibold text-brand-200 hover:text-white drop-shadow-sm transition-colors">
+          <Link href="/bts/gallery" className="text-sm font-semibold text-brand-200 hover:text-white drop-shadow-sm transition-colors min-h-[44px] flex items-center">
             Full gallery &rarr;
           </Link>
         </div>
-        <div className="mt-5 grid grid-cols-3 gap-3">
+        <div className="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
           <GalleryThumb src="/images/tobago/fort-george-sunset.jpg" alt="Sunset at Fort King George, Tobago" />
           <GalleryThumb src="/images/tobago/pigeon-point.jpg" alt="Pigeon Point beach, Tobago" />
           <GalleryThumb src="/images/tobago/tobago-rainforest.jpg" alt="Main Ridge Forest Reserve, Tobago" />
@@ -177,18 +177,18 @@ export default async function BtsLanding() {
 
       {/* ===== Bottom CTA — short, decisive ===== */}
       <section className="bg-gradient-to-br from-brand-900/92 to-brand-950/95 backdrop-blur-md text-white border-t border-white/10">
-        <div className="mx-auto max-w-4xl px-4 py-12 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold">Ready when you are</h2>
-          <p className="mt-2 text-body text-brand-100">
+        <div className="mx-auto max-w-4xl px-5 py-12 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold drop-shadow-md">Ready when you are</h2>
+          <p className="mt-2 text-body text-brand-100 drop-shadow-sm">
             {EVENT_DATE.toLocaleDateString("en-TT", { month: "long", day: "numeric" })} closes registration.
           </p>
           <Link
             href="/bts/register"
-            className="mt-6 inline-flex min-h-[56px] items-center justify-center rounded-xl bg-white px-10 text-lg font-bold text-brand-800 shadow-lg hover:bg-brand-50 transition-colors"
+            className="mt-6 inline-flex min-h-[56px] items-center justify-center rounded-xl bg-white px-10 text-lg font-bold text-brand-800 shadow-lg active:scale-95 hover:bg-brand-50 transition-all"
           >
             Register a Student
           </Link>
-          <p className="mt-4 text-xs text-brand-200">
+          <p className="mt-4 text-xs text-brand-200 drop-shadow-sm">
             Already registered?{" "}
             <Link href="/bts/recover" className="underline font-semibold">
               Find your Application ID
@@ -202,12 +202,12 @@ export default async function BtsLanding() {
 
 function StepCard({ step, title, body }: { step: string; title: string; body: string }) {
   return (
-    <div className="card-hover snap-start shrink-0 w-[80vw] sm:w-auto rounded-2xl border border-brand-100/60 bg-white/95 backdrop-blur-sm p-5 shadow-lg hover:border-brand-300">
-      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-sm font-bold text-white shadow-md">
+    <div className="card-hover snap-start shrink-0 w-[78vw] sm:w-auto rounded-2xl border border-brand-100/60 bg-white/95 backdrop-blur-sm p-5 shadow-lg hover:border-brand-300 active:scale-[0.98]">
+      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-brand-500 to-brand-700 text-base font-bold text-white shadow-md">
         {step}
       </div>
       <h3 className="mt-3 text-base font-bold text-brand-900">{title}</h3>
-      <p className="mt-1.5 text-sm text-gray-600 leading-relaxed">{body}</p>
+      <p className="mt-2 text-sm text-gray-600 leading-relaxed">{body}</p>
     </div>
   );
 }
