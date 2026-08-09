@@ -93,24 +93,24 @@ export default async function BtsLanding() {
       <section className="bg-white/95 backdrop-blur-sm border-y border-white/10 my-2">
         <Link
           href="/bts/progress"
-          className="mx-auto max-w-4xl px-4 py-6 flex items-center gap-4 group"
+          className="mx-auto max-w-4xl px-4 py-6 block group"
         >
-          <div className="flex-1">
-            <div className="flex items-baseline justify-between gap-2">
-              <p className="text-sm font-semibold text-brand-900">
-                <span className="text-2xl font-bold">{registered}</span>
-                <span className="text-brand-500"> / {site.goalFamilies} families registered</span>
-              </p>
-              <p className="text-sm font-bold text-brand-600">{pct}%</p>
-            </div>
-            <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-brand-100">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-600 transition-all duration-700"
-                style={{ width: `${Math.max(3, pct)}%` }}
-              />
-            </div>
+          <div className="flex items-baseline justify-between gap-2">
+            <p className="text-sm font-semibold text-brand-900">
+              <span className="text-2xl font-bold">{registered}</span>
+              <span className="text-brand-500"> / {site.goalFamilies} families registered</span>
+            </p>
+            <p className="text-sm font-bold text-brand-600 flex items-baseline gap-1">
+              {pct}%
+              <span className="text-brand-400 group-hover:translate-x-0.5 transition-transform" aria-hidden="true">&rarr;</span>
+            </p>
           </div>
-          <span className="text-brand-400 group-hover:translate-x-0.5 transition-transform" aria-hidden="true">&rarr;</span>
+          <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-brand-100">
+            <div
+              className="h-full rounded-full bg-gradient-to-r from-brand-400 to-brand-600 transition-all duration-700"
+              style={{ width: `${Math.max(3, pct)}%` }}
+            />
+          </div>
         </Link>
       </section>
 
