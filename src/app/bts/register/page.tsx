@@ -198,12 +198,12 @@ export default function BtsRegisterPage() {
                 {/* Step bubble */}
                 <div
                   className={[
-                    "flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full text-xs sm:text-sm font-bold transition-all duration-200 shadow-md",
+                    "flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_2px_8px_rgba(0,0,0,0.5)]",
                     i < state.step
-                      ? "bg-brand-500 text-white ring-2 ring-brand-300/60"
+                      ? "bg-brand-500 text-white ring-2 ring-brand-300/80"
                       : i === state.step
-                        ? "bg-brand-500 text-white ring-4 ring-brand-400/40 scale-110"
-                        : "bg-brand-950/70 text-white ring-1 ring-white/30",
+                        ? "bg-brand-500 text-white ring-4 ring-brand-300/60 scale-110"
+                        : "bg-brand-950/80 text-white ring-1 ring-white/40",
                   ].join(" ")}
                   aria-current={i === state.step ? "step" : undefined}
                 >
@@ -229,8 +229,8 @@ export default function BtsRegisterPage() {
                   <div
                     aria-hidden="true"
                     className={[
-                      "ml-2 sm:ml-4 h-px flex-1 transition-colors duration-300",
-                      i < state.step ? "bg-brand-400" : "bg-white/30",
+                      "ml-2 sm:ml-4 h-1 rounded-full flex-1 transition-colors duration-300 shadow-[0_1px_3px_rgba(0,0,0,0.5)]",
+                      i < state.step ? "bg-brand-400" : "bg-white/60",
                     ].join(" ")}
                   />
                 )}
