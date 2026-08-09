@@ -202,7 +202,7 @@ export function HouseholdManager({
       <section className="md-animate-fade-in-up md-delay-2">
         <h2 className="text-lg font-semibold text-white drop-shadow-md">All households</h2>
         {households.length === 0 ? (
-          <p className="mt-2 text-sm text-amber-100/85">No households yet. Create one above.</p>
+          <p className="mt-2 text-sm text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">No households yet. Create one above.</p>
         ) : (
           <div className="mt-3 overflow-x-auto rounded-lg border border-amber-200 shadow-sm">
             <table className="min-w-full divide-y divide-amber-100 text-sm">
@@ -251,7 +251,7 @@ export function HouseholdManager({
       <section className="md-animate-fade-in-up md-delay-3">
         <h2 className="text-lg font-semibold text-white drop-shadow-md">Recent audit trail</h2>
         {audit.length === 0 ? (
-          <p className="mt-2 text-sm text-amber-100/85">No audit entries yet.</p>
+          <p className="mt-2 text-sm text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">No audit entries yet.</p>
         ) : (
           <div className="mt-3 overflow-x-auto rounded-lg border border-amber-200 shadow-sm">
             <table className="min-w-full divide-y divide-amber-100 text-sm">

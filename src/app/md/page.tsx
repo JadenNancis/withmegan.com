@@ -139,10 +139,10 @@ export default function MdLanding() {
             <TobagoMapBadge className="w-12 h-12 flex-none" />
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">About the programme</h2>
-              <p className="text-sm text-amber-100/90 font-medium drop-shadow-sm">Rooted in Tobago, grown for community</p>
+              <p className="text-sm text-amber-100/90 font-medium [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Rooted in Tobago, grown for community</p>
             </div>
           </div>
-          <p className="text-sm sm:text-base text-amber-50/85 leading-relaxed drop-shadow-sm">
+          <p className="text-sm sm:text-base text-amber-50/85 leading-relaxed [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
             Market Day with Megan is a community hamper distribution programme serving
             residents of Mt. St. George/Goodwood, Tobago. Each eligible household
             receives a hamper of essential goods. Registration is open in advance.
@@ -150,7 +150,7 @@ export default function MdLanding() {
             and collection on the day.
           </p>
 
-          <h3 className="mt-8 text-sm font-bold text-white uppercase tracking-wide drop-shadow-sm">How it works</h3>
+          <h3 className="mt-8 text-sm font-bold text-white uppercase tracking-wide [text-shadow:0_2px_6px_rgba(0,0,0,0.7)]">How it works</h3>
           {/* Mobile: snap-scrolling cards like BTS. sm+: grid. */}
           <div className="snap-row mt-4 flex gap-3 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:overflow-visible">
             {[

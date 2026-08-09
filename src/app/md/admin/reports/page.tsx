@@ -127,12 +127,12 @@ export default async function MdAdminReportsPage({
         <h2 className="text-lg font-semibold text-white drop-shadow-md md-animate-fade-in-up break-words">
           Registrations {q && `· filtered by "${q}"`}
         </h2>
-        <Suspense fallback={<div className="text-sm text-white/50">Loading search…</div>}>
+        <Suspense fallback={<div className="text-sm text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Loading search…</div>}>
           <SearchBar placeholder="Search by name, Application ID, national ID, or household" />
         </Suspense>
 
         {filtered.length === 0 ? (
-          <p className="text-sm text-amber-100/85">
+          <p className="text-sm text-amber-100/85 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
             {q ? "No matching records." : "No registrations yet."}
           </p>
         ) : (
@@ -201,7 +201,7 @@ export default async function MdAdminReportsPage({
         )}
       </section>
 
-      <p className="text-xs text-white/50">
+      <p className="text-xs text-white/70 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
         Showing {filtered.length} of {regCount?.n ?? 0} registrations (max 500).
       </p>
     </div>

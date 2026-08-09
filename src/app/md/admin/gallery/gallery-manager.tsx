@@ -106,10 +106,10 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] })
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
         </div>
-        <p className="text-sm font-semibold text-white drop-shadow-sm">
+        <p className="text-sm font-semibold text-amber-800">
           {uploading ? "Uploading…" : "Click or drag photos to upload"}
         </p>
-        <p className="mt-1 text-xs text-white/70">JPG, PNG, WebP, or GIF. Up to 8 MB each</p>
+        <p className="mt-1 text-xs text-gray-500">JPG, PNG, WebP, or GIF. Up to 8 MB each</p>
         <input
           ref={fileInputRef}
           type="file"

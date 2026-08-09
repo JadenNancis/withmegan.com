@@ -299,7 +299,7 @@ export function InventoryManager({ initialItems }: InventoryManagerProps) {
         </div>
       ) : (
         <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-          <p className="px-4 py-2 text-xs text-white/40 border-b border-white/10 sm:hidden">
+          <p className="px-4 py-2 text-xs text-gray-400 border-b border-gray-100 sm:hidden">
             &larr; Swipe to see more columns &rarr;
           </p>
           <div className="overflow-x-auto">

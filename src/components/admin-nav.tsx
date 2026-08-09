@@ -39,8 +39,8 @@ const ACTIVE_STYLES: Record<AdminSite, string> = {
 };
 
 const IDLE_STYLES: Record<AdminSite, string> = {
-  bts: "text-white/70 hover:text-white hover:bg-white/10",
-  md: "text-white/70 hover:text-white hover:bg-white/10",
+  bts: "text-white/90 hover:text-white hover:bg-white/10",
+  md: "text-white/90 hover:text-white hover:bg-white/10",
 };
 
 export function AdminNav({

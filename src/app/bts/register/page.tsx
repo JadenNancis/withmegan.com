@@ -216,7 +216,7 @@ export default function BtsRegisterPage() {
                       ? "text-brand-200 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]"
                       : i === state.step
                         ? "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]"
-                        : "text-white/60 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]",
+                        : "text-white/80 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]",
                   ].join(" ")}
                 >
                   {label}
