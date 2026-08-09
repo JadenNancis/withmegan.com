@@ -11,6 +11,7 @@ import {
 import { db } from "@/db/client";
 import { btsGuardians } from "@/db/schema";
 import { count } from "drizzle-orm";
+import { SnapScrollRow } from "@/components/snap-scroll";
 
 const site = SITES.bts;
 const EVENT_DATE = new Date(site.eventDate + "T12:00:00");
@@ -119,7 +120,10 @@ export default async function BtsLanding() {
           </p>
         </div>
 
-        <div className="snap-row mt-8 flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:overflow-visible">
+        <SnapScrollRow
+          count={3}
+          scrollerClassName="snap-row mt-8 flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:grid-cols-3 sm:overflow-visible"
+        >
           <StepCard
             step="1"
             title="Register"
@@ -135,13 +139,7 @@ export default async function BtsLanding() {
             title="Get your ID"
             body="We message you an Application ID with a QR code. Show it on event day to collect."
           />
-        </div>
-        {/* Scroll affordance — dot indicator, mobile only */}
-        <div className="mt-4 flex justify-center gap-1.5 sm:hidden" aria-hidden="true">
-          <span className="h-1.5 w-6 rounded-full bg-brand-300" />
-          <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
-          <span className="h-1.5 w-1.5 rounded-full bg-white/40" />
-        </div>
+        </SnapScrollRow>
       </section>
 
       {/* ===== About — the SVG hero lives here, away from the photo ===== */}
