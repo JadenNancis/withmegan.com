@@ -13,19 +13,19 @@ export default async function BtsDashboardPage() {
   const eventDate = new Date(site.eventDate);
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-white flex flex-col">
+    <div className="min-h-screen text-white flex flex-col">
       <AdminNav current="/bts/admin/dashboard" site="bts" />
 
-      {/* Header */}
-      <header className="border-b border-neutral-800/80 bg-neutral-900/50 px-4 py-4 sm:px-6 sm:py-6 backdrop-blur-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+      {/* Header — translucent dark glass over the photo */}
+      <header className="border-b border-white/20 bg-brand-950/40 backdrop-blur-md px-4 py-4 sm:px-6 sm:py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 shadow-lg">
         <div>
-          <h1 className="text-xl sm:text-3xl font-bold tracking-tight text-cyan-200">
+          <h1 className="text-xl sm:text-3xl font-bold tracking-tight text-cyan-200 [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">
             {site.name}
           </h1>
-          <p className="text-sm text-neutral-400 mt-0.5">Event-Day Dashboard · Live</p>
+          <p className="text-sm text-cyan-100/90 mt-0.5 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Event-Day Dashboard · Live</p>
         </div>
         <div className="sm:text-right">
-          <p className="text-base sm:text-xl font-semibold text-white">
+          <p className="text-base sm:text-xl font-semibold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
             {eventDate.toLocaleDateString("en-TT", {
               weekday: "long",
               year: "numeric",
@@ -33,7 +33,7 @@ export default async function BtsDashboardPage() {
               day: "numeric",
             })}
           </p>
-          <p className="text-xs text-neutral-500 mt-0.5">Auto-refresh every 10s</p>
+          <p className="text-xs text-cyan-100/70 mt-0.5 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Auto-refresh every 10s</p>
         </div>
       </header>
 
@@ -41,7 +41,7 @@ export default async function BtsDashboardPage() {
         <LiveStats site="bts" />
       </main>
 
-      <footer className="border-t border-neutral-800/80 px-6 py-4 text-center text-xs text-neutral-600">
+      <footer className="border-t border-white/20 bg-brand-950/40 backdrop-blur-md px-6 py-4 text-center text-xs text-cyan-100/80 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
         {site.name} · {site.tagline}
       </footer>
     </div>

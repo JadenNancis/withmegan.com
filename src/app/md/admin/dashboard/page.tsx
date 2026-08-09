@@ -13,19 +13,19 @@ export default async function MdDashboardPage() {
   const eventDate = new Date(site.eventDate);
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white flex flex-col">
+    <div className="min-h-screen text-white flex flex-col">
       <AdminNav current="/md/admin/dashboard" />
 
-      {/* Header */}
-      <header className="border-b border-slate-800 bg-slate-950/60 px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      {/* Header — translucent dark glass over the photo */}
+      <header className="border-b border-white/20 bg-amber-950/40 backdrop-blur-md px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 shadow-lg">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-amber-300">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-amber-300 [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">
             {site.name}
           </h1>
-          <p className="text-sm text-slate-400">Event-Day Dashboard · Live</p>
+          <p className="text-sm text-amber-100/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Event-Day Dashboard · Live</p>
         </div>
         <div className="text-right">
-          <p className="text-lg sm:text-xl font-semibold text-white">
+          <p className="text-lg sm:text-xl font-semibold text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
             {eventDate.toLocaleDateString("en-TT", {
               weekday: "long",
               year: "numeric",
@@ -33,7 +33,7 @@ export default async function MdDashboardPage() {
               day: "numeric",
             })}
           </p>
-          <p className="text-xs text-slate-400">Projected view · auto-refresh every 10s</p>
+          <p className="text-xs text-amber-100/70 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Projected view · auto-refresh every 10s</p>
         </div>
       </header>
 
@@ -41,7 +41,7 @@ export default async function MdDashboardPage() {
         <LiveStats site="md" />
       </main>
 
-      <footer className="border-t border-slate-800 bg-slate-950/60 px-6 py-3 text-center text-xs text-slate-500">
+      <footer className="border-t border-white/20 bg-amber-950/40 backdrop-blur-md px-6 py-3 text-center text-xs text-amber-100/80 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
         {site.name} · {site.tagline}
       </footer>
     </div>
