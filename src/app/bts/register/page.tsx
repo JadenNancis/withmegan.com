@@ -189,12 +189,24 @@ export default function BtsRegisterPage() {
       </div>
       {/* Spacer — the Tobago photo breathes between hero and step tracker */}
       <div className="h-8 sm:h-10" aria-hidden="true" />
-      {/* Wizard header — step tracker floats on the photo, text reads via strong shadow */}
-      <header className="motion-safe:bts-fade-in-up">
-        <nav aria-label="Registration progress" className="mt-2">
-          <ol className="flex items-center gap-0">
+      {/* Wizard header — step tracker spans the same width as the hero above */}
+      <header className="motion-safe:bts-fade-in-up -mx-4">
+        <nav aria-label="Registration progress" className="mt-2 px-5 sm:px-6">
+          <ol className="relative flex items-center justify-between">
+            {/* Track line — full width behind the bubbles, matches hero title width */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-4 sm:inset-x-5 top-1/2 -translate-y-1/2 h-1 rounded-full bg-white/50 shadow-[0_1px_3px_rgba(0,0,0,0.5)]"
+            />
+            {/* Progress fill portion */}
+            <div
+              aria-hidden="true"
+              className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 h-1 rounded-full bg-brand-400 shadow-[0_1px_3px_rgba(0,0,0,0.5)] transition-all duration-500"
+              style={{ width: `calc((100% - 2rem) * (${state.step} / ${STEPS.length - 1}))` }}
+            />
             {STEPS.map((label, i) => (
-              <li key={label} className="flex items-center flex-1 min-w-0">
+              <li key={label} className="flex items-center relative z-10">
+
                 {/* Step bubble */}
                 <div
                   className={[
@@ -223,17 +235,6 @@ export default function BtsRegisterPage() {
                 >
                   {label}
                 </span>
-
-                {/* Connector line */}
-                {i < STEPS.length - 1 && (
-                  <div
-                    aria-hidden="true"
-                    className={[
-                      "ml-2 sm:ml-4 h-1 rounded-full flex-1 transition-colors duration-300 shadow-[0_1px_3px_rgba(0,0,0,0.5)]",
-                      i < state.step ? "bg-brand-400" : "bg-white/60",
-                    ].join(" ")}
-                  />
-                )}
               </li>
             ))}
           </ol>
