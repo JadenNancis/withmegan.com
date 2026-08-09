@@ -205,8 +205,13 @@ export default function BtsRegisterPage() {
               style={{ width: `calc((100% - 2rem) * (${state.step} / ${STEPS.length - 1}))` }}
             />
             {STEPS.map((label, i) => (
-              <li key={label} className="flex items-center relative z-10">
-
+              <li
+                key={label}
+                className={[
+                  "flex flex-col items-center gap-1.5 relative z-10",
+                  i === 0 ? "items-start text-left" : i === STEPS.length - 1 ? "items-end text-right" : "items-center text-center",
+                ].join(" ")}
+              >
                 {/* Step bubble */}
                 <div
                   className={[
@@ -222,15 +227,15 @@ export default function BtsRegisterPage() {
                   {i < state.step ? "✓" : i + 1}
                 </div>
 
-                {/* Step label — hidden on very small screens to save space */}
+                {/* Step label under the bubble — always visible */}
                 <span
                   className={[
-                    "ml-2 sm:ml-3 text-xs sm:text-sm font-medium truncate transition-colors hidden sm:block",
+                    "text-[10px] sm:text-xs font-semibold leading-tight whitespace-nowrap transition-colors",
                     i < state.step
-                      ? "text-brand-200 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]"
+                      ? "text-brand-200 [text-shadow:0_2px_8px_rgba(0,0,0,0.7)]"
                       : i === state.step
-                        ? "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]"
-                        : "text-white/80 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]",
+                        ? "text-white [text-shadow:0_2px_8px_rgba(0,0,0,0.7)]"
+                        : "text-white/85 [text-shadow:0_2px_8px_rgba(0,0,0,0.7)]",
                   ].join(" ")}
                 >
                   {label}
