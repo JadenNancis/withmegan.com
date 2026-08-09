@@ -192,27 +192,26 @@ export default function BtsRegisterPage() {
       {/* Wizard header — step tracker spans the same width as the hero above */}
       <header className="motion-safe:bts-fade-in-up -mx-4">
         <nav aria-label="Registration progress" className="mt-2 px-5 sm:px-6">
-          <ol className="relative flex items-center justify-between">
-            {/* Track line — full width behind the bubbles, matches hero title width */}
+          <ol className="relative grid grid-cols-3 place-items-center">
+            {/* Single continuous track — spans bubble 1 center → bubble 3 center
+                Bubbles are at 16.67%, 50%, 83.33% of ol width (3 equal columns).
+                Track is centered on bubble row (top = half bubble height). */}
             <div
               aria-hidden="true"
-              className="absolute inset-x-4 sm:inset-x-5 top-1/2 -translate-y-1/2 h-1 rounded-full bg-white/50 shadow-[0_1px_3px_rgba(0,0,0,0.5)]"
+              className="absolute left-[16.667%] right-[16.667%] top-4 sm:top-[1.125rem] -translate-y-1/2 h-1 rounded-full bg-white/50 shadow-[0_1px_3px_rgba(0,0,0,0.5)]"
             />
-            {/* Progress fill portion */}
+            {/* Progress fill — colored portion: 0% at step 1, 50% at step 2, 100% at step 3 */}
             <div
               aria-hidden="true"
-              className="absolute left-4 sm:left-5 top-1/2 -translate-y-1/2 h-1 rounded-full bg-brand-400 shadow-[0_1px_3px_rgba(0,0,0,0.5)] transition-all duration-500"
-              style={{ width: `calc((100% - 2rem) * (${state.step} / ${STEPS.length - 1}))` }}
+              className="absolute left-[16.667%] top-4 sm:top-[1.125rem] -translate-y-1/2 h-1 rounded-full bg-brand-400 shadow-[0_1px_3px_rgba(0,0,0,0.5)] transition-all duration-500"
+              style={{ width: `calc((100% - 33.333%) * ${state.step} / 2)` }}
             />
             {STEPS.map((label, i) => (
               <li
                 key={label}
-                className={[
-                  "flex flex-col items-center gap-1.5 relative z-10",
-                  i === 0 ? "items-start text-left" : i === STEPS.length - 1 ? "items-end text-right" : "items-center text-center",
-                ].join(" ")}
+                className="flex flex-col items-center gap-1.5 relative z-10"
               >
-                {/* Step bubble */}
+                {/* Step bubble — centers on the track line via margin trick */}
                 <div
                   className={[
                     "flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-full text-xs sm:text-sm font-bold transition-all duration-200 shadow-[0_2px_8px_rgba(0,0,0,0.5)]",
