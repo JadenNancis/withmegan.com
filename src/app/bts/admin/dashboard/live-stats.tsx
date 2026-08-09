@@ -182,7 +182,7 @@ export function LiveStats({ site }: Props) {
             </table>
           </div>
         ) : (
-          <p className="mt-4 text-sm text-neutral-500">
+          <p className="mt-4 text-sm text-neutral-200 [text-shadow:0_1px_3px_rgba(0,0,0,0.5)]">
             {error ? "No data available." : "Loading community breakdown…"}
           </p>
         )}

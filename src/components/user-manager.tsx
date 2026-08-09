@@ -55,7 +55,7 @@ export function UserManager() {
   }
 
   if (loading) {
-    return <p className="text-sm text-gray-500">Loading accounts…</p>;
+    return <p className="text-sm text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Loading accounts…</p>;
   }
 
   const pending = users.filter((u) => u.status === "pending");
@@ -73,7 +73,7 @@ export function UserManager() {
       {pending.length > 0 && (
         <section className="space-y-3">
           <div className="flex items-center gap-2">
-            <h2 className="text-lg font-semibold text-gray-900">Pending approval</h2>
+            <h2 className="text-lg font-semibold text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.6)]">Pending approval</h2>
             <span className="inline-flex items-center rounded-full bg-amber-100 px-2.5 py-0.5 text-xs font-bold text-amber-800">
               {pending.length}
             </span>
@@ -88,7 +88,7 @@ export function UserManager() {
 
       {approved.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold text-gray-900">Active accounts</h2>
+          <h2 className="text-lg font-semibold text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.6)]">Active accounts</h2>
           <div className="space-y-2">
             {approved.map((u) => (
               <UserCard key={u.id} user={u} acting={acting === u.id} onAct={act} />
@@ -99,7 +99,7 @@ export function UserManager() {
 
       {revoked.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-lg font-semibold text-gray-900">Revoked</h2>
+          <h2 className="text-lg font-semibold text-white [text-shadow:0_2px_6px_rgba(0,0,0,0.6)]">Revoked</h2>
           <div className="space-y-2">
             {revoked.map((u) => (
               <UserCard key={u.id} user={u} acting={acting === u.id} onAct={act} />
@@ -109,7 +109,7 @@ export function UserManager() {
       )}
 
       {users.length === 0 && (
-        <p className="text-sm text-gray-500">No user accounts yet. Sign up to create one.</p>
+        <p className="text-sm text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">No user accounts yet. Sign up to create one.</p>
       )}
     </div>
   );
