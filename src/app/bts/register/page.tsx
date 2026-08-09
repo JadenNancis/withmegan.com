@@ -175,7 +175,7 @@ export default function BtsRegisterPage() {
   return (
     <div className="space-y-5">
       <div
-        className="motion-safe:bts-fade-in-up -mx-4 -my-5 sm:-my-8 -mb-5 rounded-none sm:rounded-2xl overflow-hidden bg-cover bg-center bg-no-repeat"
+        className="motion-safe:bts-fade-in-up -mx-4 -my-5 sm:-my-8 rounded-none overflow-hidden bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/images/tobago/bts-child-reading.jpg')" }}
       >
         <div className="bg-brand-900/55 backdrop-blur-sm px-5 py-8 sm:px-6 sm:py-10 text-center">
@@ -187,8 +187,10 @@ export default function BtsRegisterPage() {
           </p>
         </div>
       </div>
+      {/* Spacer — the Tobago photo breathes between hero and step tracker */}
+      <div className="h-8 sm:h-10" aria-hidden="true" />
       {/* Wizard header — step tracker floats on the photo, text reads via strong shadow */}
-      <header className="motion-safe:bts-fade-in-up pt-2">
+      <header className="motion-safe:bts-fade-in-up">
         <nav aria-label="Registration progress" className="mt-2">
           <ol className="flex items-center gap-0">
             {STEPS.map((label, i) => (
