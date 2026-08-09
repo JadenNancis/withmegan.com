@@ -86,8 +86,11 @@ export default async function BtsLanding() {
         </div>
       </section>
 
+      {/* ===== Breather — photo shows between hero and progress teaser ===== */}
+      <div className="h-10 sm:h-14" aria-hidden="true" />
+
       {/* ===== Live progress teaser ===== */}
-      <section className="bg-white/95 backdrop-blur-sm border-b border-white/10">
+      <section className="bg-white/95 backdrop-blur-sm border-y border-white/10 my-2">
         <Link
           href="/bts/progress"
           className="mx-auto max-w-4xl px-4 py-6 flex items-center gap-4 group"
@@ -142,6 +145,9 @@ export default async function BtsLanding() {
         </SnapScrollRow>
       </section>
 
+      {/* ===== Breather before About card ===== */}
+      <div className="h-8 sm:h-10" aria-hidden="true" />
+
       {/* ===== About — the SVG hero lives here, away from the photo ===== */}
       <section className="bg-white/95 backdrop-blur-sm border-y border-white/10">
         <div className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
@@ -180,6 +186,9 @@ export default async function BtsLanding() {
           <GalleryThumb src="/images/tobago/tobago-rainforest.jpg" alt="Main Ridge Forest Reserve, Tobago" />
         </div>
       </section>
+
+      {/* ===== Breather before bottom CTA ===== */}
+      <div className="h-8 sm:h-10" aria-hidden="true" />
 
       {/* ===== Bottom CTA — short, decisive ===== */}
       <section className="bg-gradient-to-br from-brand-900/92 to-brand-950/95 backdrop-blur-md text-white border-t border-white/10">
