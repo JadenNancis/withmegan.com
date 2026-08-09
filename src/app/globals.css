@@ -48,19 +48,24 @@ html {
   scroll-behavior: smooth;
 }
 
+/*
+  Body paints the warm Tobago photo fixed behind every page.
+  .tha-warm-bg layers a cool dark veil over it, boxing direct sunlight glare
+  while keeping the image alive. White text on the veil reads with a strong
+  text-shadow; solid cards stay opaque.
+*/
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  background-color: #1c1410;
+  background-color: #2a5a70;
+  background-image: url("/images/tobago/tt-beach.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
-/*
-  Content wrapper sits over the body photo. Just a subtle cooling tint to
-  soften direct sunlight glare in the photo without blocking card backgrounds.
-  Pages must wrap readable content in white or gradient cards; hero sections
-  carry their own dark overlay.
-*/
 .tha-warm-bg {
-  background-color: transparent;
+  position: relative;
 }
 
 /* Hero pattern utility used on dark photo banners to add a subtle texture */
