@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="Tobago market stall with produce under coral awning">
+  <defs>
+    <linearGradient id="mdsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="70%" stop-color="#fdba74"/>
+      <stop offset="100%" stop-color="#fb923c"/>
+    </linearGradient>
+    <linearGradient id="awning" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dc2626"/>
+      <stop offset="100%" stop-color="#991b1b"/>
+    </linearGradient>
+    <linearGradient id="stallwood" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#92400e"/>
+      <stop offset="100%" stop-color="#451a03"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky -->
+  <rect width="800" height="500" fill="url(#mdsky)"/>
+
+  <!-- Sun glow -->
+  <circle cx="650" cy="120" r="100" fill="#fde68a" opacity="0.9"/>
+  <circle cx="650" cy="120" r="60" fill="#fff7ed"/>
+
+  <!-- Distant hills -->
+  <path d="M0 420 Q 200 350 420 410 T 800 400 L 800 500 L 0 500 Z" fill="#166534" opacity="0.7"/>
+  <path d="M0 460 Q 240 420 480 450 T 800 460 L 800 500 L 0 500 Z" fill="#14532d" opacity="0.85"/>
+
+  <!-- Ground -->
+  <rect y="500" width="800" height="300" fill="#a16207"/>
+
+  <!-- Market stall -->
+  <g transform="translate(150 320)">
+    <!-- Awning (striped) -->
+    <path d="M0 0 L 500 0 L 480 60 L 20 60 Z" fill="url(#awning)"/>
+    <path d="M20 60 L 480 60 L 480 70 L 20 70 Z" fill="#7f1d1d"/>
+    <!-- Stripes -->
+    <g fill="#fef3c7">
+      <path d="M40 0 L 80 0 L 70 60 L 30 60 Z"/>
+      <path d="M120 0 L 160 0 L 150 60 L 110 60 Z"/>
+      <path d="M200 0 L 240 0 L 230 60 L 190 60 Z"/>
+      <path d="M280 0 L 320 0 L 310 60 L 270 60 Z"/>
+      <path d="M360 0 L 400 0 L 390 60 L 350 60 Z"/>
+      <path d="M440 0 L 480 0 L 470 60 L 430 60 Z"/>
+    </g>
+
+    <!-- Stall posts -->
+    <rect x="20" y="60" width="14" height="280" fill="url(#stallwood)"/>
+    <rect x="466" y="60" width="14" height="280" fill="url(#stallwood)"/>
+
+    <!-- Counter top -->
+    <rect x="0" y="270" width="500" height="40" rx="4" fill="url(#stallwood)"/>
+    <!-- Counter front -->
+    <rect x="0" y="310" width="500" height="80" fill="url(#stallwood)"/>
+
+    <!-- Boards in counter -->
+    <g stroke="#2d1a08" stroke-width="2" opacity="0.6">
+      <line x1="0" y1="330" x2="500" y2="330"/>
+      <line x1="0" y1="350" x2="500" y2="350"/>
+      <line x1="0" y1="370" x2="500" y2="370"/>
+    </g>
+
+    <!-- Mangoes pile -->
+    <g transform="translate(60 240)">
+      <ellipse cx="0" cy="20" rx="14" ry="16" fill="#f97316"/>
+      <ellipse cx="30" cy="18" rx="14" ry="16" fill="#fb923c"/>
+      <ellipse cx="60" cy="22" rx="14" ry="16" fill="#f97316"/>
+      <ellipse cx="15" cy="4" rx="14" ry="16" fill="#fdba74"/>
+      <ellipse cx="45" cy="4" rx="14" ry="16" fill="#fb923c"/>
+      <circle cx="30" cy="-12" r="14" fill="#f97316"/>
+    </g>
+
+    <!-- Bananas -->
+    <g transform="translate(190 250)">
+      <path d="M0 0 Q 12 -18 30 -22 Q 26 -8 16 4 Z" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+      <path d="M6 6 Q 18 -10 36 -14 Q 32 0 22 12 Z" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+      <path d="M12 12 Q 24 -2 42 -6 Q 38 8 28 18 Z" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+    </g>
+
+    <!-- Watermelon halves -->
+    <g transform="translate(370 250)">
+      <ellipse cx="0" cy="14" rx="34" ry="18" fill="#dc2626"/>
+      <ellipse cx="0" cy="10" rx="34" ry="14" fill="#ef4444"/>
+      <ellipse cx="0" cy="8" rx="30" ry="10" fill="#fca5a5"/>
+      <!-- seeds -->
+      <ellipse cx="-8" cy="10" rx="1.5" ry="2" fill="#000"/>
+      <ellipse cx="5" cy="8" rx="1.5" ry="2" fill="#000"/>
+      <ellipse cx="14" cy="12" rx="1.5" ry="2" fill="#000"/>
+      <ellipse cx="-16" cy="12" rx="1.5" ry="2" fill="#000"/>
+      <!-- rind -->
+      <path d="M-34 14 Q -34 32 0 32 Q 34 32 34 14" stroke="#166534" stroke-width="6" fill="none"/>
+    </g>
+
+    <!-- Breadfruit -->
+    <g transform="translate(445 250)">
+      <ellipse cx="0" cy="14" rx="20" ry="16" fill="#4d7c0f"/>
+      <ellipse cx="0" cy="10" rx="18" ry="12" fill="#65a30d"/>
+      <g stroke="#3f6212" stroke-width="1" fill="none" opacity="0.7">
+        <circle cx="-6" cy="6" r="2"/>
+        <circle cx="6" cy="8" r="2"/>
+        <circle cx="0" cy="14" r="2"/>
+      </g>
+    </g>
+
+    <!-- Merchant figure (shadowy silhouette behind counter) -->
+    <g opacity="0.85">
+      <circle cx="250" cy="180" r="22" fill="#3b2314"/>
+      <!-- shoulders -->
+      <path d="M220 200 Q 250 185 280 200 L 280 270 L 220 270 Z" fill="#3b2314"/>
+      <!-- wide-brim hat -->
+      <ellipse cx="250" cy="160" rx="38" ry="8" fill="#7c2d12"/>
+      <path d="M222 158 Q 250 138 278 158 Z" fill="#92400e"/>
+    </g>
+  </g>
+
+  <!-- Foreground palm fronds -->
+  <g fill="#14532d" opacity="0.85">
+    <path d="M-20 650 Q 60 620 100 670 Q 50 645 -20 670 Z"/>
+    <path d="M820 660 Q 760 630 720 670 Q 780 650 820 680 Z"/>
+  </g>
+
+  <!-- Birds -->
+  <g stroke="#3b2314" stroke-width="2.5" fill="none" stroke-linecap="round">
+    <path d="M150 110 q 10 -7 20 0 q 10 7 20 0"/>
+    <path d="M220 150 q 8 -5 16 0 q 8 5 16 0"/>
+  </g>
+</svg>

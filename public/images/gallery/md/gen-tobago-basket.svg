@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="Woven hamper basket overflowing with Tobago fruit">
+  <defs>
+    <linearGradient id="bgsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="50%" stop-color="#fde68a"/>
+      <stop offset="100%" stop-color="#fbbf24"/>
+    </linearGradient>
+    <radialGradient id="glowspot" cx="50%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="basket" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a16207"/>
+      <stop offset="100%" stop-color="#451a03"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Soft golden sky backdrop -->
+  <rect width="800" height="800" fill="url(#bgsky)"/>
+  <circle cx="400" cy="280" r="350" fill="url(#glowspot)"/>
+
+  <!-- Gently curving palm fronds framing top corners -->
+  <g fill="#166534" opacity="0.5">
+    <path d="M-40 80 Q 80 30 200 60 Q 130 90 60 110 Q 0 130 -40 80 Z"/>
+    <path d="M-20 20 Q 100 -20 220 30 Q 140 50 60 70 Q 0 70 -20 20 Z"/>
+    <path d="M840 80 Q 720 30 600 60 Q 670 90 740 110 Q 800 130 840 80 Z"/>
+    <path d="M820 20 Q 700 -20 580 30 Q 660 50 740 70 Q 800 70 820 20 Z"/>
+  </g>
+
+  <!-- Fruit halo (overflow above basket) -->
+  <g>
+    <!-- Papaya (large, behind) -->
+    <ellipse cx="280" cy="380" rx="80" ry="60" fill="#f97316"/>
+    <ellipse cx="270" cy="365" rx="70" ry="48" fill="#fb923c"/>
+
+    <!-- Pineapple -->
+    <g transform="translate(510 340)">
+      <ellipse cx="0" cy="40" rx="55" ry="80" fill="#eab308"/>
+      <g stroke="#a16207" stroke-width="2" fill="none">
+        <path d="M-50 0 L 50 0 M-50 20 L 50 20 M-50 40 L 50 40 M-50 60 L 50 60 M-50 80 L 50 80"/>
+        <path d="M-30 -20 L -10 100 M0 -20 L 0 100 M30 -20 L 10 100"/>
+      </g>
+      <!-- Crown -->
+      <g fill="#166534">
+        <path d="M-12 -20 Q -30 -50 -45 -55 Q -25 -45 -10 -22 Z"/>
+        <path d="M0 -22 Q 0 -60 5 -70 Q 8 -55 5 -22 Z"/>
+        <path d="M12 -20 Q 30 -50 45 -55 Q 25 -45 10 -22 Z"/>
+        <path d="M-6 -22 Q -12 -55 -8 -65 Q 0 -50 0 -22 Z"/>
+        <path d="M6 -22 Q 12 -55 8 -65 Q 0 -50 0 -22 Z"/>
+      </g>
+    </g>
+
+    <!-- Mangoes cluster -->
+    <ellipse cx="220" cy="350" rx="34" ry="42" fill="#dc2626"/>
+    <ellipse cx="252" cy="368" rx="34" ry="42" fill="#f97316"/>
+    <ellipse cx="200" cy="380" rx="32" ry="40" fill="#fb923c"/>
+
+    <!-- Coconut -->
+    <circle cx="405" cy="370" r="42" fill="#5d4028"/>
+    <g fill="#3b2a1a">
+      <circle cx="392" cy="358" r="4"/>
+      <circle cx="410" cy="356" r="4"/>
+      <circle cx="402" cy="372" r="4"/>
+    </g>
+
+    <!-- Banana bunch -->
+    <g transform="translate(580 400)">
+      <path d="M0 0 Q 12 -22 34 -26 Q 30 -8 18 8 Z" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+      <path d="M8 8 Q 22 -10 40 -14 Q 36 4 24 16 Z" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+      <path d="M14 18 Q 28 2 46 -2 Q 42 12 30 24 Z" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+      <path d="M22 28 Q 34 12 52 8 Q 48 24 36 34 Z" fill="#fde047" stroke="#ca8a04" stroke-width="1.5"/>
+    </g>
+
+    <!-- Oranges/limes accents -->
+    <circle cx="340" cy="330" r="22" fill="#fb923c"/>
+    <circle cx="462" cy="328" r="20" fill="#84cc16"/>
+    <circle cx="350" cy="402" r="18" fill="#84cc16"/>
+  </g>
+
+  <!-- Hamper basket (woven texture) -->
+  <g transform="translate(400 0)">
+    <!-- Basket body -->
+    <path d="M-180 420 L -150 660 Q -140 700 -100 700 L 100 700 Q 140 700 150 660 L 180 420 Z" fill="url(#basket)"/>
+    <!-- Vertical weave lines -->
+    <g stroke="#0f0702" stroke-width="2.5" fill="none" opacity="0.5">
+      <path d="M-160 430 L -135 690"/>
+      <path d="M-130 430 L -110 695"/>
+      <path d="M-95 430 L -80 700"/>
+      <path d="M-50 430 L -50 700"/>
+      <path d="M0 430 L 0 700"/>
+      <path d="M50 430 L 50 700"/>
+      <path d="M95 430 L 80 700"/>
+      <path d="M130 430 L 110 695"/>
+      <path d="M160 430 L 135 690"/>
+    </g>
+    <!-- Horizontal weave bands -->
+    <g stroke="#fef3c7" stroke-width="1.8" fill="none" opacity="0.4">
+      <path d="M-178 460 L 178 460"/>
+      <path d="M-172 500 L 172 500"/>
+      <path d="M-166 540 L 166 540"/>
+      <path d="M-158 580 L 158 580"/>
+      <path d="M-150 620 L 150 620"/>
+      <path d="M-143 660 L 143 660"/>
+    </g>
+    <!-- Top rim -->
+    <path d="M-186 410 Q -186 396 -170 396 L 170 396 Q 186 396 186 410 L 186 420 Q 186 432 170 432 L -170 432 Q -186 432 -186 420 Z" fill="#7c2d12"/>
+    <!-- Handles -->
+    <path d="M-160 400 Q -120 320 -60 350" stroke="#451a03" stroke-width="8" fill="none"/>
+    <path d="M160 400 Q 120 320 60 350" stroke="#451a03" stroke-width="8" fill="none"/>
+  </g>
+
+  <!-- Ground shadow -->
+  <ellipse cx="400" cy="720" rx="220" ry="14" fill="#a16207" opacity="0.5"/>
+
+  <!-- Sparkle accents -->
+  <g fill="#ffffff" opacity="0.9">
+    <path d="M160 220 l 4 12 -4 12 -4 -12 Z"/>
+    <path d="M640 240 l 4 12 -4 12 -4 -12 Z"/>
+    <path d="M240 140 l 3 9 -3 9 -3 -9 Z"/>
+    <path d="M560 160 l 3 9 -3 9 -3 -9 Z"/>
+  </g>
+</svg>

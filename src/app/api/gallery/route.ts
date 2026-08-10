@@ -39,7 +39,7 @@ export async function GET(req: Request) {
     }
 
     const photos = files
-      .filter((f) => /\.(jpe?g|png|webp|gif)$/i.test(f))
+      .filter((f) => /\.(jpe?g|png|webp|gif|svg)$/i.test(f))
       .map((f) => `${publicPrefix(site)}/${f}`)
       .sort();
 

@@ -1,20 +1,17 @@
 import { SchoolBookIcon } from "@/components/bts-illustrations";
+import { readdir } from "fs/promises";
+import path from "path";
 
-interface Photo {
-  url: string;
-}
+export const dynamic = "force-dynamic";
 
-async function getPhotos(site: string): Promise<string[]> {
+async function getPhotos(site: "bts" | "md"): Promise<string[]> {
   try {
-    const base = process.env.NEXT_PUBLIC_VERCEL_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-      : "http://localhost:3000";
-    const res = await fetch(`${base}/api/gallery?site=${site}`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return [];
-    const data: { photos?: string[] } = await res.json();
-    return data.photos ?? [];
+    const dir = path.join(process.cwd(), "public", "images", "gallery", site);
+    const files = await readdir(dir);
+    return files
+      .filter((f) => /\.(jpe?g|png|webp|gif|svg)$/i.test(f))
+      .sort()
+      .map((f) => `/images/gallery/${site}/${f}`);
   } catch {
     return [];
   }

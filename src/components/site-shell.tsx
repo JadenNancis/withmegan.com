@@ -142,7 +142,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
               className="flex flex-col shrink min-w-0 min-h-[40px] justify-center"
               onClick={() => setMenuOpen(false)}
             >
-              <span className="text-sm sm:hidden font-bold leading-tight truncate">{site.shortName}</span>
+              <span className="text-xs sm:hidden font-bold leading-tight truncate">{site.shortName}</span>
               <span className="hidden sm:block text-lg font-bold leading-tight truncate">{site.name}</span>
               <span className="hidden sm:block text-xs opacity-80 truncate leading-tight">{site.tagline}</span>
             </Link>
