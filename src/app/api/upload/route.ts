@@ -66,12 +66,12 @@ export async function POST(req: Request) {
     }
   }
 
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
+  const uploadDir = path.join(process.cwd(), "uploads", "documents");
   await mkdir(uploadDir, { recursive: true });
   const bytes = Buffer.from(await file.arrayBuffer());
   await writeFile(path.join(uploadDir, opaqueName), bytes);
 
-  const url = `/uploads/${opaqueName}`;
+  const url = `/api/gallery-file?site=documents&name=${encodeURIComponent(opaqueName)}`;
 
   return NextResponse.json({ url, filename: opaqueName, uploadedBy: session?.user?.email ?? "anonymous" });
 }

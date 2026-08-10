@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { readdir, unlink, mkdir, writeFile } from "fs/promises";
+import { readdir, unlink, mkdir, writeFile, readFile } from "fs/promises";
 import path from "path";
 import crypto from "crypto";
 import { auth } from "@/auth";
@@ -16,12 +16,11 @@ const MAX_BYTES = 8 * 1024 * 1024; // 8 MB
 
 const USE_BLOB = !!process.env.BLOB_READ_WRITE_TOKEN;
 
-function galleryDir(site: string): string {
-  return path.join(process.cwd(), "public", "images", "gallery", site);
-}
+/** Writable directory for dev-mode uploads (not under public/). */
+const UPLOAD_ROOT = path.join(process.cwd(), "uploads");
 
-function publicPrefix(site: string): string {
-  return `/images/gallery/${site}`;
+function siteDir(site: string): string {
+  return path.join(UPLOAD_ROOT, "gallery", site);
 }
 
 export async function GET(req: Request) {
@@ -32,29 +31,45 @@ export async function GET(req: Request) {
   }
 
   try {
-    if (USE_BLOB) {
-      const { blobs } = await list({ prefix: `gallery/${site}/` });
-      const photos = blobs
-        .map((b) => b.url)
-        .filter((url) => /\.(jpe?g|png|webp|gif)$/i.test(url))
-        .sort();
-      return NextResponse.json({ photos });
-    }
+    const photos: string[] = [];
 
-    // Dev fallback: read from local filesystem.
-    let files: string[] = [];
+    // Always include seed images from public/ (committed to repo).
     try {
-      files = await readdir(galleryDir(site));
+      const seedDir = path.join(process.cwd(), "public", "images", "gallery", site);
+      const seedFiles = await readdir(seedDir);
+      for (const f of seedFiles) {
+        if (/\.(jpe?g|png|webp|gif|svg)$/i.test(f)) {
+          photos.push(`/images/gallery/${site}/${f}`);
+        }
+      }
     } catch {
-      return NextResponse.json({ photos: [] });
+      // No seed directory.
     }
 
-    const photos = files
-      .filter((f) => /\.(jpe?g|png|webp|gif|svg)$/i.test(f))
-      .map((f) => `${publicPrefix(site)}/${f}`)
-      .sort();
+    if (USE_BLOB) {
+      // Production: also list blobs from Vercel Blob.
+      const { blobs } = await list({ prefix: `gallery/${site}/` });
+      for (const b of blobs) {
+        if (/\.(jpe?g|png|webp|gif)$/i.test(b.url)) {
+          photos.push(b.url);
+        }
+      }
+    } else {
+      // Dev fallback: also read from uploads/gallery/{site}/.
+      try {
+        const uploadDir = path.join(process.cwd(), "uploads", "gallery", site);
+        const uploaded = await readdir(uploadDir);
+        for (const f of uploaded) {
+          if (/\.(jpe?g|png|webp|gif)$/i.test(f)) {
+            photos.push(`/api/gallery-file?site=${site}&name=${encodeURIComponent(f)}`);
+          }
+        }
+      } catch {
+        // No uploads yet.
+      }
+    }
 
-    return NextResponse.json({ photos });
+    return NextResponse.json({ photos: photos.sort() });
   } catch (err) {
     console.error("[gallery] list failed:", err);
     return NextResponse.json({ error: "Could not list photos." }, { status: 500 });
@@ -104,13 +119,13 @@ export async function POST(req: Request) {
       return NextResponse.json({ url: blob.url, filename: opaqueName });
     }
 
-    // Dev fallback: write to local filesystem.
-    const dir = galleryDir(site);
+    // Dev fallback: write to uploads/gallery/{site}/ (writable at runtime).
+    const dir = siteDir(site);
     await mkdir(dir, { recursive: true });
     const bytes = Buffer.from(await file.arrayBuffer());
     await writeFile(path.join(dir, opaqueName), bytes);
     return NextResponse.json({
-      url: `${publicPrefix(site)}/${opaqueName}`,
+      url: `/api/gallery-file?site=${site}&name=${encodeURIComponent(opaqueName)}`,
       filename: opaqueName,
     });
   } catch (err) {
@@ -129,7 +144,6 @@ export async function DELETE(req: Request) {
   const { searchParams } = new URL(req.url);
   const site = searchParams.get("site");
   const filename = searchParams.get("filename");
-  const url = searchParams.get("url");
 
   if (site !== "bts" && site !== "md") {
     return NextResponse.json({ error: "Invalid site." }, { status: 400 });
@@ -145,7 +159,7 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ success: true });
     }
 
-    await unlink(path.join(galleryDir(site), filename));
+    await unlink(path.join(siteDir(site), filename));
     return NextResponse.json({ success: true });
   } catch (err: any) {
     if (err?.code === "ENOENT") {
