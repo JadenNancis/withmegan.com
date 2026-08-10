@@ -12,6 +12,7 @@ import {
 import { db } from "@/db/client";
 import { btsGuardians } from "@/db/schema";
 import { count } from "drizzle-orm";
+import { auth } from "@/auth";
 import { SnapScrollRow } from "@/components/snap-scroll";
 
 const site = SITES.bts;
@@ -51,6 +52,9 @@ async function getRegistrationCount(): Promise<number> {
 export default async function BtsLanding() {
   const registered = await getRegistrationCount();
   const pct = Math.min(100, Math.round((registered / site.goalFamilies) * 100));
+  const session = await auth();
+  const role = (session?.user as { role?: string } | undefined)?.role;
+  const isStaff = role === "admin" || role === "staff";
 
   return (
     <div className="-mx-4 -my-5 sm:-my-8 space-y-0">
@@ -110,7 +114,8 @@ export default async function BtsLanding() {
       {/* ===== Breather — photo shows between hero and progress teaser ===== */}
       <div className="h-10 sm:h-14" aria-hidden="true" />
 
-      {/* ===== Live progress teaser ===== */}
+      {/* ===== Live progress teaser (staff only) ===== */}
+      {isStaff && (
       <section className="bg-white/95 backdrop-blur-sm border-y border-white/10 my-2">
         <Link
           href="/bts/progress"
@@ -134,6 +139,7 @@ export default async function BtsLanding() {
           </div>
         </Link>
       </section>
+      )}
 
       {/* ===== How it works — snap-scroll cards on mobile ===== */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14">

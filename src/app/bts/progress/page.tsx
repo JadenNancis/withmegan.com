@@ -4,6 +4,8 @@ import { btsGuardians, btsDependents } from "@/db/schema";
 import { count, sql } from "drizzle-orm";
 import { TobagoMapBadge } from "@/components/bts-illustrations";
 import { SITES } from "@/sites/site-registry";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,6 +13,12 @@ export const dynamic = "force-dynamic";
 const GOAL = SITES.bts.goalFamilies;
 
 export default async function BtsProgressPage() {
+  const session = await auth();
+  const role = (session?.user as { role?: string } | undefined)?.role;
+  if (!role || (role !== "admin" && role !== "staff")) {
+    redirect("/bts");
+  }
+
   const [totalRow] = await db.select({ n: count() }).from(btsGuardians);
   const total = totalRow?.n ?? 0;
 

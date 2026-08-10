@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { SITES } from "@/sites/site-registry";
+import { auth } from "@/auth";
 import {
   TobagoHamperHero,
   BreadfruitIcon,
@@ -32,8 +33,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function MdLanding() {
+export default async function MdLanding() {
   const site = SITES.md;
+  const session = await auth();
+  const role = (session?.user as { role?: string } | undefined)?.role;
+  const isStaff = role === "admin" || role === "staff";
   const eventDate = new Date(site.eventDate);
   const formattedDate = eventDate.toLocaleDateString("en-TT", {
     weekday: "long",
@@ -78,12 +82,14 @@ export default function MdLanding() {
                 >
                   Register for a hamper &rarr;
                 </Link>
+                {isStaff && (
                 <Link
                   href="/md/progress"
                   className="inline-flex min-h-[56px] justify-center items-center rounded-xl border-2 border-white/50 px-7 py-3.5 text-base font-bold text-white active:scale-95 hover:bg-white/15 transition-all"
                 >
                   Community progress
                 </Link>
+                )}
               </div>
             </div>
 

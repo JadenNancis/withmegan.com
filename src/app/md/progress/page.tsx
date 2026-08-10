@@ -2,6 +2,8 @@ import { db } from "@/db/client";
 import { mdRegistrants } from "@/db/schema";
 import { count, sql } from "drizzle-orm";
 import { TobagoMapBadge } from "@/components/md-illustrations";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -9,6 +11,12 @@ export const dynamic = "force-dynamic";
 const GOAL = 150;
 
 export default async function MdProgressPage() {
+  const session = await auth();
+  const role = (session?.user as { role?: string } | undefined)?.role;
+  if (!role || (role !== "admin" && role !== "staff")) {
+    redirect("/md");
+  }
+
   const [totalRow] = await db.select({ n: count() }).from(mdRegistrants);
   const total = totalRow?.n ?? 0;
 
