@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback } from "react";
 import { BasketIcon } from "@/components/md-illustrations";
 import { cn } from "@/lib/cn";
+import { uploadGalleryPhoto } from "@/lib/gallery-upload";
 
 export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] }) {
   const [photos, setPhotos] = useState<string[]>(initialPhotos);
@@ -16,17 +17,7 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] })
     setUploading(true);
     try {
       for (const file of Array.from(files)) {
-        const formData = new FormData();
-        formData.append("file", file);
-        const res = await fetch("/api/gallery?site=md", {
-          method: "POST",
-          body: formData,
-        });
-        if (!res.ok) {
-          const data = await res.json().catch(() => ({}));
-          throw new Error(data.error ?? "Upload failed.");
-        }
-        const { url } = await res.json();
+        const url = await uploadGalleryPhoto(file, "md");
         if (url) {
           setPhotos((prev) => [...prev, url].sort());
         }

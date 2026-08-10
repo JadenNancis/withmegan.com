@@ -6,6 +6,9 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [],
   },
+  env: {
+    NEXT_PUBLIC_HAS_BLOB_TOKEN: process.env.BLOB_READ_WRITE_TOKEN ? "1" : "",
+  },
 };
 
 export default nextConfig;
