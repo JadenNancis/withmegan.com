@@ -3,6 +3,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { SITES } from "@/sites/site-registry";
 import { auth } from "@/auth";
+import { readdir } from "fs/promises";
+import path from "path";
+import { RotatingGallery } from "@/components/rotating-gallery";
 import {
   TobagoHamperHero,
   BreadfruitIcon,
@@ -12,6 +15,28 @@ import {
   TobagoMapBadge,
   FloatingProduce,
 } from "@/components/md-illustrations";
+
+export const dynamic = "force-dynamic";
+
+async function getGalleryPhotos(siteKey: "bts" | "md"): Promise<string[]> {
+  try {
+    const dir = path.join(process.cwd(), "public", "images", "gallery", siteKey);
+    const files = await readdir(dir);
+    return files
+      .filter((f) => /\.(jpe?g|png|webp|gif|svg)$/i.test(f))
+      .sort()
+      .map((f) => `/images/gallery/${siteKey}/${f}`);
+  } catch {
+    return [];
+  }
+}
+
+const FALLBACK_PHOTOS = [
+  "/images/tobago/md-exotic-fruits.jpg",
+  "/images/tobago/md-fresh-veg.jpg",
+  "/images/tobago/scarborough-market.jpg",
+  "/images/tobago/coconut-vendor.jpg",
+];
 
 export const metadata: Metadata = {
   title: "Market Day with Megan",
@@ -35,6 +60,8 @@ export const metadata: Metadata = {
 
 export default async function MdLanding() {
   const site = SITES.md;
+  const galleryPhotos = await getGalleryPhotos("md");
+  const showcasePhotos = galleryPhotos.length > 0 ? galleryPhotos : FALLBACK_PHOTOS;
   const session = await auth();
   const role = (session?.user as { role?: string } | undefined)?.role;
   const isStaff = role === "admin" || role === "staff";
@@ -122,42 +149,13 @@ export default async function MdLanding() {
         </div>
       </section>
 
-      {/* ──────── Tobago Food & Community Photo Gallery ──────── */}
-      <section className="-mx-4 bg-gradient-to-b from-amber-50 to-white py-12">
-        <div className="mx-auto max-w-4xl px-4">
-          <div className="mb-6 text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold text-amber-900">Tobago: Food &amp; Community</h2>
-            <p className="mt-2 text-sm text-amber-600">Fresh produce, local markets, shared abundance</p>
-          </div>
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            <PhotoCard
-              src="/images/tobago/md-fresh-veg.jpg"
-              alt="Fresh vegetables at market"
-              span="col-span-2 sm:col-span-2"
-            />
-            <PhotoCard
-              src="/images/tobago/produce-market.jpg"
-              alt="Produce market, Debe Market, Trinidad & Tobago"
-              span="col-span-1"
-            />
-            <PhotoCard
-              src="/images/tobago/coconut-vendor.jpg"
-              alt="Coconut vendor, Trinidad & Tobago"
-              span="col-span-1"
-            />
-            <PhotoCard
-              src="/images/tobago/tobago-cuisine.jpg"
-              alt="Tobago cuisine, local food"
-              span="col-span-1"
-            />
-            <PhotoCard
-              src="/images/tobago/scarborough-market.jpg"
-              alt="Scarborough Market, Tobago"
-              span="col-span-1"
-            />
-          </div>
-        </div>
-      </section>
+      {/* ──────── Rotating Tobago showcase — gallery photos cycle with Ken Burns ──────── */}
+      <RotatingGallery
+        images={showcasePhotos}
+        label="Tobago: Food & Community"
+        galleryHref="/md/gallery"
+        accent="amber-400"
+      />
 
       {/* ──────── About / How It Works ──────── */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-12">
@@ -230,21 +228,6 @@ export default async function MdLanding() {
         </div>
 
       </section>
-    </div>
-  );
-}
-
-function PhotoCard({ src, alt, span }: { src: string; alt: string; span: string }) {
-  return (
-    <div className={`card-hover group relative overflow-hidden rounded-2xl shadow-md min-h-[160px] sm:min-h-[200px] ${span}`}>
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes="(max-width: 640px) 50vw, (max-width: 896px) 50vw, 420px"
-        loading="lazy"
-        className="object-cover transition-transform duration-500 group-hover:scale-110"
-      />
     </div>
   );
 }

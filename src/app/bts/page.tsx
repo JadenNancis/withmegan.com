@@ -14,6 +14,9 @@ import { btsGuardians } from "@/db/schema";
 import { count } from "drizzle-orm";
 import { auth } from "@/auth";
 import { SnapScrollRow } from "@/components/snap-scroll";
+import { RotatingGallery } from "@/components/rotating-gallery";
+import { readdir } from "fs/promises";
+import path from "path";
 
 const site = SITES.bts;
 const EVENT_DATE = new Date(site.eventDate + "T12:00:00");
@@ -49,8 +52,32 @@ async function getRegistrationCount(): Promise<number> {
   }
 }
 
+async function getGalleryPhotos(siteKey: "bts" | "md"): Promise<string[]> {
+  try {
+    const dir = path.join(process.cwd(), "public", "images", "gallery", siteKey);
+    const files = await readdir(dir);
+    return files
+      .filter((f) => /\.(jpe?g|png|webp|gif|svg)$/i.test(f))
+      .sort()
+      .map((f) => `/images/gallery/${siteKey}/${f}`);
+  } catch {
+    return [];
+  }
+}
+
+// Curated Tobago fallback set — keeps the strip gorgeous even pre-event
+// when the gallery folder is still empty.
+const FALLBACK_PHOTOS = [
+  "/images/tobago/fort-george-sunset.jpg",
+  "/images/tobago/pigeon-point.jpg",
+  "/images/tobago/tobago-rainforest.jpg",
+  "/images/tobago/tt-beach.jpg",
+];
+
 export default async function BtsLanding() {
   const registered = await getRegistrationCount();
+  const galleryPhotos = await getGalleryPhotos("bts");
+  const showcasePhotos = galleryPhotos.length > 0 ? galleryPhotos : FALLBACK_PHOTOS;
   const pct = Math.min(100, Math.round((registered / site.goalFamilies) * 100));
   const session = await auth();
   const role = (session?.user as { role?: string } | undefined)?.role;
@@ -199,20 +226,13 @@ export default async function BtsLanding() {
         </div>
       </section>
 
-      {/* ===== Gallery strip — 3 photos, optimized ===== */}
-      <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
-        <div className="flex items-end justify-between gap-2">
-          <h2 className="text-title text-white [text-shadow:0_3px_12px_rgba(0,0,0,0.55)]">Our Tobago</h2>
-          <Link href="/bts/gallery" className="text-sm font-semibold text-white hover:text-brand-100 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)] transition-colors min-h-[44px] flex items-center">
-            Full gallery &rarr;
-          </Link>
-        </div>
-        <div className="mt-5 grid grid-cols-3 gap-2 sm:gap-3">
-          <GalleryThumb src="/images/tobago/fort-george-sunset.jpg" alt="Sunset at Fort King George, Tobago" />
-          <GalleryThumb src="/images/tobago/pigeon-point.jpg" alt="Pigeon Point beach, Tobago" />
-          <GalleryThumb src="/images/tobago/tobago-rainforest.jpg" alt="Main Ridge Forest Reserve, Tobago" />
-        </div>
-      </section>
+      {/* ===== Rotating Tobago showcase — gallery photos cycle with Ken Burns ===== */}
+      <RotatingGallery
+        images={showcasePhotos}
+        label="Our Tobago"
+        galleryHref="/bts/gallery"
+        accent="cyan-400"
+      />
 
       {/* ===== Breather before bottom CTA ===== */}
       <div className="h-8 sm:h-10" aria-hidden="true" />
@@ -260,20 +280,5 @@ function TrustPill({ icon, text }: { icon: React.ReactNode; text: string }) {
       <span className="flex-shrink-0" aria-hidden="true">{icon}</span>
       <span className="text-sm font-medium text-brand-800">{text}</span>
     </li>
-  );
-}
-
-function GalleryThumb({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div className="card-hover relative aspect-[4/3] overflow-hidden rounded-xl shadow-sm group">
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes="(max-width: 640px) 33vw, 300px"
-        loading="lazy"
-        className="object-cover transition-transform duration-500 group-hover:scale-110"
-      />
-    </div>
   );
 }
