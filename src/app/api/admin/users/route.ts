@@ -15,19 +15,27 @@ export async function GET() {
   const role = asRole((session.user as { role?: string }).role);
   if (role !== "admin") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
-  const rows = await db
-    .select({
-      id: users.id,
-      name: users.name,
-      email: users.email,
-      role: users.role,
-      status: users.status,
-      createdAt: users.createdAt,
-    })
-    .from(users)
-    .orderBy(users.createdAt);
+  try {
+    const rows = await db
+      .select({
+        id: users.id,
+        name: users.name,
+        email: users.email,
+        role: users.role,
+        status: users.status,
+        createdAt: users.createdAt,
+      })
+      .from(users)
+      .orderBy(users.createdAt);
 
-  return NextResponse.json({ users: rows });
+    return NextResponse.json({ users: rows });
+  } catch (err) {
+    console.error("[admin/users] query failed:", err);
+    return NextResponse.json(
+      { error: "Could not load users. The database may be waking up — try again in a moment." },
+      { status: 500 },
+    );
+  }
 }
 
 const UpdateSchema = z.object({

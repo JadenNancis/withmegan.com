@@ -24,7 +24,7 @@ export function UserManager() {
       const data = await res.json();
       setUsers(data.users);
     } catch {
-      setError("Could not load users.");
+      setError("Could not load users. The database may be waking up.");
     } finally {
       setLoading(false);
     }
@@ -65,8 +65,14 @@ export function UserManager() {
   return (
     <div className="space-y-6">
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-          {error}
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 flex items-center justify-between gap-3">
+          <span>{error}</span>
+          <button
+            onClick={() => { setError(null); setLoading(true); load(); }}
+            className="shrink-0 rounded-md bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-700 transition-colors"
+          >
+            Retry
+          </button>
         </div>
       )}
 

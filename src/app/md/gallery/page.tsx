@@ -1,24 +1,10 @@
 import { BasketIcon } from "@/components/md-illustrations";
-import { readdir } from "fs/promises";
-import path from "path";
+import { getGalleryPhotos } from "@/lib/gallery-photos";
 
 export const dynamic = "force-dynamic";
 
-async function getPhotos(site: "bts" | "md"): Promise<string[]> {
-  try {
-    const dir = path.join(process.cwd(), "public", "images", "gallery", site);
-    const files = await readdir(dir);
-    return files
-      .filter((f) => /\.(jpe?g|png|webp|gif|svg)$/i.test(f))
-      .sort()
-      .map((f) => `/images/gallery/${site}/${f}`);
-  } catch {
-    return [];
-  }
-}
-
 export default async function MdGalleryPage() {
-  const photos = await getPhotos("md");
+  const photos = await getGalleryPhotos("md");
 
   return (
     <div className="space-y-6">
