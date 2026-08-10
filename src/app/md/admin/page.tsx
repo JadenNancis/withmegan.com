@@ -9,6 +9,9 @@ import { mdRegistrants } from "@/db/schema";
 import { db } from "@/db/client";
 import { isNull } from "drizzle-orm";
 import { cn } from "@/lib/cn";
+
+export const dynamic = "force-dynamic";
+
 const statusBadge: Record<string, string> = {
   unassigned: "bg-gray-100 text-gray-700",
   assigned: "bg-amber-100 text-amber-800",

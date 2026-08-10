@@ -1,6 +1,9 @@
 import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
 import { VerifyCounter } from "@/components/verify-counter";
+
+export const dynamic = "force-dynamic";
+
 export default async function MdAdminVerifyPage() {
   const user = await requireAdmin("/md/admin/verify");
   void user;

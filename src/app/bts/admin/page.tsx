@@ -4,6 +4,8 @@ import { AdminNav } from "@/components/admin-nav";
 import { getAllGuardians } from "@/lib/bts-queries";
 import { SchoolBookIcon } from "@/components/bts-illustrations";
 
+export const dynamic = "force-dynamic";
+
 export default async function BtsAdminDashboard({
   searchParams,
 }: {

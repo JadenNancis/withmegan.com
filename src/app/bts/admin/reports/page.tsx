@@ -4,6 +4,8 @@ import { AdminNav } from "@/components/admin-nav";
 import { db } from "@/db/client";
 import { btsGuardians, btsDependents, btsResourceAssignments, btsInventory } from "@/db/schema";
 
+export const dynamic = "force-dynamic";
+
 export default async function BtsReportsPage() {
   await requireAdmin("/bts/admin/reports");
 

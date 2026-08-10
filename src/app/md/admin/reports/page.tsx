@@ -7,6 +7,7 @@ import { db } from "@/db/client";
 import { mdRegistrants, mdHouseholds } from "@/db/schema";
 import { eq, count } from "drizzle-orm";
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 const statusBadge: Record<string, string> = {
   unassigned: "bg-gray-100 text-gray-700",

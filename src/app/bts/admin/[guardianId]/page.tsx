@@ -5,6 +5,8 @@ import { AdminNav } from "@/components/admin-nav";
 import { AssignmentPanel } from "./assignment-panel";
 import { BookListViewer } from "./book-list-viewer";
 
+export const dynamic = "force-dynamic";
+
 export default async function GuardianDetailPage({
   params,
 }: {

@@ -4,6 +4,7 @@ import { AdminNav } from "@/components/admin-nav";
 import { LiveStats } from "./live-stats";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export default async function BtsDashboardPage() {
   const user = await requireAdmin("/bts/admin/dashboard");

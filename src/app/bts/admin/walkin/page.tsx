@@ -2,6 +2,8 @@ import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
 import { WalkInForm } from "./walkin-form";
 
+export const dynamic = "force-dynamic";
+
 export default async function BtsWalkInPage() {
   const user = await requireAdmin("/bts/admin/walkin");
   void user;

@@ -4,6 +4,8 @@ import { readdir } from "fs/promises";
 import path from "path";
 import { MdGalleryManager as GalleryManager } from "./gallery-manager";
 
+export const dynamic = "force-dynamic";
+
 async function getPhotos(site: string): Promise<string[]> {
   try {
     const dir = path.join(process.cwd(), "public", "images", "gallery", site);

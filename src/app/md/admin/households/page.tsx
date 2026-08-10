@@ -5,6 +5,9 @@ import { getHouseholds, getAuditTrail } from "@/lib/md-queries";
 import { mdRegistrants } from "@/db/schema";
 import { db } from "@/db/client";
 import { isNull } from "drizzle-orm";
+
+export const dynamic = "force-dynamic";
+
 export default async function MdAdminHouseholdsPage() {
   const user = await requireAdmin("/md/admin/households");
   void user;
