@@ -15,6 +15,8 @@ export interface SiteConfig {
   host: string;
   /** Display name shown in the header / title. */
   name: string;
+  /** Compact name for mobile headers where space is tight. */
+  shortName: string;
   /** Short tagline for the hero. */
   tagline: string;
   /** ISO date of the programme event. */
@@ -39,6 +41,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     key: "bts",
     host: "backtoschoolwithmegan.tha.tt",
     name: "Back to School with Megan",
+    shortName: "Back to School",
     tagline: "Book Drive · Mt. St. George/Goodwood, Tobago",
     eventDate: "2026-08-30",
     accent: "cyan",
@@ -57,6 +60,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     key: "md",
     host: "marketdaywithmegan.tha.tt",
     name: "Market Day with Megan",
+    shortName: "Market Day",
     tagline: "Hamper Distribution · Mt. St. George/Goodwood, Tobago",
     eventDate: "2026-09-06",
     accent: "amber",

@@ -136,18 +136,19 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
           className={cn(a.header, a.headerText, "sticky top-0 z-40")}
           style={{ paddingTop: "env(safe-area-inset-top)" }}
         >
-          <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between gap-3">
+          <div className="mx-auto max-w-6xl px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2">
             <Link
               href={site.nav[0].href}
-              className="flex flex-col shrink-0 max-w-[52%] md:max-w-[32%] min-h-[44px] justify-center"
+              className="flex flex-col shrink min-w-0 min-h-[40px] justify-center"
               onClick={() => setMenuOpen(false)}
             >
-              <span className="text-base sm:text-lg font-bold leading-tight truncate">{site.name}</span>
-              <span className="text-[11px] sm:text-xs opacity-80 truncate leading-tight">{site.tagline}</span>
+              <span className="text-sm sm:hidden font-bold leading-tight truncate">{site.shortName}</span>
+              <span className="hidden sm:block text-lg font-bold leading-tight truncate">{site.name}</span>
+              <span className="hidden sm:block text-xs opacity-80 truncate leading-tight">{site.tagline}</span>
             </Link>
 
             {/* Desktop nav */}
-            <nav className="hidden md:flex gap-0.5 items-center overflow-x-auto no-scrollbar min-w-0" aria-label="Site">
+            <nav className="hidden md:flex gap-0.5 items-center overflow-x-auto no-scrollbar min-w-0 shrink-0" aria-label="Site">
               {visibleNav.map((item) => (
                 <NavLink key={item.href} href={item.href} label={item.label} active={isActive(item.href)} />
               ))}
@@ -161,7 +162,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
               aria-expanded={menuOpen}
               aria-controls="mobile-nav"
               aria-label={menuOpen ? "Close menu" : "Open menu"}
-              className="md:hidden inline-flex h-11 w-11 items-center justify-center rounded-lg hover:bg-white/10 active:scale-95 transition-all shrink-0"
+              className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-lg hover:bg-white/10 active:scale-95 transition-all shrink-0"
             >
               {menuOpen ? (
                 <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
