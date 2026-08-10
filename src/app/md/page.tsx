@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { SITES } from "@/sites/site-registry";
 import {
   TobagoHamperHero,
@@ -10,6 +11,26 @@ import {
   TobagoMapBadge,
   FloatingProduce,
 } from "@/components/md-illustrations";
+
+export const metadata: Metadata = {
+  title: "Market Day with Megan",
+  description:
+    "Free hampers of essential goods for families in Mt. St. George/Goodwood, Tobago. Register for a hamper today.",
+  openGraph: {
+    title: "Market Day with Megan",
+    description:
+      "Free hampers of essential goods for families in Mt. St. George/Goodwood, Tobago. Register for a hamper today.",
+    type: "website",
+    images: [
+      {
+        url: "/images/tobago/md-exotic-fruits.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Market Day with Megan, Tobago",
+      },
+    ],
+  },
+};
 
 export default function MdLanding() {
   const site = SITES.md;

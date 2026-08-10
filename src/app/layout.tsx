@@ -21,20 +21,6 @@ export const metadata: Metadata = {
   description:
     "Community programme portals for Tobago: Back to School Book Drive & Market Day Hamper Distribution.",
   metadataBase: safeMetadataBase(),
-  openGraph: {
-    title: "Back to School with Megan",
-    description:
-      "Free books and supplies for families in Mt. St. George/Goodwood, Tobago. Register in three minutes.",
-    type: "website",
-    images: [
-      {
-        url: "/images/tobago/bts-child-reading.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Child reading, Back to School with Megan",
-      },
-    ],
-  },
 };
 
 export const viewport: Viewport = {

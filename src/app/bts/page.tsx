@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { SITES } from "@/sites/site-registry";
 import {
   TobagoBooksHero,
@@ -17,6 +18,26 @@ const site = SITES.bts;
 const EVENT_DATE = new Date(site.eventDate + "T12:00:00");
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "Back to School with Megan",
+  description:
+    "Free books and supplies for families in Mt. St. George/Goodwood, Tobago. Register in three minutes.",
+  openGraph: {
+    title: "Back to School with Megan",
+    description:
+      "Free books and supplies for families in Mt. St. George/Goodwood, Tobago. Register in three minutes.",
+    type: "website",
+    images: [
+      {
+        url: "/images/tobago/bts-child-reading.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Child reading, Back to School with Megan",
+      },
+    ],
+  },
+};
 
 async function getRegistrationCount(): Promise<number> {
   try {
