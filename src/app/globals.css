@@ -49,23 +49,44 @@ html {
 }
 
 /*
-  Body paints the warm Tobago photo fixed behind every page.
-  iOS Safari has a long-standing bug with `background-attachment: fixed`
-  on <body> — the photo jitters/skips during momentum scrolling. The
-  stable pattern is a position:fixed pseudo-element on <html>, which
-  paints once behind everything and never repaints vs scroll.
+  Tobago photo lives behind every page.
+
+  iOS Safari skips/jitters if we paint it on <body> with
+  `background-attachment: fixed` (long-known bug), AND it also repaints
+  a `position: fixed; inset:0` pseudo-element when the URL bar collapses
+  because the dynamic viewport height changes mid-momentum-scroll.
+
+  The truly stable pattern:
+   * Use 100lvh so the layer is sized once when the page loads and stays
+     fixed relative to the largest viewport, regardless of URL bar state.
+   * Layer it as a positioned fixed element via transform, which forces
+     it onto its own GPU compositor layer so iOS doesn't repaint it
+     during scroll.
 */
+html {
+  background-color: #2a5a70; /* fallback colour while image loads */
+}
+
 html::before {
   content: "";
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  /* Use lvh so iOS doesn't resize this layer as URL bar collapses */
+  height: 100vh;
+  height: 100lvh;
   z-index: -2;
   background-image: url("/images/tobago/tt-beach.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: #2a5a70;
   pointer-events: none;
+  /* Force GPU compositing — iOS must not rasterise this on scroll */
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 body {
