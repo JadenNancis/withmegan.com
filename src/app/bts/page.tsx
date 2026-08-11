@@ -112,7 +112,7 @@ export default async function BtsLanding() {
               href="/bts/register"
               className="inline-flex min-h-[56px] items-center justify-center rounded-xl bg-white px-8 text-base font-bold text-brand-800 shadow-lg active:scale-95 hover:bg-brand-50 transition-all"
             >
-              Register a Student
+              Register a Child
             </Link>
             <Link
               href="/bts/recover"
@@ -235,7 +235,7 @@ export default async function BtsLanding() {
             href="/bts/register"
             className="mt-6 inline-flex min-h-[56px] items-center justify-center rounded-xl bg-white px-10 text-lg font-bold text-brand-800 shadow-lg active:scale-95 hover:bg-brand-50 transition-all"
           >
-            Register a Student
+            Register a Child
           </Link>
           <p className="mt-4 text-xs text-brand-200 drop-shadow-sm">
             Already registered?{" "}
