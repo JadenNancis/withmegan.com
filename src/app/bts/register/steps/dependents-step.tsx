@@ -92,7 +92,7 @@ export function DependentsStep({
   return (
     <section className="space-y-5">
       <div className="rounded-2xl border border-brand-100 bg-white p-5 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)]">
-        <h2 className="text-xl font-bold text-brand-900">Add your students</h2>
+        <h2 className="text-xl font-bold text-brand-900">Add your children/students</h2>
         <p className="mt-1 text-sm text-brand-700">
           Schools and grades. That&rsquo;s all this step needs from you.
         </p>
@@ -222,7 +222,7 @@ export function DependentsStep({
                       onClick={() => remove(i)}
                       className="text-sm font-semibold text-red-600 hover:text-red-800 transition-colors min-h-[44px] px-2"
                     >
-                      Remove student
+                      Remove child/student
                     </button>
                   </div>
                 )}

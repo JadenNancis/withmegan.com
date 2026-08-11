@@ -50,7 +50,7 @@ export function ReviewStep({
         <div className="mt-6 border-t border-brand-100 pt-5">
           <h3 className="text-sm font-bold uppercase tracking-wide text-brand-600">
             {state.dependents.length}{" "}
-            {state.dependents.length === 1 ? "student" : "students"}
+            {state.dependents.length === 1 ? "child/student" : "children/students"}
           </h3>
           <ul className="mt-3 grid gap-2">
             {state.dependents.map((d, i) => (

@@ -64,7 +64,7 @@ export default async function BtsInventoryPage({
         <div className="bts-card-enter bts-count-up bts-stagger-3 rounded-2xl border border-cyan-100 bg-gradient-to-br from-cyan-50 to-white p-5 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wide text-cyan-600">Assigned</p>
           <p className="mt-2 text-4xl font-bold text-cyan-900">{summary.totalAssigned}</p>
-          <p className="mt-1 text-xs text-gray-500">Matched to students</p>
+          <p className="mt-1 text-xs text-gray-500">Matched to children/students</p>
         </div>
         <div className="bts-card-enter bts-count-up bts-stagger-4 rounded-2xl border border-cyan-100 bg-gradient-to-br from-amber-50 to-white p-5 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wide text-amber-600">Available</p>

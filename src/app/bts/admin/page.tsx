@@ -110,7 +110,7 @@ export default async function BtsAdminDashboard({
                   <span className="shrink-0 text-cyan-600 font-bold text-sm">Details &rarr;</span>
                 </div>
                 <div className="mt-2 flex items-center gap-3 text-xs text-gray-500">
-                  <span>{g.dependents.length} student{g.dependents.length === 1 ? "" : "s"}</span>
+                  <span>{g.dependents.length} {g.dependents.length === 1 ? "child/student" : "children/students"}</span>
                   <span>&middot;</span>
                   <span className="truncate">{g.contactNumber}</span>
                 </div>
@@ -147,7 +147,7 @@ export default async function BtsAdminDashboard({
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-700">{g.contactNumber}</td>
                       <td className="px-4 py-3 text-sm text-gray-700">
-                        {g.dependents.length} student{g.dependents.length === 1 ? "" : "s"}
+                        {g.dependents.length} {g.dependents.length === 1 ? "child/student" : "children/students"}
                       </td>
                       <td className="px-4 py-3 text-sm text-gray-500">
                         {g.createdAt.toLocaleDateString("en-TT", {

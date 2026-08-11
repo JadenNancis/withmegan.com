@@ -39,7 +39,7 @@ Always use the **pooled** Neon endpoint (the `-pooler` hostname) for app traffic
 | Table | Purpose |
 |-------|---------|
 | `bts_guardians` | Guardian registrations. `fullName`, `contactNumber`, `email`, `address`, `consent`, `thaId` (unique server-generated). |
-| `bts_dependents` | Students linked to a guardian. `guardianId` → `bts_guardians.id` (cascade), `studentName`, `schoolName`, `gradeLevel`, `notes`, `bookListUrl`. |
+| `bts_dependents` | Children/Students linked to a guardian. `guardianId` → `bts_guardians.id` (cascade), `studentName`, `schoolName`, `gradeLevel`, `notes`, `bookListUrl`. |
 | `bts_resource_assignments` | Per-dependent book/resource assignments. `dependentId` → `bts_dependents.id` (cascade), `itemName`, `quantityAssigned`, `quantityCollected`, `status` (enum: `pending` \| `partial` \| `full` \| `collected`), `assignedBy` → `users.id` (set null), `collectedByName`, `collectedAt`. |
 | `bts_inventory` | Donated inventory stock. `itemName`, `category` (enum: `Books` \| `Stationery` \| `Uniforms` \| `Backpacks` \| `Other`), `quantityReceived`, `condition`, `donorName`, `receivedBy` → `users.id` (set null), `notes`. |
 

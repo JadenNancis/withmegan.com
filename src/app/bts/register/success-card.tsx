@@ -94,7 +94,7 @@ export function SuccessCard({
         )}
         <p className="mt-4 text-sm text-gray-500">
           {result.dependentsCount}{" "}
-          {result.dependentsCount === 1 ? "student" : "students"} registered
+          {result.dependentsCount === 1 ? "child/student" : "children/students"} registered
         </p>
       </div>
 

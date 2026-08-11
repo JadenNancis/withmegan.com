@@ -94,7 +94,7 @@ export function GuardianStep({
         </Field>
       )}
 
-      <Field label="How many students?" required>
+      <Field label="How many children/students?" required>
         <TextInput
           type="number"
           inputMode="numeric"
@@ -109,7 +109,7 @@ export function GuardianStep({
           className="w-28"
         />
         <p className="mt-1.5 text-sm text-gray-500">
-          Add every child in your household. You&rsquo;ll fill their details next.
+          Add every child/student in your household. You&rsquo;ll fill their details next.
         </p>
       </Field>
 

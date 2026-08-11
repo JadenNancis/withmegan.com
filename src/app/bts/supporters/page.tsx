@@ -38,7 +38,7 @@ export default function BtsSupportersPage() {
         <h1 className="text-2xl sm:text-4xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Our Supporters</h1>
         <p className="mt-4 max-w-2xl text-base text-brand-100/90 leading-relaxed [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">
           Back to School with Megan is made possible by the generosity of partners who believe every
-          student in Tobago deserves to start the school year ready to learn.
+          child/student in Tobago deserves to start the school year ready to learn.
         </p>
       </section>
 
@@ -80,7 +80,7 @@ export default function BtsSupportersPage() {
           <h2 className="text-xl sm:text-2xl font-bold text-brand-900">How to Support</h2>
           <p className="mt-3 text-sm text-gray-600 leading-relaxed">
             Want to help next year&rsquo;s book drive? There are many ways to contribute: donate books
-            or stationery, sponsor a student&rsquo;s supplies, or volunteer on event day.
+            or stationery, sponsor a child/student&rsquo;s supplies, or volunteer on event day.
           </p>
           <div className="mt-6 space-y-2 text-sm text-brand-800">
             <p>

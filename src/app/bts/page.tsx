@@ -91,8 +91,8 @@ export default async function BtsLanding() {
             Back to School with Megan
           </h1>
           <p className="motion-safe:bts-fade-in-up motion-safe:bts-stagger-3 mt-4 text-base sm:text-lg text-brand-100 max-w-xl mx-auto leading-relaxed drop-shadow-md">
-            Free books and supplies for every student in the constituency.
-            Register in three minutes. We&rsquo;ll match each child with what they need.
+            Free books and supplies for every child/student in the constituency.
+            Register in three minutes. We&rsquo;ll match each child/student with what they need.
           </p>
 
           <div className="motion-safe:bts-fade-in-up motion-safe:bts-stagger-3 mt-5 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-brand-50 ring-1 ring-inset ring-white/20 backdrop-blur-sm">
@@ -176,8 +176,8 @@ export default async function BtsLanding() {
           />
           <StepCard
             step="2"
-            title="Add your students"
-            body="Each child's school and grade. Attach their book list if you have one, or skip it."
+            title="Add your children/students"
+            body="Each child/student&rsquo;s school and grade. Attach their book list if you have one, or skip it."
           />
           <StepCard
             step="3"
@@ -201,12 +201,12 @@ export default async function BtsLanding() {
               <h2 className="text-title text-brand-900">About the programme</h2>
               <p className="mt-3 text-body text-brand-800/90 leading-relaxed">
                 Back to School with Megan is a THA-supported community programme serving
-                Mt. St. George/Goodwood, Tobago. We connect students with the books and learning
+                Mt. St. George/Goodwood, Tobago. We connect children/students with the books and learning
                 materials they need, and every registration gets a trackable Application ID.
               </p>
               <ul className="mt-6 grid gap-2.5">
                 <TrustPill icon={<PalmTreeIcon className="h-6 w-6" />} text="Mt. St. George/Goodwood, Tobago" />
-                <TrustPill icon={<SchoolBookIcon className="h-6 w-6" />} text="Primary and secondary students" />
+                <TrustPill icon={<SchoolBookIcon className="h-6 w-6" />} text="Primary and secondary children/students" />
                 <TrustPill icon={<PelicanIcon className="h-6 w-6" />} text="Free for every registered family" />
               </ul>
             </div>

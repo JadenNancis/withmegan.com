@@ -183,7 +183,7 @@ export default function BtsRegisterPage() {
             Register a family for Back to School
           </h2>
           <p className="mt-2 text-sm sm:text-base text-brand-100 drop-shadow-sm">
-            Free books and supplies for every student. Three minutes, three steps.
+            Free books and supplies for every child/student. Three minutes, three steps.
           </p>
         </div>
       </div>
