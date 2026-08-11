@@ -106,10 +106,13 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
   const pathname = usePathname();
 
   // Filter out admin links unless the user is admin/staff.
-  // Also hide Progress from non-staff users.
+  // Also hide Progress, ID (recover), and Gallery from non-staff users
+  // for the initial launch phase.
   const visibleNav = site.nav.filter((n) => {
     if (n.href.includes("/admin")) return isStaff;
     if (n.href.includes("/progress")) return isStaff;
+    if (n.href.includes("/recover")) return isStaff;
+    if (n.href.includes("/gallery")) return isStaff;
     return true;
   });
   const pageLinks = visibleNav.filter((n) => n.href !== "/auth/signin");

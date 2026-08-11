@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Field, TextInput } from "@/components/form";
 import { formatTtPhone } from "@/lib/tt-phone";
 import { TobagoMapBadge } from "@/components/bts-illustrations";
+import { StaffOnlyBanner } from "@/components/staff-only-banner";
 
 export default function BtsRecoverPage() {
   const [phone, setPhone] = useState("");
@@ -92,6 +93,7 @@ export default function BtsRecoverPage() {
       {/* Spacer band — the Tobago photo shows through before the form */}
       <div className="h-12 sm:h-16" aria-hidden="true" />
       <section className="mx-auto max-w-md px-4 pb-10 sm:pb-12 space-y-6">
+        <StaffOnlyBanner />
         <form
           onSubmit={handleSubmit}
           className="motion-safe:bts-fade-in-up rounded-2xl border border-brand-100 bg-white p-5 sm:p-6 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] space-y-4"

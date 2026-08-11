@@ -114,12 +114,14 @@ export default async function BtsLanding() {
             >
               Register a Child/Student
             </Link>
+            {isStaff && (
             <Link
               href="/bts/recover"
               className="inline-flex min-h-[56px] items-center justify-center rounded-xl bg-transparent px-8 text-base font-semibold text-white ring-2 ring-inset ring-white/40 active:scale-95 hover:bg-white/10 transition-all"
             >
               Find My Application ID
             </Link>
+            )}
           </div>
         </div>
       </section>
@@ -213,13 +215,16 @@ export default async function BtsLanding() {
       </section>
 
         {/* ===== Rotating Tobago showcase — gallery photos cycle with Ken Burns.
-              RotatingGallery polls /api/gallery so new uploads join live. ===== */}
+              RotatingGallery polls /api/gallery so new uploads join live.
+              Staff-only during launch phase. ===== */}
+        {isStaff && (
         <RotatingGallery
           initialImages={showcasePhotos}
           site="bts"
           label="Our Tobago"
           galleryHref="/bts/gallery"
         />
+        )}
 
       {/* ===== Breather before bottom CTA ===== */}
       <div className="h-8 sm:h-10" aria-hidden="true" />
@@ -238,10 +243,14 @@ export default async function BtsLanding() {
             Register a Child/Student
           </Link>
           <p className="mt-4 text-xs text-brand-200 drop-shadow-sm">
-            Already registered?{" "}
-            <Link href="/bts/recover" className="underline font-semibold">
-              Find your Application ID
-            </Link>
+            {isStaff && (
+              <>
+                Already registered?{" "}
+                <Link href="/bts/recover" className="underline font-semibold">
+                  Find your Application ID
+                </Link>
+              </>
+            )}
           </p>
         </div>
       </section>

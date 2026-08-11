@@ -136,13 +136,16 @@ export default async function MdLanding() {
       </section>
 
         {/* ──────── Rotating Tobago showcase — gallery photos cycle with Ken Burns.
-              RotatingGallery polls /api/gallery so new uploads join live. ──────── */}
+              RotatingGallery polls /api/gallery so new uploads join live.
+              Staff-only during launch phase. ──────── */}
+        {isStaff && (
         <RotatingGallery
           initialImages={showcasePhotos}
           site="md"
           label="Tobago: Food & Community"
           galleryHref="/md/gallery"
         />
+        )}
 
       {/* ──────── About / How It Works ──────── */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-12">

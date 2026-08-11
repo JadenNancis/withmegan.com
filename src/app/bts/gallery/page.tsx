@@ -1,5 +1,6 @@
 import { SchoolBookIcon } from "@/components/bts-illustrations";
 import { getGalleryPhotos } from "@/lib/gallery-photos";
+import { StaffOnlyBanner } from "@/components/staff-only-banner";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +9,8 @@ export default async function BtsGalleryPage() {
 
   return (
     <div className="space-y-6">
+      <StaffOnlyBanner />
+
       {/* Header */}
       <div className="motion-safe:bts-fade-in-up text-center px-6 py-6">
         <h1 className="text-2xl sm:text-3xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">
