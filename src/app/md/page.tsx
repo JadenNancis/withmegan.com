@@ -3,8 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { SITES } from "@/sites/site-registry";
 import { auth } from "@/auth";
-import { readdir } from "fs/promises";
-import path from "path";
+import { getGalleryPhotos } from "@/lib/gallery-photos";
 import { RotatingGallery } from "@/components/rotating-gallery";
 import {
   TobagoHamperHero,
@@ -17,19 +16,6 @@ import {
 } from "@/components/md-illustrations";
 
 export const dynamic = "force-dynamic";
-
-async function getGalleryPhotos(siteKey: "bts" | "md"): Promise<string[]> {
-  try {
-    const dir = path.join(process.cwd(), "public", "images", "gallery", siteKey);
-    const files = await readdir(dir);
-    return files
-      .filter((f) => /\.(jpe?g|png|webp|gif|svg)$/i.test(f))
-      .sort()
-      .map((f) => `/images/gallery/${siteKey}/${f}`);
-  } catch {
-    return [];
-  }
-}
 
 const FALLBACK_PHOTOS = [
   "/images/tobago/md-exotic-fruits.jpg",
@@ -149,12 +135,14 @@ export default async function MdLanding() {
         </div>
       </section>
 
-      {/* ──────── Rotating Tobago showcase — gallery photos cycle with Ken Burns ──────── */}
-      <RotatingGallery
-        images={showcasePhotos}
-        label="Tobago: Food & Community"
-        galleryHref="/md/gallery"
-      />
+        {/* ──────── Rotating Tobago showcase — gallery photos cycle with Ken Burns.
+              RotatingGallery polls /api/gallery so new uploads join live. ──────── */}
+        <RotatingGallery
+          initialImages={showcasePhotos}
+          site="md"
+          label="Tobago: Food & Community"
+          galleryHref="/md/gallery"
+        />
 
       {/* ──────── About / How It Works ──────── */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-12">

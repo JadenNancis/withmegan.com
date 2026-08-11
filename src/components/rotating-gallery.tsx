@@ -2,31 +2,98 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 /**
  * Cinematic rotating gallery — one large photo tile that crossfades
  * between all images in the platform's gallery with a slow Ken Burns
  * pan/zoom. No dots, no thumbs, no counters — just the photo, rotating.
  *
- * Drop-in replacement for a static photo grid on landing pages.
+ * Live photo feed: polls /api/gallery every REFRESH_MS so newly uploaded
+ * photos join the rotation without a page reload, and removed photos
+ * cycle out gracefully.
  */
 
 const ROTATE_MS = 5_000;
 const KEN_BURNS_MS = 6_500;
+const REFRESH_MS = 20_000;
 
 interface Props {
-  /** Absolute paths to images (e.g. /images/gallery/bts/foo.jpg) */
-  images: string[];
+  /** Initial photos rendered at SSR. */
+  initialImages: string[];
+  /** Site key so we can poll for fresh photos. */
+  site: "bts" | "md";
   /** Brand-friendly label shown above the showcase. */
   label: string;
   /** Link target for the "Full gallery" CTA. */
   galleryHref: string;
 }
 
-export function RotatingGallery({ images, label, galleryHref }: Props) {
+export function RotatingGallery({ initialImages, site, label, galleryHref }: Props) {
+  const [images, setImages] = useState<string[]>(initialImages);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  // Preserve the current photo's key across list refreshes so the visible
+  // slide doesn't jump when a new photo appears in the middle.
+  const currentKey = useRef<string | null>(null);
+
+  // Poll for fresh photos. Merges the new list while keeping the visible
+  // photo stable. If the visible photo was removed, jumps to the next one.
+  useEffect(() => {
+    if (typeof window === "undefined" || images.length === 0) {
+      currentKey.current = images[index] ?? null;
+    }
+
+    let cancelled = false;
+    const tick = async () => {
+      try {
+        const res = await fetch(`/api/gallery?site=${site}`, { cache: "no-store" });
+        if (!res.ok) return;
+        const data: { photos?: string[] } = await res.json();
+        const fresh = Array.isArray(data.photos) ? data.photos : [];
+        if (!fresh.length || cancelled) return;
+
+        setImages((prev) => {
+          if (JSON.stringify(prev) === JSON.stringify(fresh)) return prev;
+
+          // If the currently-visible photo still exists, keep showing it.
+          const visible = currentKey.current ?? prev[index];
+          const stillThere = visible && fresh.includes(visible);
+          const nextIndex = stillThere ? fresh.indexOf(visible!) : 0;
+          // Defer setIndex until after images are swapped.
+          queueMicrotask(() => {
+            if (!cancelled) {
+              setIndex(nextIndex);
+              currentKey.current = fresh[nextIndex];
+            }
+          });
+          return fresh;
+        });
+      } catch {
+        // Silently keep the current list on network/parse errors.
+      }
+    };
+
+    const id = setInterval(tick, REFRESH_MS);
+    // Also refresh when the tab regains focus — covers "photo uploaded
+    // while I was on another tab".
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") tick();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [site]);
+
+  // Track the current slide's URL so refresh can re-anchor on it.
+  useEffect(() => {
+    if (images[index]) currentKey.current = images[index];
+  }, [images, index]);
 
   // Auto-rotate. Honor reduced-motion: keep photo 0 static.
   useEffect(() => {
@@ -78,13 +145,14 @@ export function RotatingGallery({ images, label, galleryHref }: Props) {
             <div
               className={i === index ? "ken-burns-active h-full w-full" : "h-full w-full"}
             >
-              <Image
+              {/* Plain <img> because uploaded photos come from /api/gallery-file
+                  (dev) or blob URLs (prod) — neither fits next/image's static
+                  optimisation cleanly at runtime. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={src}
                 alt=""
-                fill
-                sizes="(max-width: 640px) 100vw, 896px"
-                priority={i === 0}
-                className="object-cover"
+                className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
           </div>

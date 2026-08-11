@@ -15,8 +15,7 @@ import { count } from "drizzle-orm";
 import { auth } from "@/auth";
 import { SnapScrollRow } from "@/components/snap-scroll";
 import { RotatingGallery } from "@/components/rotating-gallery";
-import { readdir } from "fs/promises";
-import path from "path";
+import { getGalleryPhotos } from "@/lib/gallery-photos";
 
 const site = SITES.bts;
 const EVENT_DATE = new Date(site.eventDate + "T12:00:00");
@@ -49,19 +48,6 @@ async function getRegistrationCount(): Promise<number> {
     return row?.n ?? 0;
   } catch {
     return 0;
-  }
-}
-
-async function getGalleryPhotos(siteKey: "bts" | "md"): Promise<string[]> {
-  try {
-    const dir = path.join(process.cwd(), "public", "images", "gallery", siteKey);
-    const files = await readdir(dir);
-    return files
-      .filter((f) => /\.(jpe?g|png|webp|gif|svg)$/i.test(f))
-      .sort()
-      .map((f) => `/images/gallery/${siteKey}/${f}`);
-  } catch {
-    return [];
   }
 }
 
@@ -226,12 +212,14 @@ export default async function BtsLanding() {
         </div>
       </section>
 
-      {/* ===== Rotating Tobago showcase — gallery photos cycle with Ken Burns ===== */}
-      <RotatingGallery
-        images={showcasePhotos}
-        label="Our Tobago"
-        galleryHref="/bts/gallery"
-      />
+        {/* ===== Rotating Tobago showcase — gallery photos cycle with Ken Burns.
+              RotatingGallery polls /api/gallery so new uploads join live. ===== */}
+        <RotatingGallery
+          initialImages={showcasePhotos}
+          site="bts"
+          label="Our Tobago"
+          galleryHref="/bts/gallery"
+        />
 
       {/* ===== Breather before bottom CTA ===== */}
       <div className="h-8 sm:h-10" aria-hidden="true" />
