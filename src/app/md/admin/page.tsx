@@ -109,7 +109,7 @@ export default async function MdAdminPage({
           {q ? `Search results for "${q}"` : "Recent registrations"}
         </h2>
         <Suspense fallback={<div className="text-sm text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Loading search…</div>}>
-          <SearchBar placeholder="Search by name, Application ID, phone, or household reference" />
+          <SearchBar placeholder="Search by name, ID, or phone…" />
         </Suspense>
 
         {rows.length === 0 ? (

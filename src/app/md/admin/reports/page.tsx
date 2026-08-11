@@ -129,7 +129,7 @@ export default async function MdAdminReportsPage({
           Registrations {q && `· filtered by "${q}"`}
         </h2>
         <Suspense fallback={<div className="text-sm text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Loading search…</div>}>
-          <SearchBar placeholder="Search by name, Application ID, national ID, or household" />
+          <SearchBar placeholder="Search by name, ID, or household…" />
         </Suspense>
 
         {filtered.length === 0 ? (
