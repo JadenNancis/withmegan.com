@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * Cinematic rotating gallery — one large photo tile that crossfades
@@ -12,6 +11,10 @@ import { useEffect, useRef, useState } from "react";
  * Live photo feed: polls /api/gallery every REFRESH_MS so newly uploaded
  * photos join the rotation without a page reload, and removed photos
  * cycle out gracefully.
+ *
+ * Timing model: two recursive setTimeout schedulers (one for rotation,
+ * one for the gallery poll). They capture state via refs — never stale
+ * closures, never double-fire, never get wedged into a stuck interval.
  */
 
 const ROTATE_MS = 5_000;
@@ -25,6 +28,9 @@ const KEN_BURNS_MS = 6_500;
 const ZOOM_OUT_MS = 1_400;
 const FADE_MS = 1_400;
 const REFRESH_MS = 20_000;
+// First slide shows for a shorter burst so users landing mid-scroll see
+// the rotation begin promptly. Subsequent beats use ROTATE_MS.
+const FIRST_BEAT_MS = 3_500;
 
 interface Props {
   /** Initial photos rendered at SSR. */
@@ -41,19 +47,71 @@ export function RotatingGallery({ initialImages, site, label, galleryHref }: Pro
   const [images, setImages] = useState<string[]>(initialImages);
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  // Preserve the current photo's key across list refreshes so the visible
-  // slide doesn't jump when a new photo appears in the middle.
-  const currentKey = useRef<string | null>(null);
 
-  // Poll for fresh photos. Merges the new list while keeping the visible
-  // photo stable. If the visible photo was removed, jumps to the next one.
+  // Refs kept in sync with state so timeout/interval callbacks see fresh
+  // values without re-creating themselves.
+  const imagesRef = useRef(images);
+  const indexRef = useRef(index);
+  const pausedRef = useRef(paused);
+  // Tracks whether consumption is past the short "aperture" beat.
+  const firstBeatRef = useRef(true);
+
   useEffect(() => {
-    if (typeof window === "undefined" || images.length === 0) {
-      currentKey.current = images[index] ?? null;
-    }
+    imagesRef.current = images;
+  }, [images]);
+  useEffect(() => {
+    indexRef.current = index;
+  }, [index]);
+  useEffect(() => {
+    pausedRef.current = paused;
+  }, [paused]);
+
+  /* ─── Rotation scheduler ─────────────────────────────────────────────
+     Recursive setTimeout — never double-fires, never wedges. Reads state
+     via refs so it always sees the latest images/paused/firstBeat. */
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let cancelled = false;
-    const tick = async () => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    const tick = () => {
+      if (cancelled) return;
+      const imgs = imagesRef.current;
+      const isPaused = pausedRef.current;
+
+      if (!isPaused && imgs.length > 1) {
+        setIndex((i) => (i + 1) % imgs.length);
+        firstBeatRef.current = false;
+      }
+      schedule();
+    };
+
+    const schedule = () => {
+      if (cancelled) return;
+      const delay = firstBeatRef.current ? FIRST_BEAT_MS : ROTATE_MS;
+      timer = setTimeout(tick, delay);
+    };
+
+    schedule();
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, []);
+
+  /* ─── Gallery polling scheduler ─────────────────────────────────────
+     Refreshes the photo list from /api/gallery periodically and on
+     visibility change. Picks up new uploads mid-session, removes deleted
+     photos gracefully, and re-anchors the visible slide on its URL so the
+     user doesn't see a jump. */
+  useEffect(() => {
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    const poll = async () => {
+      if (cancelled) return;
+
       try {
         const res = await fetch(`/api/gallery?site=${site}`, { cache: "no-store" });
         if (!res.ok) return;
@@ -64,62 +122,44 @@ export function RotatingGallery({ initialImages, site, label, galleryHref }: Pro
         setImages((prev) => {
           if (JSON.stringify(prev) === JSON.stringify(fresh)) return prev;
 
-          // If the currently-visible photo still exists, keep showing it.
-          const visible = currentKey.current ?? prev[index];
+          // If the currently-visible photo still exists, keep showing it —
+          // re-anchor index onto its new position in the fresh list.
+          const visible = prev[indexRef.current];
           const stillThere = visible && fresh.includes(visible);
           const nextIndex = stillThere ? fresh.indexOf(visible!) : 0;
-          // Defer setIndex until after images are swapped.
+          // Defer setIndex past the images state commit so the render
+          // that follows sees consistent (images, index).
           queueMicrotask(() => {
-            if (!cancelled) {
-              setIndex(nextIndex);
-              currentKey.current = fresh[nextIndex];
-            }
+            if (!cancelled) setIndex(nextIndex);
           });
           return fresh;
         });
       } catch {
-        // Silently keep the current list on network/parse errors.
+        // Network or parse error — keep rotating the current list.
       }
     };
 
-    const id = setInterval(tick, REFRESH_MS);
-    // Also refresh when the tab regains focus — covers "photo uploaded
-    // while I was on another tab".
+    const schedule = () => {
+      if (cancelled) return;
+      timer = setTimeout(async () => {
+        await poll();
+        schedule();
+      }, REFRESH_MS);
+    };
+
+    schedule();
+
     const onVisibility = () => {
-      if (document.visibilityState === "visible") tick();
+      if (document.visibilityState === "visible") poll();
     };
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       cancelled = true;
-      clearInterval(id);
+      if (timer) clearTimeout(timer);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [site]);
-
-  // Track the current slide's URL so refresh can re-anchor on it.
-  useEffect(() => {
-    if (images[index]) currentKey.current = images[index];
-  }, [images, index]);
-
-  // Auto-rotate. Honor reduced-motion: keep photo 0 static.
-  //
-  // First-beat is shorter than the steady-state cadence so users see motion
-  // cue as soon as they land. Without this the first slide sits for the full
-  // ROTATE_MS and the showcase reads as a static image; the page is there,
-  // but the "rotating" part isn't apparent yet.
-  const [firstBeat, setFirstBeat] = useState(true);
-  useEffect(() => {
-    if (paused || images.length <= 1) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const interval = firstBeat ? 3_500 : ROTATE_MS;
-    const id = setInterval(() => {
-      setIndex((i) => (i + 1) % images.length);
-      if (firstBeat) setFirstBeat(false);
-    }, interval);
-    return () => clearInterval(id);
-  }, [images.length, paused, firstBeat]);
 
   if (images.length === 0) return null;
 
