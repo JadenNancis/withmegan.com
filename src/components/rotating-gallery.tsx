@@ -15,7 +15,15 @@ import { useEffect, useRef, useState } from "react";
  */
 
 const ROTATE_MS = 5_000;
+// Slow pan/zoom while a slide is active. Slightly longer than the rotation
+// cycle so the photo is still drifting when the crossfade starts.
 const KEN_BURNS_MS = 6_500;
+// Must equal the opacity crossfade below — the outgoing slide melts back
+// to scale(1) in the same time the incoming one fades in. Smaller than the
+// forward zoom so zoom-out feels tighter than zoom-in, which reads as
+// smooth rather than sluggish.
+const ZOOM_OUT_MS = 1_400;
+const FADE_MS = 1_400;
 const REFRESH_MS = 20_000;
 
 interface Props {
@@ -135,15 +143,34 @@ export function RotatingGallery({ initialImages, site, label, galleryHref }: Pro
         {images.map((src, i) => (
           <div
             key={src}
-            className={[
-              "absolute inset-0 transition-opacity duration-[1400ms] ease-in-out motion-reduce:transition-none",
-              i === index ? "opacity-100" : "opacity-0",
-            ].join(" ")}
+            className="slide absolute inset-0 motion-reduce:transition-none"
+            style={{
+              opacity: i === index ? 1 : 0,
+              transition: `opacity ${FADE_MS}ms ease-in-out`,
+              // The incoming slide must paint above the outgoing one while
+              // both are partially transparent. zIndex needs a DOM reflow to
+              // take effect on crossfade, so we also flip a transform to hint
+              // compositing without disturbing the zoom below.
+              zIndex: i === index ? 1 : 0,
+            }}
             aria-hidden={i !== index}
           >
-            {/* Ken Burns — slow pan/zoom only on the active slide */}
+            {/* Ken Burns — transition-driven so deactivation eases back to
+                scale(1) instead of snapping. (Keyframe animation would be
+                destroyed when the class is removed mid-fade, causing the
+                "jump backwards" the user reported.) */}
             <div
-              className={i === index ? "ken-burns-active h-full w-full" : "h-full w-full"}
+              className="ken-burns h-full w-full"
+              style={{
+                transform:
+                  i === index
+                    ? "scale(1.08) translate(-1.5%, -1.5%)"
+                    : "scale(1) translate(0, 0)",
+                transition: `transform ${
+                  i === index ? KEN_BURNS_MS : ZOOM_OUT_MS
+                }ms ease-out`,
+                willChange: "transform",
+              }}
             >
               {/* Plain <img> because uploaded photos come from /api/gallery-file
                   (dev) or blob URLs (prod) — neither fits next/image's static
@@ -168,22 +195,12 @@ export function RotatingGallery({ initialImages, site, label, galleryHref }: Pro
         />
       </div>
 
-      {/* Ken Burns keyframes */}
+      {/* Reduced-motion: kill both transitions — show a static frame. */}
       <style jsx>{`
-        @keyframes ken-burns {
-          0% {
-            transform: scale(1) translate(0, 0);
-          }
-          100% {
-            transform: scale(1.08) translate(-1.5%, -1.5%);
-          }
-        }
-        .ken-burns-active {
-          animation: ken-burns ${KEN_BURNS_MS}ms ease-out forwards;
-        }
         @media (prefers-reduced-motion: reduce) {
-          .ken-burns-active {
-            animation: none;
+          .slide,
+          .ken-burns {
+            transition: none !important;
           }
         }
       `}</style>
