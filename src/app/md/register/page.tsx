@@ -159,15 +159,23 @@ export default function MdRegisterPage() {
 
   return (
     <div className="space-y-5 sm:space-y-6">
-      {/* Animated header */}
+      {/* Animated header — frosted-glass plate over the shimmer keeps copy
+          legible at any screen width while staying on-brand. */}
       <div className="relative overflow-hidden rounded-2xl md-hero-shimmer shadow-lg">
-        <div className="flex items-center gap-4 px-5 py-5 sm:px-6 sm:py-6">
-          <BasketIcon className="w-12 h-12 sm:w-14 sm:h-14 flex-none drop-shadow-lg motion-safe:md-animate-basket-sway" />
-          <div className="text-white">
-            <h1 className="text-xl sm:text-2xl font-bold drop-shadow motion-safe:md-animate-fade-in-up">Hamper Registration</h1>
-            <p className="mt-1 text-sm text-amber-50 drop-shadow motion-safe:md-animate-fade-in-up motion-safe:md-delay-1">
-              Register in advance for the Market Day community hamper distribution.
-              Fields marked with <span className="text-red-100 font-bold">*</span> are required.
+        {/* Soft dark scrim behind the text so white never blurs into the warm gradient */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-r from-amber-900/40 via-amber-900/15 to-transparent"
+        />
+        <div className="relative flex items-center gap-4 px-5 py-5 sm:px-6 sm:py-6">
+          <BasketIcon className="w-10 h-10 sm:w-12 sm:h-12 flex-none drop-shadow-lg motion-safe:md-animate-basket-sway" />
+          <div className="text-white min-w-0">
+            <h1 className="text-2xl sm:text-2xl font-bold [text-shadow:0_2px_10px_rgba(0,0,0,0.55)] motion-safe:md-animate-fade-in-up whitespace-nowrap">
+              Hamper Registration
+            </h1>
+            <p className="mt-1 text-sm text-amber-50 [text-shadow:0_2px_6px_rgba(0,0,0,0.55)] motion-safe:md-animate-fade-in-up motion-safe:md-delay-1">
+              Register for the Market Day community hamper distribution.
+              Fields marked <span className="text-red-200 font-bold">*</span> are required.
             </p>
           </div>
         </div>

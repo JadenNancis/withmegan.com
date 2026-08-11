@@ -104,14 +104,22 @@ export function RotatingGallery({ initialImages, site, label, galleryHref }: Pro
   }, [images, index]);
 
   // Auto-rotate. Honor reduced-motion: keep photo 0 static.
+  //
+  // First-beat is shorter than the steady-state cadence so users see motion
+  // cue as soon as they land. Without this the first slide sits for the full
+  // ROTATE_MS and the showcase reads as a static image; the page is there,
+  // but the "rotating" part isn't apparent yet.
+  const [firstBeat, setFirstBeat] = useState(true);
   useEffect(() => {
     if (paused || images.length <= 1) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const interval = firstBeat ? 3_500 : ROTATE_MS;
     const id = setInterval(() => {
       setIndex((i) => (i + 1) % images.length);
-    }, ROTATE_MS);
+      if (firstBeat) setFirstBeat(false);
+    }, interval);
     return () => clearInterval(id);
-  }, [images.length, paused]);
+  }, [images.length, paused, firstBeat]);
 
   if (images.length === 0) return null;
 
