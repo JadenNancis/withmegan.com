@@ -5,10 +5,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 /**
- * Cinematic rotating gallery — one hero tile that crossfades + Ken-Burns
- * between all photos in the platform's gallery, with a thumbnail strip
- * underneath that auto-tracks the active image. Tapping a thumb jumps
- * straight to it; the rhythm resumes from the next photo.
+ * Cinematic rotating gallery — one large photo tile that crossfades
+ * between all images in the platform's gallery with a slow Ken Burns
+ * pan/zoom. No dots, no thumbs, no counters — just the photo, rotating.
  *
  * Drop-in replacement for a static photo grid on landing pages.
  */
@@ -19,15 +18,13 @@ const KEN_BURNS_MS = 6_500;
 interface Props {
   /** Absolute paths to images (e.g. /images/gallery/bts/foo.jpg) */
   images: string[];
-  /** Brand-friendly label shown while loading. */
+  /** Brand-friendly label shown above the showcase. */
   label: string;
   /** Link target for the "Full gallery" CTA. */
   galleryHref: string;
-  /** Tailwind brand tint class for the active thumb ring (cyan-400 / amber-400). */
-  accent: string;
 }
 
-export function RotatingGallery({ images, label, galleryHref, accent }: Props) {
+export function RotatingGallery({ images, label, galleryHref }: Props) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -93,7 +90,7 @@ export function RotatingGallery({ images, label, galleryHref, accent }: Props) {
           </div>
         ))}
 
-        {/* Soft vignette so thumbs/text pop */}
+        {/* Soft vignette so the photo reads cleanly */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -101,55 +98,6 @@ export function RotatingGallery({ images, label, galleryHref, accent }: Props) {
               "radial-gradient(ellipse 90% 80% at 50% 50%, transparent 60%, rgba(0,0,0,0.18) 100%)",
           }}
         />
-
-        {/* Live dots indicator — top right */}
-        <div className="absolute top-3 right-3 z-10 flex gap-1.5 rounded-full bg-black/40 backdrop-blur-md px-2.5 py-1.5 ring-1 ring-white/20">
-          {images.map((_, i) => (
-            <button
-              key={i}
-              type="button"
-              onClick={() => setIndex(i)}
-              aria-label={`Show photo ${i + 1} of ${images.length}`}
-              className={[
-                "h-1.5 rounded-full transition-all duration-300",
-                i === index ? "w-6 bg-white" : "w-1.5 bg-white/50 hover:bg-white/80",
-              ].join(" ")}
-            />
-          ))}
-        </div>
-
-        {/* Caption chip — bottom left */}
-        <div className="absolute bottom-3 left-3 z-10 flex items-center gap-2 rounded-full bg-black/40 backdrop-blur-md px-3 py-1.5 ring-1 ring-white/20">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-white">
-            {index + 1} / {images.length}
-          </span>
-        </div>
-      </div>
-
-      {/* Thumb strip — horizontal scroll, active thumb glows */}
-      <div className="mt-4 flex gap-2.5 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
-        {images.map((src, i) => (
-          <button
-            key={src}
-            type="button"
-            onClick={() => setIndex(i)}
-            aria-label={`Photo ${i + 1}`}
-            className={[
-              "snap-start relative shrink-0 h-16 w-24 sm:h-20 sm:w-32 overflow-hidden rounded-xl border-2 transition-all duration-300 active:scale-95",
-              i === index
-                ? `border-white shadow-[0_0_18px_rgba(255,255,255,0.4)] scale-105`
-                : "border-white/25 hover:border-white/60 opacity-75 hover:opacity-100",
-            ].join(" ")}
-          >
-            <Image
-              src={src}
-              alt=""
-              fill
-              sizes="(max-width: 640px) 96px, 128px"
-              className="object-cover"
-            />
-          </button>
-        ))}
       </div>
 
       {/* Ken Burns keyframes */}

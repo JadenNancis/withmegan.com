@@ -231,7 +231,6 @@ export default async function BtsLanding() {
         images={showcasePhotos}
         label="Our Tobago"
         galleryHref="/bts/gallery"
-        accent="cyan-400"
       />
 
       {/* ===== Breather before bottom CTA ===== */}

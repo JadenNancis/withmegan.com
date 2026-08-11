@@ -154,7 +154,6 @@ export default async function MdLanding() {
         images={showcasePhotos}
         label="Tobago: Food & Community"
         galleryHref="/md/gallery"
-        accent="amber-400"
       />
 
       {/* ──────── About / How It Works ──────── */}
