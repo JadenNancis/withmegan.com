@@ -70,7 +70,7 @@ export default async function BtsReportsPage() {
               <thead>
                 <tr className="border-b border-gray-200 text-left text-xs uppercase text-gray-400">
                   <th className="py-2 pr-4 font-medium">School</th>
-                  <th className="py-2 pr-4 font-medium">Students</th>
+                  <th className="py-2 pr-4 font-medium">Children/Students</th>
                 </tr>
               </thead>
               <tbody>

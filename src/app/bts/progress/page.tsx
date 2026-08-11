@@ -122,7 +122,7 @@ export default async function BtsProgressPage() {
 
           <div className="motion-safe:bts-card-enter rounded-2xl border border-brand-100 bg-white p-5 shadow-sm">
             <h2 className="text-base font-bold text-brand-900">By grade level</h2>
-            <p className="mt-1 text-xs text-brand-600">Students grouped by grade</p>
+            <p className="mt-1 text-xs text-brand-600">Children/Students grouped by grade</p>
             {byCategory.length === 0 ? (
               <p className="mt-4 rounded-xl border border-dashed border-brand-200 bg-brand-50/60 px-4 py-6 text-center text-sm text-gray-500">
                 No dependents registered yet.

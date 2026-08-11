@@ -143,7 +143,7 @@ async function VerifyResult({ aid }: { aid: string }) {
 
       <section className="rounded-2xl border border-brand-100 bg-white p-5 shadow-sm">
         <h3 className="border-b border-brand-100 pb-3 text-base font-bold text-brand-900">
-          Students ({dependents.length})
+          Children/Students ({dependents.length})
         </h3>
         {dependents.length === 0 ? (
           <p className="mt-3 text-sm text-gray-500">None on file.</p>

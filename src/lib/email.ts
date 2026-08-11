@@ -88,7 +88,7 @@ export function btsRegistrationConfirmationHtml(params: {
     <table style="width:100%;border-collapse:collapse;font-size:14px;margin-top:8px;">
       <thead>
         <tr style="background:#f9fafb;">
-          <th style="padding:6px 12px;text-align:left;font-size:12px;text-transform:uppercase;color:#6b7280;">Student</th>
+          <th style="padding:6px 12px;text-align:left;font-size:12px;text-transform:uppercase;color:#6b7280;">Child/Student</th>
           <th style="padding:6px 12px;text-align:left;font-size:12px;text-transform:uppercase;color:#6b7280;">School</th>
         </tr>
       </thead>

@@ -62,7 +62,7 @@ export default async function BtsAdminDashboard({
         <div className="bts-card-enter bts-count-up bts-stagger-3 rounded-2xl border border-cyan-100 bg-gradient-to-br from-cyan-50 to-white p-5 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-wide text-cyan-600">Total Dependents</p>
           <p className="mt-2 text-4xl font-bold text-cyan-900">{totalDependents}</p>
-          <p className="mt-1 text-xs text-gray-500">Students awaiting resources</p>
+          <p className="mt-1 text-xs text-gray-500">Children/Students awaiting resources</p>
         </div>
       </div>
 

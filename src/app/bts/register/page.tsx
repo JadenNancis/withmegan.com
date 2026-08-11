@@ -10,7 +10,7 @@ import { useWizardDraft } from "./draft";
 import { OTHER_LOCATION_VALUE } from "@/lib/bts-locations";
 import { OTHER_SCHOOL_VALUE } from "@/lib/bts-schools";
 
-const STEPS = ["Parent/Guardian", "Students", "Review"] as const;
+const STEPS = ["Parent/Guardian", "Children/Students", "Review"] as const;
 type StepIndex = 0 | 1 | 2;
 
 interface WizardState {
@@ -67,11 +67,11 @@ export default function BtsRegisterPage() {
     if (state.step === 1) {
       for (let i = 0; i < state.dependents.length; i++) {
         const d = state.dependents[i];
-        if (!d.studentName.trim()) return `Student ${i + 1}: name is required.`;
-        if (!d.gradeLevel.trim()) return `Student ${i + 1}: grade level is required.`;
-        if (!d.schoolName) return `Student ${i + 1}: school is required.`;
+        if (!d.studentName.trim()) return `Child/Student ${i + 1}: name is required.`;
+        if (!d.gradeLevel.trim()) return `Child/Student ${i + 1}: grade level is required.`;
+        if (!d.schoolName) return `Child/Student ${i + 1}: school is required.`;
         if (d.schoolName === OTHER_SCHOOL_VALUE && !d.manualSchoolName.trim())
-          return `Student ${i + 1}: enter the school name.`;
+          return `Child/Student ${i + 1}: enter the school name.`;
       }
       return null;
     }

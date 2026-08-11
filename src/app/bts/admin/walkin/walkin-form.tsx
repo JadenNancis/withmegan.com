@@ -60,7 +60,7 @@ export function WalkInForm() {
     else if (!isValidTtPhone(contactNumber)) e.contactNumber = "Enter a valid TT number, e.g. (868) 123-4567";
     if (!address) e.address = "Select a community";
     else if (address === OTHER_LOCATION_VALUE && !manualAddress.trim()) e.address = "Enter your community";
-    if (!studentName.trim()) e.studentName = "Student name is required";
+    if (!studentName.trim()) e.studentName = "Child/Student name is required";
     if (!schoolName) e.schoolName = "School is required";
     if (schoolName === OTHER_SCHOOL_VALUE && !manualSchoolName.trim()) e.schoolName = "Enter the school name";
     if (!gradeLevel) e.gradeLevel = "Grade level is required";
@@ -245,10 +245,10 @@ export function WalkInForm() {
       {/* Single dependent */}
       <section className="rounded-2xl border border-cyan-100 bg-white p-5 shadow-sm">
         <h2 className="text-lg font-bold text-cyan-900 border-b border-cyan-100 pb-3 mb-4">
-          Student / Dependent
+          Child/Student
         </h2>
         <div className="grid gap-1 sm:grid-cols-2">
-          <Field label="Student name" htmlFor="studentName" required error={errors.studentName}>
+          <Field label="Child/Student name" htmlFor="studentName" required error={errors.studentName}>
             <TextInput
               id="studentName"
               value={studentName}

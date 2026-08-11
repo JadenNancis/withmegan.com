@@ -117,7 +117,7 @@ export function DependentsStep({
                   {i + 1}
                 </span>
                 <span className="truncate font-bold text-brand-900">
-                  {dep.studentName.trim() ? dep.studentName : "Student details"}
+                  {dep.studentName.trim() ? dep.studentName : "Child/Student details"}
                   {dep.gradeLevel && (
                     <span className="ml-2 text-xs font-medium text-gray-500">
                       · {dep.gradeLevel}
@@ -140,7 +140,7 @@ export function DependentsStep({
 
             {!isCollapsed && (
               <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-4 border-t border-brand-50 space-y-1">
-                <Field label="Student&rsquo;s full name" required>
+                <Field label="Child/Student&rsquo;s full name" required>
                   <TextInput
                     value={dep.studentName}
                     onChange={(e) => update(i, { studentName: e.target.value })}

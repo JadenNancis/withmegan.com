@@ -12,7 +12,7 @@ import { notifyRegistrationConfirmed } from "@/lib/notify";
 import { findDuplicates } from "@/lib/dedup";
 
 const dependentSchema = z.object({
-  studentName: z.string().min(1, "Student name is required"),
+  studentName: z.string().min(1, "Child/Student name is required"),
   schoolName: z.string().min(1, "School name is required"),
   schoolAddress: z.string().optional(),
   gradeLevel: z.string().min(1, "Grade level is required"),
