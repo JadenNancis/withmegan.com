@@ -36,7 +36,7 @@ export const metadata: Metadata = {
         url: "/images/tobago/bts-child-reading.jpg",
         width: 1200,
         height: 630,
-        alt: "Child reading, Back to School with Megan",
+        alt: "Child/Student reading, Back to School with Megan",
       },
     ],
   },
