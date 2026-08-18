@@ -1,0 +1,1 @@
+ALTER TABLE "md_registrants" ADD COLUMN "product_category_note" text;

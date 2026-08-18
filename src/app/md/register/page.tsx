@@ -31,6 +31,7 @@ export default function MdRegisterPage() {
   const [email, setEmail] = useState("");
   const [nationalId, setNationalId] = useState("");
   const [productCategory, setProductCategory] = useState("");
+  const [productCategoryNote, setProductCategoryNote] = useState("");
   const [householdReference, setHouseholdReference] = useState("");
   const [consent, setConsent] = useState(false);
 
@@ -44,6 +45,8 @@ export default function MdRegisterPage() {
     if (!phoneNumber.trim()) e.phoneNumber = "Phone number is required";
     else if (!isValidTtPhone(phoneNumber)) e.phoneNumber = "Enter a valid TT number, e.g. (868) 123-4567";
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = "Invalid email address";
+    if (productCategory === "other" && !productCategoryNote.trim())
+      e.productCategoryNote = "Tell us what else you need";
     if (!consent) e.consent = "You must consent to data collection to register";
     return e;
   }
@@ -65,6 +68,9 @@ export default function MdRegisterPage() {
         phoneNumber,
         email: email || undefined,
         productCategory: productCategory || undefined,
+        productCategoryNote: productCategory === "other" && productCategoryNote.trim()
+          ? productCategoryNote.trim()
+          : undefined,
         householdReference: householdReference || undefined,
         consent,
       };
@@ -145,6 +151,7 @@ export default function MdRegisterPage() {
               setPhoneNumber("");
               setEmail("");
               setProductCategory("");
+              setProductCategoryNote("");
               setHouseholdReference("");
               setConsent(false);
             }}
@@ -279,6 +286,17 @@ export default function MdRegisterPage() {
             <option value="other">Other</option>
           </Select>
         </Field>
+        {productCategory === "other" && (
+          <Field label="Describe what you need" htmlFor="productCategoryNote" required error={errors.productCategoryNote}>
+            <TextArea
+              id="productCategoryNote"
+              value={productCategoryNote}
+              onChange={(e) => setProductCategoryNote(e.target.value)}
+              placeholder="e.g. baby care items, pet food, cleaning supplies"
+              rows={3}
+            />
+          </Field>
+        )}
 
         <Field label="Household reference" htmlFor="householdReference">
           <TextInput

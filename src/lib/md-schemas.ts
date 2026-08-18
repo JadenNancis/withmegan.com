@@ -9,8 +9,17 @@ export const registrationSchema = z.object({
   phoneNumber: z.string().refine(isValidTtPhone, "Enter a valid TT phone number, e.g. (868) 123-4567"),
   email: z.string().email("Invalid email address").max(200).optional().nullable(),
   productCategory: z.string().max(200).optional().nullable(),
+  productCategoryNote: z.string().max(500).optional().nullable(),
   householdReference: z.string().max(50).optional().nullable(),
   consent: z.boolean().refine((v) => v === true, "Consent is required"),
+}).superRefine((data, ctx) => {
+  if (data.productCategory === "other" && !(data.productCategoryNote ?? "").trim()) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["productCategoryNote"],
+      message: "Describe what else you need",
+    });
+  }
 });
 
 export type RegistrationInput = z.infer<typeof registrationSchema>;

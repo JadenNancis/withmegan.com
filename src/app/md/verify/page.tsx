@@ -82,6 +82,7 @@ async function VerifyResult({ aid }: { aid: string }) {
       phoneNumber: mdRegistrants.phoneNumber,
       email: mdRegistrants.email,
       productCategory: mdRegistrants.productCategory,
+      productCategoryNote: mdRegistrants.productCategoryNote,
       householdReference: mdHouseholds.reference,
       hamperStatus: mdHouseholds.hamperStatus,
     })
@@ -155,6 +156,9 @@ async function VerifyResult({ aid }: { aid: string }) {
           <Detail label="National ID" value={row.nationalId ?? ""} />
           <Detail label="Date of birth" value={row.dateOfBirth ?? ""} />
           <Detail label="Product category" value={row.productCategory ?? ""} />
+          {row.productCategoryNote && (
+            <Detail label="Other needs" value={row.productCategoryNote} />
+          )}
         </dl>
       </section>
 

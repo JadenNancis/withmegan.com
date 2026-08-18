@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Field, TextInput, Select } from "@/components/form";
 import { BTS_LOCATIONS, OTHER_LOCATION_VALUE } from "@/lib/bts-locations";
 import { formatTtPhone } from "@/lib/tt-phone";
@@ -24,6 +25,11 @@ export function GuardianStep({
   onStudentCountChange: (count: number) => void;
   onNext: () => void;
 }) {
+  // Show the field empty until the guardian types a number. The default of
+  // one dependent still applies underneath, so the step never dead-ends.
+  const [countDraft, setCountDraft] = useState(
+    state.studentCount > 1 ? String(state.studentCount) : "",
+  );
   return (
     <section className="rounded-2xl border border-brand-100 bg-white p-5 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] space-y-1">
       <h2 className="text-xl font-bold text-brand-900">Tell us about you</h2>
@@ -100,9 +106,12 @@ export function GuardianStep({
           inputMode="numeric"
           min={1}
           max={20}
-          value={state.studentCount}
+          placeholder="e.g. 2"
+          value={countDraft}
           onChange={(e) => {
-            const n = Math.max(1, Math.min(20, parseInt(e.target.value, 10) || 1));
+            const raw = e.target.value.replace(/\D/g, "");
+            setCountDraft(raw);
+            const n = raw === "" ? 1 : Math.max(1, Math.min(20, parseInt(raw, 10)));
             onChange({ studentCount: n });
             onStudentCountChange(n);
           }}

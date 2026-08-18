@@ -251,6 +251,24 @@ export function DependentsStep({
 /* ------------------------------------------------------------------ */
 /*  Book-list upload — big tap zone with inline progress              */
 /* ------------------------------------------------------------------ */
+const ACCEPT = [
+  ".pdf",
+  ".doc",
+  ".docx",
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+  ".gif",
+  "application/pdf",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+].join(",");
+
 function BookListUpload({
   dep,
   uploading,
@@ -284,7 +302,7 @@ function BookListUpload({
         <input
           ref={inputRef}
           type="file"
-          accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+          accept={ACCEPT}
           className="hidden"
           onChange={(e) => {
             const file = e.target.files?.[0];
@@ -305,11 +323,11 @@ function BookListUpload({
       <p className="text-sm font-semibold text-brand-700">
         {uploading ? "Uploading…" : "Tap to attach a book list"}
       </p>
-      <p className="mt-1 text-xs text-brand-600">PDF or Word, or skip this step</p>
+      <p className="mt-1 text-xs text-brand-600">PDF, Word, or a photo of the list — or skip this step</p>
       <input
         ref={inputRef}
         type="file"
-        accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        accept={ACCEPT}
         className="hidden"
         onChange={(e) => {
           const file = e.target.files?.[0];

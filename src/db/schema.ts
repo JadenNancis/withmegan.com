@@ -161,6 +161,8 @@ export const mdRegistrants = pgTable("md_registrants", {  id: uuid("id").primary
   phoneNumber: text("phone_number").notNull(),
   email: text("email"),
   productCategory: text("product_category"),
+  /** Free-text detail required when productCategory is "other". */
+  productCategoryNote: text("product_category_note"),
   consent: boolean("consent").notNull().default(false),
   thaId: text("tha_id").unique(),
   /** Assigned by admin; links to a household. */

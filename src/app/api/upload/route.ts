@@ -25,9 +25,13 @@ const ALLOWED = {
   "application/pdf": "pdf",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
   "application/msword": "doc",
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/webp": "webp",
+  "image/gif": "gif",
 } as const;
 
-const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
+const MAX_BYTES = 10 * 1024 * 1024; // 10 MB (phone photos of book lists run large)
 
 export async function POST(req: Request) {
   const session = await auth();
@@ -39,12 +43,12 @@ export async function POST(req: Request) {
   }
 
   if (file.size > MAX_BYTES) {
-    return NextResponse.json({ error: "File too large. Max 5 MB." }, { status: 413 });
+    return NextResponse.json({ error: "File too large. Max 10 MB." }, { status: 413 });
   }
 
   const ext = ALLOWED[file.type as keyof typeof ALLOWED];
   if (!ext) {
-    return NextResponse.json({ error: "Unsupported file type. Use PDF or Word." }, { status: 415 });
+    return NextResponse.json({ error: "Unsupported file type. Use PDF, Word, or an image." }, { status: 415 });
   }
 
   const opaqueName = `${crypto.randomUUID()}.${ext}`;

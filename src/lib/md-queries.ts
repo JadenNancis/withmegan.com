@@ -75,6 +75,7 @@ export interface SearchRegistrantResult {
   phoneNumber: string;
   email: string | null;
   productCategory: string | null;
+  productCategoryNote: string | null;
   createdAt: Date;
   householdId: string | null;
   householdReference: string | null;
@@ -96,6 +97,7 @@ export async function searchRegistrants(query: string, limit = 50): Promise<Sear
       phoneNumber: mdRegistrants.phoneNumber,
       email: mdRegistrants.email,
       productCategory: mdRegistrants.productCategory,
+      productCategoryNote: mdRegistrants.productCategoryNote,
       createdAt: mdRegistrants.createdAt,
       householdId: mdRegistrants.householdId,
       householdReference: mdHouseholds.reference,

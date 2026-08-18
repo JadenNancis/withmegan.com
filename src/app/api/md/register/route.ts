@@ -78,6 +78,7 @@ export async function POST(req: Request): Promise<Response> {
       phoneNumber: normalizedPhone,
       email: data.email?.trim() || null,
       productCategory: data.productCategory?.trim() || null,
+      productCategoryNote: data.productCategoryNote?.trim() || null,
       consent: data.consent,
       thaId,
       householdId,

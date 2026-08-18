@@ -47,7 +47,7 @@ Always use the **pooled** Neon endpoint (the `-pooler` hostname) for app traffic
 
 | Table | Purpose |
 |-------|---------|
-| `md_registrants` | Resident registrations. `fullName`, `nationalId`, `dateOfBirth`, `address`, `phoneNumber`, `email`, `productCategory`, `consent`, `thaId` (unique), `householdId` → `md_households.id` (set null). |
+| `md_registrants` | Resident registrations. `fullName`, `nationalId`, `dateOfBirth`, `address`, `phoneNumber`, `email`, `productCategory`, `productCategoryNote` (free text required when category is "other"), `consent`, `thaId` (unique), `householdId` → `md_households.id` (set null). |
 | `md_households` | Household grouping for one-hamper-per-household enforcement. `reference` (unique, e.g. `HH-0042`), `hamperStatus` (enum: `unassigned` \| `assigned` \| `redeemed`), `redeemedAt`, `redeemedBy` → `users.id` (set null). |
 
 ## Enums

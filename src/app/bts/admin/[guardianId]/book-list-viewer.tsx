@@ -13,6 +13,10 @@ function isPdf(url: string): boolean {
   return url.toLowerCase().endsWith(".pdf");
 }
 
+function isImage(url: string): boolean {
+  return /\.(jpe?g|png|webp|gif)$/i.test(url.toLowerCase());
+}
+
 function fileExt(url: string): string {
   const clean = url.split("?")[0].split("#")[0];
   const parts = clean.split(".");
@@ -45,6 +49,7 @@ export function BookListViewer({ bookListUrl, studentName }: BookListViewerProps
 
   const ext = fileExt(bookListUrl);
   const pdf = isPdf(bookListUrl);
+  const image = isImage(bookListUrl);
 
   return (
     <div ref={containerRef} className="relative">
@@ -119,7 +124,7 @@ export function BookListViewer({ bookListUrl, studentName }: BookListViewerProps
                 </a>
               </div>
 
-              {/* Content area — PDF iframe or Word download card */}
+              {/* Content area — PDF iframe, image preview, or Word download card */}
               {pdf ? (
                 <div className="relative">
                   {!iframeLoaded && (
@@ -143,6 +148,8 @@ export function BookListViewer({ bookListUrl, studentName }: BookListViewerProps
                     )}
                   />
                 </div>
+              ) : image ? (
+                <ImagePreview url={bookListUrl} ext={ext} studentName={studentName} />
               ) : (
                 <WordDocCard url={bookListUrl} ext={ext} />
               )}
@@ -150,6 +157,24 @@ export function BookListViewer({ bookListUrl, studentName }: BookListViewerProps
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+function ImagePreview({ url, ext, studentName }: { url: string; ext: string; studentName: string }) {
+  return (
+    <div>
+      <motion.img
+        initial={{ opacity: 0, scale: 0.98 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+        src={url}
+        alt={`Book list photo for ${studentName}`}
+        className="mx-auto max-h-[560px] w-auto max-w-full rounded-md border border-gray-200 object-contain"
+      />
+      <p className="mt-2 text-center text-xs text-gray-500">
+        Photo of the book list ({ext.toUpperCase()}) — tap &ldquo;Open in new tab&rdquo; to zoom.
+      </p>
     </div>
   );
 }
