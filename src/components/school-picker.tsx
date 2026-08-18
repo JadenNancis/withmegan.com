@@ -30,23 +30,33 @@ interface SchoolPickerProps {
   className?: string;
 }
 
+const LIST_MAX = 280;
+const LIST_MIN = 160;
+
 /**
  * Searchable school picker for the registration flow.
  *
  * A combobox that filters the full school list as you type, with quick
  * Primary/Secondary filter pills, keyboard navigation, and a fallback
- * "Other" option. Replaces the long native dropdown so secondary
- * schools no longer require scrolling past every primary school.
+ * "Other" option. The panel flips upward when it wouldn't fit below the
+ * trigger, and all scrolling stays inside the panel — the page never moves
+ * while hovering or typing.
  */
 export function SchoolPicker({ value, onChange, id, className }: SchoolPickerProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<CategoryFilter>("all");
   const [highlight, setHighlight] = useState(0);
+  const [placement, setPlacement] = useState({ up: false, maxHeight: LIST_MAX });
 
   const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  // Only auto-scroll the list for keyboard navigation. Mouse hover never
+  // needs it — the row under the cursor is visible by definition — and
+  // scrolling on hover made the list shift as the cursor crossed the
+  // sticky category headers.
+  const highlightViaKeyboard = useRef(false);
 
   const groups = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -68,10 +78,34 @@ export function SchoolPicker({ value, onChange, id, className }: SchoolPickerPro
     return flat;
   }, [groups]);
 
+  const measurePlacement = useCallback(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    const rect = root.getBoundingClientRect();
+    const below = window.innerHeight - rect.bottom;
+    const above = rect.top;
+    const up = below < LIST_MIN + 24 && above > below;
+    setPlacement({
+      up,
+      maxHeight: Math.max(LIST_MIN, Math.min(LIST_MAX, (up ? above : below) - 16)),
+    });
+  }, []);
+
   // Keep the keyboard highlight inside the option list.
   useEffect(() => {
     setHighlight(0);
   }, [query, filter, open]);
+
+  useEffect(() => {
+    if (!open) return;
+    measurePlacement();
+    window.addEventListener("resize", measurePlacement);
+    window.addEventListener("scroll", measurePlacement, true);
+    return () => {
+      window.removeEventListener("resize", measurePlacement);
+      window.removeEventListener("scroll", measurePlacement, true);
+    };
+  }, [open, measurePlacement]);
 
   useEffect(() => {
     if (!open) return;
@@ -92,6 +126,35 @@ export function SchoolPicker({ value, onChange, id, className }: SchoolPickerPro
     }
   }, [open]);
 
+  // Reset the panel scroll when the result set changes.
+  useEffect(() => {
+    if (listRef.current) listRef.current.scrollTop = 0;
+  }, [query, filter]);
+
+  function openPanel() {
+    measurePlacement();
+    setOpen(true);
+  }
+
+  // Keep the highlighted row visible by scrolling only the internal list —
+  // never the page — and only when navigating with the keyboard. (Old code
+  // used scrollIntoView, which scrolls every ancestor and yanked the page
+  // around; scrolling on hover also made the list shift when the cursor
+  // crossed the sticky category headers.)
+  useEffect(() => {
+    if (!open || !highlightViaKeyboard.current) return;
+    const list = listRef.current;
+    const el = list?.querySelector<HTMLElement>(`[data-index="${highlight}"]`);
+    if (!list || !el) return;
+    const listRect = list.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    if (elRect.top < listRect.top) {
+      list.scrollTop -= listRect.top - elRect.top;
+    } else if (elRect.bottom > listRect.bottom) {
+      list.scrollTop += elRect.bottom - listRect.bottom;
+    }
+  }, [highlight, open]);
+
   const select = useCallback(
     (next: string) => {
       onChange(next);
@@ -106,7 +169,7 @@ export function SchoolPicker({ value, onChange, id, className }: SchoolPickerPro
     if (!open) {
       if (e.key === "Enter" || e.key === " " || e.key === "ArrowDown") {
         e.preventDefault();
-        setOpen(true);
+        openPanel();
       }
       return;
     }
@@ -117,10 +180,12 @@ export function SchoolPicker({ value, onChange, id, className }: SchoolPickerPro
         break;
       case "ArrowDown":
         e.preventDefault();
+        highlightViaKeyboard.current = true;
         setHighlight((h) => Math.min(h + 1, options.length - 1));
         break;
       case "ArrowUp":
         e.preventDefault();
+        highlightViaKeyboard.current = true;
         setHighlight((h) => Math.max(h - 1, 0));
         break;
       case "Enter": {
@@ -133,13 +198,6 @@ export function SchoolPicker({ value, onChange, id, className }: SchoolPickerPro
     }
   }
 
-  // Keep the highlighted row visible while navigating with the keyboard.
-  useEffect(() => {
-    if (!open) return;
-    const el = listRef.current?.querySelector<HTMLElement>(`[data-index="${highlight}"]`);
-    el?.scrollIntoView({ block: "nearest" });
-  }, [highlight, open]);
-
   const buttonLabel =
     value === OTHER_SCHOOL_VALUE
       ? "Other (enter manually)"
@@ -150,7 +208,7 @@ export function SchoolPicker({ value, onChange, id, className }: SchoolPickerPro
       <button
         type="button"
         id={id}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => (open ? setOpen(false) : openPanel())}
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label="School"
@@ -190,11 +248,16 @@ export function SchoolPicker({ value, onChange, id, className }: SchoolPickerPro
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -6, scale: 0.99 }}
+            initial={{ opacity: 0, y: placement.up ? 6 : -6, scale: 0.99 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -6, scale: 0.99 }}
+            exit={{ opacity: 0, y: placement.up ? 6 : -6, scale: 0.99 }}
             transition={{ duration: 0.16, ease: "easeOut" }}
-            className="absolute left-0 right-0 z-30 mt-2 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl"
+            className={cn(
+              "absolute left-0 right-0 z-30 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xl",
+              placement.up
+                ? "bottom-full mb-2 origin-bottom"
+                : "top-full mt-2 origin-top",
+            )}
           >
             {/* Search */}
             <div className="border-b border-gray-100 p-2">
@@ -237,7 +300,12 @@ export function SchoolPicker({ value, onChange, id, className }: SchoolPickerPro
             </div>
 
             {/* Results */}
-            <div ref={listRef} role="listbox" className="max-h-64 overflow-y-auto py-1">
+            <div
+              ref={listRef}
+              role="listbox"
+              className="overflow-y-auto overscroll-contain py-1"
+              style={{ maxHeight: placement.maxHeight }}
+            >
               {groups.length === 0 ? (
                 <p className="px-4 py-6 text-center text-sm text-gray-400">
                   No schools match &ldquo;{query}&rdquo;.
@@ -257,7 +325,10 @@ export function SchoolPicker({ value, onChange, id, className }: SchoolPickerPro
                           key={s.name}
                           type="button"
                           data-index={idx}
-                          onMouseEnter={() => setHighlight(idx)}
+                          onMouseEnter={() => {
+                            highlightViaKeyboard.current = false;
+                            setHighlight(idx);
+                          }}
                           onClick={() => select(s.name)}
                           role="option"
                           aria-selected={selected}
@@ -285,7 +356,10 @@ export function SchoolPicker({ value, onChange, id, className }: SchoolPickerPro
             <button
               type="button"
               data-index={options.length - 1}
-              onMouseEnter={() => setHighlight(options.length - 1)}
+              onMouseEnter={() => {
+                highlightViaKeyboard.current = false;
+                setHighlight(options.length - 1);
+              }}
               onClick={() => select(OTHER_SCHOOL_VALUE)}
               role="option"
               aria-selected={value === OTHER_SCHOOL_VALUE}
