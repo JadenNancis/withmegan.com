@@ -91,6 +91,17 @@ export async function getGuardianWithDependents(guardianId: string): Promise<Gua
   };
 }
 
+export async function getGuardianByApplicationId(aid: string): Promise<GuardianWithDependents | null> {
+  const [guardian] = await db
+    .select()
+    .from(btsGuardians)
+    .where(eq(btsGuardians.thaId, aid))
+    .limit(1);
+
+  if (!guardian) return null;
+  return getGuardianWithDependents(guardian.id);
+}
+
 export async function getAllGuardians(search?: string): Promise<GuardianWithDependents[]> {
   const guardians = search
     ? await db

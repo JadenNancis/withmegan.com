@@ -3,10 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Field, TextInput, Select, SubmitButton } from "@/components/form";
+import { SchoolPicker } from "@/components/school-picker";
 import { cn } from "@/lib/cn";
 import { formatTtPhone, isValidTtPhone } from "@/lib/tt-phone";
 import { TOBAGO_LOCATIONS, OTHER_LOCATION_VALUE } from "@/lib/tobago-locations";
-import { BTS_SCHOOLS, OTHER_SCHOOL_VALUE, schoolsByCategory } from "@/lib/bts-schools";
+import { OTHER_SCHOOL_VALUE } from "@/lib/bts-schools";
 
 const GRADE_OPTIONS = [
   "Pre-School / Kindergarten",
@@ -184,8 +185,6 @@ export function WalkInForm() {
     );
   }
 
-  const categories = schoolsByCategory();
-
   return (
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       {/* Guardian section */}
@@ -271,22 +270,10 @@ export function WalkInForm() {
           </Field>
           <div className="sm:col-span-2">
             <Field label="School" htmlFor="schoolName" required error={errors.schoolName}>
-              <Select
-                id="schoolName"
+              <SchoolPicker
                 value={schoolName}
-                onChange={(e) => setSchoolName(e.target.value)}
-                className="text-lg"
-              >
-                <option value="">Select school…</option>
-                {categories.map((cat) => (
-                  <optgroup key={cat.category} label={cat.category}>
-                    {cat.schools.map((s) => (
-                      <option key={s.name} value={s.name}>{s.name}</option>
-                    ))}
-                  </optgroup>
-                ))}
-                <option value={OTHER_SCHOOL_VALUE}>Other (enter manually)</option>
-              </Select>
+                onChange={(v) => setSchoolName(v)}
+              />
             </Field>
           </div>
           {schoolName === OTHER_SCHOOL_VALUE && (

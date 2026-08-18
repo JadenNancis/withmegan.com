@@ -5,8 +5,6 @@ import { db } from "@/db/client";
 import { btsGuardians, btsDependents } from "@/db/schema";
 import { generateApplicationId } from "@/lib/tha-id";
 import { logAudit } from "@/lib/audit";
-import { sendEmail, btsRegistrationConfirmationHtml } from "@/lib/email";
-import { SITES } from "@/sites/site-registry";
 import { normalizeTtPhone, isValidTtPhone } from "@/lib/tt-phone";
 import { notifyRegistrationConfirmed } from "@/lib/notify";
 import { findDuplicates } from "@/lib/dedup";

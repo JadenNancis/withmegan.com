@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/cn";
+import { extractApplicationId } from "@/lib/application-id";
 
 /**
  * Native getUserMedia QR scanner for the BTS admin scan-to-verify page.
@@ -17,8 +18,8 @@ import { cn } from "@/lib/cn";
  *   2. Manual Application ID entry — an <input type="text"> for typing
  *      or pasting the ID.
  *
- * On a successful read, the component redirects to the site's verify
- * page with ?aid=<id>.
+ * On a successful read, the component redirects to the admin Collection
+ * counter view with ?aid=<id>.
  */
 export function BtsQrScanner() {
   const router = useRouter();
@@ -38,7 +39,7 @@ export function BtsQrScanner() {
     setDetectedHint(aid);
     // Brief delay so the operator sees confirmation before redirect.
     setTimeout(() => {
-      router.push(`/bts/verify?aid=${encodeURIComponent(aid)}`);
+      router.push(`/bts/admin/collection?aid=${encodeURIComponent(aid)}`);
     }, 350);
   }
 
@@ -266,35 +267,6 @@ export function BtsQrScanner() {
       </div>
     </div>
   );
-}
-
-/**
- * Extract an Application ID from a scanned value.
- * QR codes encode a full verify URL (e.g.
- *   https://backtoschoolwithmegan.tha.tt/bts/verify?aid=BTS-260806-ABC123
- * ) but the scanner may also receive a raw ID. Handle both.
- */
-function extractApplicationId(raw: string): string | null {
-  const trimmed = raw.trim();
-  if (!trimmed) return null;
-
-  // URL form — pull the `aid` query param.
-  if (/^https?:\/\//i.test(trimmed) || trimmed.includes("?aid=")) {
-    try {
-      const url = new URL(trimmed);
-      const aid = url.searchParams.get("aid");
-      if (aid) return aid;
-    } catch {
-      // not a valid URL — fall through
-    }
-  }
-
-  // Raw Application ID form (e.g. BTS-260806-ABC123 or MD-260806-ABC123).
-  if (/^(BTS|MD)-\d{6}-[A-Z0-9]{6}$/i.test(trimmed)) {
-    return trimmed;
-  }
-
-  return null;
 }
 
 function CameraIcon({ className }: { className?: string }) {

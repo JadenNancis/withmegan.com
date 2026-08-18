@@ -153,8 +153,7 @@ export const btsInventory = pgTable("bts_inventory", {
 
 // ── MD: Market Day ─────────────────────────────────────────────
 
-export const mdRegistrants = pgTable("md_registrants", {
-  id: uuid("id").primaryKey().defaultRandom(),
+export const mdRegistrants = pgTable("md_registrants", {  id: uuid("id").primaryKey().defaultRandom(),
   fullName: text("full_name").notNull(),
   nationalId: text("national_id"),
   dateOfBirth: text("date_of_birth"),
@@ -187,10 +186,46 @@ export const mdHouseholds = pgTable("md_households", {
   updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
 });
 
+// ── Volunteers (shared, site-tagged) ───────────────────────────
+
+export const volunteerStatus = pgEnum("volunteer_status", [
+  "pending",
+  "approved",
+  "declined",
+]);
+
+export const volunteerShifts = pgTable("volunteer_shifts", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  /** "bts" | "md" — which event the shift belongs to. */
+  site: text("site").notNull(),
+  /** Human label, e.g. "Morning · 6:00–11:00". */
+  label: text("label").notNull(),
+  /** 24h "HH:MM" start time. */
+  startsAt: text("starts_at").notNull(),
+  /** 24h "HH:MM" end time. */
+  endsAt: text("ends_at").notNull(),
+  /** Max volunteers that can sign up for this shift. */
+  capacity: integer("capacity").notNull().default(8),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+});
+
+export const volunteers = pgTable("volunteers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  /** "bts" | "md" — which event this volunteer signed up for. */
+  site: text("site").notNull(),
+  fullName: text("full_name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone").notNull(),
+  status: volunteerStatus("status").notNull().default("pending"),
+  /** Preferred shift, chosen at signup or assigned by staff. */
+  shiftId: uuid("shift_id").references(() => volunteerShifts.id, { onDelete: "set null" }),
+  createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
+});
+
 // ── Relations ──────────────────────────────────────────────────
 
-export const guardianRelations = relations(btsGuardians, ({ many }) => ({
-  dependents: many(btsDependents),
+export const guardianRelations = relations(btsGuardians, ({ many }) => ({  dependents: many(btsDependents),
 }));
 
 export const dependentRelations = relations(btsDependents, ({ one, many }) => ({
@@ -214,6 +249,14 @@ export const householdRelations = relations(mdHouseholds, ({ many }) => ({
   registrants: many(mdRegistrants),
 }));
 
+export const volunteerRelations = relations(volunteers, ({ one }) => ({
+  shift: one(volunteerShifts, { fields: [volunteers.shiftId], references: [volunteerShifts.id] }),
+}));
+
+export const volunteerShiftRelations = relations(volunteerShifts, ({ many }) => ({
+  volunteers: many(volunteers),
+}));
+
 // ── Survey Responses (shared, site-tagged) ─────────────────────
 
 export const surveyResponses = pgTable("survey_responses", {
@@ -235,4 +278,6 @@ export type BtsResourceAssignment = typeof btsResourceAssignments.$inferSelect;
 export type BtsInventoryItem = typeof btsInventory.$inferSelect;
 export type MdRegistrant = typeof mdRegistrants.$inferSelect;
 export type MdHousehold = typeof mdHouseholds.$inferSelect;
+export type Volunteer = typeof volunteers.$inferSelect;
+export type VolunteerShift = typeof volunteerShifts.$inferSelect;
 export type SurveyResponse = typeof surveyResponses.$inferSelect;

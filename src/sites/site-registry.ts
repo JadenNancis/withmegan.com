@@ -50,6 +50,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     nav: [
       { label: "Home", href: "/bts" },
       { label: "Register", href: "/bts/register" },
+      { label: "Volunteer", href: "/bts/volunteer" },
       { label: "ID", href: "/bts/recover" },
       { label: "Progress", href: "/bts/progress" },
       { label: "Gallery", href: "/bts/gallery" },
@@ -69,6 +70,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     nav: [
       { label: "Home", href: "/md" },
       { label: "Register", href: "/md/register" },
+      { label: "Volunteer", href: "/md/volunteer" },
       { label: "Progress", href: "/md/progress" },
       { label: "Gallery", href: "/md/gallery" },
       { label: "Supporters", href: "/md/supporters" },

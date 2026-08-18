@@ -1,8 +1,9 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Field, TextInput, TextArea, Select } from "@/components/form";
-import { OTHER_SCHOOL_VALUE, schoolsByCategory } from "@/lib/bts-schools";
+import { Field, TextInput, TextArea } from "@/components/form";
+import { SchoolPicker } from "@/components/school-picker";
+import { OTHER_SCHOOL_VALUE } from "@/lib/bts-schools";
 
 export interface DependentForm {
   studentName: string;
@@ -158,22 +159,10 @@ export function DependentsStep({
                 </Field>
 
                 <Field label="School" required>
-                  <Select
+                  <SchoolPicker
                     value={dep.schoolName}
-                    onChange={(e) => update(i, { schoolName: e.target.value })}
-                  >
-                    <option value="">Select a school…</option>
-                    {schoolsByCategory().map((cat) => (
-                      <optgroup key={cat.category} label={cat.category}>
-                        {cat.schools.map((s) => (
-                          <option key={s.name} value={s.name}>
-                            {s.name}
-                          </option>
-                        ))}
-                      </optgroup>
-                    ))}
-                    <option value={OTHER_SCHOOL_VALUE}>Other (enter manually)</option>
-                  </Select>
+                    onChange={(v) => update(i, { schoolName: v })}
+                  />
                 </Field>
 
                 {isOther && (

@@ -57,6 +57,7 @@ export async function notifyRegistrationConfirmed(
         to: email,
         subject: `Registration Confirmation · ${applicationId}`,
         html,
+        site: siteKey,
       }).catch((e) => console.error("[notify] Email failed:", e));
     } catch (e) {
       console.error("[notify] Email template build failed:", e);
