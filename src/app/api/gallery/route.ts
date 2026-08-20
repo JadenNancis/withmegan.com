@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import { readdir, unlink, mkdir, writeFile, readFile } from "fs/promises";
+import { readdir, unlink, mkdir, writeFile } from "fs/promises";
 import path from "path";
 import crypto from "crypto";
 import { auth } from "@/auth";
-import { put, del, list } from "@vercel/blob";
+import { put, del, BlobNotFoundError } from "@vercel/blob";
+import { getGalleryPhotos } from "@/lib/gallery-photos";
 
 const ALLOWED_MIME: Record<string, string> = {
   "image/jpeg": "jpg",
@@ -23,6 +24,15 @@ function siteDir(site: string): string {
   return path.join(UPLOAD_ROOT, "gallery", site);
 }
 
+function isSeedFile(site: string, filename: string): Promise<boolean> {
+  try {
+    const seedDir = path.join(process.cwd(), "public", "images", "gallery", site);
+    return readdir(seedDir).then((files) => files.includes(filename)).catch(() => false);
+  } catch {
+    return Promise.resolve(false);
+  }
+}
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const site = searchParams.get("site");
@@ -31,45 +41,12 @@ export async function GET(req: Request) {
   }
 
   try {
-    const photos: string[] = [];
-
-    // Always include seed images from public/ (committed to repo).
-    try {
-      const seedDir = path.join(process.cwd(), "public", "images", "gallery", site);
-      const seedFiles = await readdir(seedDir);
-      for (const f of seedFiles) {
-        if (/\.(jpe?g|png|webp|gif|svg)$/i.test(f)) {
-          photos.push(`/images/gallery/${site}/${f}`);
-        }
-      }
-    } catch {
-      // No seed directory.
-    }
-
-    if (USE_BLOB) {
-      // Production: also list blobs from Vercel Blob.
-      const { blobs } = await list({ prefix: `gallery/${site}/` });
-      for (const b of blobs) {
-        if (/\.(jpe?g|png|webp|gif)$/i.test(b.url)) {
-          photos.push(b.url);
-        }
-      }
-    } else {
-      // Dev fallback: also read from uploads/gallery/{site}/.
-      try {
-        const uploadDir = path.join(process.cwd(), "uploads", "gallery", site);
-        const uploaded = await readdir(uploadDir);
-        for (const f of uploaded) {
-          if (/\.(jpe?g|png|webp|gif)$/i.test(f)) {
-            photos.push(`/api/gallery-file?site=${site}&name=${encodeURIComponent(f)}`);
-          }
-        }
-      } catch {
-        // No uploads yet.
-      }
-    }
-
-    return NextResponse.json({ photos: photos.sort() });
+    const photos = await getGalleryPhotos(site);
+    // Never cache the list: a deleted photo must be gone on the next read.
+    return NextResponse.json(
+      { photos },
+      { headers: { "Cache-Control": "no-store, max-age=0" } },
+    );
   } catch (err) {
     console.error("[gallery] list failed:", err);
     return NextResponse.json({ error: "Could not list photos." }, { status: 500 });
@@ -152,6 +129,14 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: "Invalid filename." }, { status: 400 });
   }
 
+  // Seed images are bundled with the site and cannot be removed at runtime.
+  if (await isSeedFile(site, filename)) {
+    return NextResponse.json(
+      { error: "This photo is bundled with the site and cannot be deleted." },
+      { status: 400 },
+    );
+  }
+
   try {
     if (USE_BLOB) {
       const blobPath = `gallery/${site}/${filename}`;
@@ -162,8 +147,10 @@ export async function DELETE(req: Request) {
     await unlink(path.join(siteDir(site), filename));
     return NextResponse.json({ success: true });
   } catch (err: any) {
-    if (err?.code === "ENOENT") {
-      return NextResponse.json({ error: "File not found." }, { status: 404 });
+    // Idempotent: deleting something already gone is a success — a stale
+    // URL in a cached list must not block the client from clearing it.
+    if (err?.code === "ENOENT" || err instanceof BlobNotFoundError) {
+      return NextResponse.json({ success: true });
     }
     console.error("[gallery] delete failed:", err);
     return NextResponse.json({ error: "Delete failed." }, { status: 500 });

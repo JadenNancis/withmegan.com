@@ -15,7 +15,7 @@ import { count } from "drizzle-orm";
 import { auth } from "@/auth";
 import { SnapScrollRow } from "@/components/snap-scroll";
 import { RotatingGallery } from "@/components/rotating-gallery";
-import { getGalleryPhotos } from "@/lib/gallery-photos";
+import { getGalleryPhotoUrls } from "@/lib/gallery-photos";
 
 const site = SITES.bts;
 const EVENT_DATE = new Date(site.eventDate + "T12:00:00");
@@ -62,7 +62,7 @@ const FALLBACK_PHOTOS = [
 
 export default async function BtsLanding() {
   const registered = await getRegistrationCount();
-  const galleryPhotos = await getGalleryPhotos("bts");
+  const galleryPhotos = await getGalleryPhotoUrls("bts");
   const showcasePhotos = galleryPhotos.length > 0 ? galleryPhotos : FALLBACK_PHOTOS;
   const pct = Math.min(100, Math.round((registered / site.goalFamilies) * 100));
   const session = await auth();

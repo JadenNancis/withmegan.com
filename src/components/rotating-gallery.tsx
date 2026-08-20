@@ -115,8 +115,8 @@ export function RotatingGallery({ initialImages, site, label, galleryHref }: Pro
       try {
         const res = await fetch(`/api/gallery?site=${site}`, { cache: "no-store" });
         if (!res.ok) return;
-        const data: { photos?: string[] } = await res.json();
-        const fresh = Array.isArray(data.photos) ? data.photos : [];
+        const data: { photos?: { url: string }[] } = await res.json();
+        const fresh = Array.isArray(data.photos) ? data.photos.map((p) => p.url) : [];
         if (!fresh.length || cancelled) return;
 
         setImages((prev) => {

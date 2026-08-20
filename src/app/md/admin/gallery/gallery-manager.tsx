@@ -4,9 +4,10 @@ import { useState, useRef, useCallback } from "react";
 import { BasketIcon } from "@/components/md-illustrations";
 import { cn } from "@/lib/cn";
 import { uploadGalleryPhoto } from "@/lib/gallery-upload";
+import type { GalleryPhoto } from "@/lib/gallery-photos";
 
-export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] }) {
-  const [photos, setPhotos] = useState<string[]>(initialPhotos);
+export function MdGalleryManager({ initialPhotos }: { initialPhotos: GalleryPhoto[] }) {
+  const [photos, setPhotos] = useState<GalleryPhoto[]>(initialPhotos);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dragOver, setDragOver] = useState(false);
@@ -19,7 +20,11 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] })
       for (const file of Array.from(files)) {
         const url = await uploadGalleryPhoto(file, "md");
         if (url) {
-          setPhotos((prev) => [...prev, url].sort());
+          setPhotos((prev) =>
+            [...prev, { url, deletable: true, source: "upload" as const }].sort((a, b) =>
+              a.url.localeCompare(b.url),
+            ),
+          );
         }
       }
     } catch (err: any) {
@@ -43,7 +48,7 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] })
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error ?? "Delete failed.");
       }
-      setPhotos((prev) => prev.filter((p) => p !== url));
+      setPhotos((prev) => prev.filter((p) => p.url !== url));
     } catch (err: any) {
       setError(err?.message ?? "Delete failed.");
     }
@@ -123,29 +128,42 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: string[] })
           <p className="text-sm font-medium text-amber-100/85">No photos uploaded yet.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {photos.map((url) => (
-            <div
-              key={url}
-              className="group relative overflow-hidden rounded-2xl shadow-md"
-            >
-              <img
-                src={url}
-                alt="Gallery photo"
-                className="aspect-square w-full object-cover"
-                loading="lazy"
-              />
-              <button
-                onClick={() => handleDelete(url)}
-                className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-red-600/90 text-white opacity-0 shadow-sm transition-opacity group-hover:opacity-100"
-                aria-label="Delete photo"
+        <div className="space-y-3">
+          <p className="text-xs text-amber-100/70 [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]">
+            Photos marked &ldquo;Bundled&rdquo; ship with the site and can&rsquo;t be removed here. Uploaded photos are fully removable.
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {photos.map((photo) => (
+              <div
+                key={photo.url}
+                className="group relative overflow-hidden rounded-2xl shadow-md"
               >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3" />
-                </svg>
-              </button>
-            </div>
-          ))}
+                <img
+                  src={photo.url}
+                  alt="Gallery photo"
+                  className="aspect-square w-full object-cover"
+                  loading="lazy"
+                />
+                {!photo.deletable && (
+                  <span className="absolute left-2 top-2 rounded-full bg-amber-950/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white">
+                    Bundled
+                  </span>
+                )}
+                {photo.deletable && (
+                  <button
+                    onClick={() => handleDelete(photo.url)}
+                    className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-red-600/90 text-white shadow-sm transition-opacity"
+                    aria-label="Delete photo"
+                    title="Delete photo"
+                  >
+                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>

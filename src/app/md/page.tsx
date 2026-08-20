@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { SITES } from "@/sites/site-registry";
 import { auth } from "@/auth";
-import { getGalleryPhotos } from "@/lib/gallery-photos";
+import { getGalleryPhotoUrls } from "@/lib/gallery-photos";
 import { RotatingGallery } from "@/components/rotating-gallery";
 import {
   TobagoHamperHero,
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
 
 export default async function MdLanding() {
   const site = SITES.md;
-  const galleryPhotos = await getGalleryPhotos("md");
+  const galleryPhotos = await getGalleryPhotoUrls("md");
   const showcasePhotos = galleryPhotos.length > 0 ? galleryPhotos : FALLBACK_PHOTOS;
   const session = await auth();
   const role = (session?.user as { role?: string } | undefined)?.role;

@@ -1,11 +1,11 @@
 import { SchoolBookIcon } from "@/components/bts-illustrations";
-import { getGalleryPhotos } from "@/lib/gallery-photos";
+import { getGalleryPhotoUrls } from "@/lib/gallery-photos";
 import { StaffOnlyBanner } from "@/components/staff-only-banner";
 
 export const dynamic = "force-dynamic";
 
 export default async function BtsGalleryPage() {
-  const photos = await getGalleryPhotos("bts");
+  const photos = await getGalleryPhotoUrls("bts");
 
   return (
     <div className="space-y-6">

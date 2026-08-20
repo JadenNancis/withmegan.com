@@ -1,11 +1,11 @@
 import { BasketIcon } from "@/components/md-illustrations";
-import { getGalleryPhotos } from "@/lib/gallery-photos";
+import { getGalleryPhotoUrls } from "@/lib/gallery-photos";
 import { StaffOnlyBanner } from "@/components/staff-only-banner";
 
 export const dynamic = "force-dynamic";
 
 export default async function MdGalleryPage() {
-  const photos = await getGalleryPhotos("md");
+  const photos = await getGalleryPhotoUrls("md");
 
   return (
     <div className="space-y-6">
