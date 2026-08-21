@@ -5,7 +5,6 @@ import {
   btsDependents,
   btsResourceAssignments,
   mdRegistrants,
-  mdHouseholds,
 } from "@/db/schema";
 import { eq, inArray } from "drizzle-orm";
 import type { SiteKey } from "@/sites/site-registry";
@@ -43,9 +42,8 @@ interface MdRegistrantDto {
   community: string;
   phone: string;
   email: string | null;
-  householdReference: string | null;
-  hamperStatus: "unassigned" | "assigned" | "redeemed" | null;
   collected: boolean;
+  redeemedAt: string | null;
 }
 
 function isValidSite(s: string | null): s is SiteKey {
@@ -133,12 +131,9 @@ async function lookupMd(aid: string): Promise<Response> {
       address: mdRegistrants.address,
       phoneNumber: mdRegistrants.phoneNumber,
       email: mdRegistrants.email,
-      householdId: mdRegistrants.householdId,
-      householdReference: mdHouseholds.reference,
-      hamperStatus: mdHouseholds.hamperStatus,
+      redeemedAt: mdRegistrants.redeemedAt,
     })
     .from(mdRegistrants)
-    .leftJoin(mdHouseholds, eq(mdRegistrants.householdId, mdHouseholds.id))
     .where(eq(mdRegistrants.thaId, aid))
     .limit(1);
 
@@ -152,9 +147,8 @@ async function lookupMd(aid: string): Promise<Response> {
     community: row.address,
     phone: row.phoneNumber,
     email: row.email,
-    householdReference: row.householdReference,
-    hamperStatus: row.hamperStatus,
-    collected: row.hamperStatus === "redeemed",
+    collected: row.redeemedAt !== null,
+    redeemedAt: row.redeemedAt ? row.redeemedAt.toISOString() : null,
   };
 
   return NextResponse.json({ found: true, site: "md", registrant });

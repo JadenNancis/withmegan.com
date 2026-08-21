@@ -8,7 +8,6 @@ import {
   btsResourceAssignments,
   btsInventory,
   mdRegistrants,
-  mdHouseholds,
 } from "@/db/schema";
 import { SITES, type SiteKey } from "@/sites/site-registry";
 import { count, eq } from "drizzle-orm";
@@ -213,18 +212,20 @@ async function buildBtsReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteK
 
 async function buildMdReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteKey]) {
   const registrants = await db.select().from(mdRegistrants);
-  const households = await db.select().from(mdHouseholds);
-  const [assigned] = await db.select({ n: count() }).from(mdHouseholds).where(eq(mdHouseholds.hamperStatus, "assigned"));
-  const [unassigned] = await db.select({ n: count() }).from(mdHouseholds).where(eq(mdHouseholds.hamperStatus, "unassigned"));
-  const [redeemed] = await db.select({ n: count() }).from(mdHouseholds).where(eq(mdHouseholds.hamperStatus, "redeemed"));
+
+  const redeemedN = registrants.filter((r) => r.redeemedAt !== null).length;
+  const pendingN = registrants.length - redeemedN;
+  const redemptionRate =
+    registrants.length > 0 ? Math.round((redeemedN / registrants.length) * 100) : 0;
 
   header(doc, cfg.name, cfg.eventDate);
 
   // Summary stats
   sectionTitle(doc, "Summary");
   statLine(doc, "Total registrations", registrants.length);
-  statLine(doc, "Total households", households.length);
-  statLine(doc, "Total served (redeemed)", redeemed?.n ?? 0);
+  statLine(doc, "Hampers collected", redeemedN);
+  statLine(doc, "Pending collection", pendingN);
+  statLine(doc, "Redemption rate", `${redemptionRate}%`);
 
   // By community (registrant.address)
   sectionTitle(doc, "Registrants by Community");
@@ -256,24 +257,15 @@ async function buildMdReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteKe
     }
   }
 
-  // Households
-  sectionTitle(doc, "Households");
-  statLine(doc, "Assigned", assigned?.n ?? 0);
-  statLine(doc, "Unassigned", unassigned?.n ?? 0);
-  statLine(doc, "Redeemed", redeemed?.n ?? 0);
-  const totalHh = households.length;
-  const redemptionRate = totalHh > 0 ? Math.round(((redeemed?.n ?? 0) / totalHh) * 100) : 0;
-  statLine(doc, "Redemption rate", `${redemptionRate}%`);
-
-  // Hamper status breakdown
-  sectionTitle(doc, "Hamper Status Breakdown");
+  // Collection status breakdown
+  sectionTitle(doc, "Collection Status Breakdown");
   const statusCounts = new Map<string, number>();
-  for (const h of households) {
-    const s = h.hamperStatus ?? "unassigned";
+  for (const r of registrants) {
+    const s = r.redeemedAt ? "collected" : "pending";
     statusCounts.set(s, (statusCounts.get(s) ?? 0) + 1);
   }
   if (statusCounts.size === 0) {
-    doc.fontSize(11).font("Helvetica").fillColor("#555").text("No households recorded.");
+    doc.fontSize(11).font("Helvetica").fillColor("#555").text("No registrants recorded.");
   } else {
     for (const [status, n] of [...statusCounts.entries()].sort((a, b) => b[1] - a[1])) {
       kvRow(doc, status, n);

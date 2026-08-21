@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
-import { mdRegistrants, mdHouseholds } from "@/db/schema";
+import { mdRegistrants } from "@/db/schema";
 import { eq, or } from "drizzle-orm";
 import { generateApplicationId } from "@/lib/tha-id";
 import { logAudit } from "@/lib/audit";
@@ -52,20 +52,6 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  let householdId: string | null = null;
-  if (data.householdReference && data.householdReference.trim()) {
-    const ref = data.householdReference.trim();
-    const [household] = await db
-      .select()
-      .from(mdHouseholds)
-      .where(eq(mdHouseholds.reference, ref))
-      .limit(1);
-
-    if (household) {
-      householdId = household.id;
-    }
-  }
-
   const thaId = generateApplicationId("md");
 
   const [registrant] = await db
@@ -81,7 +67,6 @@ export async function POST(req: Request): Promise<Response> {
       productCategoryNote: data.productCategoryNote?.trim() || null,
       consent: data.consent,
       thaId,
-      householdId,
     })
     .returning({ id: mdRegistrants.id, thaId: mdRegistrants.thaId });
 
@@ -94,7 +79,7 @@ export async function POST(req: Request): Promise<Response> {
     action: "registration.create",
     site: "md",
     target: `registrant:${registrant.id}`,
-    details: { thaId: registrant.thaId, householdId },
+    details: { thaId: registrant.thaId },
   });
 
   void notifyRegistrationConfirmed({

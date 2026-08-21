@@ -11,9 +11,7 @@ interface SearchResult {
   dateOfBirth: string | null;
   address: string;
   phoneNumber: string;
-  householdId: string | null;
-  householdReference: string | null;
-  hamperStatus: "unassigned" | "assigned" | "redeemed" | null;
+  status: "registered" | "redeemed";
   redeemedAt: string | null;
   redeemedBy: string | null;
 }
@@ -23,8 +21,13 @@ interface RedeemResponse {
   error?: string;
   redeemedAt?: string | null;
   redeemedBy?: string | null;
-  reference?: string | null;
-  household?: { id: string; reference: string; hamperStatus: string; redeemedAt: string | null; redeemedBy: string | null };
+  registrant?: {
+    id: string;
+    thaId: string | null;
+    fullName: string;
+    redeemedAt: string | null;
+    redeemedBy: string | null;
+  };
 }
 
 type Feedback =
@@ -94,28 +97,28 @@ export function VerifyCounter() {
     setFeedback({ kind: "idle" });
   }
 
-  function redeem(householdId: string) {
+  function redeem(registrantId: string) {
     setFeedback({ kind: "idle" });
     startTransition(async () => {
       try {
         const res = await fetch("/api/md/verify", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ householdId }),
+          body: JSON.stringify({ registrantId }),
         });
         const json = (await res.json()) as RedeemResponse;
         if (res.ok && json.success) {
-          const when = json.household?.redeemedAt
-            ? new Date(json.household.redeemedAt).toLocaleString("en-TT")
+          const when = json.registrant?.redeemedAt
+            ? new Date(json.registrant.redeemedAt).toLocaleString("en-TT")
             : "";
           setFeedback({
             kind: "success",
             message: "HAMPER AUTHORIZED",
-            detail: `${json.household?.reference ?? ""} · ${when}`,
+            detail: `${json.registrant?.thaId ?? ""} · ${when}`,
           });
           setSelected((prev) =>
             prev
-              ? { ...prev, hamperStatus: "redeemed", redeemedAt: json.household?.redeemedAt ?? null, redeemedBy: json.household?.redeemedBy ?? null }
+              ? { ...prev, status: "redeemed", redeemedAt: json.registrant?.redeemedAt ?? null, redeemedBy: json.registrant?.redeemedBy ?? null }
               : prev,
           );
         } else if (res.status === 409) {
@@ -123,11 +126,11 @@ export function VerifyCounter() {
           setFeedback({
             kind: "blocked",
             message: "ALREADY REDEEMED",
-            detail: `Household ${json.reference ?? ""} redeemed ${when}`,
+            detail: `Redeemed ${when}`,
           });
           setSelected((prev) =>
             prev
-              ? { ...prev, hamperStatus: "redeemed", redeemedAt: json.redeemedAt ?? null, redeemedBy: json.redeemedBy ?? null }
+              ? { ...prev, status: "redeemed", redeemedAt: json.redeemedAt ?? null, redeemedBy: json.redeemedBy ?? null }
               : prev,
           );
         } else if (res.status === 401) {
@@ -141,15 +144,14 @@ export function VerifyCounter() {
     });
   }
 
-  const canRedeem =
-    selected && selected.householdId && selected.hamperStatus !== "redeemed";
+  const canRedeem = selected && selected.status !== "redeemed";
 
   return (
     <div className="space-y-6">
       {/* Search */}
       <div className="md-animate-fade-in-up rounded-xl border-2 border-amber-200 bg-white p-4 sm:p-6 shadow-sm">
         <label htmlFor="verify-search" className="block text-sm font-semibold text-amber-800 mb-2">
-          Search by name, Application ID, phone, or household reference
+          Search by name, Application ID, or phone
         </label>
         <div className="flex flex-col sm:flex-row gap-2">
           <input
@@ -189,21 +191,16 @@ export function VerifyCounter() {
                 <p className="font-medium text-gray-900 truncate">{r.fullName}</p>
                 <p className="text-xs font-mono text-amber-700 mt-0.5">{r.thaId ?? "N/A"}</p>
               </div>
-              <div className="text-right flex-none">
-                <p className="text-sm text-gray-600">{r.householdReference ?? "No household"}</p>
-                <span
-                  className={cn(
-                    "mt-1 inline-block rounded-full px-2 py-0.5 text-xs font-medium",
-                    r.hamperStatus === "redeemed"
-                      ? "bg-red-100 text-red-700"
-                      : r.hamperStatus === "assigned"
-                        ? "bg-amber-100 text-amber-800"
-                        : "bg-gray-100 text-gray-600",
-                  )}
-                >
-                  {r.hamperStatus ?? "unassigned"}
-                </span>
-              </div>
+              <span
+                className={cn(
+                  "shrink-0 inline-block rounded-full px-2 py-0.5 text-xs font-medium",
+                  r.status === "redeemed"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-gray-100 text-gray-600",
+                )}
+              >
+                {r.status}
+              </span>
             </button>
           ))}
         </div>
@@ -226,14 +223,12 @@ export function VerifyCounter() {
             <span
               className={cn(
                 "inline-block self-start rounded-full px-3 py-1 text-sm font-semibold",
-                selected.hamperStatus === "redeemed"
-                  ? "bg-red-100 text-red-700"
-                  : selected.hamperStatus === "assigned"
-                    ? "bg-amber-100 text-amber-800"
-                    : "bg-gray-100 text-gray-600",
+                selected.status === "redeemed"
+                  ? "bg-green-100 text-green-700"
+                  : "bg-gray-100 text-gray-600",
               )}
             >
-              {selected.hamperStatus ?? "unassigned"}
+              {selected.status}
             </span>
           </div>
 
@@ -254,36 +249,22 @@ export function VerifyCounter() {
               <dt className="text-xs uppercase text-gray-400">Address</dt>
               <dd className="text-gray-700">{selected.address}</dd>
             </div>
-            <div>
-              <dt className="text-xs uppercase text-gray-400">Household</dt>
-              <dd className="text-gray-700">{selected.householdReference ?? "Not assigned"}</dd>
-            </div>
           </dl>
 
           {/* Already redeemed warning */}
-          {selected.hamperStatus === "redeemed" && (
-            <div className="mt-4 rounded-lg border-2 border-red-400 bg-red-50 p-4">
+          {selected.status === "redeemed" && (
+            <div className="mt-4 rounded-lg border-2 border-green-400 bg-green-50 p-4">
               <div className="flex items-center gap-2">
-                <svg viewBox="0 0 24 24" className="w-6 h-6 text-red-600 flex-none" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">
-                  <path d="M 6 6 L 18 18 M 18 6 L 6 18" />
+                <svg viewBox="0 0 24 24" className="w-6 h-6 text-green-600 flex-none" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 13l4 4L19 7" />
                 </svg>
-                <p className="text-base font-bold text-red-700">
-                  Household already redeemed
+                <p className="text-base font-bold text-green-700">
+                  Hamper already collected
                 </p>
               </div>
-              <p className="mt-1 text-sm text-red-600">
-                Redeemed {selected.redeemedAt ? new Date(selected.redeemedAt).toLocaleString("en-TT") : "previously"}
+              <p className="mt-1 text-sm text-green-600">
+                Collected {selected.redeemedAt ? new Date(selected.redeemedAt).toLocaleString("en-TT") : "previously"}
                 {selected.redeemedBy ? ` by ${selected.redeemedBy}` : ""}
-              </p>
-            </div>
-          )}
-
-          {/* No household */}
-          {!selected.householdId && (
-            <div className="mt-4 rounded-lg border-2 border-amber-400 bg-amber-50 p-4">
-              <p className="text-base font-bold text-amber-800">No household assigned</p>
-              <p className="mt-1 text-sm text-amber-700">
-                Assign this registrant to a household before authorizing a hamper.
               </p>
             </div>
           )}
@@ -292,7 +273,7 @@ export function VerifyCounter() {
           {canRedeem && (
             <button
               type="button"
-              onClick={() => redeem(selected.householdId!)}
+              onClick={() => redeem(selected.id)}
               disabled={pending}
               className={cn(
                 "mt-6 w-full rounded-xl px-6 py-5 text-xl font-bold text-white shadow-lg transition-all",

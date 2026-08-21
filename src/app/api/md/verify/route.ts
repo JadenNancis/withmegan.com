@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
-import { mdRegistrants, mdHouseholds } from "@/db/schema";
-import { eq, ilike, or, and, sql } from "drizzle-orm";
+import { mdRegistrants } from "@/db/schema";
+import { eq, ilike, or, and, sql, isNull } from "drizzle-orm";
 import { auth } from "@/auth";
 import { logAudit } from "@/lib/audit";
 import { searchSchema, redeemSchema } from "@/lib/md-schemas";
@@ -26,9 +26,7 @@ interface SearchResult {
   dateOfBirth: string | null;
   address: string;
   phoneNumber: string;
-  householdId: string | null;
-  householdReference: string | null;
-  hamperStatus: "unassigned" | "assigned" | "redeemed" | null;
+  status: "registered" | "redeemed";
   redeemedAt: string | null;
   redeemedBy: string | null;
 }
@@ -58,34 +56,31 @@ export async function POST(req: Request): Promise<Response> {
         dateOfBirth: mdRegistrants.dateOfBirth,
         address: mdRegistrants.address,
         phoneNumber: mdRegistrants.phoneNumber,
-        householdId: mdRegistrants.householdId,
-        householdReference: mdHouseholds.reference,
-        hamperStatus: mdHouseholds.hamperStatus,
-        redeemedAt: mdHouseholds.redeemedAt,
-        redeemedBy: mdHouseholds.redeemedBy,
+        redeemedAt: mdRegistrants.redeemedAt,
+        redeemedBy: mdRegistrants.redeemedBy,
       })
       .from(mdRegistrants)
-      .leftJoin(mdHouseholds, eq(mdRegistrants.householdId, mdHouseholds.id))
       .where(
         or(
           ilike(mdRegistrants.fullName, pattern),
           ilike(mdRegistrants.thaId, pattern),
           ilike(mdRegistrants.nationalId, pattern),
-          ilike(mdHouseholds.reference, pattern),
           ilike(mdRegistrants.phoneNumber, pattern),
         ),
       )
+      .orderBy(mdRegistrants.createdAt)
       .limit(20);
 
     const results: SearchResult[] = rows.map((r) => ({
       ...r,
+      status: r.redeemedAt ? "redeemed" : "registered",
       redeemedAt: r.redeemedAt ? r.redeemedAt.toISOString() : null,
     }));
 
     return NextResponse.json({ results });
   }
 
-  if (typeof body === "object" && body !== null && "householdId" in body) {
+  if (typeof body === "object" && body !== null && "registrantId" in body) {
     const user = await getAuthUser();
     if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -93,118 +88,72 @@ export async function POST(req: Request): Promise<Response> {
     if (!parsed.success) {
       return NextResponse.json({ error: "Validation failed", issues: parsed.error.flatten().fieldErrors }, { status: 400 });
     }
-    const { householdId } = parsed.data;
+    const { registrantId } = parsed.data;
 
-    const [current] = await db
-      .select({
-        id: mdHouseholds.id,
-        reference: mdHouseholds.reference,
-        hamperStatus: mdHouseholds.hamperStatus,
-        redeemedAt: mdHouseholds.redeemedAt,
-        redeemedBy: mdHouseholds.redeemedBy,
+    // Atomic conditional update — only succeeds if the registrant has NOT
+    // already been redeemed. Two concurrent staff members can't both flip
+    // the same registrant; Postgres evaluates the WHERE atomically.
+    const now = new Date();
+    const [updated] = await db
+      .update(mdRegistrants)
+      .set({
+        redeemedAt: now,
+        redeemedBy: user.id,
+        updatedAt: now,
       })
-      .from(mdHouseholds)
-      .where(eq(mdHouseholds.id, householdId))
-      .limit(1);
-
-    if (!current) {
-      void logAudit({
-        actorId: user.id,
-        actorEmail: user.email ?? undefined,
-        action: "hamper.redeem.blocked",
-        site: "md",
-        target: `household:${householdId}`,
-        details: { reason: "not_found" },
+      .where(and(eq(mdRegistrants.id, registrantId), isNull(mdRegistrants.redeemedAt)))
+      .returning({
+        id: mdRegistrants.id,
+        thaId: mdRegistrants.thaId,
+        fullName: mdRegistrants.fullName,
+        redeemedAt: mdRegistrants.redeemedAt,
+        redeemedBy: mdRegistrants.redeemedBy,
       });
-      return NextResponse.json({ error: "Household not found" }, { status: 404 });
-    }
 
-    if (current.hamperStatus === "redeemed") {
+    if (!updated) {
+      // Either the record is missing or it was already redeemed — re-read to report.
+      const [current] = await db
+        .select({
+          id: mdRegistrants.id,
+          thaId: mdRegistrants.thaId,
+          fullName: mdRegistrants.fullName,
+          redeemedAt: mdRegistrants.redeemedAt,
+          redeemedBy: mdRegistrants.redeemedBy,
+        })
+        .from(mdRegistrants)
+        .where(eq(mdRegistrants.id, registrantId))
+        .limit(1);
+
+      if (!current) {
+        void logAudit({
+          actorId: user.id,
+          actorEmail: user.email ?? undefined,
+          action: "hamper.redeem.blocked",
+          site: "md",
+          target: `registrant:${registrantId}`,
+          details: { reason: "not_found" },
+        });
+        return NextResponse.json({ error: "Registrant not found" }, { status: 404 });
+      }
+
       void logAudit({
         actorId: user.id,
         actorEmail: user.email ?? undefined,
         action: "hamper.redeem.blocked",
         site: "md",
-        target: `household:${householdId}`,
+        target: `registrant:${registrantId}`,
         details: {
-          reference: current.reference,
           reason: "already_redeemed",
           redeemedAt: current.redeemedAt,
           redeemedBy: current.redeemedBy,
         },
       });
+
       return NextResponse.json(
         {
-          error: "Household already redeemed",
+          error: "Already redeemed",
           redeemedAt: current.redeemedAt,
           redeemedBy: current.redeemedBy,
-          reference: current.reference,
-        },
-        { status: 409 },
-      );
-    }
-
-    // Atomic conditional update — only succeeds if status is NOT 'redeemed'.
-    // This is the race-condition guard: two concurrent staff members can't
-    // both flip the same household. The WHERE clause is evaluated and applied
-    // as a single atomic row-level operation by Postgres.
-    const now = new Date();
-    const [updated] = await db
-      .update(mdHouseholds)
-      .set({
-        hamperStatus: "redeemed",
-        redeemedAt: now,
-        redeemedBy: user.id,
-        updatedAt: now,
-      })
-      .where(
-        and(
-          eq(mdHouseholds.id, householdId),
-          sql`${mdHouseholds.hamperStatus} != 'redeemed'`,
-        ),
-      )
-      .returning({
-        id: mdHouseholds.id,
-        reference: mdHouseholds.reference,
-        hamperStatus: mdHouseholds.hamperStatus,
-        redeemedAt: mdHouseholds.redeemedAt,
-        redeemedBy: mdHouseholds.redeemedBy,
-      });
-
-    if (!updated) {
-      // Someone redeemed between our read and write — re-read to report.
-      const [refetched] = await db
-        .select({
-          id: mdHouseholds.id,
-          reference: mdHouseholds.reference,
-          hamperStatus: mdHouseholds.hamperStatus,
-          redeemedAt: mdHouseholds.redeemedAt,
-          redeemedBy: mdHouseholds.redeemedBy,
-        })
-        .from(mdHouseholds)
-        .where(eq(mdHouseholds.id, householdId))
-        .limit(1);
-
-      void logAudit({
-        actorId: user.id,
-        actorEmail: user.email ?? undefined,
-        action: "hamper.redeem.blocked",
-        site: "md",
-        target: `household:${householdId}`,
-        details: {
-          reference: refetched?.reference,
-          reason: "race_already_redeemed",
-          redeemedAt: refetched?.redeemedAt,
-          redeemedBy: refetched?.redeemedBy,
-        },
-      });
-
-      return NextResponse.json(
-        {
-          error: "Household already redeemed",
-          redeemedAt: refetched?.redeemedAt ?? null,
-          redeemedBy: refetched?.redeemedBy ?? null,
-          reference: refetched?.reference ?? null,
         },
         { status: 409 },
       );
@@ -215,13 +164,13 @@ export async function POST(req: Request): Promise<Response> {
       actorEmail: user.email ?? undefined,
       action: "hamper.redeem.success",
       site: "md",
-      target: `household:${householdId}`,
-      details: { reference: updated.reference, redeemedAt: updated.redeemedAt },
+      target: `registrant:${registrantId}`,
+      details: { thaId: updated.thaId, redeemedAt: updated.redeemedAt },
     });
 
     return NextResponse.json({
       success: true,
-      household: {
+      registrant: {
         ...updated,
         redeemedAt: updated.redeemedAt ? updated.redeemedAt.toISOString() : null,
       },

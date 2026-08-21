@@ -32,7 +32,6 @@ export default function MdRegisterPage() {
   const [nationalId, setNationalId] = useState("");
   const [productCategory, setProductCategory] = useState("");
   const [productCategoryNote, setProductCategoryNote] = useState("");
-  const [householdReference, setHouseholdReference] = useState("");
   const [consent, setConsent] = useState(false);
 
   function validate(): Errors {
@@ -71,7 +70,6 @@ export default function MdRegisterPage() {
         productCategoryNote: productCategory === "other" && productCategoryNote.trim()
           ? productCategoryNote.trim()
           : undefined,
-        householdReference: householdReference || undefined,
         consent,
       };
       const res = await fetch("/api/md/register", {
@@ -152,7 +150,6 @@ export default function MdRegisterPage() {
               setEmail("");
               setProductCategory("");
               setProductCategoryNote("");
-              setHouseholdReference("");
               setConsent(false);
             }}
             className="motion-safe:md-animate-pulse-warm inline-flex justify-center min-h-[52px] items-center rounded-xl bg-amber-500 px-5 text-sm font-semibold text-white hover:bg-amber-600 active:scale-95 transition-all"
@@ -297,15 +294,6 @@ export default function MdRegisterPage() {
             />
           </Field>
         )}
-
-        <Field label="Household reference" htmlFor="householdReference">
-          <TextInput
-            id="householdReference"
-            value={householdReference}
-            onChange={(e) => setHouseholdReference(e.target.value)}
-            placeholder="e.g. HH-0001 (if you already have one)"
-          />
-        </Field>
 
         <div className="mb-6 mt-4">
           <label className="flex items-start gap-3 text-sm text-gray-700">

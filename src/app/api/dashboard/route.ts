@@ -6,7 +6,6 @@ import {
   btsDependents,
   btsResourceAssignments,
   mdRegistrants,
-  mdHouseholds,
 } from "@/db/schema";
 
 export const runtime = "nodejs";
@@ -111,51 +110,34 @@ async function btsStats(): Promise<DashboardPayload> {
 }
 
 /**
- * MD: "collected" = a household whose hamperStatus is "redeemed". Registered
- * is counted per household so the progress bar compares like units. Community
- * is not stored on households, so it is derived from the address of the
- * registrants linked to each household.
+ * MD: "collected" = a registrant whose hamper has been redeemed (redeemedAt
+ * set). Registered is counted per registrant, so each resident is an
+ * individual hamper recipient. Community is read from the registrant's
+ * address.
  */
 async function mdStats(): Promise<DashboardPayload> {
-  const [households, registrants] = await Promise.all([
-    db.select({
-      id: mdHouseholds.id,
-      hamperStatus: mdHouseholds.hamperStatus,
-    }).from(mdHouseholds),
-    db.select({
-      householdId: mdRegistrants.householdId,
+  const registrants = await db
+    .select({
+      id: mdRegistrants.id,
       address: mdRegistrants.address,
-    }).from(mdRegistrants),
-  ]);
-
-  // householdId -> set of communities (via registrant addresses)
-  const householdCommunities = new Map<string, Set<string>>();
-  for (const r of registrants) {
-    if (!r.householdId) continue;
-    const set = householdCommunities.get(r.householdId) ?? new Set<string>();
-    set.add(r.address || "Unknown");
-    householdCommunities.set(r.householdId, set);
-  }
+      redeemedAt: mdRegistrants.redeemedAt,
+    })
+    .from(mdRegistrants);
 
   const byCommunityMap = new Map<string, CommunityStat>();
-  for (const h of households) {
-    const communities = householdCommunities.get(h.id);
-    const communityList = communities ? [...communities] : ["Unknown"];
-    for (const community of communityList) {
-      const entry = byCommunityMap.get(community) ?? { community, registered: 0, collected: 0 };
-      entry.registered += 1;
-      if (h.hamperStatus === "redeemed") entry.collected += 1;
-      byCommunityMap.set(community, entry);
-    }
+  for (const r of registrants) {
+    const community = r.address || "Unknown";
+    const entry = byCommunityMap.get(community) ?? { community, registered: 0, collected: 0 };
+    entry.registered += 1;
+    if (r.redeemedAt) entry.collected += 1;
+    byCommunityMap.set(community, entry);
   }
 
   const byCommunity = [...byCommunityMap.values()].sort((a, b) => b.registered - a.registered);
 
-  const totalCollected = households.filter((h) => h.hamperStatus === "redeemed").length;
-
   return {
-    totalRegistered: households.length,
-    totalCollected,
+    totalRegistered: registrants.length,
+    totalCollected: registrants.filter((r) => r.redeemedAt !== null).length,
     byCommunity,
   };
 }

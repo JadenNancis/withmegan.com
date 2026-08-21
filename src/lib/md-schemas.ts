@@ -10,7 +10,6 @@ export const registrationSchema = z.object({
   email: z.string().email("Invalid email address").max(200).optional().nullable(),
   productCategory: z.string().max(200).optional().nullable(),
   productCategoryNote: z.string().max(500).optional().nullable(),
-  householdReference: z.string().max(50).optional().nullable(),
   consent: z.boolean().refine((v) => v === true, "Consent is required"),
 }).superRefine((data, ctx) => {
   if (data.productCategory === "other" && !(data.productCategoryNote ?? "").trim()) {
@@ -24,35 +23,15 @@ export const registrationSchema = z.object({
 
 export type RegistrationInput = z.infer<typeof registrationSchema>;
 
-export const createHouseholdSchema = z.object({
-  reference: z.string().max(50).optional(),
-  hamperStatus: z.enum(["unassigned", "assigned", "redeemed"]).optional(),
-});
-
-export type CreateHouseholdInput = z.infer<typeof createHouseholdSchema>;
-
-export const assignRegistrantSchema = z.object({
-  registrantId: z.string().uuid(),
-  householdId: z.string().uuid(),
-});
-
-export type AssignRegistrantInput = z.infer<typeof assignRegistrantSchema>;
-
-export const updateHamperStatusSchema = z.object({
-  householdId: z.string().uuid(),
-  hamperStatus: z.enum(["unassigned", "assigned", "redeemed"]),
-});
-
-export type UpdateHamperStatusInput = z.infer<typeof updateHamperStatusSchema>;
-
 export const searchSchema = z.object({
   query: z.string().min(1, "Query is required").max(200),
 });
 
 export type SearchInput = z.infer<typeof searchSchema>;
 
+/** Redeem a registrant's hamper on event day. */
 export const redeemSchema = z.object({
-  householdId: z.string().uuid(),
+  registrantId: z.string().uuid(),
 });
 
 export type RedeemInput = z.infer<typeof redeemSchema>;

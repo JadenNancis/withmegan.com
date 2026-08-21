@@ -138,7 +138,7 @@ export function LiveStats({ site }: Props) {
           />
         </div>
         <p className="mt-3 text-sm text-neutral-200 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
-          {collected} of {total} {site === "bts" ? "guardians" : "households"} {label.toLowerCase()}
+          {collected} of {total} {site === "bts" ? "guardians" : "hampers"} {label.toLowerCase()}
         </p>
       </section>
 

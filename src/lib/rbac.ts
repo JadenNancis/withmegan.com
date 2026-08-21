@@ -2,9 +2,9 @@
  * Role-based access control (RBAC) for the With Megan platform.
  *
  * Two roles: admin and staff.
- *   - admin:  full access. Reports, exports, gallery upload, households,
- *             user management, all admin pages.
- *   - staff:  event-day access. Scan/verify, walk-in registration, verify counter.
+ *   - admin:  full access. Reports, exports, gallery upload, user management,
+ *             all admin pages.
+ *   - staff:  event-day access. Scan/check-in, walk-in registration, verify counter.
  *             No reports, no exports, no gallery management, no user management.
  */
 

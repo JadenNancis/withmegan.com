@@ -4,14 +4,13 @@ import { AdminNav } from "@/components/admin-nav";
 import { SearchBar } from "@/components/search-bar";
 import { cn } from "@/lib/cn";
 import { db } from "@/db/client";
-import { mdRegistrants, mdHouseholds } from "@/db/schema";
-import { eq, count } from "drizzle-orm";
+import { mdRegistrants } from "@/db/schema";
+import { count, isNotNull } from "drizzle-orm";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const statusBadge: Record<string, string> = {
-  unassigned: "bg-gray-100 text-gray-700",
-  assigned: "bg-amber-100 text-amber-800",
+  registered: "bg-gray-100 text-gray-700",
   redeemed: "bg-green-100 text-green-800",
 };
 
@@ -26,23 +25,14 @@ export default async function MdAdminReportsPage({
   const sp = await searchParams;
   const q = typeof sp.q === "string" ? sp.q.trim() : "";
 
-  const [regCount] = await db.select({ n: count() }).from(mdRegistrants);
-  const [hhCount] = await db.select({ n: count() }).from(mdHouseholds);
-  const [assigned] = await db
-    .select({ n: count() })
-    .from(mdHouseholds)
-    .where(eq(mdHouseholds.hamperStatus, "assigned"));
-  const [unassigned] = await db
-    .select({ n: count() })
-    .from(mdHouseholds)
-    .where(eq(mdHouseholds.hamperStatus, "unassigned"));
-  const [redeemed] = await db
-    .select({ n: count() })
-    .from(mdHouseholds)
-    .where(eq(mdHouseholds.hamperStatus, "redeemed"));
+  const [regCount, redeemedCount] = await Promise.all([
+    db.select({ n: count() }).from(mdRegistrants).then((rows) => rows[0]),
+    db.select({ n: count() }).from(mdRegistrants).where(isNotNull(mdRegistrants.redeemedAt)).then((rows) => rows[0]),
+  ]);
 
-  const totalHh = hhCount?.n ?? 0;
-  const redeemedN = redeemed?.n ?? 0;
+  const total = regCount?.n ?? 0;
+  const redeemedN = redeemedCount?.n ?? 0;
+  const pendingN = total - redeemedN;
 
   const rows = await db
     .select({
@@ -52,13 +42,10 @@ export default async function MdAdminReportsPage({
       nationalId: mdRegistrants.nationalId,
       phoneNumber: mdRegistrants.phoneNumber,
       address: mdRegistrants.address,
-      householdReference: mdHouseholds.reference,
-      hamperStatus: mdHouseholds.hamperStatus,
-      redeemedAt: mdHouseholds.redeemedAt,
+      redeemedAt: mdRegistrants.redeemedAt,
       createdAt: mdRegistrants.createdAt,
     })
     .from(mdRegistrants)
-    .leftJoin(mdHouseholds, eq(mdRegistrants.householdId, mdHouseholds.id))
     .orderBy(mdRegistrants.createdAt)
     .limit(500);
 
@@ -68,12 +55,11 @@ export default async function MdAdminReportsPage({
           r.fullName.toLowerCase().includes(q.toLowerCase()) ||
           (r.thaId ?? "").toLowerCase().includes(q.toLowerCase()) ||
           (r.nationalId ?? "").toLowerCase().includes(q.toLowerCase()) ||
-          (r.householdReference ?? "").toLowerCase().includes(q.toLowerCase()),
+          r.phoneNumber.toLowerCase().includes(q.toLowerCase()),
       )
     : rows;
 
-  const pendingHh = totalHh - redeemedN;
-  const redemptionRate = totalHh > 0 ? Math.round((redeemedN / totalHh) * 100) : 0;
+  const redemptionRate = total > 0 ? Math.round((redeemedN / total) * 100) : 0;
 
   return (
     <div className="space-y-6">
@@ -93,19 +79,19 @@ export default async function MdAdminReportsPage({
       </div>
 
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <ReportCard label="Individual registrations" value={regCount?.n ?? 0} />
-        <ReportCard label="Households assigned" value={assigned?.n ?? 0} accent />
-        <ReportCard label="Households unassigned" value={unassigned?.n ?? 0} />
-        <ReportCard label="Households redeemed" value={redeemedN} accent />
+        <ReportCard label="Individual registrations" value={total} />
+        <ReportCard label="Hampers collected" value={redeemedN} accent />
+        <ReportCard label="Pending collection" value={pendingN} />
+        <ReportCard label="Redemption rate" value={redemptionRate} accent suffix="%" />
       </section>
 
       <section className="grid sm:grid-cols-2 gap-3">
         <div className="md-animate-fade-in-up md-delay-1 rounded-xl border border-amber-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-amber-700 font-medium">Redeemed vs pending</p>
+          <p className="text-sm text-amber-700 font-medium">Collected vs pending</p>
           <p className="mt-1 text-3xl font-bold text-gray-900">
-            {redeemedN} <span className="text-gray-400 text-xl">/</span> {pendingHh}
+            {redeemedN} <span className="text-gray-400 text-xl">/</span> {pendingN}
           </p>
-          {totalHh > 0 && (
+          {total > 0 && (
             <div className="mt-3 h-3 w-full rounded-full bg-amber-100 overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-amber-500 to-green-500 transition-all"
@@ -116,10 +102,10 @@ export default async function MdAdminReportsPage({
           <p className="mt-2 text-xs text-gray-500">{redemptionRate}% redemption rate</p>
         </div>
         <div className="md-animate-fade-in-up md-delay-2 rounded-xl border border-amber-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-amber-700 font-medium">Total households</p>
-          <p className="mt-1 text-3xl font-bold text-gray-900">{totalHh}</p>
+          <p className="text-sm text-amber-700 font-medium">Total registrations</p>
+          <p className="mt-1 text-3xl font-bold text-gray-900">{total}</p>
           <p className="mt-2 text-xs text-gray-500">
-            {regCount?.n ?? 0} registrations across {totalHh} households
+            {redeemedN} hampers collected · {pendingN} still pending
           </p>
         </div>
       </section>
@@ -129,7 +115,7 @@ export default async function MdAdminReportsPage({
           Registrations {q && `· filtered by "${q}"`}
         </h2>
         <Suspense fallback={<div className="text-sm text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Loading search…</div>}>
-          <SearchBar placeholder="Search by name, ID, or household…" />
+          <SearchBar placeholder="Search by name, ID, or phone…" />
         </Suspense>
 
         {filtered.length === 0 ? (
@@ -147,14 +133,13 @@ export default async function MdAdminReportsPage({
                       <p className="font-semibold text-gray-900 truncate">{r.fullName}</p>
                       <p className="text-xs font-mono text-gray-600 mt-0.5 truncate">{r.thaId ?? "N/A"}</p>
                     </div>
-                    <span className={cn("shrink-0 inline-block rounded-full px-2.5 py-1 text-xs font-medium", statusBadge[r.hamperStatus ?? "unassigned"])}>
-                      {r.hamperStatus ?? "unassigned"}
+                    <span className={cn("shrink-0 inline-block rounded-full px-2.5 py-1 text-xs font-medium", statusBadge[r.redeemedAt ? "redeemed" : "registered"])}>
+                      {r.redeemedAt ? "redeemed" : "registered"}
                     </span>
                   </div>
                   <div className="mt-2 space-y-1 text-xs text-gray-500">
                     <p>National ID: <span className="font-medium text-gray-700">{r.nationalId ?? "N/A"}</span></p>
-                    <p>Household: <span className="font-mono text-gray-700">{r.householdReference ?? "N/A"}</span></p>
-                    <p>Redeemed: <span className="font-medium text-gray-700">{r.redeemedAt ? new Date(r.redeemedAt).toLocaleDateString("en-TT") : "N/A"}</span></p>
+                    <p>Collected: <span className="font-medium text-gray-700">{r.redeemedAt ? new Date(r.redeemedAt).toLocaleDateString("en-TT") : "N/A"}</span></p>
                     <p>Registered: <span className="font-medium text-gray-700">{new Date(r.createdAt).toLocaleDateString("en-TT")}</span></p>
                   </div>
                 </div>
@@ -169,9 +154,8 @@ export default async function MdAdminReportsPage({
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">Application ID</th>
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">Name</th>
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">National ID</th>
-                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Household</th>
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">Status</th>
-                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Redeemed</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Collected</th>
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">Registered</th>
                   </tr>
                 </thead>
@@ -181,10 +165,9 @@ export default async function MdAdminReportsPage({
                       <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "N/A"}</td>
                       <td className="px-3 py-2 text-gray-900">{r.fullName}</td>
                       <td className="px-3 py-2 text-gray-600">{r.nationalId ?? "N/A"}</td>
-                      <td className="px-3 py-2 font-mono text-xs text-gray-600">{r.householdReference ?? "N/A"}</td>
                       <td className="px-3 py-2">
-                        <span className={cn("inline-block rounded-full px-2 py-0.5 text-xs font-medium", statusBadge[r.hamperStatus ?? "unassigned"])}>
-                          {r.hamperStatus ?? "unassigned"}
+                        <span className={cn("inline-block rounded-full px-2 py-0.5 text-xs font-medium", statusBadge[r.redeemedAt ? "redeemed" : "registered"])}>
+                          {r.redeemedAt ? "redeemed" : "registered"}
                         </span>
                       </td>
                       <td className="px-3 py-2 text-xs text-gray-500">
@@ -203,19 +186,21 @@ export default async function MdAdminReportsPage({
       </section>
 
       <p className="text-xs text-white/70 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
-        Showing {filtered.length} of {regCount?.n ?? 0} registrations (max 500).
+        Showing {filtered.length} of {total} registrations (max 500).
       </p>
     </div>
   );
 }
 
-function ReportCard({ label, value, accent }: { label: string; value: number; accent?: boolean }) {
+function ReportCard({ label, value, accent, suffix }: { label: string; value: number; accent?: boolean; suffix?: string }) {
   return (
     <div className={cn(
       "rounded-xl border p-4 md-animate-glow",
       accent ? "border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50" : "border-gray-200 bg-white"
     )}>
-      <p className={cn("text-2xl font-bold", accent ? "text-amber-700" : "text-gray-900")}>{value}</p>
+      <p className={cn("text-2xl font-bold", accent ? "text-amber-700" : "text-gray-900")}>
+        {value}{suffix ?? ""}
+      </p>
       <p className="mt-0.5 text-xs text-gray-500">{label}</p>
     </div>
   );

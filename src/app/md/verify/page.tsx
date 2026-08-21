@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { db } from "@/db/client";
-import { mdRegistrants, mdHouseholds } from "@/db/schema";
+import { mdRegistrants } from "@/db/schema";
 import { eq } from "drizzle-orm";
 export const dynamic = "force-dynamic";
 
@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
  * the trust token.
  *
  * Looks up the registrant by thaId and renders a read-only view of the
- * registration, including household/hamper status if assigned.
+ * registration, including collection status if redeemed.
  * Shows a green checkmark when found, red X when not.
  */
 export default async function MdVerifyPage({
@@ -83,11 +83,9 @@ async function VerifyResult({ aid }: { aid: string }) {
       email: mdRegistrants.email,
       productCategory: mdRegistrants.productCategory,
       productCategoryNote: mdRegistrants.productCategoryNote,
-      householdReference: mdHouseholds.reference,
-      hamperStatus: mdHouseholds.hamperStatus,
+      redeemedAt: mdRegistrants.redeemedAt,
     })
     .from(mdRegistrants)
-    .leftJoin(mdHouseholds, eq(mdRegistrants.householdId, mdHouseholds.id))
     .where(eq(mdRegistrants.thaId, aid))
     .limit(1);
 
@@ -111,7 +109,7 @@ async function VerifyResult({ aid }: { aid: string }) {
     );
   }
 
-  const collected = row.hamperStatus === "redeemed";
+  const collected = row.redeemedAt !== null;
 
   return (
     <div className="space-y-4">
@@ -162,22 +160,32 @@ async function VerifyResult({ aid }: { aid: string }) {
         </dl>
       </section>
 
-      {/* Household info */}
+      {/* Collection status */}
       <section className="motion-safe:md-animate-fade-in-up rounded-2xl border border-amber-200 bg-white p-6 shadow-sm">
         <h3 className="border-b border-amber-100 pb-3 text-lg font-bold text-amber-800">
-          Household & Hamper
+          Hamper status
         </h3>
-        <dl className="mt-4 grid gap-x-6 gap-y-4 sm:grid-cols-2">
-          <Detail label="Household reference" value={row.householdReference ?? ""} />
-          <div>
-            <dt className="text-xs font-semibold uppercase tracking-wide text-gray-500">
-              Hamper status
-            </dt>
-            <dd className="mt-0.5">
-              <HamperStatusBadge status={row.hamperStatus} />
-            </dd>
+        {collected ? (
+          <div className="mt-4 rounded-xl border border-green-300 bg-green-50 p-4">
+            <p className="text-base font-bold text-green-800">✓ Hamper collected</p>
+            <p className="mt-1 text-sm text-green-700">
+              Collected on{" "}
+              {row.redeemedAt
+                ? new Date(row.redeemedAt).toLocaleString("en-TT", {
+                    dateStyle: "medium",
+                    timeStyle: "short",
+                  })
+                : ""}
+            </p>
           </div>
-        </dl>
+        ) : (
+          <div className="mt-4 rounded-xl border border-amber-300 bg-amber-50 p-4">
+            <p className="text-base font-bold text-amber-800">Not yet collected</p>
+            <p className="mt-1 text-sm text-amber-700">
+              Bring this screen and your Application ID to the distribution counter on event day.
+            </p>
+          </div>
+        )}
       </section>
 
       <div className="motion-safe:md-animate-fade-in-up flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -208,20 +216,6 @@ function Detail({
         {value || "N/A"}
       </dd>
     </div>
-  );
-}
-
-function HamperStatusBadge({ status }: { status: "unassigned" | "assigned" | "redeemed" | null }) {
-  const styles: Record<string, string> = {
-    unassigned: "bg-gray-100 text-gray-700",
-    assigned: "bg-amber-100 text-amber-800",
-    redeemed: "bg-green-100 text-green-800",
-  };
-  const label = status ?? "unassigned";
-  return (
-    <span className={`inline-block rounded-full px-3 py-0.5 text-xs font-medium ${styles[label] ?? styles.unassigned}`}>
-      {label}
-    </span>
   );
 }
 

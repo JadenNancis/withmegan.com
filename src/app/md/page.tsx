@@ -159,9 +159,9 @@ export default async function MdLanding() {
           </div>
           <p className="text-sm sm:text-base text-amber-50/85 leading-relaxed [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
             Market Day with Megan is a community hamper distribution programme serving
-            residents of Mt. St. George/Goodwood, Tobago. Each eligible household
+            residents of Mt. St. George/Goodwood, Tobago. Each registered resident
             receives a hamper of essential goods. Registration is open in advance.
-            Once registered, you&apos;ll be assigned to a household group for verification
+            Once registered, you&apos;ll receive a unique Application ID for verification
             and collection on the day.
           </p>
 
@@ -170,9 +170,9 @@ export default async function MdLanding() {
           <div className="snap-row mt-4 flex gap-3 overflow-x-auto snap-x snap-mandatory no-scrollbar pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:grid sm:gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:overflow-visible">
             {[
               { icon: <BasketIcon className="w-10 h-10 mx-auto" />, step: "1", text: "Register online with your name, address, and contact details.", delay: "" },
-              { icon: <MangoIcon className="w-10 h-10 mx-auto" />, step: "2", text: "Receive your unique Application ID and household reference.", delay: "motion-safe:md-delay-1" },
+              { icon: <MangoIcon className="w-10 h-10 mx-auto" />, step: "2", text: "Receive your unique Application ID.", delay: "motion-safe:md-delay-1" },
               { icon: <CommunityIcon className="w-12 h-10 mx-auto" />, step: "3", text: "Bring your ID on event day for verification at the distribution counter.", delay: "motion-safe:md-delay-2" },
-              { icon: <BreadfruitIcon className="w-10 h-10 mx-auto" />, step: "4", text: "Collect your hamper. One per household.", delay: "motion-safe:md-delay-3" },
+              { icon: <BreadfruitIcon className="w-10 h-10 mx-auto" />, step: "4", text: "Collect your hamper.", delay: "motion-safe:md-delay-3" },
             ].map((item) => (
               <div
                 key={item.step}

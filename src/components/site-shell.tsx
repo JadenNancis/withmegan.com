@@ -103,6 +103,7 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
   const a = accentMap[site.accent];
   const [menuOpen, setMenuOpen] = useState(false);
   const isStaff = useIsStaff();
+  const { data: session } = useSession();
   const pathname = usePathname();
 
   // Filter out admin links unless the user is admin/staff.
@@ -116,7 +117,6 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
     return true;
   });
   const pageLinks = visibleNav.filter((n) => n.href !== "/auth/signin");
-  const signIn = site.nav.find((n) => n.href === "/auth/signin");
 
   // Bottom nav: first 4 non-admin links, filtered to the most useful ones
   const bottomNavLinks = visibleNav
@@ -201,21 +201,13 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
                     </Link>
                   </li>
                 ))}
-                <li className="pt-2 border-t border-white/15">
-                  {signIn ? (
-                    <Link
-                      href={signIn.href}
-                      onClick={() => setMenuOpen(false)}
-                      className="block rounded-lg px-4 py-3.5 text-base font-medium hover:bg-white/10 transition-colors min-h-[48px] flex items-center"
-                    >
-                      {signIn.label}
-                    </Link>
-                  ) : (
+                {session?.user && (
+                  <li className="pt-2 border-t border-white/15">
                     <div className="py-1">
                       <AuthButton />
                     </div>
-                  )}
-                </li>
+                  </li>
+                )}
               </ul>
             </nav>
           )}

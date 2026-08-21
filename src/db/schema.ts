@@ -165,8 +165,11 @@ export const mdRegistrants = pgTable("md_registrants", {  id: uuid("id").primary
   productCategoryNote: text("product_category_note"),
   consent: boolean("consent").notNull().default(false),
   thaId: text("tha_id").unique(),
-  /** Assigned by admin; links to a household. */
+  /** Assigned by admin; links to a household. Dormant — household flow retired. */
   householdId: uuid("household_id").references(() => mdHouseholds.id, { onDelete: "set null" }),
+  /** Event-day redemption state (per registrant). Null = not yet collected. */
+  redeemedAt: timestamp("redeemed_at", { mode: "date" }),
+  redeemedBy: text("redeemed_by").references(() => users.id, { onDelete: "set null" }),
   createdAt: timestamp("created_at", { mode: "date" }).notNull().defaultNow(),
   updatedAt: timestamp("updated_at", { mode: "date" }).notNull().defaultNow(),
 });
