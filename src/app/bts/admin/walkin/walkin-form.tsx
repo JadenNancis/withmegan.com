@@ -150,7 +150,7 @@ export function WalkInForm() {
         </div>
         <h2 className="text-2xl font-bold text-cyan-900">Walk-In Registered</h2>
         <p className="mt-2 text-sm text-gray-600">
-          Save this Application ID. It&rsquo;s needed to collect resources on event day.
+          Save this Application ID and take a screenshot of this screen. It&rsquo;s needed to collect resources on event day.
         </p>
 
         <div className="mt-5 rounded-xl border-2 border-dashed border-cyan-300 bg-white p-5">

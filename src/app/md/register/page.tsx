@@ -126,7 +126,7 @@ export default function MdRegisterPage() {
               </div>
             )}
             <p className="mt-2 text-xs text-gray-500">
-              Keep this ID safe. You&apos;ll need it for verification on event day.
+              Save your Application ID and take a screenshot of this screen. You&apos;ll need it for verification on event day.
             </p>
           </div>
         </div>

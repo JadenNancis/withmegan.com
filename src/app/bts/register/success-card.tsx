@@ -74,7 +74,7 @@ export function SuccessCard({
         <h1 className="text-title text-brand-900">You&rsquo;re all set</h1>
         <p className="mt-3 text-body text-gray-600 max-w-md mx-auto leading-relaxed">
           Confirmation is on its way to <span className="font-semibold text-gray-900">{phone}</span>.
-          {" "}Keep your Application ID somewhere safe. You&rsquo;ll show it on collection day.
+          {" "}Keep your Application ID somewhere safe, and take a screenshot of this screen. You&rsquo;ll show it on collection day.
         </p>
       </div>
 

@@ -109,7 +109,7 @@ export function WalkInForm() {
         </div>
         <h2 className="text-2xl font-bold text-green-800">Walk-In Registered</h2>
         <p className="mt-2 text-sm text-green-700">
-          Thank you, {success.fullName}. Save this Application ID for hamper collection.
+          Thank you, {success.fullName}. Save this Application ID and take a screenshot of this screen for hamper collection.
         </p>
 
         <div className="mt-5 rounded-xl bg-white p-5 border border-green-200 shadow-sm">
@@ -124,7 +124,7 @@ export function WalkInForm() {
             </div>
           )}
           <p className="mt-2 text-xs text-gray-500">
-            Keep this ID safe. You&rsquo;ll need it for verification on event day.
+            Keep this ID safe, and take a screenshot of this screen. You&rsquo;ll need it for verification on event day.
           </p>
         </div>
 
