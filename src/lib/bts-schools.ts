@@ -1,4 +1,4 @@
-export type SchoolCategory = "Primary / Middle" | "Secondary / High";
+export type SchoolCategory = "ECCE / Early Childhood" | "Primary / Middle" | "Secondary / High";
 
 export interface School {
   name: string;
@@ -8,6 +8,20 @@ export interface School {
 }
 
 export const BTS_SCHOOLS: readonly School[] = [
+  // ECCE — Early Childhood Care and Education centres (THA-run), per the
+  // Ministry of Education / Division of Education listing for Tobago.
+  { name: "Belle Garden ECCE", category: "ECCE / Early Childhood" },
+  { name: "Buccoo ECCE", category: "ECCE / Early Childhood" },
+  { name: "Carnbee/Mt. Pleasant ECCE", category: "ECCE / Early Childhood" },
+  { name: "Castara ECCE", category: "ECCE / Early Childhood" },
+  { name: "Little Angels ECCE (L'Anse Fourmi)", category: "ECCE / Early Childhood" },
+  { name: "Montgomery ECCE", category: "ECCE / Early Childhood" },
+  { name: "Moriah ECCE", category: "ECCE / Early Childhood" },
+  { name: "Mt. Grace ECCE", category: "ECCE / Early Childhood" },
+  { name: "Mt. St. George ECCE", category: "ECCE / Early Childhood", district: true },
+  { name: "Plymouth/Bethesda ECCE", category: "ECCE / Early Childhood" },
+  { name: "Signal Hill ECCE", category: "ECCE / Early Childhood" },
+  { name: "Speyside ECCE", category: "ECCE / Early Childhood" },
   { name: "Belle Garden Anglican", category: "Primary / Middle" },
   { name: "Bethesda Government", category: "Primary / Middle" },
   { name: "Black Rock Government", category: "Primary / Middle" },
@@ -63,7 +77,7 @@ export const BTS_SCHOOLS: readonly School[] = [
 export const OTHER_SCHOOL_VALUE = "__other__";
 
 export function schoolsByCategory(): { category: SchoolCategory; schools: School[] }[] {
-  const order: SchoolCategory[] = ["Primary / Middle", "Secondary / High"];
+  const order: SchoolCategory[] = ["ECCE / Early Childhood", "Primary / Middle", "Secondary / High"];
   return order.map((category) => ({
     category,
     schools: BTS_SCHOOLS.filter((s) => s.category === category).sort((a, b) => {

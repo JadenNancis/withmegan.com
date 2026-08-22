@@ -54,7 +54,7 @@ export function GuardianStep({
           onChange={(e) => onChange({ nationalId: e.target.value })}
           inputMode="text"
           autoComplete="off"
-          placeholder="e.g. 19900101-12345"
+          placeholder="e.g. 19850615031"
         />
         <p className="mt-1.5 text-sm text-gray-500">
           Your Trinidad and Tobago National ID or other government-issued identifier.

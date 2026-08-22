@@ -14,11 +14,13 @@ type CategoryFilter = "all" | SchoolCategory;
 
 const CATEGORY_FILTERS: { value: CategoryFilter; label: string }[] = [
   { value: "all", label: "All schools" },
+  { value: "ECCE / Early Childhood", label: "ECCE" },
   { value: "Primary / Middle", label: "Primary" },
   { value: "Secondary / High", label: "Secondary" },
 ];
 
 const CATEGORY_BADGE: Record<SchoolCategory, string> = {
+  "ECCE / Early Childhood": "ECCE",
   "Primary / Middle": "Primary / Middle",
   "Secondary / High": "Secondary / High",
 };

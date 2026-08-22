@@ -210,7 +210,7 @@ export default function MdRegisterPage() {
             id="nationalId"
             value={nationalId}
             onChange={(e) => setNationalId(e.target.value)}
-            placeholder="e.g. 19900101-12345"
+            placeholder="e.g. 19850615031"
           />
         </Field>
 

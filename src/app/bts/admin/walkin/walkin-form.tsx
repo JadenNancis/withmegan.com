@@ -212,7 +212,7 @@ export function WalkInForm() {
               value={nationalId}
               onChange={(e) => setNationalId(e.target.value)}
               autoComplete="off"
-              placeholder="e.g. 19900101-12345"
+              placeholder="e.g. 19850615031"
               className="text-lg"
             />
           </Field>
