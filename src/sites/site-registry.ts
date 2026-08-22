@@ -23,6 +23,8 @@ export interface SiteConfig {
   eventDate: string;
   /** Primary brand colour. */
   accent: "cyan" | "amber";
+  /** Full-page background image (site-specific). */
+  background: string;
   /** Root path prefix the site is mounted under internally. */
   routePrefix: string;
   /** Community registration goal shown on the progress page and landing teaser. */
@@ -45,6 +47,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     tagline: "Book Drive · Mt. St. George/Goodwood, Tobago",
     eventDate: "2026-08-30",
     accent: "cyan",
+    background: "/images/tobago/bts-bg.jpg",
     routePrefix: "/bts",
     goalFamilies: 200,
     nav: [
@@ -65,6 +68,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     tagline: "Hamper Distribution · Mt. St. George/Goodwood, Tobago",
     eventDate: "2026-09-06",
     accent: "amber",
+    background: "/images/tobago/md-bg.jpg",
     routePrefix: "/md",
     goalFamilies: 150,
     nav: [

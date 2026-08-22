@@ -64,29 +64,10 @@ html {
      during scroll.
 */
 html {
-  background-color: #2a5a70; /* fallback colour while image loads */
-}
-
-html::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  /* Use lvh so iOS doesn't resize this layer as URL bar collapses */
-  height: 100vh;
-  height: 100lvh;
-  z-index: -2;
-  background-image: url("/images/tobago/tt-beach.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  pointer-events: none;
-  /* Force GPU compositing — iOS must not rasterise this on scroll */
-  transform: translateZ(0);
-  will-change: transform;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  /* Warm golden-hour fallback that mirrors the backdrop while it loads.
+     Tones sampled from the scene: pale sky → amber mid → deep sand-brown.
+     Each site layers its own fixed background image over this (SiteShell). */
+  background: linear-gradient(180deg, #d3dce6 0%, #d8b877 40%, #96662f 72%, #6d4a1f 100%);
 }
 
 body {

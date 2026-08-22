@@ -131,6 +131,15 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
   return (
     <SiteProvider site={site}>
       <div className="min-h-screen flex flex-col tha-warm-bg">
+        {/* Site-specific full-page background — fixed so it never scrolls. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 -z-10 bg-cover bg-center"
+          style={{ backgroundImage: `url(${site.background})` }}
+        >
+          {/* Legibility scrim — keeps white cards and text readable over the photo. */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/15 to-black/55" />
+        </div>
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-white focus:px-4 focus:py-2 focus:text-sm focus:font-semibold"
