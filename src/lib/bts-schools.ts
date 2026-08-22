@@ -15,6 +15,8 @@ export const BTS_SCHOOLS: readonly School[] = [
   { name: "Carnbee/Mt. Pleasant ECCE", category: "ECCE / Early Childhood" },
   { name: "Castara ECCE", category: "ECCE / Early Childhood" },
   { name: "Little Angels ECCE (L'Anse Fourmi)", category: "ECCE / Early Childhood" },
+  { name: "Little Angels Kindergarten", category: "ECCE / Early Childhood" },
+  { name: "Little Sunshine Academy", category: "ECCE / Early Childhood", district: true },
   { name: "Montgomery ECCE", category: "ECCE / Early Childhood" },
   { name: "Moriah ECCE", category: "ECCE / Early Childhood" },
   { name: "Mt. Grace ECCE", category: "ECCE / Early Childhood" },
