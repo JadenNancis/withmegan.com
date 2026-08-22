@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { DatabaseSyncButton } from "@/components/database-sync-button";
 
 export default function MdAdminError({
   error,
@@ -24,7 +25,8 @@ export default function MdAdminError({
         </div>
         <h1 className="text-xl font-bold text-white">Admin page error</h1>
         <p className="mt-2 text-sm text-white/70">
-          This section could not be loaded. The database may be waking up. Try again in a moment.
+          This section could not be loaded. The live database may be missing
+          the latest updates. Try again, or sync the database below.
         </p>
         <div className="mt-6 flex justify-center gap-3">
           <button
@@ -39,6 +41,9 @@ export default function MdAdminError({
           >
             Admin dashboard
           </Link>
+        </div>
+        <div className="text-left">
+          <DatabaseSyncButton onSynced={reset} />
         </div>
       </div>
     </div>
