@@ -47,7 +47,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     tagline: "Book Drive · Mt. St. George/Goodwood, Tobago",
     eventDate: "2026-08-30",
     accent: "cyan",
-    background: "/images/tobago/bts-bg.jpg",
+    background: "/images/tobago/market-bg.jpg",
     routePrefix: "/bts",
     goalFamilies: 200,
     nav: [
@@ -68,7 +68,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     tagline: "Hamper Distribution · Mt. St. George/Goodwood, Tobago",
     eventDate: "2026-09-06",
     accent: "amber",
-    background: "/images/tobago/md-bg.jpg",
+    background: "/images/tobago/classroom-bg.jpg",
     routePrefix: "/md",
     goalFamilies: 150,
     nav: [
