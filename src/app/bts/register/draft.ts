@@ -31,7 +31,8 @@ export function useWizardDraft<T>(
       if (raw) {
         const parsed = JSON.parse(raw) as T;
         if (parsed && Object.keys(parsed).length > 0) {
-          setValue(parsed);
+          // Merge so fields added after a draft was saved get their defaults.
+          setValue({ ...initial, ...parsed });
           setHadDraft(true);
         }
       }
