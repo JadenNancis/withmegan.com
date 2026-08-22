@@ -126,6 +126,7 @@ export default async function BtsAdminDashboard({
                   <tr>
                     <Th>Application ID</Th>
                     <Th>Guardian</Th>
+                    <Th>National ID</Th>
                     <Th>Contact</Th>
                     <Th>Dependents</Th>
                     <Th>Registered</Th>
@@ -145,6 +146,7 @@ export default async function BtsAdminDashboard({
                         <div className="font-medium text-gray-900">{g.fullName}</div>
                         <div className="text-xs text-gray-500">{g.email ?? "No email"}</div>
                       </td>
+                      <td className="px-4 py-3 font-mono text-xs text-gray-600">{g.nationalId ?? "N/A"}</td>
                       <td className="px-4 py-3 text-sm text-gray-700">{g.contactNumber}</td>
                       <td className="px-4 py-3 text-sm text-gray-700">
                         {g.dependents.length} {g.dependents.length === 1 ? "child/student" : "children/students"}

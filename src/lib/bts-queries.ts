@@ -10,6 +10,7 @@ import { eq, ilike, or, desc, inArray } from "drizzle-orm";
 export interface GuardianWithDependents {
   id: string;
   fullName: string;
+  nationalId: string | null;
   contactNumber: string;
   email: string;
   address: string;
@@ -110,6 +111,7 @@ export async function getAllGuardians(search?: string): Promise<GuardianWithDepe
         .where(
           or(
             ilike(btsGuardians.fullName, `%${search}%`),
+            ilike(btsGuardians.nationalId, `%${search}%`),
             ilike(btsGuardians.email, `%${search}%`),
             ilike(btsGuardians.thaId, `%${search}%`),
           ),
@@ -134,6 +136,7 @@ export async function getAllGuardians(search?: string): Promise<GuardianWithDepe
   return guardians.map((g) => ({
     id: g.id,
     fullName: g.fullName,
+    nationalId: g.nationalId,
     contactNumber: g.contactNumber,
     email: g.email,
     address: g.address,

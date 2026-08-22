@@ -1,0 +1,1 @@
+ALTER TABLE "bts_guardians" ADD COLUMN "national_id" text;

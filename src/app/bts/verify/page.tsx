@@ -135,6 +135,7 @@ async function VerifyResult({ aid }: { aid: string }) {
         </h3>
         <dl className="mt-3 space-y-3">
           <Detail label="Full name" value={guardian.fullName} />
+          <Detail label="National ID" value={guardian.nationalId ?? "N/A"} />
           <Detail label="Community" value={guardian.address} />
           <Detail label="Contact" value={guardian.contactNumber} />
           {guardian.email && <Detail label="Email" value={guardian.email} />}

@@ -3,7 +3,7 @@ import { isValidTtPhone } from "./tt-phone";
 
 export const registrationSchema = z.object({
   fullName: z.string().min(1, "Full name is required").max(200),
-  nationalId: z.string().max(50).optional().nullable(),
+  nationalId: z.string().min(1, "National ID is required").max(50),
   dateOfBirth: z.string().min(1, "Date of birth is required").max(20),
   address: z.string().min(1, "Address is required").max(500),
   phoneNumber: z.string().refine(isValidTtPhone, "Enter a valid TT phone number, e.g. (868) 123-4567"),

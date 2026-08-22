@@ -29,6 +29,7 @@ interface BtsDependentDto {
 interface BtsRegistrantDto {
   applicationId: string;
   fullName: string;
+  nationalId: string | null;
   community: string;
   phone: string;
   email: string;
@@ -108,6 +109,7 @@ async function lookupBts(aid: string): Promise<Response> {
   const registrant: BtsRegistrantDto = {
     applicationId: guardian.thaId ?? aid,
     fullName: guardian.fullName,
+    nationalId: guardian.nationalId,
     community: guardian.address,
     phone: guardian.contactNumber,
     email: guardian.email,

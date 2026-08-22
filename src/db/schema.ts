@@ -79,6 +79,7 @@ export const auditLog = pgTable("audit_log", {
 export const btsGuardians = pgTable("bts_guardians", {
   id: uuid("id").primaryKey().defaultRandom(),
   fullName: text("full_name").notNull(),
+  nationalId: text("national_id"),
   contactNumber: text("contact_number").notNull(),
   email: text("email").notNull(),
   address: text("address").notNull(),

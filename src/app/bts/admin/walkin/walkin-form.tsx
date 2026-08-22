@@ -37,6 +37,7 @@ interface SuccessResult {
 
 export function WalkInForm() {
   const [fullName, setFullName] = useState("");
+  const [nationalId, setNationalId] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [address, setAddress] = useState("");
   const [manualAddress, setManualAddress] = useState("");
@@ -57,6 +58,7 @@ export function WalkInForm() {
   function validate(): Errors {
     const e: Errors = {};
     if (!fullName.trim()) e.fullName = "Full name is required";
+    if (!nationalId.trim()) e.nationalId = "National ID is required";
     if (!contactNumber.trim()) e.contactNumber = "Contact number is required";
     else if (!isValidTtPhone(contactNumber)) e.contactNumber = "Enter a valid TT number, e.g. (868) 123-4567";
     if (!address) e.address = "Select a community";
@@ -85,6 +87,7 @@ export function WalkInForm() {
       const payload = {
         guardian: {
           fullName,
+          nationalId,
           contactNumber,
           email: "",
           address: address === OTHER_LOCATION_VALUE ? manualAddress : address,
@@ -128,6 +131,7 @@ export function WalkInForm() {
     setSuccess(null);
     setQrCode(null);
     setFullName("");
+    setNationalId("");
     setContactNumber("");
     setAddress("");
     setManualAddress("");
@@ -199,6 +203,16 @@ export function WalkInForm() {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               autoComplete="name"
+              className="text-lg"
+            />
+          </Field>
+          <Field label="National ID" htmlFor="nationalId" required error={errors.nationalId}>
+            <TextInput
+              id="nationalId"
+              value={nationalId}
+              onChange={(e) => setNationalId(e.target.value)}
+              autoComplete="off"
+              placeholder="e.g. 19900101-12345"
               className="text-lg"
             />
           </Field>

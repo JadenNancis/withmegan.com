@@ -34,6 +34,7 @@ export default async function GuardianDetailPage({
             </p>
           </div>
           <div className="text-sm text-gray-600 space-y-0.5">
+            <p>🪪 {guardian.nationalId ?? "N/A"}</p>
             <p>📞 {guardian.contactNumber}</p>
             <p>✉️ {guardian.email}</p>
             <p>📍 {guardian.address}</p>

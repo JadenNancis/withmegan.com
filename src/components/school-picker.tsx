@@ -338,7 +338,14 @@ export function SchoolPicker({ value, onChange, id, className }: SchoolPickerPro
                             selected && "font-semibold text-brand-800",
                           )}
                         >
-                          <HighlightedName name={s.name} query={query} />
+                          <span className="flex min-w-0 items-center gap-2">
+                            <HighlightedName name={s.name} query={query} />
+                            {s.district && (
+                              <span className="shrink-0 rounded-full bg-brand-600/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-700 ring-1 ring-inset ring-brand-600/25">
+                                District
+                              </span>
+                            )}
+                          </span>
                           {selected && (
                             <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-brand-600" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                               <path d="M5 13l4 4L19 7" />

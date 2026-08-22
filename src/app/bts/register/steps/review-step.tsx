@@ -11,6 +11,7 @@ export interface SubmitResult {
 
 interface ReviewState {
   fullName: string;
+  nationalId: string;
   contactNumber: string;
   email: string;
   address: string;
@@ -42,6 +43,7 @@ export function ReviewStep({
 
         <dl className="mt-6 grid gap-3 sm:gap-4 sm:grid-cols-2">
           <Row label="Your name" value={state.fullName} />
+          <Row label="National ID" value={state.nationalId} />
           <Row label="Contact number" value={state.contactNumber} />
           {state.email && <Row label="Email" value={state.email} />}
           <Row label="Community" value={state.address} />

@@ -21,6 +21,7 @@ const dependentSchema = z.object({
 const registrationSchema = z.object({
   guardian: z.object({
     fullName: z.string().min(1, "Full name is required"),
+    nationalId: z.string().min(1, "National ID is required").max(50),
     contactNumber: z.string().refine(isValidTtPhone, "Enter a valid TT phone number, e.g. (868) 123-4567"),
     email: z.string().email("A valid email address is required").optional().or(z.literal("")),
     address: z.string().min(1, "Community is required"),
@@ -55,12 +56,24 @@ export async function POST(req: Request) {
   const existingByEmail = guardian.email && guardian.email.trim()
     ? await db.select().from(btsGuardians).where(eq(btsGuardians.email, guardian.email)).limit(1)
     : [];
+  const existingByNationalId = guardian.nationalId?.trim()
+    ? await db.select().from(btsGuardians).where(eq(btsGuardians.nationalId, guardian.nationalId.trim())).limit(1)
+    : [];
 
   if (existingByEmail.length > 0) {
     return NextResponse.json(
       {
         error:
           "A registration already exists for this email. Contact an administrator if you need to update it.",
+      },
+      { status: 409 },
+    );
+  }
+  if (existingByNationalId.length > 0) {
+    return NextResponse.json(
+      {
+        error:
+          "A registration already exists for this National ID. Contact an administrator if you need to update it.",
       },
       { status: 409 },
     );
@@ -72,6 +85,7 @@ export async function POST(req: Request) {
       .insert(btsGuardians)
       .values({
         fullName: guardian.fullName,
+        nationalId: guardian.nationalId.trim(),
         contactNumber: normalizedPhone,
         email: guardian.email || "",
         address: guardian.address,

@@ -37,6 +37,7 @@ export default function MdRegisterPage() {
   function validate(): Errors {
     const e: Errors = {};
     if (!fullName.trim()) e.fullName = "Full name is required";
+    if (!nationalId.trim()) e.nationalId = "National ID is required";
     if (!dateOfBirth.trim()) e.dateOfBirth = "Date of birth is required";
     if (!address) e.address = "Select your community";
     else if (address === OTHER_LOCATION_VALUE && !manualAddress.trim())
@@ -204,12 +205,12 @@ export default function MdRegisterPage() {
           />
         </Field>
 
-        <Field label="National ID or other identifier" htmlFor="nationalId">
+        <Field label="National ID" htmlFor="nationalId" required error={errors.nationalId}>
           <TextInput
             id="nationalId"
             value={nationalId}
             onChange={(e) => setNationalId(e.target.value)}
-            placeholder="Optional"
+            placeholder="e.g. 19900101-12345"
           />
         </Field>
 

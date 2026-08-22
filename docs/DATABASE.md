@@ -38,7 +38,7 @@ Always use the **pooled** Neon endpoint (the `-pooler` hostname) for app traffic
 
 | Table | Purpose |
 |-------|---------|
-| `bts_guardians` | Guardian registrations. `fullName`, `contactNumber`, `email`, `address`, `consent`, `thaId` (unique server-generated). |
+| `bts_guardians` | Guardian registrations. `fullName`, `nationalId`, `contactNumber`, `email`, `address`, `consent`, `thaId` (unique server-generated). |
 | `bts_dependents` | Children/Students linked to a guardian. `guardianId` → `bts_guardians.id` (cascade), `studentName`, `schoolName`, `gradeLevel`, `notes`, `bookListUrl`. |
 | `bts_resource_assignments` | Per-dependent book/resource assignments. `dependentId` → `bts_dependents.id` (cascade), `itemName`, `quantityAssigned`, `quantityCollected`, `status` (enum: `pending` \| `partial` \| `full` \| `collected`), `assignedBy` → `users.id` (set null), `collectedByName`, `collectedAt`. |
 | `bts_inventory` | Donated inventory stock. `itemName`, `category` (enum: `Books` \| `Stationery` \| `Uniforms` \| `Backpacks` \| `Other`), `quantityReceived`, `condition`, `donorName`, `receivedBy` → `users.id` (set null), `notes`. |
@@ -47,7 +47,7 @@ Always use the **pooled** Neon endpoint (the `-pooler` hostname) for app traffic
 
 | Table | Purpose |
 |-------|---------|
-| `md_registrants` | Resident registrations. `fullName`, `nationalId`, `dateOfBirth`, `address`, `phoneNumber`, `email`, `productCategory`, `productCategoryNote` (free text required when category is "other"), `consent`, `thaId` (unique), `householdId` → `md_households.id` (set null). |
+| `md_registrants` | Resident registrations. `fullName`, `nationalId` (required), `dateOfBirth`, `address`, `phoneNumber`, `email`, `productCategory`, `productCategoryNote` (free text required when category is "other"), `consent`, `thaId` (unique), `redeemedAt`/`redeemedBy` (event-day hamper redemption), `householdId` → `md_households.id` (set null, dormant). |
 | `md_households` | Household grouping for one-hamper-per-household enforcement. `reference` (unique, e.g. `HH-0042`), `hamperStatus` (enum: `unassigned` \| `assigned` \| `redeemed`), `redeemedAt`, `redeemedBy` → `users.id` (set null). |
 
 ## Enums

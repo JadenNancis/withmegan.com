@@ -15,6 +15,7 @@ type StepIndex = 0 | 1 | 2;
 
 interface WizardState {
   fullName: string;
+  nationalId: string;
   contactNumber: string;
   email: string;
   address: string;
@@ -27,6 +28,7 @@ interface WizardState {
 
 const initialState: WizardState = {
   fullName: "",
+  nationalId: "",
   contactNumber: "",
   email: "",
   address: "",
@@ -58,6 +60,7 @@ export default function BtsRegisterPage() {
   function validateCurrentStep(): string | null {
     if (state.step === 0) {
       if (!state.fullName.trim()) return "Full name is required.";
+      if (!state.nationalId.trim()) return "National ID is required.";
       if (!state.contactNumber.trim()) return "Contact number is required.";
       if (!state.address) return "Select your community.";
       if (state.address === OTHER_LOCATION_VALUE && !state.manualAddress.trim())
@@ -107,6 +110,7 @@ export default function BtsRegisterPage() {
       const payload = {
         guardian: {
           fullName: state.fullName,
+          nationalId: state.nationalId,
           contactNumber: state.contactNumber,
           email: state.email,
           address: state.address === OTHER_LOCATION_VALUE ? state.manualAddress : state.address,
@@ -276,6 +280,7 @@ export default function BtsRegisterPage() {
           <GuardianStep
             state={{
               fullName: state.fullName,
+              nationalId: state.nationalId,
               contactNumber: state.contactNumber,
               email: state.email,
               address: state.address,

@@ -7,6 +7,7 @@ import { formatTtPhone } from "@/lib/tt-phone";
 
 export interface GuardianState {
   fullName: string;
+  nationalId: string;
   contactNumber: string;
   email: string;
   address: string;
@@ -45,6 +46,19 @@ export function GuardianStep({
           autoFocus
           placeholder="Your name"
         />
+      </Field>
+
+      <Field label="National ID" required>
+        <TextInput
+          value={state.nationalId}
+          onChange={(e) => onChange({ nationalId: e.target.value })}
+          inputMode="text"
+          autoComplete="off"
+          placeholder="e.g. 19900101-12345"
+        />
+        <p className="mt-1.5 text-sm text-gray-500">
+          Your Trinidad and Tobago National ID or other government-issued identifier.
+        </p>
       </Field>
 
       <Field label="Contact number" required>
