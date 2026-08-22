@@ -26,7 +26,7 @@ export default function DevIndex() {
           >
             <h2 className="text-lg font-bold text-gray-900">{site.name}</h2>
             <p className="mt-1 text-sm text-gray-600">{site.tagline}</p>
-            <p className="mt-3 text-xs text-gray-400">{site.host}</p>
+            <p className="mt-3 text-xs text-gray-500">{site.host}</p>
           </Link>
         ))}
       </div>

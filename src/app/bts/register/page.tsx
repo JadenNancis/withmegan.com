@@ -6,6 +6,7 @@ import { GuardianStep } from "./steps/guardian-step";
 import { DependentsStep, type DependentForm, emptyDependent } from "./steps/dependents-step";
 import { ReviewStep, type SubmitResult } from "./steps/review-step";
 import { SuccessCard } from "./success-card";
+import { InterestCard } from "./interest-card";
 import { useWizardDraft } from "./draft";
 import { OTHER_LOCATION_VALUE } from "@/lib/bts-locations";
 import { OTHER_SCHOOL_VALUE } from "@/lib/bts-schools";
@@ -47,6 +48,7 @@ export default function BtsRegisterPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<(SubmitResult & { phone: string }) | null>(null);
+  const [waitlistCommunity, setWaitlistCommunity] = useState<string | null>(null);
 
   function patch(p: Partial<WizardState>) {
     setState((prev) => ({ ...prev, ...p }));
@@ -131,8 +133,25 @@ export default function BtsRegisterPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = (await res.json()) as { thaId?: string; error?: string; message?: string };
-      if (!res.ok || !data.thaId) {
+      const data = (await res.json()) as {
+        served?: boolean;
+        thaId?: string;
+        error?: string;
+        message?: string;
+      };
+      if (!res.ok) {
+        throw new Error(data.message ?? data.error ?? "Registration failed. Please try again.");
+      }
+
+      // Outside the served district — recorded as interest, no ID or QR.
+      if (data.served === false) {
+        setWaitlistCommunity(payload.guardian.address);
+        draft.clear();
+        window.scrollTo({ top: 0 });
+        return;
+      }
+
+      if (!data.thaId) {
         throw new Error(data.message ?? data.error ?? "Registration failed. Please try again.");
       }
 
@@ -166,12 +185,17 @@ export default function BtsRegisterPage() {
 
   function resetForAnother() {
     setResult(null);
+    setWaitlistCommunity(null);
     setState({ ...initialState, dependents: [emptyDependent()] });
     window.scrollTo({ top: 0 });
   }
 
+  if (waitlistCommunity) {
+    return <InterestCard community={waitlistCommunity} onRegisterAnother={resetForAnother} />;
+  }
+
   if (result) {
-    return <SuccessCard result={result} onRegisterAnother={resetForAnother} phone={result.phone} />;
+    return <SuccessCard result={result} onRegisterAnother={resetForAnother} />;
   }
 
   const stepNum = state.step + 1;

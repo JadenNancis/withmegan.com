@@ -1,5 +1,5 @@
 import { db } from "@/db/client";
-import { mdRegistrants, auditLog } from "@/db/schema";
+import { mdRegistrants, users, auditLog } from "@/db/schema";
 import { eq, sql, ilike, or, desc, count, and, isNotNull } from "drizzle-orm";
 
 export type RedemptionStatus = "registered" | "redeemed";
@@ -104,6 +104,80 @@ export async function searchRegistrants(query: string, limit = 50): Promise<Sear
     ...r,
     status: r.redeemedAt ? "redeemed" : "registered",
   }));
+}
+
+export interface RegistrantDetail {
+  id: string;
+  thaId: string | null;
+  fullName: string;
+  nationalId: string | null;
+  dateOfBirth: string | null;
+  address: string;
+  phoneNumber: string;
+  email: string | null;
+  productCategory: string | null;
+  productCategoryNote: string | null;
+  consent: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  status: RedemptionStatus;
+  redeemedAt: Date | null;
+  redeemedByName: string | null;
+}
+
+export async function getRegistrantById(id: string): Promise<RegistrantDetail | null> {
+  const [row] = await db
+    .select({
+      id: mdRegistrants.id,
+      thaId: mdRegistrants.thaId,
+      fullName: mdRegistrants.fullName,
+      nationalId: mdRegistrants.nationalId,
+      dateOfBirth: mdRegistrants.dateOfBirth,
+      address: mdRegistrants.address,
+      phoneNumber: mdRegistrants.phoneNumber,
+      email: mdRegistrants.email,
+      productCategory: mdRegistrants.productCategory,
+      productCategoryNote: mdRegistrants.productCategoryNote,
+      consent: mdRegistrants.consent,
+      createdAt: mdRegistrants.createdAt,
+      updatedAt: mdRegistrants.updatedAt,
+      redeemedAt: mdRegistrants.redeemedAt,
+      redeemedBy: mdRegistrants.redeemedBy,
+    })
+    .from(mdRegistrants)
+    .where(eq(mdRegistrants.id, id))
+    .limit(1);
+
+  if (!row) return null;
+
+  let redeemedByName: string | null = null;
+  if (row.redeemedBy) {
+    const [u] = await db
+      .select({ name: users.name, email: users.email })
+      .from(users)
+      .where(eq(users.id, row.redeemedBy))
+      .limit(1);
+    redeemedByName = u ? u.name ?? u.email ?? row.redeemedBy : row.redeemedBy;
+  }
+
+  return {
+    id: row.id,
+    thaId: row.thaId,
+    fullName: row.fullName,
+    nationalId: row.nationalId,
+    dateOfBirth: row.dateOfBirth,
+    address: row.address,
+    phoneNumber: row.phoneNumber,
+    email: row.email,
+    productCategory: row.productCategory,
+    productCategoryNote: row.productCategoryNote,
+    consent: row.consent,
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+    status: row.redeemedAt ? "redeemed" : "registered",
+    redeemedAt: row.redeemedAt,
+    redeemedByName,
+  };
 }
 
 export interface AuditEntry {

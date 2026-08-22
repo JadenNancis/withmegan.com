@@ -10,5 +10,6 @@ export {
   TOBAGO_LOCATIONS as BTS_LOCATIONS,
   OTHER_LOCATION_VALUE,
   isKnownLocation,
+  isInDistrictCommunity,
   type TobagoLocation as BtsLocation,
 } from "./tobago-locations";

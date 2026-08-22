@@ -139,7 +139,7 @@ export default async function BtsLanding() {
           <div className="flex items-baseline justify-between gap-2">
             <p className="text-sm font-semibold text-brand-900">
               <span className="text-2xl font-bold">{registered}</span>
-              <span className="text-brand-500"> / {site.goalFamilies} families registered</span>
+              <span className="text-brand-700"> / {site.goalFamilies} families registered</span>
             </p>
             <p className="text-sm font-bold text-brand-600 flex items-baseline gap-1">
               {pct}%
@@ -182,7 +182,7 @@ export default async function BtsLanding() {
           <StepCard
             step="3"
             title="Get your ID"
-            body="We message you an Application ID with a QR code. Show it on event day to collect."
+            body="You&rsquo;ll get an Application ID with a QR code on screen. Show it on event day to collect."
           />
         </SnapScrollRow>
       </section>
@@ -197,14 +197,14 @@ export default async function BtsLanding() {
             <div className="motion-safe:bts-float order-first sm:order-last mx-auto max-w-xs sm:max-w-none">
               <TobagoBooksHero className="w-full h-auto drop-shadow-xl" />
             </div>
-            <div>
+            <div className="text-center sm:text-left">
               <h2 className="text-title text-brand-900">About the programme</h2>
-              <p className="mt-3 text-body text-brand-800/90 leading-relaxed">
+              <p className="mx-auto mt-3 max-w-prose text-body text-brand-800 leading-relaxed sm:mx-0">
                 Back to School with Megan is a THA-supported community programme serving
                 Mt. St. George/Goodwood, Tobago. We connect children/students with the books and learning
                 materials they need, and every registration gets a trackable Application ID.
               </p>
-              <ul className="mt-6 grid gap-2.5">
+              <ul className="mt-6 grid gap-2.5 text-left">
                 <TrustPill icon={<PalmTreeIcon className="h-6 w-6" />} text="Mt. St. George/Goodwood, Tobago" />
                 <TrustPill icon={<SchoolBookIcon className="h-6 w-6" />} text="Primary and secondary children/students" />
                 <TrustPill icon={<PelicanIcon className="h-6 w-6" />} text="Free for every registered family" />
@@ -229,29 +229,23 @@ export default async function BtsLanding() {
       {/* ===== Breather before bottom CTA ===== */}
       <div className="h-8 sm:h-10" aria-hidden="true" />
 
-      {/* ===== Bottom CTA — short, decisive ===== */}
+      {/* ===== Bottom CTA — the button carries it, no heading needed ===== */}
       <section className="bg-gradient-to-br from-brand-900/92 to-brand-950/95 backdrop-blur-md text-white border-t border-white/10">
-        <div className="mx-auto max-w-4xl px-5 py-12 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold drop-shadow-md">Ready when you are</h2>
-          <p className="mt-2 text-body text-brand-100 drop-shadow-sm">
-            {EVENT_DATE.toLocaleDateString("en-TT", { month: "long", day: "numeric" })} closes registration.
-          </p>
+        <div className="mx-auto flex max-w-4xl flex-col items-center px-5 py-12 text-center">
           <Link
             href="/bts/register"
-            className="mt-6 inline-flex min-h-[56px] items-center justify-center rounded-xl bg-white px-10 text-lg font-bold text-brand-800 shadow-lg active:scale-95 hover:bg-brand-50 transition-all"
+            className="inline-flex min-h-[56px] w-full max-w-sm items-center justify-center rounded-xl bg-white px-10 text-lg font-bold text-brand-800 shadow-lg active:scale-95 hover:bg-brand-50 transition-all sm:w-auto"
           >
             Register a Child/Student
           </Link>
-          <p className="mt-4 text-xs text-brand-200 drop-shadow-sm">
-            {isStaff && (
-              <>
-                Already registered?{" "}
-                <Link href="/bts/recover" className="underline font-semibold">
-                  Find your Application ID
-                </Link>
-              </>
-            )}
-          </p>
+          {isStaff && (
+            <p className="mt-4 text-sm text-brand-100 drop-shadow-sm">
+              Already registered?{" "}
+              <Link href="/bts/recover" className="underline font-semibold text-white">
+                Find your Application ID
+              </Link>
+            </p>
+          )}
         </div>
       </section>
     </div>

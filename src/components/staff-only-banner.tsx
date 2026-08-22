@@ -7,7 +7,7 @@
  */
 export function StaffOnlyBanner() {
   return (
-    <div className="mb-6 rounded-xl border border-amber-300/40 bg-amber-500/15 px-4 py-3 backdrop-blur-sm">
+    <div className="mb-6 rounded-xl border border-amber-300/50 bg-amber-950/80 px-4 py-3 shadow-lg backdrop-blur-md">
       <div className="flex items-start gap-3">
         <svg
           className="mt-0.5 h-5 w-5 shrink-0 text-amber-300"
@@ -27,7 +27,7 @@ export function StaffOnlyBanner() {
           <p className="text-sm font-semibold text-amber-100">
             Staff preview
           </p>
-          <p className="mt-0.5 text-xs text-amber-200/80 leading-relaxed">
+          <p className="mt-0.5 text-xs text-amber-50/95 leading-relaxed">
             This feature is visible to administrators and staff only. It will
             be released to the public in a later phase.
           </p>

@@ -157,7 +157,7 @@ export function VolunteerManager({ site, accent }: VolunteerManagerProps) {
                     <p className="mt-0.5 text-sm text-gray-500">
                       {v.email} · {v.phone}
                     </p>
-                    <p className="mt-1.5 text-xs text-gray-400">
+                    <p className="mt-1.5 text-xs text-gray-600">
                       Preferred: <span className="text-gray-600">{shiftLabel(v.shiftId)}</span>
                     </p>
                   </div>
@@ -209,7 +209,7 @@ export function VolunteerManager({ site, accent }: VolunteerManagerProps) {
                   </span>
                 </div>
                 {shiftVolunteers.length === 0 ? (
-                  <p className="px-4 py-3 text-sm text-gray-400">No volunteers assigned yet.</p>
+                  <p className="px-4 py-3 text-sm text-gray-600">No volunteers assigned yet.</p>
                 ) : (
                   <ul className="divide-y divide-gray-100">
                     {shiftVolunteers.map((v) => (
@@ -283,7 +283,7 @@ function TabButton({
 function EmptyState({ text }: { text: string }) {
   return (
     <div className="rounded-xl border border-dashed border-white/25 bg-white/5 px-6 py-10 text-center">
-      <p className="text-sm text-white/75">{text}</p>
+      <p className="text-sm text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">{text}</p>
     </div>
   );
 }

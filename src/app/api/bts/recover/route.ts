@@ -106,6 +106,6 @@ export async function POST(req: Request) {
   return NextResponse.json({
     success: true,
     message:
-      "If a registration exists for this number, we've sent your Application ID by SMS and email.",
+      "If a registration exists for this number, we've emailed the Application ID to the address on file.",
   });
 }

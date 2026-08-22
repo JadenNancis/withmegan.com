@@ -249,7 +249,7 @@ export function BtsQrScanner() {
             value={manualId}
             onChange={(e) => setManualId(e.target.value)}
             placeholder="BTS-YYMMDD-XXXXXX"
-            className="min-h-[44px] flex-1 rounded-xl border border-gray-300 px-4 py-2.5 text-sm font-mono text-gray-900 placeholder:text-gray-400 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-200"
+            className="min-h-[44px] flex-1 rounded-xl border border-gray-300 px-4 py-2.5 text-sm font-mono text-gray-900 placeholder:text-gray-500 focus:border-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-200"
             autoComplete="off"
             spellCheck={false}
           />

@@ -54,7 +54,7 @@ export function AdminNav({
 }) {
   const links = LINKS[site];
   return (
-    <div className={cn("-mx-4 -my-5 sm:-my-8 mb-4 sm:mb-6", TAB_BAR[site])}>
+    <div className={cn("-mx-4 -mt-5 sm:-mt-8 mb-4 sm:mb-6", TAB_BAR[site])}>
       <div className="mx-auto max-w-4xl px-4">
         <nav
           aria-label="Admin sections"

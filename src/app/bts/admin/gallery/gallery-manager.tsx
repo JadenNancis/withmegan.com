@@ -129,7 +129,7 @@ export function BtsGalleryManager({ initialPhotos }: { initialPhotos: GalleryPho
         </div>
       ) : (
         <div className="space-y-3">
-          <p className="text-xs text-brand-100/70 [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]">
+          <p className="text-xs text-brand-100/95 [text-shadow:0_1px_6px_rgba(0,0,0,0.5)]">
             Photos marked &ldquo;Bundled&rdquo; ship with the site and can&rsquo;t be removed here. Uploaded photos are fully removable.
           </p>
           <div className="grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-3 lg:grid-cols-4">

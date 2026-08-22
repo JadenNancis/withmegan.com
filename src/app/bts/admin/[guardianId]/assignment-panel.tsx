@@ -103,13 +103,13 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
 
       {items.length > 0 ? (
         <div className="mt-2">
-          <p className="mb-1 text-xs text-gray-400 sm:hidden">
+          <p className="mb-1 text-xs text-gray-600 sm:hidden">
             ← Swipe to see more columns →
           </p>
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm">
             <thead>
-              <tr className="text-left text-xs uppercase text-gray-400">
+              <tr className="text-left text-xs uppercase text-gray-600">
                 <th className="py-1 pr-3 font-medium">Item</th>
                 <th className="py-1 pr-3 font-medium">Assigned</th>
                 <th className="py-1 pr-3 font-medium">Collected</th>
@@ -180,7 +180,7 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
                         className="w-32 sm:w-40 rounded-md border border-gray-300 px-2 py-1.5 text-xs"
                       />
                     ) : (
-                      <span className="text-xs text-gray-300">N/A</span>
+                      <span className="text-xs text-gray-500">N/A</span>
                     )}
                   </td>
                 </tr>
@@ -190,7 +190,7 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
           </div>
         </div>
       ) : (
-        <p className="mt-1 text-xs text-gray-400">No resources assigned yet.</p>
+        <p className="mt-1 text-xs text-gray-600">No resources assigned yet.</p>
       )}
 
       <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end sm:gap-2">
@@ -226,7 +226,7 @@ export function AssignmentPanel({ dependentId, assignments, actorEmail }: Assign
         </button>
       </div>
       {actorEmail && (
-        <p className="mt-2 text-xs text-gray-400">Changes recorded by {actorEmail}</p>
+        <p className="mt-2 text-xs text-gray-600">Changes recorded by {actorEmail}</p>
       )}
     </div>
   );

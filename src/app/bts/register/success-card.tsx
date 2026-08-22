@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { SuccessCheckmark } from "@/components/bts-illustrations";
 import { SITES } from "@/sites/site-registry";
@@ -8,30 +7,11 @@ import type { SubmitResult } from "./steps/review-step";
 
 export function SuccessCard({
   result,
-  phone,
   onRegisterAnother,
 }: {
   result: SubmitResult;
-  phone: string;
   onRegisterAnother: () => void;
 }) {
-  const [sentText, setSentText] = useState<"idle" | "sending" | "sent" | "error">("idle");
-
-  async function textMyId() {
-    setSentText("sending");
-    try {
-      const res = await fetch("/api/bts/recover", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phoneNumber: phone }),
-      });
-      if (!res.ok) throw new Error("Send failed");
-      setSentText("sent");
-    } catch {
-      setSentText("error");
-    }
-  }
-
   function downloadIcs() {
     const d = new Date(SITES.bts.eventDate + "T09:00:00");
     const pad = (n: number) => String(n).padStart(2, "0");
@@ -50,7 +30,7 @@ export function SuccessCard({
       `DTSTART:${stamp(d)}`,
       `DTEND:${stamp(end)}`,
       "SUMMARY:Back to School with Megan · Collection Day",
-      `DESCRIPTION:Your Application ID is ${result.thaId}. Show it (or the QR code we sent) at the distribution counter.`,
+      `DESCRIPTION:Your Application ID is ${result.thaId}. Show it (or your QR code) at the distribution counter.`,
       "LOCATION:Mt. St. George Community Centre\\, Tobago",
       "END:VEVENT",
       "END:VCALENDAR",
@@ -66,113 +46,71 @@ export function SuccessCard({
 
   return (
     <div className="mx-auto max-w-xl space-y-5 py-2 sm:py-6">
-      {/* Celebration header */}
-      <div className="text-center">
-        <div className="motion-safe:bts-bounce-in mx-auto mb-6 flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-brand-200 drop-shadow-lg">
+      {/* Celebration header + ID share one white surface so the copy stays
+          legible over the photographic page background. */}
+      <div className="rounded-2xl border border-brand-100 bg-white p-5 sm:p-8 text-center shadow-lg">
+        <div className="motion-safe:bts-bounce-in mx-auto mb-5 flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full bg-gradient-to-br from-brand-100 to-brand-200 drop-shadow-lg">
           <SuccessCheckmark className="h-20 w-20 sm:h-24 sm:w-24 drop-shadow-xl" />
         </div>
         <h1 className="text-title text-brand-900">You&rsquo;re all set</h1>
-        <p className="mt-3 text-body text-gray-600 max-w-md mx-auto leading-relaxed">
-          Confirmation is on its way to <span className="font-semibold text-gray-900">{phone}</span>.
-          {" "}Keep your Application ID somewhere safe, and take a screenshot of this screen. You&rsquo;ll show it on collection day.
+        <p className="mx-auto mt-3 max-w-md text-body text-gray-700 leading-relaxed">
+          Take a screenshot of this screen and keep your Application ID somewhere
+          safe. You&rsquo;ll show it on collection day.
         </p>
-      </div>
 
-      {/* ID card */}
-      <div className="rounded-2xl border-2 border-dashed border-brand-300 bg-gradient-to-br from-brand-50 to-white p-5 sm:p-8 text-center shadow-lg">
-        <p className="text-xs font-bold uppercase tracking-widest text-brand-600">
-          Your Application ID
-        </p>
-        <p className="mt-3 text-3xl sm:text-4xl font-bold font-mono tracking-wider text-brand-900 break-all leading-tight">
-          {result.thaId}
-        </p>
-        {result.qrCode && (
-          <div className="mt-5 inline-block rounded-2xl bg-white p-3 sm:p-4 shadow-md ring-1 ring-brand-100">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={result.qrCode} alt="QR code for event day" width={180} height={180} className="w-40 h-40 sm:w-[180px] sm:h-[180px]" />
-          </div>
-        )}
-        <p className="mt-4 text-sm text-gray-500">
-          {result.dependentsCount}{" "}
-          {result.dependentsCount === 1 ? "child/student" : "children/students"} registered
-        </p>
+        <div className="mt-6 rounded-2xl border-2 border-dashed border-brand-300 bg-gradient-to-br from-brand-50 to-white p-5 sm:p-6">
+          <p className="text-xs font-bold uppercase tracking-widest text-brand-700">
+            Your Application ID
+          </p>
+          <p className="mt-3 text-3xl sm:text-4xl font-bold font-mono tracking-wider text-brand-900 break-all leading-tight">
+            {result.thaId}
+          </p>
+          {result.qrCode && (
+            <div className="mt-5 inline-block rounded-2xl bg-white p-3 sm:p-4 shadow-md ring-1 ring-brand-100">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={result.qrCode} alt="QR code for event day" width={180} height={180} className="w-40 h-40 sm:w-[180px] sm:h-[180px]" />
+            </div>
+          )}
+          <p className="mt-4 text-sm text-gray-600">
+            {result.dependentsCount}{" "}
+            {result.dependentsCount === 1 ? "child/student" : "children/students"} registered
+          </p>
+        </div>
       </div>
 
       {/* Action grid */}
-      <div className="grid gap-3 sm:grid-cols-3">
-        <ActionButton
-          label="Text me my ID"
-          sub="Send ID + QR as SMS"
-          onClick={textMyId}
-          state={sentText}
-        />
-        <ActionButton
-          label="Add to calendar"
-          sub={new Date(SITES.bts.eventDate + "T12:00:00").toLocaleDateString("en-TT", {
-            month: "short",
-            day: "numeric",
-          })}
+      <div className="grid gap-3 sm:grid-cols-2">
+        <button
+          type="button"
           onClick={downloadIcs}
-        />
+          className="flex flex-col items-center justify-center rounded-xl bg-brand-700 px-4 py-4 text-center shadow-lg shadow-brand-700/25 hover:bg-brand-800 hover:shadow-xl hover:shadow-brand-700/30 active:scale-95 transition-all duration-150 min-h-[80px] text-white"
+        >
+          <span className="text-sm font-bold">Add to calendar</span>
+          <span className="mt-0.5 text-xs text-brand-100">
+            {new Date(SITES.bts.eventDate + "T12:00:00").toLocaleDateString("en-TT", {
+              month: "short",
+              day: "numeric",
+            })}
+          </span>
+        </button>
         <Link
           href="/bts"
-          className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-4 text-center shadow-sm hover:bg-gray-50 hover:border-gray-300 hover:shadow active:scale-95 transition-all duration-150 min-h-[80px]"
+          className="flex flex-col items-center justify-center rounded-xl border border-gray-300 bg-white px-4 py-4 text-center shadow-sm hover:bg-gray-50 hover:border-gray-400 hover:shadow active:scale-95 transition-all duration-150 min-h-[80px]"
         >
           <span className="text-sm font-bold text-gray-800">Back home</span>
-          <span className="text-xs text-gray-500 mt-0.5">Return to the site</span>
+          <span className="mt-0.5 text-xs text-gray-600">Return to the site</span>
         </Link>
       </div>
-
-      {sentText === "error" && (
-        <p className="text-center text-sm text-red-600 bg-red-50 rounded-xl px-4 py-3">
-          Couldn&rsquo;t send right now. Your ID above is still valid. Write it down.
-        </p>
-      )}
-
-      <p className="text-center pt-2">
-        <Link
-          href="/bts/recover"
-          className="text-xs font-semibold text-white underline underline-offset-2 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)] hover:text-brand-100 transition-colors min-h-[44px] inline-flex items-center"
-        >
-          Lost your ID later? Recover it here
-        </Link>
-      </p>
 
       <div className="text-center">
         <button
           type="button"
           onClick={onRegisterAnother}
-          className="text-xs font-semibold text-white underline underline-offset-2 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)] hover:text-brand-100 transition-colors min-h-[44px] inline-flex items-center"
+          className="text-sm font-semibold text-white underline underline-offset-2 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)] hover:text-brand-100 transition-colors min-h-[44px] inline-flex items-center"
         >
           Register another family
         </button>
       </div>
     </div>
-  );
-}
-
-function ActionButton({
-  label,
-  sub,
-  onClick,
-  state = "idle",
-}: {
-  label: string;
-  sub: string;
-  onClick: () => void;
-  state?: "idle" | "sending" | "sent" | "error";
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={state === "sending" || state === "sent"}
-      className="flex flex-col items-center justify-center rounded-xl bg-brand-600 px-4 py-4 text-center shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 active:scale-95 transition-all duration-150 min-h-[80px] disabled:opacity-70 text-white"
-    >
-      <span className="text-sm font-bold">
-        {state === "sending" ? "Sending…" : state === "sent" ? "Sent ✓" : label}
-      </span>
-      <span className="text-xs text-brand-100 mt-0.5">{sub}</span>
-    </button>
   );
 }

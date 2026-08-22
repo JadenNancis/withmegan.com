@@ -64,7 +64,7 @@ export function SnapScrollRow({ children, count, scrollerClassName, hint }: Prop
       </div>
 
       {hint && (
-        <p className="mt-2 text-center text-[10px] uppercase tracking-widest text-white/70 sm:hidden [text-shadow:0_1px_3px_rgba(0,0,0,0.5)]">
+        <p className="mt-2 text-center text-[10px] uppercase tracking-widest text-white/90 sm:hidden [text-shadow:0_1px_3px_rgba(0,0,0,0.5)]">
           {hint}
         </p>
       )}

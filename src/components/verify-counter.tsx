@@ -161,7 +161,7 @@ export function VerifyCounter() {
             onChange={(e) => onQueryChange(e.target.value)}
             placeholder="Scan barcode or type name / ID…"
             autoFocus
-            className="flex-1 rounded-lg border-2 border-amber-200 px-4 py-3 text-lg focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
+            className="flex-1 rounded-lg border-2 border-amber-200 bg-white px-4 py-3 text-lg text-gray-900 placeholder:text-gray-500 focus:border-transparent focus:ring-2 focus:ring-amber-500 focus:outline-none"
           />
           <button
             type="button"
@@ -234,19 +234,19 @@ export function VerifyCounter() {
 
           <dl className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
             <div>
-              <dt className="text-xs uppercase text-gray-400">National ID</dt>
+              <dt className="text-xs uppercase text-gray-600">National ID</dt>
               <dd className="text-gray-700">{selected.nationalId ?? "N/A"}</dd>
             </div>
             <div>
-              <dt className="text-xs uppercase text-gray-400">Date of birth</dt>
+              <dt className="text-xs uppercase text-gray-600">Date of birth</dt>
               <dd className="text-gray-700">{selected.dateOfBirth ?? "N/A"}</dd>
             </div>
             <div>
-              <dt className="text-xs uppercase text-gray-400">Phone</dt>
+              <dt className="text-xs uppercase text-gray-600">Phone</dt>
               <dd className="text-gray-700">{selected.phoneNumber}</dd>
             </div>
             <div>
-              <dt className="text-xs uppercase text-gray-400">Address</dt>
+              <dt className="text-xs uppercase text-gray-600">Address</dt>
               <dd className="text-gray-700">{selected.address}</dd>
             </div>
           </dl>

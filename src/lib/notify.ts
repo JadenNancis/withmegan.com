@@ -2,16 +2,16 @@
  * Post-registration notification helper.
  *
  * Called by both BTS and MD register API routes after a successful
- * database insert. Sends SMS, WhatsApp, and email with the
- * Application ID and QR code (email only). Falls back to console
- * logging when no real providers are configured.
+ * database insert. Email is the only channel: the Application ID and QR
+ * code are shown on screen at the end of registration, and the email is
+ * the backup copy. Falls back to console logging when no real email
+ * provider is configured.
  */
 
-import { sendSms, sendWhatsapp, toE164 } from "./notifications";
 import { sendEmail } from "./email";
 import {
-  registrationSmsBody,
   registrationEmailHtml,
+  eventReminderEmailHtml,
 } from "./notification-templates";
 import type { SiteKey } from "@/sites/site-registry";
 
@@ -24,79 +24,53 @@ export interface PostRegistrationParams {
 }
 
 /**
- * Send registration confirmation across all available channels.
- * Never throws — notification failures are logged but don't block
- * the registration response.
+ * Email the registration confirmation. Never throws — notification
+ * failures are logged but don't block the registration response.
  */
 export async function notifyRegistrationConfirmed(
   params: PostRegistrationParams,
 ): Promise<void> {
-  const { siteKey, applicationId, recipientName, phoneNumber, email } = params;
-  const smsBody = registrationSmsBody({ siteKey, applicationId, recipientName });
-  const e164 = toE164(phoneNumber);
+  const { siteKey, applicationId, recipientName, email } = params;
 
-  // SMS
-  if (e164) {
-    void sendSms(e164, smsBody).catch((e) =>
-      console.error("[notify] SMS failed:", e),
-    );
-    void sendWhatsapp(e164, smsBody).catch((e) =>
-      console.error("[notify] WhatsApp failed:", e),
-    );
-  }
+  if (!email || !email.trim()) return;
 
-  // Email with QR code
-  if (email && email.trim()) {
-    try {
-      const html = await registrationEmailHtml({
-        siteKey,
-        applicationId,
-        recipientName,
-      });
-      void sendEmail({
-        to: email,
-        subject: `Registration Confirmation · ${applicationId}`,
-        html,
-        site: siteKey,
-      }).catch((e) => console.error("[notify] Email failed:", e));
-    } catch (e) {
-      console.error("[notify] Email template build failed:", e);
-    }
+  try {
+    const html = await registrationEmailHtml({
+      siteKey,
+      applicationId,
+      recipientName,
+    });
+    void sendEmail({
+      to: email,
+      subject: `Registration Confirmation · ${applicationId}`,
+      html,
+      site: siteKey,
+    }).catch((e) => console.error("[notify] Email failed:", e));
+  } catch (e) {
+    console.error("[notify] Email template build failed:", e);
   }
 }
 
 /**
- * Send event reminder 48h before.
+ * Email an event reminder ahead of collection day.
  * Called by a cron job or admin trigger.
  */
 export async function notifyEventReminder(
   params: PostRegistrationParams,
 ): Promise<void> {
-  const { siteKey, applicationId, recipientName, phoneNumber } = params;
-  const e164 = toE164(phoneNumber);
-  const body = `Reminder: ${recipientName}, your Application ID ${applicationId}. Event is tomorrow. Bring your ID!`;
+  const { siteKey, applicationId, recipientName, email } = params;
 
-  if (e164) {
-    void sendSms(e164, body).catch((e) =>
-      console.error("[notify] Reminder SMS failed:", e),
-    );
-  }
-}
+  if (!email || !email.trim()) return;
 
-/**
- * Send post-event survey.
- */
-export async function notifyPostEventSurvey(
-  params: PostRegistrationParams,
-): Promise<void> {
-  const { siteKey, applicationId, recipientName, phoneNumber } = params;
-  const e164 = toE164(phoneNumber);
-  const { surveySmsBody } = await import("./notification-templates");
-  const body = surveySmsBody({ siteKey, applicationId, recipientName });
-
-  if (e164) {
-    void sendSms(e164, body).catch((e) =>
-      console.error("[notify] Survey SMS failed:", e),
-    );
+  try {
+    const html = eventReminderEmailHtml({ siteKey, applicationId, recipientName });
+    void sendEmail({
+      to: email,
+      subject: `Event Reminder · ${applicationId}`,
+      html,
+      site: siteKey,
+    }).catch((e) => console.error("[notify] Reminder email failed:", e));
+  } catch (e) {
+    console.error("[notify] Reminder template build failed:", e);
   }
 }

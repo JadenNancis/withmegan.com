@@ -156,7 +156,7 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
         {/* Comments */}
         <div>
           <label htmlFor="comments" className="mb-1 block text-sm font-semibold text-gray-800">
-            Any comments? <span className="font-normal text-gray-400">(optional)</span>
+            Any comments? <span className="font-normal text-gray-500">(optional)</span>
           </label>
           <textarea
             id="comments"
@@ -164,7 +164,7 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
             onChange={(e) => setComments(e.target.value)}
             rows={4}
             placeholder="Share what worked well or what could be improved…"
-            className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-brand-500 focus:shadow-[0_0_0_4px_rgba(8,145,178,0.12)] focus:outline-none transition-all"
+            className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-500 focus:border-brand-500 focus:shadow-[0_0_0_4px_rgba(8,145,178,0.12)] focus:outline-none transition-all"
           />
         </div>
 
@@ -179,7 +179,7 @@ export default function BtsSurveyPage({ searchParams }: { searchParams: Promise<
         <button
           type="submit"
           disabled={submitting}
-          className="w-full inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 hover:-translate-y-px active:translate-y-0 disabled:opacity-60 disabled:pointer-events-none disabled:shadow-sm transition-all duration-150"
+          className="w-full inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-700 px-6 text-base font-bold text-white shadow-lg shadow-brand-700/25 hover:bg-brand-800 hover:shadow-xl hover:shadow-brand-700/30 hover:-translate-y-px active:translate-y-0 disabled:opacity-60 disabled:pointer-events-none disabled:shadow-sm transition-all duration-150"
         >
           {submitting ? "Submitting…" : "Submit survey"}
         </button>

@@ -13,6 +13,8 @@ export interface SiteConfig {
   key: SiteKey;
   /** Canonical production host, without protocol or port. */
   host: string;
+  /** Additional hosts that resolve to this site (e.g. a shorter brand domain). */
+  aliasHosts?: string[];
   /** Display name shown in the header / title. */
   name: string;
   /** Compact name for mobile headers where space is tight. */
@@ -43,7 +45,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     key: "bts",
     host: "backtoschoolwithmegan.tha.tt",
     name: "Back to School with Megan",
-    shortName: "Back to School with Megan",
+    shortName: "Back to School",
     tagline: "Book Drive · Mt. St. George/Goodwood, Tobago",
     eventDate: "2026-08-30",
     accent: "cyan",
@@ -54,6 +56,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
       { label: "Home", href: "/bts" },
       { label: "Register", href: "/bts/register" },
       { label: "Volunteer", href: "/bts/volunteer" },
+      { label: "Supporters", href: "/bts/supporters" },
       { label: "ID", href: "/bts/recover" },
       { label: "Progress", href: "/bts/progress" },
       { label: "Gallery", href: "/bts/gallery" },
@@ -63,8 +66,9 @@ export const SITES: Record<SiteKey, SiteConfig> = {
   md: {
     key: "md",
     host: "marketdaywithmegan.tha.tt",
+    aliasHosts: ["mdwithmegan.com", "www.mdwithmegan.com"],
     name: "Market Day with Megan",
-    shortName: "Market Day with Megan",
+    shortName: "Market Day",
     tagline: "Hamper Distribution · Mt. St. George/Goodwood, Tobago",
     eventDate: "2026-09-06",
     accent: "amber",
@@ -82,6 +86,17 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     ],
   },
 };
+
+/**
+ * Parse a site's `eventDate` ("YYYY-MM-DD") into a Date safe for display.
+ *
+ * A bare date string is parsed as UTC midnight, so formatting it in Tobago
+ * (UTC−4) rolls it back to the previous day. Anchoring at local noon keeps
+ * the calendar date correct in every timezone the programme is viewed from.
+ */
+export function parseEventDate(eventDate: string): Date {
+  return new Date(`${eventDate}T12:00:00`);
+}
 
 /**
  * Resolve which site the incoming request belongs to.
@@ -103,9 +118,10 @@ export function resolveSite(hostHeader: string | null, searchParams?: URLSearchP
   if (btsHost && host === btsHost.split(":")[0]) return SITES.bts;
   if (mdHost && host === mdHost.split(":")[0]) return SITES.md;
 
-  // 3. Production hosts.
-  if (host === SITES.bts.host) return SITES.bts;
-  if (host === SITES.md.host) return SITES.md;
+  // 3. Production hosts (canonical + aliases).
+  for (const site of [SITES.bts, SITES.md]) {
+    if (host === site.host || site.aliasHosts?.includes(host)) return site;
+  }
 
   // 4. Fallback.
   return SITES.bts;

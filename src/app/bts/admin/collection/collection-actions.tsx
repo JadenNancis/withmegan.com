@@ -88,13 +88,13 @@ export function CollectionActions({ dependentId, studentName, assignments }: Col
             Collection status
           </p>
           {items.length === 0 ? (
-            <p className="mt-1 text-sm text-gray-400">No items assigned for this child yet.</p>
+            <p className="mt-1 text-sm text-gray-600">No items assigned for this child yet.</p>
           ) : (
             <ul className="mt-2 space-y-1.5">
               {items.map((a) => (
                 <li key={a.id} className="flex flex-wrap items-center gap-2 text-sm">
                   <span className="font-medium text-gray-800">{a.itemName}</span>
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs text-gray-600">
                     {a.quantityCollected}/{a.quantityAssigned}
                   </span>
                   <span className={cn("rounded-full px-2 py-0.5 text-xs font-semibold", STATUS_STYLES[a.status])}>

@@ -151,7 +151,7 @@ function UserCard({
           )}
         </div>
         <p className="text-xs text-gray-500 truncate">{user.email}</p>
-        <p className="text-[11px] text-gray-400 mt-0.5">
+        <p className="text-[11px] text-gray-600 mt-0.5">
           Joined {new Date(user.createdAt).toLocaleDateString("en-TT")}
         </p>
       </div>

@@ -168,7 +168,7 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
         {/* Comments */}
         <div>
           <label htmlFor="comments" className="mb-1 block text-sm font-semibold text-gray-800">
-            Any comments? <span className="font-normal text-gray-400">(optional)</span>
+            Any comments? <span className="font-normal text-gray-500">(optional)</span>
           </label>
           <textarea
             id="comments"
@@ -176,7 +176,7 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
             onChange={(e) => setComments(e.target.value)}
             rows={4}
           placeholder="Share what worked well or what could be improved…"
-            className="w-full rounded-xl border border-gray-300 px-4 py-3 text-base text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-amber-500 focus:shadow-[0_0_0_4px_rgba(217,119,6,0.12)] focus:outline-none transition-all"
+            className="w-full rounded-xl border border-gray-300 px-4 py-3 text-base text-gray-900 shadow-sm placeholder:text-gray-500 focus:border-amber-500 focus:shadow-[0_0_0_4px_rgba(217,119,6,0.12)] focus:outline-none transition-all"
           />
         </div>
 
@@ -191,7 +191,7 @@ export default function MdSurveyPage({ searchParams }: { searchParams: Promise<{
         <button
           type="submit"
           disabled={submitting}
-          className="motion-safe:md-animate-pulse-warm inline-flex w-full min-h-[56px] items-center justify-center rounded-xl bg-amber-500 px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-amber-600/25 transition-all hover:bg-amber-600 active:scale-95 disabled:opacity-60 disabled:shadow-sm"
+          className="motion-safe:md-animate-pulse-warm inline-flex w-full min-h-[56px] items-center justify-center rounded-xl bg-amber-600 px-6 py-3.5 text-base font-bold text-white shadow-lg shadow-amber-600/25 transition-all hover:bg-amber-700 active:scale-95 disabled:opacity-60 disabled:shadow-sm"
         >
           {submitting ? "Submitting…" : "Submit Survey"}
         </button>

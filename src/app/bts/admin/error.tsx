@@ -24,7 +24,7 @@ export default function BtsAdminError({
           </svg>
         </div>
         <h1 className="text-xl font-bold text-white">Admin page error</h1>
-        <p className="mt-2 text-sm text-white/70">
+        <p className="mt-2 text-sm text-white/90">
           This section could not be loaded. The live database may be missing
           the latest updates. Try again, or sync the database below.
         </p>

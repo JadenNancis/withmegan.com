@@ -67,7 +67,7 @@ export default async function BtsProgressPage() {
               </p>
               <p className="mt-1 text-5xl sm:text-6xl font-bold text-brand-900 tabular-nums">
                 {total}
-                <span className="text-2xl sm:text-3xl text-brand-400 font-semibold"> / {GOAL}</span>
+                <span className="text-2xl sm:text-3xl text-brand-600 font-semibold"> / {GOAL}</span>
               </p>
             </div>
             <p className="text-sm font-semibold text-brand-700">

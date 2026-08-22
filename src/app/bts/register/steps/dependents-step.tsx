@@ -91,7 +91,7 @@ export function DependentsStep({
   }
 
   return (
-    <section className="space-y-5">
+    <section className="sticky-cta-host space-y-5">
       <div className="rounded-2xl border border-brand-100 bg-white p-5 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)]">
         <h2 className="text-xl font-bold text-brand-900">Add your children/students</h2>
         <p className="mt-1 text-sm text-brand-700">
@@ -236,7 +236,7 @@ export function DependentsStep({
         <button
           type="button"
           onClick={onNext}
-          className="flex-1 inline-flex min-h-[52px] sm:min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 active:scale-95 transition-all duration-150"
+          className="flex-1 inline-flex min-h-[52px] sm:min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-700 px-6 text-base font-bold text-white shadow-lg shadow-brand-700/25 hover:bg-brand-800 hover:shadow-xl hover:shadow-brand-700/30 active:scale-95 transition-all duration-150"
         >
           Continue
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">

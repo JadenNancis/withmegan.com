@@ -58,7 +58,7 @@ export function DatabaseSyncButton({ onSynced }: { onSynced?: () => void }) {
   return (
     <div className="mt-6 rounded-xl border border-white/15 bg-white/10 p-4 text-left backdrop-blur-sm">
       <p className="text-sm font-semibold text-white">Need a hand?</p>
-      <p className="mt-1 text-sm text-white/70">
+      <p className="mt-1 text-sm text-white/90">
         This page queries fields that may not be on the live database yet. If
         you are an administrator, one tap applies the pending schema updates
         and reloads.

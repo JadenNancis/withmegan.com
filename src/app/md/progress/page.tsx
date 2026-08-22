@@ -46,7 +46,7 @@ export default async function MdProgressPage() {
   return (
     <div className="space-y-0">
       {/* ===== Hero ===== */}
-      <section className="relative -mx-4 -mt-8 mb-0 overflow-hidden bg-gradient-to-br from-amber-900 via-orange-900 to-amber-700">
+      <section className="relative -mx-4 -mt-5 sm:-mt-8 overflow-hidden bg-gradient-to-br from-amber-900 via-orange-900 to-amber-700">
         <div className="md-hero-shimmer absolute inset-0 opacity-20 pointer-events-none" />
         <div className="relative mx-auto max-w-4xl px-4 py-12 text-center text-white">
           <div className="motion-safe:md-animate-fade-in-up mx-auto mb-4">
@@ -72,7 +72,7 @@ export default async function MdProgressPage() {
               </p>
               <p className="mt-1 text-5xl sm:text-6xl font-bold text-amber-900">
                 {total}
-                <span className="text-2xl sm:text-3xl text-amber-400"> / {GOAL}</span>
+                <span className="text-2xl sm:text-3xl text-amber-600"> / {GOAL}</span>
               </p>
             </div>
             <p className="text-sm text-amber-700">

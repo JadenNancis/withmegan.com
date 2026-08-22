@@ -299,7 +299,7 @@ export function InventoryManager({ initialItems }: InventoryManagerProps) {
         </div>
       ) : (
         <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-          <p className="px-4 py-2 text-xs text-gray-400 border-b border-gray-100 sm:hidden">
+          <p className="px-4 py-2 text-xs text-gray-600 border-b border-gray-100 sm:hidden">
             &larr; Swipe to see more columns &rarr;
           </p>
           <div className="overflow-x-auto">
@@ -332,10 +332,10 @@ export function InventoryManager({ initialItems }: InventoryManagerProps) {
                         <td className="px-4 py-3 text-sm">
                           <div className="font-medium text-gray-900">{item.itemName}</div>
                           {item.condition && (
-                            <div className="text-xs text-gray-400">{item.condition}</div>
+                            <div className="text-xs text-gray-600">{item.condition}</div>
                           )}
                           {item.notes && (
-                            <div className="text-xs text-gray-400 mt-0.5">{item.notes}</div>
+                            <div className="text-xs text-gray-600 mt-0.5">{item.notes}</div>
                           )}
                         </td>
                         <td className="px-4 py-3 text-sm">
@@ -355,7 +355,7 @@ export function InventoryManager({ initialItems }: InventoryManagerProps) {
                         <td className="px-4 py-3 text-sm">
                           <span className={cn(
                             "font-bold",
-                            item.quantityAvailable > 0 ? "text-cyan-700" : "text-gray-400",
+                            item.quantityAvailable > 0 ? "text-cyan-700" : "text-gray-600",
                           )}>
                             {item.quantityAvailable}
                           </span>
@@ -488,7 +488,7 @@ function EditRow({
           Cancel
         </button>
       </div>
-      <p className="mt-2 text-xs text-gray-400">
+      <p className="mt-2 text-xs text-gray-600">
         {item.quantityAssigned} already assigned. Reducing below this will show negative availability.
       </p>
     </td>

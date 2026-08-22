@@ -34,7 +34,7 @@ export function ReviewStep({
   submitting: boolean;
 }) {
   return (
-    <section className="space-y-5">
+    <section className="sticky-cta-host space-y-5">
       <div className="rounded-2xl border border-brand-100 bg-white p-5 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)]">
         <h2 className="text-xl font-bold text-brand-900">Almost done</h2>
         <p className="mt-1 text-sm text-brand-700">
@@ -105,7 +105,7 @@ export function ReviewStep({
           type="button"
           onClick={onSubmit}
           disabled={submitting}
-          className="flex-1 inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-lg font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 active:scale-95 transition-all duration-150 disabled:opacity-60"
+          className="flex-1 inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-700 px-6 text-lg font-bold text-white shadow-lg shadow-brand-700/25 hover:bg-brand-800 hover:shadow-xl hover:shadow-brand-700/30 active:scale-95 transition-all duration-150 disabled:opacity-60"
         >
           {submitting ? "Submitting…" : "Submit registration"}
           {!submitting && (

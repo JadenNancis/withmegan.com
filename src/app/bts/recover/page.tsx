@@ -48,11 +48,11 @@ export default function BtsRecoverPage() {
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-cyan-100 to-cyan-50 shadow-sm">
               <TobagoMapBadge className="h-9 w-9" />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Check your messages</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Check your email</h1>
             <p className="mt-2 max-w-md text-sm text-brand-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
               If a registration exists for{" "}
-              <span className="font-semibold text-white">{phone}</span>, we&rsquo;ve sent
-              your Application ID by SMS{""} and email (if you gave us one).
+              <span className="font-semibold text-white">{phone}</span>, we&rsquo;ve emailed
+              the Application ID to the address on file.
             </p>
           </div>
         </section>
@@ -85,7 +85,7 @@ export default function BtsRecoverPage() {
           <h1 className="text-2xl sm:text-3xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Find my Application ID</h1>
           <p className="mt-3 max-w-md text-sm text-brand-100 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
             Enter the phone number you registered with. If we have it on file, we&rsquo;ll
-            text your ID and QR code.
+            email the Application ID to the address on record.
           </p>
         </div>
       </section>
@@ -119,9 +119,9 @@ export default function BtsRecoverPage() {
           <button
             type="submit"
             disabled={submitting || phone.replace(/\D/g, "").length < 7}
-            className="w-full inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 active:scale-95 disabled:opacity-60 disabled:pointer-events-none disabled:shadow-sm transition-all duration-150"
+            className="w-full inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-700 px-6 text-base font-bold text-white shadow-lg shadow-brand-700/25 hover:bg-brand-800 hover:shadow-xl hover:shadow-brand-700/30 active:scale-95 disabled:opacity-60 disabled:pointer-events-none disabled:shadow-sm transition-all duration-150"
           >
-            {submitting ? "Sending…" : "Text me my ID"}
+            {submitting ? "Sending…" : "Email me my ID"}
           </button>
         </form>
 

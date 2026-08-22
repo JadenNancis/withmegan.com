@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
 import { getAllGuardians } from "@/lib/bts-queries";
+import { ClickableTableRow } from "@/components/clickable-table-row";
 import { SchoolBookIcon } from "@/components/bts-illustrations";
 
 export const dynamic = "force-dynamic";
@@ -135,9 +136,11 @@ export default async function BtsAdminDashboard({
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {guardians.map((g, i) => (
-                    <tr
+                    <ClickableTableRow
                       key={g.id}
-                      className={`hover:bg-cyan-50/40 transition-colors bts-fade-in-up bts-stagger-${Math.min(i + 1, 7)}`}
+                      href={`/bts/admin/${g.id}`}
+                      label={`View application ${g.thaId ?? g.fullName}`}
+                      className={`hover:bg-cyan-50/40 bts-fade-in-up bts-stagger-${Math.min(i + 1, 7)}`}
                     >
                       <td className="px-4 py-3 text-sm font-mono font-medium text-cyan-700">
                         {g.thaId ?? "N/A"}
@@ -159,14 +162,11 @@ export default async function BtsAdminDashboard({
                         })}
                       </td>
                       <td className="px-4 py-3 text-sm">
-                        <Link
-                          href={`/bts/admin/${g.id}`}
-                          className="inline-flex items-center font-bold text-cyan-600 hover:text-cyan-800 transition-colors py-1"
-                        >
+                        <span className="inline-flex items-center font-bold text-cyan-600">
                           Details &rarr;
-                        </Link>
+                        </span>
                       </td>
-                    </tr>
+                    </ClickableTableRow>
                   ))}
                 </tbody>
               </table>

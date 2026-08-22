@@ -32,7 +32,7 @@ export function GuardianStep({
     state.studentCount > 1 ? String(state.studentCount) : "",
   );
   return (
-    <section className="rounded-2xl border border-brand-100 bg-white p-5 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] space-y-1">
+    <section className="sticky-cta-host rounded-2xl border border-brand-100 bg-white p-5 sm:p-8 shadow-[0_4px_24px_-8px_rgba(0,0,0,0.08)] space-y-1">
       <h2 className="text-xl font-bold text-brand-900">Tell us about you</h2>
       <p className="mt-1 text-sm text-brand-700 mb-6">
         A couple of quick details so we can get your Application ID to you on time.
@@ -70,8 +70,8 @@ export function GuardianStep({
           autoComplete="tel"
           placeholder="(868) 123-4567"
         />
-        <p className="mt-1.5 text-sm text-gray-500">
-          We&rsquo;ll text your Application ID here so you have it on event day.
+        <p className="mt-1.5 text-sm text-gray-600">
+          So we can reach you about your registration.
         </p>
       </Field>
 
@@ -84,8 +84,8 @@ export function GuardianStep({
           autoComplete="email"
           placeholder="backup@youremail.com"
         />
-        <p className="mt-1.5 text-sm text-gray-500">
-          Optional. Helpful if SMS doesn&rsquo;t reach you.
+        <p className="mt-1.5 text-sm text-gray-600">
+          Optional. We&rsquo;ll email your Application ID as a backup copy.
         </p>
       </Field>
 
@@ -140,7 +140,7 @@ export function GuardianStep({
         <button
           type="button"
           onClick={onNext}
-          className="w-full inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-600 px-6 text-base font-bold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 hover:shadow-xl hover:shadow-brand-600/30 active:scale-95 transition-all duration-150"
+          className="w-full inline-flex min-h-[56px] items-center justify-center gap-2 rounded-xl bg-brand-700 px-6 text-base font-bold text-white shadow-lg shadow-brand-700/25 hover:bg-brand-800 hover:shadow-xl hover:shadow-brand-700/30 active:scale-95 transition-all duration-150"
         >
           Continue
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" aria-hidden="true">

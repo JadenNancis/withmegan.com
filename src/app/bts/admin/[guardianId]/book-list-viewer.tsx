@@ -129,7 +129,7 @@ export function BookListViewer({ bookListUrl, studentName }: BookListViewerProps
                 <div className="relative">
                   {!iframeLoaded && (
                     <div className="flex h-64 items-center justify-center rounded-md bg-gray-50">
-                      <div className="flex flex-col items-center gap-2 text-gray-400">
+                      <div className="flex flex-col items-center gap-2 text-gray-600">
                         <div className="h-6 w-6 animate-spin rounded-full border-2 border-gray-300 border-t-blue-500" />
                         <p className="text-xs">Loading document…</p>
                       </div>

@@ -210,7 +210,7 @@ export function MdQrScanner() {
               onClick={startCamera}
               disabled={cameraState === "starting"}
               className={cn(
-                "inline-flex min-h-[44px] items-center justify-center rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-bold text-white shadow-md transition-colors hover:bg-amber-600",
+                "inline-flex min-h-[44px] items-center justify-center rounded-lg bg-amber-600 px-5 py-2.5 text-sm font-bold text-white shadow-md transition-colors hover:bg-amber-700",
                 cameraState === "starting" && "opacity-60",
               )}
             >
@@ -240,7 +240,7 @@ export function MdQrScanner() {
             value={manualId}
             onChange={(e) => setManualId(e.target.value)}
             placeholder="MD-YYMMDD-XXXXXX"
-            className="min-h-[44px] flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-mono text-gray-900 placeholder:text-gray-400 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+            className="min-h-[44px] flex-1 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-mono text-gray-900 placeholder:text-gray-500 focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
             autoComplete="off"
             spellCheck={false}
           />
@@ -248,7 +248,7 @@ export function MdQrScanner() {
             type="submit"
             disabled={!manualId.trim()}
             className={cn(
-              "inline-flex min-h-[44px] items-center justify-center rounded-lg bg-amber-500 px-6 py-2.5 text-sm font-bold text-white shadow-md transition-colors hover:bg-amber-600",
+              "inline-flex min-h-[44px] items-center justify-center rounded-lg bg-amber-600 px-6 py-2.5 text-sm font-bold text-white shadow-md transition-colors hover:bg-amber-700",
               !manualId.trim() && "opacity-60",
             )}
           >

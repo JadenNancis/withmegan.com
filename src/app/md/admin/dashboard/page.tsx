@@ -1,5 +1,5 @@
 import { requireAdmin } from "@/lib/require-admin";
-import { SITES } from "@/sites/site-registry";
+import { SITES, parseEventDate } from "@/sites/site-registry";
 import { AdminNav } from "@/components/admin-nav";
 import { LiveStats } from "./live-stats";
 
@@ -11,7 +11,7 @@ export default async function MdDashboardPage() {
   void user;
 
   const site = SITES.md;
-  const eventDate = new Date(site.eventDate);
+  const eventDate = parseEventDate(site.eventDate);
 
   return (
     <div className="min-h-screen text-white flex flex-col">
@@ -34,7 +34,7 @@ export default async function MdDashboardPage() {
               day: "numeric",
             })}
           </p>
-          <p className="text-xs text-amber-100/70 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Projected view · auto-refresh every 10s</p>
+          <p className="text-xs text-amber-100/95 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Projected view · auto-refresh every 10s</p>
         </div>
       </header>
 
@@ -42,7 +42,7 @@ export default async function MdDashboardPage() {
         <LiveStats site="md" />
       </main>
 
-      <footer className="border-t border-white/20 bg-amber-950/40 backdrop-blur-md px-6 py-3 text-center text-xs text-amber-100/80 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
+      <footer className="border-t border-white/20 bg-amber-950/40 backdrop-blur-md px-6 py-3 text-center text-xs text-amber-100/95 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
         {site.name} · {site.tagline}
       </footer>
     </div>

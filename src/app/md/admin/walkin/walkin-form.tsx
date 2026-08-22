@@ -136,7 +136,7 @@ export function WalkInForm() {
           <button
             type="button"
             onClick={resetForm}
-            className="md-animate-pulse-warm inline-flex items-center justify-center rounded-xl bg-amber-500 px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-amber-600 transition-colors min-h-[44px]"
+            className="md-animate-pulse-warm inline-flex items-center justify-center rounded-xl bg-amber-600 px-6 py-3 text-sm font-bold text-white shadow-md hover:bg-amber-700 transition-colors min-h-[44px]"
           >
             Register Another Walk-In
           </button>
@@ -251,8 +251,9 @@ export function WalkInForm() {
 
       <div className="flex flex-col sm:flex-row gap-3">
         <SubmitButton
+          tone="amber"
           className={cn(
-            "min-h-[56px] px-8 text-lg bg-amber-500 hover:bg-amber-600 md-animate-pulse-warm",
+            "px-8 text-lg md-animate-pulse-warm",
             submitting && "opacity-60 cursor-not-allowed",
           )}
         >

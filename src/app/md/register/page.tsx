@@ -7,6 +7,7 @@ import { cn } from "@/lib/cn";
 import { BasketIcon, FloatingProduce } from "@/components/md-illustrations";
 import { TOBAGO_LOCATIONS, OTHER_LOCATION_VALUE } from "@/lib/tobago-locations";
 import { formatTtPhone, isValidTtPhone } from "@/lib/tt-phone";
+import { InterestCard } from "./interest-card";
 
 type Errors = Partial<Record<string, string>>;
 
@@ -21,6 +22,7 @@ export default function MdRegisterPage() {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState<SuccessResult | null>(null);
   const [qrCode, setQrCode] = useState<string | null>(null);
+  const [waitlistCommunity, setWaitlistCommunity] = useState<string | null>(null);
 
   // Controlled fields
   const [fullName, setFullName] = useState("");
@@ -51,6 +53,23 @@ export default function MdRegisterPage() {
     return e;
   }
 
+  function resetForAnother() {
+    setSuccess(null);
+    setWaitlistCommunity(null);
+    setQrCode(null);
+    setFullName("");
+    setNationalId("");
+    setDateOfBirth("");
+    setAddress("");
+    setManualAddress("");
+    setPhoneNumber("");
+    setEmail("");
+    setProductCategory("");
+    setProductCategoryNote("");
+    setConsent(false);
+    window.scrollTo({ top: 0 });
+  }
+
   async function handleSubmit(ev: React.FormEvent) {
     ev.preventDefault();
     setSubmitError(null);
@@ -78,8 +97,23 @@ export default function MdRegisterPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const json = (await res.json()) as { success?: boolean; thaId?: string; error?: string };
-      if (res.ok && json.success && json.thaId) {
+      const json = (await res.json()) as {
+        success?: boolean;
+        served?: boolean;
+        thaId?: string;
+        error?: string;
+      };
+      if (res.ok && json.success) {
+        // Outside the served district — recorded as interest, no ID or QR.
+        if (json.served === false) {
+          setWaitlistCommunity(payload.address);
+          window.scrollTo({ top: 0 });
+          return;
+        }
+        if (!json.thaId) {
+          setSubmitError("Registration failed. Please try again.");
+          return;
+        }
         setSuccess({ thaId: json.thaId, fullName });
         // Fetch QR code
         try {
@@ -97,6 +131,10 @@ export default function MdRegisterPage() {
     } finally {
       setSubmitting(false);
     }
+  }
+
+  if (waitlistCommunity) {
+    return <InterestCard community={waitlistCommunity} onRegisterAnother={resetForAnother} />;
   }
 
   if (success) {
@@ -140,20 +178,8 @@ export default function MdRegisterPage() {
           </Link>
           <button
             type="button"
-            onClick={() => {
-              setSuccess(null);
-              setFullName("");
-              setNationalId("");
-              setDateOfBirth("");
-              setAddress("");
-              setManualAddress("");
-              setPhoneNumber("");
-              setEmail("");
-              setProductCategory("");
-              setProductCategoryNote("");
-              setConsent(false);
-            }}
-            className="motion-safe:md-animate-pulse-warm inline-flex justify-center min-h-[52px] items-center rounded-xl bg-amber-500 px-5 text-sm font-semibold text-white hover:bg-amber-600 active:scale-95 transition-all"
+            onClick={resetForAnother}
+            className="motion-safe:md-animate-pulse-warm inline-flex justify-center min-h-[52px] items-center rounded-xl bg-amber-600 px-5 text-sm font-semibold text-white hover:bg-amber-700 active:scale-95 transition-all"
           >
             Register another person
           </button>
@@ -167,12 +193,12 @@ export default function MdRegisterPage() {
       {/* Animated header — frosted-glass plate over the shimmer keeps copy
           legible at any screen width while staying on-brand. */}
       <div className="relative overflow-hidden rounded-2xl md-hero-shimmer shadow-lg">
-        {/* Soft dark scrim behind the text plate (right side where copy sits) so
-            white stays legible as the shimmer gradient sweeps through its
-            lightest amber (which would otherwise wash out white). */}
+        {/* Soft dark scrim behind the text plate — the title spans most of the
+            plate on mobile, so the veil must stay strong across it, with only
+            the far right edge lightening. White text needs ~4.5:1 everywhere. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 bg-gradient-to-l from-amber-900/45 via-amber-900/15 to-transparent"
+          className="absolute inset-0 bg-gradient-to-r from-amber-950/90 via-amber-900/75 to-amber-900/65"
         />
         <div className="relative flex items-center gap-4 px-5 py-5 sm:px-6 sm:py-6">
           <BasketIcon className="w-10 h-10 sm:w-12 sm:h-12 flex-none drop-shadow-lg motion-safe:md-animate-basket-sway" />
@@ -194,7 +220,7 @@ export default function MdRegisterPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="motion-safe:md-animate-fade-in-up motion-safe:md-delay-1 rounded-2xl border border-amber-200 bg-white p-5 sm:p-6 space-y-0 shadow-sm" noValidate>
+      <form onSubmit={handleSubmit} className="sticky-cta-host motion-safe:md-animate-fade-in-up motion-safe:md-delay-1 rounded-2xl border border-amber-200 bg-white p-5 sm:p-6 space-y-0 shadow-sm" noValidate>
         <Field label="Full name" htmlFor="fullName" required error={errors.fullName}>
           <TextInput
             id="fullName"
@@ -313,7 +339,11 @@ export default function MdRegisterPage() {
         </div>
 
         <div className="sticky-cta flex flex-col sm:flex-row gap-3">
-          <SubmitButton className={cn("md:min-h-14 bg-amber-500 hover:bg-amber-600 active:scale-95 motion-safe:md-animate-pulse-warm")}>
+          <SubmitButton
+            tone="amber"
+            disabled={submitting}
+            className={cn("motion-safe:md-animate-pulse-warm")}
+          >
             {submitting ? "Submitting…" : "Register"}
           </SubmitButton>
           <Link

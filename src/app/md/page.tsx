@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { SITES } from "@/sites/site-registry";
+import { SITES, parseEventDate } from "@/sites/site-registry";
 import { auth } from "@/auth";
 import { getGalleryPhotoUrls } from "@/lib/gallery-photos";
 import { RotatingGallery } from "@/components/rotating-gallery";
@@ -51,7 +51,7 @@ export default async function MdLanding() {
   const session = await auth();
   const role = (session?.user as { role?: string } | undefined)?.role;
   const isStaff = role === "admin" || role === "staff";
-  const eventDate = new Date(site.eventDate);
+  const eventDate = parseEventDate(site.eventDate);
   const formattedDate = eventDate.toLocaleDateString("en-TT", {
     weekday: "long",
     year: "numeric",
@@ -62,7 +62,7 @@ export default async function MdLanding() {
   return (
     <div className="space-y-0">
       {/* ──────── Hero Section — full-bleed ──────── */}
-      <section className="-mx-4 -my-5 sm:-my-8 mb-0 relative overflow-hidden bg-amber-950">
+      <section className="-mx-4 -mt-5 sm:-mt-8 relative overflow-hidden bg-amber-950">
         <Image
           src="/images/tobago/md-exotic-fruits.jpg"
           alt=""
@@ -127,7 +127,7 @@ export default async function MdLanding() {
           <div className="motion-safe:md-animate-fade-in-up motion-safe:md-delay-2 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-5 sm:p-6 shadow-sm flex flex-col justify-center">
             <Link
               href="/md/register"
-              className="motion-safe:md-animate-pulse-warm inline-flex min-h-[52px] justify-center items-center rounded-xl bg-amber-500 px-6 py-3 text-base font-bold text-white shadow-lg active:scale-95 hover:bg-amber-600 transition-all"
+              className="motion-safe:md-animate-pulse-warm inline-flex min-h-[52px] justify-center items-center rounded-xl bg-amber-600 px-6 py-3 text-base font-bold text-white shadow-lg active:scale-95 hover:bg-amber-700 transition-all"
             >
               Register for a hamper &rarr;
             </Link>
@@ -150,20 +150,25 @@ export default async function MdLanding() {
       {/* ──────── About / How It Works ──────── */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-12">
         <div className="motion-safe:md-animate-fade-in-up motion-safe:md-delay-3">
-          <div className="flex items-center gap-4 mb-4">
-            <TobagoMapBadge className="w-12 h-12 flex-none" />
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-md">About the programme</h2>
-              <p className="text-sm text-amber-100/90 font-medium [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Rooted in Tobago, grown for community</p>
+          {/* Glass panel — the copy would otherwise sit directly on the
+              background photo, which is light enough in places to wash out
+              white text. Also keeps the heading and body flush-left. */}
+          <div className="rounded-2xl border border-white/15 bg-amber-950/65 backdrop-blur-md p-5 sm:p-7 shadow-xl">
+            <div className="flex items-center gap-4">
+              <TobagoMapBadge className="w-12 h-12 flex-none" />
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-white">About the programme</h2>
+                <p className="text-sm font-medium text-amber-100">Rooted in Tobago, grown for community</p>
+              </div>
             </div>
+            <p className="mt-4 text-sm sm:text-base text-amber-50 leading-relaxed">
+              Market Day with Megan is a community hamper distribution programme serving
+              residents of Mt. St. George/Goodwood, Tobago. Each registered resident
+              receives a hamper of essential goods. Registration is open in advance.
+              Once registered, you&apos;ll receive a unique Application ID for verification
+              and collection on the day.
+            </p>
           </div>
-          <p className="text-sm sm:text-base text-amber-50/85 leading-relaxed [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
-            Market Day with Megan is a community hamper distribution programme serving
-            residents of Mt. St. George/Goodwood, Tobago. Each registered resident
-            receives a hamper of essential goods. Registration is open in advance.
-            Once registered, you&apos;ll receive a unique Application ID for verification
-            and collection on the day.
-          </p>
 
           <h3 className="mt-8 text-sm font-bold text-white uppercase tracking-wide [text-shadow:0_2px_6px_rgba(0,0,0,0.7)]">How it works</h3>
           {/* Mobile: snap-scrolling cards like BTS. sm+: grid. */}
@@ -179,7 +184,7 @@ export default async function MdLanding() {
                 className={`motion-safe:md-animate-fade-in-up ${item.delay} snap-start shrink-0 w-[78vw] sm:w-auto rounded-xl border border-white/25 bg-white/92 backdrop-blur-sm p-4 text-center shadow-md hover:shadow-xl hover:border-amber-300/60 transition-all active:scale-[0.98]`}
               >
                 <div className="mb-2">{item.icon}</div>
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-amber-500 text-sm font-bold text-white shadow-sm">
+                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-amber-600 text-sm font-bold text-white shadow-sm">
                   {item.step}
                 </span>
                 <p className="mt-2 text-sm text-gray-700 leading-relaxed">{item.text}</p>

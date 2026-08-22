@@ -68,3 +68,24 @@ export type TobagoLocation = (typeof TOBAGO_LOCATIONS)[number];
 export function isKnownLocation(value: string): boolean {
   return TOBAGO_LOCATIONS.includes(value as TobagoLocation);
 }
+
+/**
+ * Is this community inside the Mt. St. George/Goodwood electoral district?
+ *
+ * Only these communities are served by the programme today. Everyone else who
+ * registers is recorded as interest and told the initiative isn't open to
+ * their community yet, rather than being issued an Application ID.
+ *
+ * Compared case- and punctuation-insensitively so free-text entries like
+ * "mount st george" still resolve to the district.
+ */
+export function isInDistrictCommunity(value: string): boolean {
+  const normalise = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/\bmount\b/g, "mt")
+      .replace(/[^a-z0-9]/g, "");
+  const target = normalise(value);
+  if (!target) return false;
+  return PRIORITY_DISTRICT_VILLAGES.some((v) => normalise(v) === target);
+}

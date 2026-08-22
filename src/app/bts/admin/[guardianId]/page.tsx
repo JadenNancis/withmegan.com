@@ -38,7 +38,7 @@ export default async function GuardianDetailPage({
             <p>📞 {guardian.contactNumber}</p>
             <p>✉️ {guardian.email}</p>
             <p>📍 {guardian.address}</p>
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-xs text-gray-600">
               Registered {guardian.createdAt.toLocaleDateString("en-TT")}
             </p>
           </div>
@@ -104,7 +104,7 @@ export default async function GuardianDetailPage({
           <ul className="mt-3 space-y-3">
             {auditTrail.map((entry) => (
               <li key={entry.id} className="flex flex-col gap-0.5 text-sm sm:flex-row sm:items-start sm:gap-3">
-                <span className="font-mono text-xs text-gray-400 sm:mt-0.5">
+                <span className="font-mono text-xs text-gray-600 sm:mt-0.5">
                   {entry.createdAt.toLocaleString("en-TT")}
                 </span>
                 <div>
@@ -113,7 +113,7 @@ export default async function GuardianDetailPage({
                     {" "}by {entry.actorEmail ?? entry.actorId}
                   </span>
                   {entry.target && (
-                    <span className="text-gray-400"> → {entry.target}</span>
+                    <span className="text-gray-600"> → {entry.target}</span>
                   )}
                 </div>
               </li>

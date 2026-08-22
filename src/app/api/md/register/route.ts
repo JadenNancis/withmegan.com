@@ -8,6 +8,7 @@ import { registrationSchema } from "@/lib/md-schemas";
 import { normalizeTtPhone } from "@/lib/tt-phone";
 import { notifyRegistrationConfirmed } from "@/lib/notify";
 import { findDuplicates } from "@/lib/dedup";
+import { isInDistrictCommunity } from "@/lib/tobago-locations";
 
 export const runtime = "nodejs";
 
@@ -52,7 +53,11 @@ export async function POST(req: Request): Promise<Response> {
     );
   }
 
-  const thaId = generateApplicationId("md");
+  // The programme only runs in the Mt. St. George/Goodwood district today.
+  // Registrations from elsewhere are kept as expressions of interest: no
+  // Application ID, no QR, no confirmation — just a thank-you on screen.
+  const served = isInDistrictCommunity(data.address);
+  const thaId = served ? generateApplicationId("md") : null;
 
   const [registrant] = await db
     .insert(mdRegistrants)
@@ -76,19 +81,21 @@ export async function POST(req: Request): Promise<Response> {
 
   void logAudit({
     actorId: "anonymous",
-    action: "registration.create",
+    action: served ? "registration.create" : "registration.interest",
     site: "md",
     target: `registrant:${registrant.id}`,
-    details: { thaId: registrant.thaId },
+    details: { thaId: registrant.thaId, served, community: data.address.trim() },
   });
 
-  void notifyRegistrationConfirmed({
-    siteKey: "md",
-    applicationId: registrant.thaId ?? "",
-    recipientName: data.fullName.trim(),
-    phoneNumber: normalizedPhone,
-    email: data.email ?? null,
-  });
+  if (served && registrant.thaId) {
+    void notifyRegistrationConfirmed({
+      siteKey: "md",
+      applicationId: registrant.thaId,
+      recipientName: data.fullName.trim(),
+      phoneNumber: normalizedPhone,
+      email: data.email ?? null,
+    });
+  }
 
   // Fuzzy duplicate check — warning only, registration still succeeds.
   // Admins can review flagged near-matches without blocking the submitter.
@@ -101,5 +108,5 @@ export async function POST(req: Request): Promise<Response> {
     console.error("[md/register] fuzzy dup check failed:", err);
   }
 
-  return NextResponse.json({ success: true, thaId: registrant.thaId, duplicateWarning });
+  return NextResponse.json({ success: true, served, thaId: registrant.thaId, duplicateWarning });
 }

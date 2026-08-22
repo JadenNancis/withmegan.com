@@ -1,7 +1,9 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
 import { SearchBar } from "@/components/search-bar";
+import { ClickableTableRow } from "@/components/clickable-table-row";
 import { cn } from "@/lib/cn";
 import { db } from "@/db/client";
 import { mdRegistrants } from "@/db/schema";
@@ -127,7 +129,11 @@ export default async function MdAdminReportsPage({
             {/* Mobile: card list */}
             <div className="sm:hidden space-y-3">
               {filtered.map((r) => (
-                <div key={r.id} className="rounded-xl border border-amber-200 bg-white p-4 shadow-sm">
+                <Link
+                  key={r.id}
+                  href={`/md/admin/${r.id}`}
+                  className="block rounded-xl border border-amber-200 bg-white p-4 shadow-sm active:scale-[0.98] transition-transform"
+                >
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
                       <p className="font-semibold text-gray-900 truncate">{r.fullName}</p>
@@ -142,7 +148,8 @@ export default async function MdAdminReportsPage({
                     <p>Collected: <span className="font-medium text-gray-700">{r.redeemedAt ? new Date(r.redeemedAt).toLocaleDateString("en-TT") : "N/A"}</span></p>
                     <p>Registered: <span className="font-medium text-gray-700">{new Date(r.createdAt).toLocaleDateString("en-TT")}</span></p>
                   </div>
-                </div>
+                  <p className="mt-1.5 text-xs font-semibold text-amber-700">View details &rarr;</p>
+                </Link>
               ))}
             </div>
 
@@ -157,11 +164,17 @@ export default async function MdAdminReportsPage({
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">Status</th>
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">Collected</th>
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">Registered</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">View</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-amber-50 bg-white">
                   {filtered.map((r) => (
-                    <tr key={r.id} className="hover:bg-amber-50/50 transition-colors">
+                    <ClickableTableRow
+                      key={r.id}
+                      href={`/md/admin/${r.id}`}
+                      label={`View application ${r.thaId ?? r.fullName}`}
+                      className="hover:bg-amber-50/50"
+                    >
                       <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "N/A"}</td>
                       <td className="px-3 py-2 text-gray-900">{r.fullName}</td>
                       <td className="px-3 py-2 text-gray-600">{r.nationalId ?? "N/A"}</td>
@@ -176,7 +189,12 @@ export default async function MdAdminReportsPage({
                       <td className="px-3 py-2 text-xs text-gray-500">
                         {new Date(r.createdAt).toLocaleDateString("en-TT")}
                       </td>
-                    </tr>
+                      <td className="px-3 py-2">
+                        <span className="inline-flex items-center font-bold text-amber-600">
+                          Details &rarr;
+                        </span>
+                      </td>
+                    </ClickableTableRow>
                   ))}
                 </tbody>
               </table>
@@ -185,7 +203,7 @@ export default async function MdAdminReportsPage({
         )}
       </section>
 
-      <p className="text-xs text-white/70 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
+      <p className="text-xs text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
         Showing {filtered.length} of {total} registrations (max 500).
       </p>
     </div>

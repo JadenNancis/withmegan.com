@@ -119,7 +119,7 @@ export function VolunteerSignupForm({ site, accent, cta }: VolunteerSignupFormPr
           autoComplete="name"
           placeholder="Your full name"
           className={cn(
-            "mt-1 w-full rounded-xl border border-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 min-h-[48px]",
+            "mt-1 w-full rounded-xl border border-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 min-h-[48px]",
             a.input,
           )}
         />
@@ -138,7 +138,7 @@ export function VolunteerSignupForm({ site, accent, cta }: VolunteerSignupFormPr
           autoComplete="email"
           placeholder="you@example.com"
           className={cn(
-            "mt-1 w-full rounded-xl border border-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 min-h-[48px]",
+            "mt-1 w-full rounded-xl border border-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 min-h-[48px]",
             a.input,
           )}
         />
@@ -158,7 +158,7 @@ export function VolunteerSignupForm({ site, accent, cta }: VolunteerSignupFormPr
           autoComplete="tel"
           placeholder="(868) 123-4567"
           className={cn(
-            "mt-1 w-full rounded-xl border border-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 min-h-[48px]",
+            "mt-1 w-full rounded-xl border border-gray-300 px-4 py-3 text-base text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 min-h-[48px]",
             a.input,
           )}
         />

@@ -80,15 +80,28 @@ export default function MdSupportersPage() {
             Want to help future distributions? There are many ways to contribute: sponsor a hamper,
             donate provisions, or volunteer on event day.
           </p>
-          <div className="mt-6 space-y-2 text-sm text-amber-800">
-            <p>
-              <span className="font-semibold">Phone:</span> (868) 639-XXXX
+          <div className="mx-auto mt-6 grid max-w-sm gap-2 text-left text-sm text-amber-900">
+            <p className="flex flex-wrap items-baseline gap-x-2">
+              <span className="font-semibold">Phone:</span>
+              <a
+                href="tel:+18682423871"
+                className="font-medium text-amber-800 underline underline-offset-2 hover:text-amber-950"
+              >
+                (868) 242-3871
+              </a>
             </p>
-            <p>
-              <span className="font-semibold">Email:</span> marketday@withmegan.tha.tt
+            <p className="flex flex-wrap items-baseline gap-x-2">
+              <span className="font-semibold">Email:</span>
+              <a
+                href="mailto:morrisondistrictoffice@gmail.com"
+                className="font-medium break-all text-amber-800 underline underline-offset-2 hover:text-amber-950"
+              >
+                morrisondistrictoffice@gmail.com
+              </a>
             </p>
-            <p>
-              <span className="font-semibold">Visit:</span> Mt. St. George Community Centre
+            <p className="flex flex-wrap items-baseline gap-x-2">
+              <span className="font-semibold">Visit:</span>
+              <span className="font-medium">Mt. St. George / Goodwood District Office</span>
             </p>
           </div>
         </div>

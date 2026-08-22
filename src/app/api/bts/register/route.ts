@@ -8,6 +8,7 @@ import { logAudit } from "@/lib/audit";
 import { normalizeTtPhone, isValidTtPhone } from "@/lib/tt-phone";
 import { notifyRegistrationConfirmed } from "@/lib/notify";
 import { findDuplicates } from "@/lib/dedup";
+import { isInDistrictCommunity } from "@/lib/tobago-locations";
 
 const dependentSchema = z.object({
   studentName: z.string().min(1, "Child/Student name is required"),
@@ -49,9 +50,13 @@ export async function POST(req: Request) {
   }
 
   const input: RegistrationInput = parsed.data;
-  const thaId = generateApplicationId("bts");
   const { guardian } = input;
   const normalizedPhone = normalizeTtPhone(guardian.contactNumber) ?? guardian.contactNumber;
+  // The programme only runs in the Mt. St. George/Goodwood district today.
+  // Registrations from elsewhere are kept as expressions of interest: no
+  // Application ID, no QR, no confirmation — just a thank-you on screen.
+  const served = isInDistrictCommunity(guardian.address);
+  const thaId = served ? generateApplicationId("bts") : null;
 
   const existingByEmail = guardian.email && guardian.email.trim()
     ? await db.select().from(btsGuardians).where(eq(btsGuardians.email, guardian.email)).limit(1)
@@ -118,23 +123,27 @@ export async function POST(req: Request) {
 
   void logAudit({
     actorId: "anonymous",
-    action: "registration.create",
+    action: served ? "registration.create" : "registration.interest",
     site: "bts",
-    target: `registration:${thaId}`,
+    target: `registration:${thaId ?? guardianId}`,
     details: {
       guardianId,
+      served,
+      community: guardian.address,
       dependents: input.dependents.length,
       schoolNames: input.dependents.map((d) => d.schoolName),
     },
   });
 
-  void notifyRegistrationConfirmed({
-    siteKey: "bts",
-    applicationId: thaId,
-    recipientName: guardian.fullName,
-    phoneNumber: normalizedPhone,
-    email: guardian.email || null,
-  });
+  if (served && thaId) {
+    void notifyRegistrationConfirmed({
+      siteKey: "bts",
+      applicationId: thaId,
+      recipientName: guardian.fullName,
+      phoneNumber: normalizedPhone,
+      email: guardian.email || null,
+    });
+  }
 
   // Fuzzy duplicate check — warning only, registration still succeeds.
   // Admins can review flagged near-matches without blocking the submitter.
@@ -147,5 +156,5 @@ export async function POST(req: Request) {
     console.error("[bts/register] fuzzy dup check failed:", err);
   }
 
-  return NextResponse.json({ success: true, thaId, duplicateWarning });
+  return NextResponse.json({ success: true, served, thaId, duplicateWarning });
 }

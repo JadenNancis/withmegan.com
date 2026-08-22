@@ -1,5 +1,5 @@
 import { requireAdmin } from "@/lib/require-admin";
-import { SITES } from "@/sites/site-registry";
+import { SITES, parseEventDate } from "@/sites/site-registry";
 import { AdminNav } from "@/components/admin-nav";
 import { LiveStats } from "./live-stats";
 
@@ -11,7 +11,7 @@ export default async function BtsDashboardPage() {
   void user;
 
   const site = SITES.bts;
-  const eventDate = new Date(site.eventDate);
+  const eventDate = parseEventDate(site.eventDate);
 
   return (
     <div className="min-h-screen text-white flex flex-col">
@@ -34,7 +34,7 @@ export default async function BtsDashboardPage() {
               day: "numeric",
             })}
           </p>
-          <p className="text-xs text-cyan-100/70 mt-0.5 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Auto-refresh every 10s</p>
+          <p className="text-xs text-cyan-100/95 mt-0.5 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Auto-refresh every 10s</p>
         </div>
       </header>
 

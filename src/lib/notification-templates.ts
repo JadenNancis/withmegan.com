@@ -1,12 +1,11 @@
 /**
  * Notification message templates for both domains.
  *
- * Generates short SMS/WhatsApp bodies and longer HTML email bodies
- * for registration confirmations, event reminders, and post-event
- * surveys. All templates keep the Tobago community voice.
+ * Generates the HTML email bodies for registration confirmations and
+ * event reminders. All templates keep the Tobago community voice.
  */
 
-import { SITES, type SiteKey } from "@/sites/site-registry";
+import { SITES, parseEventDate, type SiteKey } from "@/sites/site-registry";
 import { getVerifyUrl } from "./qr-code";
 import { generateQrCodeSvg } from "./qr-code";
 
@@ -17,43 +16,13 @@ export interface RegistrationMessageParams {
 }
 
 function formatDate(siteKey: SiteKey): string {
-  const date = new Date(SITES[siteKey].eventDate);
+  const date = parseEventDate(SITES[siteKey].eventDate);
   return date.toLocaleDateString("en-TT", {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
   });
-}
-
-/**
- * Short SMS/WhatsApp body for registration confirmation.
- */
-export function registrationSmsBody(params: RegistrationMessageParams): string {
-  const { siteKey, applicationId, recipientName } = params;
-  const site = SITES[siteKey];
-  const date = formatDate(siteKey);
-  return `${site.name}: Hi ${recipientName}, your registration is confirmed. Application ID: ${applicationId}. Event: ${date}, Mt. St. George/Goodwood, Tobago. Bring your ID to collect.`;
-}
-
-/**
- * Event reminder SMS body (sent 48h before event).
- */
-export function eventReminderSmsBody(params: RegistrationMessageParams): string {
-  const { siteKey, applicationId, recipientName } = params;
-  const site = SITES[siteKey];
-  const date = formatDate(siteKey);
-  return `${site.name}: Reminder ${recipientName}! Event is ${date}. Bring your Application ID ${applicationId} to collect. See you there!`;
-}
-
-/**
- * Post-event survey SMS body.
- */
-export function surveySmsBody(params: RegistrationMessageParams): string {
-  const { siteKey, applicationId, recipientName } = params;
-  const site = SITES[siteKey];
-  const surveyUrl = `https://${site.host}${site.routePrefix}/survey?aid=${encodeURIComponent(applicationId)}`;
-  return `${site.name}: Hi ${recipientName}, did you receive what you needed? Reply with your feedback: ${surveyUrl}`;
 }
 
 /**

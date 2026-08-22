@@ -49,7 +49,7 @@ export default async function BtsAdminCollectionPage({
       </div>
 
       {!aid && (
-        <p className="bts-fade-in-up text-sm text-white/70 [text-shadow:0_2px_6px_rgba(0,0,0,0.7)]">
+        <p className="bts-fade-in-up text-sm text-white/90 [text-shadow:0_2px_6px_rgba(0,0,0,0.7)]">
           Tip: use the{" "}
           <Link href="/bts/admin/scan" className="font-semibold text-cyan-200 underline">
             Scan

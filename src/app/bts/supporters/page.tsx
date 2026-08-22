@@ -82,15 +82,28 @@ export default function BtsSupportersPage() {
             Want to help next year&rsquo;s book drive? There are many ways to contribute: donate books
             or stationery, sponsor a child/student&rsquo;s supplies, or volunteer on event day.
           </p>
-          <div className="mt-6 space-y-2 text-sm text-brand-800">
-            <p>
-              <span className="font-semibold">Phone:</span> (868) 639-XXXX
+          <div className="mx-auto mt-6 grid max-w-sm gap-2 text-left text-sm text-brand-900">
+            <p className="flex flex-wrap items-baseline gap-x-2">
+              <span className="font-semibold">Phone:</span>
+              <a
+                href="tel:+18682423871"
+                className="font-medium text-brand-700 underline underline-offset-2 hover:text-brand-900"
+              >
+                (868) 242-3871
+              </a>
             </p>
-            <p>
-              <span className="font-semibold">Email:</span> backtoschool@withmegan.tha.tt
+            <p className="flex flex-wrap items-baseline gap-x-2">
+              <span className="font-semibold">Email:</span>
+              <a
+                href="mailto:morrisondistrictoffice@gmail.com"
+                className="font-medium break-all text-brand-700 underline underline-offset-2 hover:text-brand-900"
+              >
+                morrisondistrictoffice@gmail.com
+              </a>
             </p>
-            <p>
-              <span className="font-semibold">Visit:</span> Mt. St. George Community Centre
+            <p className="flex flex-wrap items-baseline gap-x-2">
+              <span className="font-semibold">Visit:</span>
+              <span className="font-medium">Mt. St. George / Goodwood District Office</span>
             </p>
           </div>
         </div>

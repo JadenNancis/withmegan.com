@@ -62,7 +62,7 @@ function MissingAid() {
       </p>
       <Link
         href="/md"
-        className="mt-6 inline-flex min-h-[52px] items-center justify-center rounded-xl bg-amber-500 px-6 py-3 text-base font-bold text-white shadow-md hover:bg-amber-600 transition-colors"
+        className="mt-6 inline-flex min-h-[52px] items-center justify-center rounded-xl bg-amber-600 px-6 py-3 text-base font-bold text-white shadow-md hover:bg-amber-700 transition-colors"
       >
         Back to Home
       </Link>
@@ -191,7 +191,7 @@ async function VerifyResult({ aid }: { aid: string }) {
       <div className="motion-safe:md-animate-fade-in-up flex flex-col gap-3 sm:flex-row sm:justify-center">
         <Link
           href="/md"
-          className="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-amber-500 px-6 py-3 text-base font-bold text-white shadow-md hover:bg-amber-600 transition-colors"
+          className="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-amber-600 px-6 py-3 text-base font-bold text-white shadow-md hover:bg-amber-700 transition-colors"
         >
           Back to Home
         </Link>

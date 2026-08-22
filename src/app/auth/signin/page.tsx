@@ -159,7 +159,7 @@ function AuthCard() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full min-h-[52px] rounded-xl bg-brand-600 px-4 text-base font-semibold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 active:scale-95 disabled:opacity-50 transition-all"
+              className="w-full min-h-[52px] rounded-xl bg-brand-700 px-4 text-base font-semibold text-white shadow-lg shadow-brand-700/25 hover:bg-brand-800 active:scale-95 disabled:opacity-50 transition-all"
             >
               {loading ? "Signing in…" : "Sign In"}
             </button>
@@ -193,7 +193,7 @@ function AuthCard() {
             </div>
             <div>
               <label htmlFor="signup-password" className="block text-sm font-semibold text-gray-700">
-                Password <span className="text-gray-400 font-normal">(min 8 characters)</span>
+                Password <span className="text-gray-500 font-normal">(min 8 characters)</span>
               </label>
               <TextInput
                 id="signup-password"
@@ -220,7 +220,7 @@ function AuthCard() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full min-h-[52px] rounded-xl bg-brand-600 px-4 text-base font-semibold text-white shadow-lg shadow-brand-600/25 hover:bg-brand-700 active:scale-95 disabled:opacity-50 transition-all"
+              className="w-full min-h-[52px] rounded-xl bg-brand-700 px-4 text-base font-semibold text-white shadow-lg shadow-brand-700/25 hover:bg-brand-800 active:scale-95 disabled:opacity-50 transition-all"
             >
               {loading ? "Creating account…" : "Create Account"}
             </button>

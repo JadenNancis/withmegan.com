@@ -23,22 +23,22 @@ const accentMap = {
   cyan: {
     header: "bg-brand-800",
     headerText: "text-white",
-    button: "bg-brand-600 hover:bg-brand-700 text-white",
+    button: "bg-brand-700 hover:bg-brand-800 text-white",
     focusRing: "focus:ring-brand-500",
     badge: "bg-brand-100 text-brand-800",
     bottomNav: "bg-brand-900",
     bottomNavActive: "text-brand-300",
-    bottomNavIcon: "text-white/60",
+    bottomNavIcon: "text-white/85",
   },
   amber: {
     header: "bg-amber-700",
     headerText: "text-white",
-    button: "bg-amber-500 hover:bg-amber-600 text-white",
+    button: "bg-amber-600 hover:bg-amber-700 text-white",
     focusRing: "focus:ring-amber-500",
     badge: "bg-amber-100 text-amber-800",
     bottomNav: "bg-amber-900",
     bottomNavActive: "text-amber-300",
-    bottomNavIcon: "text-white/60",
+    bottomNavIcon: "text-white/85",
   },
 } as const;
 
@@ -229,17 +229,45 @@ export function SiteShell({ site, children }: { site: SiteConfig; children: Reac
           {children}
         </main>
 
-        <footer className="border-t border-white/20 pb-24 md:pb-0">
-          <div className="mx-auto max-w-4xl px-4 py-4 text-xs text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
-            <p>
-              {site.name} · Event date:{" "}
-              {new Date(site.eventDate + "T12:00:00").toLocaleDateString("en-TT", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
-            <p className="mt-1">Mt. St. George/Goodwood, Tobago · A THA-supported community programme</p>
+        {/* Scrim keeps the footer legible wherever the background photo runs light. */}
+        <footer className="border-t border-white/20 bg-black/55 backdrop-blur-sm pb-24 md:pb-0">
+          <div className="mx-auto max-w-4xl px-4 py-5 text-xs text-white [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p>
+                  {site.name} · Event date:{" "}
+                  {new Date(site.eventDate + "T12:00:00").toLocaleDateString("en-TT", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+                <p className="mt-1">
+                  Mt. St. George/Goodwood, Tobago · A THA-supported community programme
+                </p>
+              </div>
+
+              <address className="not-italic sm:text-right">
+                <p className="font-semibold uppercase tracking-wide text-white/90">Contact</p>
+                <p className="mt-1.5">
+                  <a
+                    href="tel:+18682423871"
+                    className="underline underline-offset-2 hover:text-white/80 min-h-[32px] inline-flex items-center"
+                  >
+                    (868) 242-3871
+                  </a>
+                </p>
+                <p className="mt-1">
+                  <a
+                    href="mailto:morrisondistrictoffice@gmail.com"
+                    className="break-all underline underline-offset-2 hover:text-white/80 min-h-[32px] inline-flex items-center"
+                  >
+                    morrisondistrictoffice@gmail.com
+                  </a>
+                </p>
+                <p className="mt-1">Mt. St. George / Goodwood District Office</p>
+              </address>
+            </div>
           </div>
         </footer>
 
