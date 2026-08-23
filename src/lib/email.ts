@@ -43,8 +43,8 @@ function fromAddress(site?: SiteKey): string {
   if (siteFrom) return siteFrom;
   if (process.env.FROM_EMAIL) return process.env.FROM_EMAIL;
   return site === "md"
-    ? "Market Day with Megan <noreply@withmegan.com>"
-    : "Back to School with Megan <noreply@withmegan.com>";
+    ? "Market Day with Megan <noreply@mdwithmegan.com>"
+    : "Back to School with Megan <noreply@btswithmegan.com>";
 }
 
 export interface SendEmailParams {

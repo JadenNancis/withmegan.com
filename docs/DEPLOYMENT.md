@@ -55,8 +55,12 @@ In **Vercel → Settings → Environment Variables**, add these for the **Produc
 | `NEXT_PUBLIC_BTS_HOST` | `backtoschoolwithmegan.tha.tt` | Yes |
 | `NEXT_PUBLIC_MD_HOST` | `marketdaywithmegan.tha.tt` | Yes |
 | `NEXT_PUBLIC_APP_URL` | `https://backtoschoolwithmegan.tha.tt` (OpenGraph metadata base) | Yes |
-| `RESEND_API_KEY` | Resend API key (omit to log emails to console instead) | No |
-| `FROM_EMAIL` | `Back to School with Megan <noreply@withmegan.com>` | No |
+| `RESEND_API_KEY_BTS` | BTS Resend API key (Back to School with Megan) | No |
+| `RESEND_API_KEY_MD` | MD Resend API key (Market Day with Megan) | No |
+| `RESEND_API_KEY` | Shared fallback Resend API key (used only when the site-specific key is missing) | No |
+| `FROM_EMAIL_BTS` | `Back to School with Megan <noreply@btswithmegan.com>` | No |
+| `FROM_EMAIL_MD` | `Market Day with Megan <noreply@mdwithmegan.com>` | No |
+| `FROM_EMAIL` | Shared fallback from-address (used only when the site-specific one is missing) | No |
 | `BLOB_READ_WRITE_TOKEN` | Vercel Blob token (only when file uploads go to Blob) | No |
 | `ADMIN_EMAIL` | Override prototype admin email | No |
 | `ADMIN_PASSWORD` | Override prototype admin password | No |
