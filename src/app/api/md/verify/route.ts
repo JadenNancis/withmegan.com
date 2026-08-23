@@ -61,11 +61,14 @@ export async function POST(req: Request): Promise<Response> {
       })
       .from(mdRegistrants)
       .where(
-        or(
-          ilike(mdRegistrants.fullName, pattern),
-          ilike(mdRegistrants.thaId, pattern),
-          ilike(mdRegistrants.nationalId, pattern),
-          ilike(mdRegistrants.phoneNumber, pattern),
+        and(
+          isNull(mdRegistrants.deletedAt),
+          or(
+            ilike(mdRegistrants.fullName, pattern),
+            ilike(mdRegistrants.thaId, pattern),
+            ilike(mdRegistrants.nationalId, pattern),
+            ilike(mdRegistrants.phoneNumber, pattern),
+          ),
         ),
       )
       .orderBy(mdRegistrants.createdAt)
@@ -101,7 +104,13 @@ export async function POST(req: Request): Promise<Response> {
         redeemedBy: user.id,
         updatedAt: now,
       })
-      .where(and(eq(mdRegistrants.id, registrantId), isNull(mdRegistrants.redeemedAt)))
+      .where(
+        and(
+          eq(mdRegistrants.id, registrantId),
+          isNull(mdRegistrants.redeemedAt),
+          isNull(mdRegistrants.deletedAt),
+        ),
+      )
       .returning({
         id: mdRegistrants.id,
         thaId: mdRegistrants.thaId,

@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { db } from "@/db/client";
 import { mdRegistrants } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and, isNull } from "drizzle-orm";
 export const dynamic = "force-dynamic";
 
 /**
@@ -86,7 +86,7 @@ async function VerifyResult({ aid }: { aid: string }) {
       redeemedAt: mdRegistrants.redeemedAt,
     })
     .from(mdRegistrants)
-    .where(eq(mdRegistrants.thaId, aid))
+    .where(and(eq(mdRegistrants.thaId, aid), isNull(mdRegistrants.deletedAt)))
     .limit(1);
 
   if (!row) {

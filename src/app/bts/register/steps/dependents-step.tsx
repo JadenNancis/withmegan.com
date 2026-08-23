@@ -1,9 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Field, TextInput, TextArea } from "@/components/form";
+import { Field, TextInput, Select, TextArea } from "@/components/form";
 import { SchoolPicker } from "@/components/school-picker";
-import { OTHER_SCHOOL_VALUE } from "@/lib/bts-schools";
+import {
+  OTHER_SCHOOL_VALUE,
+  OTHER_GRADE_VALUE,
+  gradesForSchool,
+} from "@/lib/bts-schools";
 
 export interface DependentForm {
   studentName: string;
@@ -11,6 +15,7 @@ export interface DependentForm {
   manualSchoolName: string;
   manualSchoolAddress: string;
   gradeLevel: string;
+  manualGradeLevel: string;
   notes: string;
   bookListUrl: string;
   bookListFileName: string;
@@ -23,6 +28,7 @@ export function emptyDependent(): DependentForm {
     manualSchoolName: "",
     manualSchoolAddress: "",
     gradeLevel: "",
+    manualGradeLevel: "",
     notes: "",
     bookListUrl: "",
     bookListFileName: "",
@@ -150,18 +156,18 @@ export function DependentsStep({
                   />
                 </Field>
 
-                <Field label="Grade or form" required>
-                  <TextInput
-                    value={dep.gradeLevel}
-                    onChange={(e) => update(i, { gradeLevel: e.target.value })}
-                    placeholder="e.g. Standard 3, Form 2"
-                  />
-                </Field>
-
                 <Field label="School" required>
                   <SchoolPicker
                     value={dep.schoolName}
-                    onChange={(v) => update(i, { schoolName: v })}
+                    onChange={(v) =>
+                      // Changing school changes the grades available, so reset
+                      // the grade (and any typed "Other" grade) with it.
+                      update(i, {
+                        schoolName: v,
+                        gradeLevel: "",
+                        manualGradeLevel: "",
+                      })
+                    }
                   />
                 </Field>
 
@@ -182,6 +188,29 @@ export function DependentsStep({
                       />
                     </Field>
                   </>
+                )}
+
+                <Field label="Grade or form" required>
+                  <Select
+                    value={dep.gradeLevel}
+                    onChange={(e) => update(i, { gradeLevel: e.target.value, manualGradeLevel: "" })}
+                  >
+                    <option value="">Select grade or form…</option>
+                    {gradesForSchool(dep.schoolName).map((g) => (
+                      <option key={g} value={g}>{g}</option>
+                    ))}
+                    <option value={OTHER_GRADE_VALUE}>Other (enter manually)</option>
+                  </Select>
+                </Field>
+
+                {dep.gradeLevel === OTHER_GRADE_VALUE && (
+                  <Field label="Grade or form (manual entry)" required>
+                    <TextInput
+                      value={dep.manualGradeLevel}
+                      onChange={(e) => update(i, { manualGradeLevel: e.target.value })}
+                      placeholder="e.g. Standard 3, Form 2"
+                    />
+                  </Field>
                 )}
 
                 <Field label="Book list (optional)">

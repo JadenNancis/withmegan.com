@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { SITES, parseEventDate } from "@/sites/site-registry";
+import { SITES, parseEventDate, formatRegistrationClose } from "@/sites/site-registry";
 import { auth } from "@/auth";
 import { getGalleryPhotoUrls } from "@/lib/gallery-photos";
 import { RotatingGallery } from "@/components/rotating-gallery";
@@ -88,6 +88,15 @@ export default async function MdLanding() {
               <p className="text-base sm:text-xl text-amber-50 max-w-2xl mx-auto drop-shadow-md motion-safe:md-animate-fade-in-up motion-safe:md-delay-2">
                 {site.tagline}
               </p>
+              <div className="motion-safe:md-animate-fade-in-up motion-safe:md-delay-2">
+                <p className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-amber-950/70 px-4 py-2 text-xs sm:text-sm font-semibold text-white backdrop-blur-sm [text-shadow:0_1px_3px_rgba(0,0,0,0.5)]">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-amber-200" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="17" rx="2" />
+                    <path d="M8 2v4M16 2v4M3 9h18" />
+                  </svg>
+                  Registration closes {formatRegistrationClose(site.registrationClose)}
+                </p>
+              </div>
               <div className="flex flex-col gap-3 justify-center pt-2 sm:flex-row sm:items-center motion-safe:md-animate-fade-in-up motion-safe:md-delay-3">
                 <Link
                   href="/md/register"

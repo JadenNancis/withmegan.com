@@ -1,6 +1,6 @@
 import { db } from "@/db/client";
 import { mdRegistrants, users, auditLog } from "@/db/schema";
-import { eq, sql, ilike, or, desc, count, and, isNotNull } from "drizzle-orm";
+import { eq, sql, ilike, or, desc, count, and, isNull, isNotNull } from "drizzle-orm";
 
 export type RedemptionStatus = "registered" | "redeemed";
 
@@ -11,11 +11,14 @@ export interface DashboardStats {
 }
 
 export async function getDashboardStats(): Promise<DashboardStats> {
-  const [regCount] = await db.select({ n: count() }).from(mdRegistrants);
+  const [regCount] = await db
+    .select({ n: count() })
+    .from(mdRegistrants)
+    .where(isNull(mdRegistrants.deletedAt));
   const [redeemed] = await db
     .select({ n: count() })
     .from(mdRegistrants)
-    .where(isNotNull(mdRegistrants.redeemedAt));
+    .where(and(isNull(mdRegistrants.deletedAt), isNotNull(mdRegistrants.redeemedAt)));
 
   const total = regCount?.n ?? 0;
   const redeemedN = redeemed?.n ?? 0;
@@ -46,6 +49,7 @@ export async function getRecentRegistrations(limit = 20): Promise<RecentRegistra
       createdAt: mdRegistrants.createdAt,
     })
     .from(mdRegistrants)
+    .where(isNull(mdRegistrants.deletedAt))
     .orderBy(desc(mdRegistrants.createdAt))
     .limit(limit);
   return rows.map((r) => ({
@@ -91,11 +95,14 @@ export async function searchRegistrants(query: string, limit = 50): Promise<Sear
     })
     .from(mdRegistrants)
     .where(
-      or(
-        ilike(mdRegistrants.fullName, pattern),
-        ilike(mdRegistrants.thaId, pattern),
-        ilike(mdRegistrants.nationalId, pattern),
-        ilike(mdRegistrants.phoneNumber, pattern),
+      and(
+        isNull(mdRegistrants.deletedAt),
+        or(
+          ilike(mdRegistrants.fullName, pattern),
+          ilike(mdRegistrants.thaId, pattern),
+          ilike(mdRegistrants.nationalId, pattern),
+          ilike(mdRegistrants.phoneNumber, pattern),
+        ),
       ),
     )
     .orderBy(desc(mdRegistrants.createdAt))
@@ -118,6 +125,7 @@ export interface RegistrantDetail {
   productCategory: string | null;
   productCategoryNote: string | null;
   consent: boolean;
+  deletedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
   status: RedemptionStatus;
@@ -139,6 +147,7 @@ export async function getRegistrantById(id: string): Promise<RegistrantDetail | 
       productCategory: mdRegistrants.productCategory,
       productCategoryNote: mdRegistrants.productCategoryNote,
       consent: mdRegistrants.consent,
+      deletedAt: mdRegistrants.deletedAt,
       createdAt: mdRegistrants.createdAt,
       updatedAt: mdRegistrants.updatedAt,
       redeemedAt: mdRegistrants.redeemedAt,
@@ -172,12 +181,49 @@ export async function getRegistrantById(id: string): Promise<RegistrantDetail | 
     productCategory: row.productCategory,
     productCategoryNote: row.productCategoryNote,
     consent: row.consent,
+    deletedAt: row.deletedAt,
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
     status: row.redeemedAt ? "redeemed" : "registered",
     redeemedAt: row.redeemedAt,
     redeemedByName,
   };
+}
+
+export interface DeletedRegistrant {
+  id: string;
+  thaId: string | null;
+  fullName: string;
+  phoneNumber: string;
+  address: string;
+  deletedAt: Date | null;
+  createdAt: Date;
+}
+
+/** Soft-deleted registrants, newest first, for the hidden deleted tab. */
+export async function getDeletedRegistrants(limit = 100): Promise<DeletedRegistrant[]> {
+  return db
+    .select({
+      id: mdRegistrants.id,
+      thaId: mdRegistrants.thaId,
+      fullName: mdRegistrants.fullName,
+      phoneNumber: mdRegistrants.phoneNumber,
+      address: mdRegistrants.address,
+      deletedAt: mdRegistrants.deletedAt,
+      createdAt: mdRegistrants.createdAt,
+    })
+    .from(mdRegistrants)
+    .where(isNotNull(mdRegistrants.deletedAt))
+    .orderBy(desc(mdRegistrants.deletedAt))
+    .limit(limit);
+}
+
+export async function countDeletedRegistrants(): Promise<number> {
+  const [row] = await db
+    .select({ n: count() })
+    .from(mdRegistrants)
+    .where(isNotNull(mdRegistrants.deletedAt));
+  return row?.n ?? 0;
 }
 
 export interface AuditEntry {

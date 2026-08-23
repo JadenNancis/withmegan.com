@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db } from "@/db/client";
 import { mdRegistrants } from "@/db/schema";
-import { eq, or } from "drizzle-orm";
+import { eq, or, and, isNull } from "drizzle-orm";
 import { generateApplicationId } from "@/lib/tha-id";
 import { logAudit } from "@/lib/audit";
 import { registrationSchema } from "@/lib/md-schemas";
@@ -43,7 +43,7 @@ export async function POST(req: Request): Promise<Response> {
   const existing = await db
     .select({ id: mdRegistrants.id })
     .from(mdRegistrants)
-    .where(or(...dupConditions))
+    .where(and(or(...dupConditions), isNull(mdRegistrants.deletedAt)))
     .limit(1);
 
   if (existing.length > 0) {

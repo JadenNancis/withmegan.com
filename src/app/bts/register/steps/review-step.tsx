@@ -1,6 +1,13 @@
 "use client";
 
 import type { DependentForm } from "./dependents-step";
+import { OTHER_GRADE_VALUE } from "@/lib/bts-schools";
+
+function displayGrade(d: DependentForm): string {
+  return d.gradeLevel === OTHER_GRADE_VALUE
+    ? d.manualGradeLevel || "Other"
+    : d.gradeLevel;
+}
 
 export interface SubmitResult {
   thaId: string;
@@ -62,7 +69,7 @@ export function ReviewStep({
               >
                 <p className="font-semibold text-brand-900">{d.studentName}</p>
                 <p className="text-sm text-gray-600 mt-0.5">
-                  {d.schoolName} · {d.gradeLevel}
+                  {d.schoolName} · {displayGrade(d)}
                   {d.bookListUrl && " · Book list attached"}
                 </p>
               </li>

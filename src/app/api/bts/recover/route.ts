@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, and, isNull } from "drizzle-orm";
 import { db } from "@/db/client";
 import { btsGuardians } from "@/db/schema";
 import { normalizeTtPhone } from "@/lib/tt-phone";
@@ -74,7 +74,7 @@ export async function POST(req: Request) {
     const rows = await db
       .select()
       .from(btsGuardians)
-      .where(eq(btsGuardians.contactNumber, normalized))
+      .where(and(eq(btsGuardians.contactNumber, normalized), isNull(btsGuardians.deletedAt)))
       .orderBy(desc(btsGuardians.createdAt))
       .limit(1);
 

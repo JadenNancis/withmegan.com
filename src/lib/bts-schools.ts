@@ -90,6 +90,44 @@ export function schoolsByCategory(): { category: SchoolCategory; schools: School
   }));
 }
 
+// ── Grades, sectioned by school level ──────────────────────────
+// The grade/form options a child can be in depend on the type of school
+// chosen. ECCE and primary have Infant/Standard years, secondary has Forms
+// (Form 1 through Upper 6). "Other" is always offered so nobody is stuck.
+
+export const OTHER_GRADE_VALUE = "__other_grade__";
+
+export const GRADE_OPTIONS: Record<SchoolCategory, string[]> = {
+  "ECCE / Early Childhood": ["Pre-School / Kindergarten", "Year 1", "Year 2"],
+  "Primary / Middle": [
+    "Infant 1",
+    "Infant 2",
+    "Standard 1",
+    "Standard 2",
+    "Standard 3",
+    "Standard 4",
+    "Standard 5",
+  ],
+  "Secondary / High": ["Form 1", "Form 2", "Form 3", "Form 4", "Form 5", "Lower 6", "Upper 6"],
+};
+
+/** Every known grade across all levels, for "Other" schools. */
+export const ALL_GRADE_OPTIONS: string[] = [
+  ...GRADE_OPTIONS["ECCE / Early Childhood"],
+  ...GRADE_OPTIONS["Primary / Middle"],
+  ...GRADE_OPTIONS["Secondary / High"],
+];
+
+export function categoryOfSchool(schoolName: string): SchoolCategory | null {
+  return BTS_SCHOOLS.find((s) => s.name === schoolName)?.category ?? null;
+}
+
+/** Grade options that apply for a given school (falls back to all grades for unknown schools). */
+export function gradesForSchool(schoolName: string): string[] {
+  const category = categoryOfSchool(schoolName);
+  return category ? GRADE_OPTIONS[category] : ALL_GRADE_OPTIONS;
+}
+
 export function isKnownSchool(name: string): boolean {
   return BTS_SCHOOLS.some((s) => s.name === name);
 }

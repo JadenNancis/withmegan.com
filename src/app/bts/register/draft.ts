@@ -10,6 +10,7 @@ import { useEffect, useRef, useState } from "react";
 export function useWizardDraft<T>(
   key: string,
   initial: T,
+  options?: { enabled?: boolean },
 ): {
   value: T;
   setValue: (v: T | ((prev: T) => T)) => void;
@@ -18,14 +19,16 @@ export function useWizardDraft<T>(
   hadDraft: boolean;
   dismissDraft: () => void;
 } {
+  const enabled = options?.enabled ?? true;
   const [value, setValue] = useState<T>(initial);
-  const [hydrated, setHydrated] = useState(false);
+  const [hydrated, setHydrated] = useState(enabled ? false : true);
   const [hadDraft, setHadDraft] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const storageKey = key;
 
   // Hydrate once on mount
   useEffect(() => {
+    if (!enabled) return;
     try {
       const raw = window.localStorage.getItem(storageKey);
       if (raw) {
@@ -45,6 +48,7 @@ export function useWizardDraft<T>(
 
   // Autosave (debounced)
   useEffect(() => {
+    if (!enabled) return;
     if (!hydrated) return;
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => {
@@ -57,7 +61,7 @@ export function useWizardDraft<T>(
     return () => {
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [value, hydrated, storageKey]);
+  }, [value, hydrated, storageKey, enabled]);
 
   function clear() {
     try {

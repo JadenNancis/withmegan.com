@@ -6,7 +6,7 @@ import {
   btsResourceAssignments,
   mdRegistrants,
 } from "@/db/schema";
-import { eq, inArray } from "drizzle-orm";
+import { eq, inArray, and, isNull } from "drizzle-orm";
 import type { SiteKey } from "@/sites/site-registry";
 
 export const runtime = "nodejs";
@@ -79,7 +79,7 @@ async function lookupBts(aid: string): Promise<Response> {
   const [guardian] = await db
     .select()
     .from(btsGuardians)
-    .where(eq(btsGuardians.thaId, aid))
+    .where(and(eq(btsGuardians.thaId, aid), isNull(btsGuardians.deletedAt)))
     .limit(1);
 
   if (!guardian) {
@@ -136,7 +136,7 @@ async function lookupMd(aid: string): Promise<Response> {
       redeemedAt: mdRegistrants.redeemedAt,
     })
     .from(mdRegistrants)
-    .where(eq(mdRegistrants.thaId, aid))
+    .where(and(eq(mdRegistrants.thaId, aid), isNull(mdRegistrants.deletedAt)))
     .limit(1);
 
   if (!row) {

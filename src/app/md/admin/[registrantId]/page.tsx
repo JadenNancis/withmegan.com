@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { requireAdmin } from "@/lib/require-admin";
 import { getRegistrantById, getAuditTrail } from "@/lib/md-queries";
 import { AdminNav } from "@/components/admin-nav";
+import { DeleteRegistrantButton } from "@/components/registrant-actions";
 import { cn } from "@/lib/cn";
 
 export const runtime = "nodejs";
@@ -13,7 +14,7 @@ export default async function MdRegistrantDetailPage({
 }: {
   params: Promise<{ registrantId: string }>;
 }) {
-  await requireAdmin("/md/admin");
+  const user = await requireAdmin("/md/admin");
   const { registrantId } = await params;
   const registrant = await getRegistrantById(registrantId);
 
@@ -50,15 +51,20 @@ export default async function MdRegistrantDetailPage({
               {registrant.thaId ?? "No Application ID"}
             </p>
           </div>
-          <div className="text-xs text-gray-400">
-            Registered{" "}
-            {registrant.createdAt.toLocaleDateString("en-TT", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}
-            {registrant.updatedAt.getTime() !== registrant.createdAt.getTime() && (
-              <> · updated {registrant.updatedAt.toLocaleDateString("en-TT")}</>
+          <div className="flex flex-col items-start sm:items-end gap-3">
+            <div className="text-xs text-gray-400">
+              Registered{" "}
+              {registrant.createdAt.toLocaleDateString("en-TT", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+              })}
+              {registrant.updatedAt.getTime() !== registrant.createdAt.getTime() && (
+                <> · updated {registrant.updatedAt.toLocaleDateString("en-TT")}</>
+              )}
+            </div>
+            {!registrant.deletedAt && (
+              <DeleteRegistrantButton site="md" id={registrant.id} redirectTo="/md/admin" />
             )}
           </div>
         </div>
@@ -81,6 +87,13 @@ export default async function MdRegistrantDetailPage({
             value={registrant.consent ? "Given" : "Not given"}
           />
         </dl>
+
+        {registrant.deletedAt && (
+          <p className="mt-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+            This registration is deleted. It only appears on the deleted tab and will be
+            hidden from all counts and check-in screens.
+          </p>
+        )}
 
         {redeemed && (
           <div className="mt-5 rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-800">

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { eq, and, isNull } from "drizzle-orm";
 import { db } from "@/db/client";
 import { btsGuardians, btsDependents } from "@/db/schema";
 import { generateApplicationId } from "@/lib/tha-id";
@@ -59,10 +59,10 @@ export async function POST(req: Request) {
   const thaId = served ? generateApplicationId("bts") : null;
 
   const existingByEmail = guardian.email && guardian.email.trim()
-    ? await db.select().from(btsGuardians).where(eq(btsGuardians.email, guardian.email)).limit(1)
+    ? await db.select().from(btsGuardians).where(and(eq(btsGuardians.email, guardian.email), isNull(btsGuardians.deletedAt))).limit(1)
     : [];
   const existingByNationalId = guardian.nationalId?.trim()
-    ? await db.select().from(btsGuardians).where(eq(btsGuardians.nationalId, guardian.nationalId.trim())).limit(1)
+    ? await db.select().from(btsGuardians).where(and(eq(btsGuardians.nationalId, guardian.nationalId.trim()), isNull(btsGuardians.deletedAt))).limit(1)
     : [];
 
   if (existingByEmail.length > 0) {

@@ -7,7 +7,7 @@ import { ClickableTableRow } from "@/components/clickable-table-row";
 import { cn } from "@/lib/cn";
 import { db } from "@/db/client";
 import { mdRegistrants } from "@/db/schema";
-import { count, isNotNull } from "drizzle-orm";
+import { count, isNotNull, isNull, and } from "drizzle-orm";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -28,8 +28,8 @@ export default async function MdAdminReportsPage({
   const q = typeof sp.q === "string" ? sp.q.trim() : "";
 
   const [regCount, redeemedCount] = await Promise.all([
-    db.select({ n: count() }).from(mdRegistrants).then((rows) => rows[0]),
-    db.select({ n: count() }).from(mdRegistrants).where(isNotNull(mdRegistrants.redeemedAt)).then((rows) => rows[0]),
+    db.select({ n: count() }).from(mdRegistrants).where(isNull(mdRegistrants.deletedAt)).then((rows) => rows[0]),
+    db.select({ n: count() }).from(mdRegistrants).where(and(isNull(mdRegistrants.deletedAt), isNotNull(mdRegistrants.redeemedAt))).then((rows) => rows[0]),
   ]);
 
   const total = regCount?.n ?? 0;
@@ -48,6 +48,7 @@ export default async function MdAdminReportsPage({
       createdAt: mdRegistrants.createdAt,
     })
     .from(mdRegistrants)
+    .where(isNull(mdRegistrants.deletedAt))
     .orderBy(mdRegistrants.createdAt)
     .limit(500);
 
@@ -66,18 +67,28 @@ export default async function MdAdminReportsPage({
   return (
     <div className="space-y-6">
       <AdminNav current="/md/admin/reports" />
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="px-5 py-4 md-animate-fade-in-up">
           <h1 className="text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Reports</h1>
         </div>
-        <a
-          href="/api/export?site=md&format=pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center rounded-xl bg-amber-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-amber-700"
-        >
-          Export PDF
-        </a>
+        <div className="flex gap-2 flex-wrap">
+          <a
+            href="/api/export?site=md&format=csv"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-xl bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-green-700"
+          >
+            Export Sheet (CSV)
+          </a>
+          <a
+            href="/api/export?site=md&format=pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-xl bg-amber-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-amber-700"
+          >
+            Export PDF
+          </a>
+        </div>
       </div>
 
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -144,6 +155,7 @@ export default async function MdAdminReportsPage({
                     </span>
                   </div>
                   <div className="mt-2 space-y-1 text-xs text-gray-500">
+                    <p>Community: <span className="font-medium text-gray-700">{r.address}</span></p>
                     <p>National ID: <span className="font-medium text-gray-700">{r.nationalId ?? "N/A"}</span></p>
                     <p>Collected: <span className="font-medium text-gray-700">{r.redeemedAt ? new Date(r.redeemedAt).toLocaleDateString("en-TT") : "N/A"}</span></p>
                     <p>Registered: <span className="font-medium text-gray-700">{new Date(r.createdAt).toLocaleDateString("en-TT")}</span></p>
@@ -160,6 +172,7 @@ export default async function MdAdminReportsPage({
                   <tr>
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">Application ID</th>
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">Name</th>
+                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Community</th>
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">National ID</th>
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">Status</th>
                     <th className="px-3 py-2 text-left font-semibold text-amber-800">Collected</th>
@@ -177,6 +190,7 @@ export default async function MdAdminReportsPage({
                     >
                       <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "N/A"}</td>
                       <td className="px-3 py-2 text-gray-900">{r.fullName}</td>
+                      <td className="px-3 py-2 text-gray-700">{r.address}</td>
                       <td className="px-3 py-2 text-gray-600">{r.nationalId ?? "N/A"}</td>
                       <td className="px-3 py-2">
                         <span className={cn("inline-block rounded-full px-2 py-0.5 text-xs font-medium", statusBadge[r.redeemedAt ? "redeemed" : "registered"])}>

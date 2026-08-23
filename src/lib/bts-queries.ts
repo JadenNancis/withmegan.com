@@ -5,7 +5,7 @@ import {
   btsResourceAssignments,
   auditLog,
 } from "@/db/schema";
-import { eq, ilike, or, desc, inArray } from "drizzle-orm";
+import { eq, ilike, or, desc, inArray, isNull, isNotNull, and, count } from "drizzle-orm";
 
 export interface GuardianWithDependents {
   id: string;
@@ -16,6 +16,7 @@ export interface GuardianWithDependents {
   address: string;
   consent: boolean;
   thaId: string | null;
+  deletedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
   dependents: Array<{
@@ -92,11 +93,74 @@ export async function getGuardianWithDependents(guardianId: string): Promise<Gua
   };
 }
 
+/** Soft-deleted guardians, newest first, for the hidden deleted tab. */
+export async function getDeletedGuardians(search?: string): Promise<GuardianWithDependents[]> {  const guardians = search
+    ? await db
+        .select()
+        .from(btsGuardians)
+        .where(
+          and(
+            isNotNull(btsGuardians.deletedAt),
+            or(
+              ilike(btsGuardians.fullName, `%${search}%`),
+              ilike(btsGuardians.nationalId, `%${search}%`),
+              ilike(btsGuardians.email, `%${search}%`),
+              ilike(btsGuardians.thaId, `%${search}%`),
+            ),
+          ),
+        )
+        .orderBy(desc(btsGuardians.createdAt))
+    : await db
+        .select()
+        .from(btsGuardians)
+        .where(isNotNull(btsGuardians.deletedAt))
+        .orderBy(desc(btsGuardians.createdAt));
+
+  const guardianIds = guardians.map((g) => g.id);
+  if (guardianIds.length === 0) return [];
+
+  const dependents = await db
+    .select()
+    .from(btsDependents)
+    .where(inArray(btsDependents.guardianId, guardianIds));
+
+  const dependentsByGuardian = new Map<string, typeof dependents>();
+  for (const d of dependents) {
+    const list = dependentsByGuardian.get(d.guardianId) ?? [];
+    list.push(d);
+    dependentsByGuardian.set(d.guardianId, list);
+  }
+
+  return guardians.map((g) => ({
+    id: g.id,
+    fullName: g.fullName,
+    nationalId: g.nationalId,
+    contactNumber: g.contactNumber,
+    email: g.email,
+    address: g.address,
+    consent: g.consent,
+    thaId: g.thaId,
+    deletedAt: g.deletedAt,
+    createdAt: g.createdAt,
+    updatedAt: g.updatedAt,
+    dependents: (dependentsByGuardian.get(g.id) ?? []).map((d) => ({
+      id: d.id,
+      studentName: d.studentName,
+      schoolName: d.schoolName,
+      gradeLevel: d.gradeLevel,
+      notes: d.notes,
+      bookListUrl: d.bookListUrl,
+      createdAt: d.createdAt,
+      assignments: [],
+    })),
+  }));
+}
+
 export async function getGuardianByApplicationId(aid: string): Promise<GuardianWithDependents | null> {
   const [guardian] = await db
     .select()
     .from(btsGuardians)
-    .where(eq(btsGuardians.thaId, aid))
+    .where(and(eq(btsGuardians.thaId, aid), isNull(btsGuardians.deletedAt)))
     .limit(1);
 
   if (!guardian) return null;
@@ -109,15 +173,22 @@ export async function getAllGuardians(search?: string): Promise<GuardianWithDepe
         .select()
         .from(btsGuardians)
         .where(
-          or(
-            ilike(btsGuardians.fullName, `%${search}%`),
-            ilike(btsGuardians.nationalId, `%${search}%`),
-            ilike(btsGuardians.email, `%${search}%`),
-            ilike(btsGuardians.thaId, `%${search}%`),
+          and(
+            isNull(btsGuardians.deletedAt),
+            or(
+              ilike(btsGuardians.fullName, `%${search}%`),
+              ilike(btsGuardians.nationalId, `%${search}%`),
+              ilike(btsGuardians.email, `%${search}%`),
+              ilike(btsGuardians.thaId, `%${search}%`),
+            ),
           ),
         )
         .orderBy(desc(btsGuardians.createdAt))
-    : await db.select().from(btsGuardians).orderBy(desc(btsGuardians.createdAt));
+    : await db
+        .select()
+        .from(btsGuardians)
+        .where(isNull(btsGuardians.deletedAt))
+        .orderBy(desc(btsGuardians.createdAt));
 
   const guardianIds = guardians.map((g) => g.id);
   if (guardianIds.length === 0) return [];
@@ -142,6 +213,7 @@ export async function getAllGuardians(search?: string): Promise<GuardianWithDepe
     address: g.address,
     consent: g.consent,
     thaId: g.thaId,
+    deletedAt: g.deletedAt,
     createdAt: g.createdAt,
     updatedAt: g.updatedAt,
     dependents: (dependentsByGuardian.get(g.id) ?? []).map((d) => ({
@@ -155,6 +227,14 @@ export async function getAllGuardians(search?: string): Promise<GuardianWithDepe
       assignments: [],
     })),
   }));
+}
+
+export async function countDeletedGuardians(): Promise<number> {
+  const [row] = await db
+    .select({ n: count() })
+    .from(btsGuardians)
+    .where(isNotNull(btsGuardians.deletedAt));
+  return row?.n ?? 0;
 }
 
 export interface AuditEntry {

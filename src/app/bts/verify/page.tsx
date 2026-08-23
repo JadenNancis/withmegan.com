@@ -6,7 +6,7 @@ import {
   btsDependents,
   btsResourceAssignments,
 } from "@/db/schema";
-import { eq, inArray } from "drizzle-orm";
+import { eq, and, isNull, inArray } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
 
@@ -61,7 +61,7 @@ async function VerifyResult({ aid }: { aid: string }) {
   const [guardian] = await db
     .select()
     .from(btsGuardians)
-    .where(eq(btsGuardians.thaId, aid))
+    .where(and(eq(btsGuardians.thaId, aid), isNull(btsGuardians.deletedAt)))
     .limit(1);
 
   if (!guardian) {

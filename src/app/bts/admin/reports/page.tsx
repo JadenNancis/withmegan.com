@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
 import { db } from "@/db/client";
 import { btsGuardians, btsDependents, btsResourceAssignments, btsInventory } from "@/db/schema";
+import { isNull } from "drizzle-orm";
 
 export const dynamic = "force-dynamic";
 
@@ -10,7 +11,7 @@ export default async function BtsReportsPage() {
   await requireAdmin("/bts/admin/reports");
 
   const [guardians, dependents, assignments, inventory] = await Promise.all([
-    db.select().from(btsGuardians),
+    db.select().from(btsGuardians).where(isNull(btsGuardians.deletedAt)),
     db.select().from(btsDependents),
     db.select().from(btsResourceAssignments),
     db.select().from(btsInventory),
@@ -35,23 +36,51 @@ export default async function BtsReportsPage() {
   const totalCollected = assignments.reduce((sum, a) => sum + a.quantityCollected, 0);
   const totalItems = assignments.length;
 
+  // Row-level detail for physical verification: one row per dependent.
+  const guardiansById = new Map(guardians.map((g) => [g.id, g]));
+  const dependentsByGuardian = new Map<string, typeof dependents>();
+  for (const d of dependents) {
+    const list = dependentsByGuardian.get(d.guardianId) ?? [];
+    list.push(d);
+    dependentsByGuardian.set(d.guardianId, list);
+  }
+  const assignmentText = new Map<string, string>();
+  for (const a of assignments) {
+    const current = assignmentText.get(a.dependentId) ?? "";
+    const entry = `${a.itemName} x${a.quantityAssigned}`;
+    assignmentText.set(a.dependentId, current ? `${current}; ${entry}` : entry);
+  }
+  const detailRows = guardians.flatMap((g) =>
+    (dependentsByGuardian.get(g.id) ?? []).map((d) => ({ guardian: g, dependent: d })),
+  );
+
   return (
     <div className="space-y-6">
       <AdminNav current="/bts/admin/reports" site="bts" />
 
-      <div className="flex items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="px-5 py-4">
           <h1 className="text-xl sm:text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Reports</h1>
           <p className="mt-1 text-sm text-brand-100/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">Summary of all BTS book drive registrations.</p>
         </div>
-        <a
-          href="/api/export?site=bts&format=pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 active:scale-95 min-h-[44px]"
-        >
-          Export PDF
-        </a>
+        <div className="flex gap-2 flex-wrap">
+          <a
+            href="/api/export?site=bts&format=csv"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-xl bg-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-green-700 active:scale-95 min-h-[44px]"
+          >
+            Export Sheet (CSV)
+          </a>
+          <a
+            href="/api/export?site=bts&format=pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 active:scale-95 min-h-[44px]"
+          >
+            Export PDF
+          </a>
+        </div>
       </div>
 
       <div className="grid gap-3 sm:gap-4 sm:grid-cols-3">
@@ -59,6 +88,66 @@ export default async function BtsReportsPage() {
         <StatCard label="Total Dependents" value={totalDependents} accent="blue" />
         <StatCard label="Resource Items Tracked" value={totalItems} accent="amber" />
       </div>
+
+      <section className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-lg font-semibold text-gray-900">Full Database Report</h2>
+          <span className="text-xs text-gray-500">{detailRows.length} rows</span>
+        </div>
+        <p className="mt-1 text-sm text-gray-500">
+          One row per child/student, ready for physical verification on site. Download the sheet
+          for after-event reporting.
+        </p>
+        {detailRows.length === 0 ? (
+          <p className="mt-2 text-sm text-gray-500">No registrations recorded.</p>
+        ) : (
+          <div className="mt-3 overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-200 text-left text-xs uppercase text-gray-600">
+                  <th className="py-2 pr-4 font-medium">Application ID</th>
+                  <th className="py-2 pr-4 font-medium">Parent/Guardian</th>
+                  <th className="py-2 pr-4 font-medium">Community</th>
+                  <th className="py-2 pr-4 font-medium">No. of Children</th>
+                  <th className="py-2 pr-4 font-medium">Child/Student</th>
+                  <th className="py-2 pr-4 font-medium">School</th>
+                  <th className="py-2 pr-4 font-medium">Grade or Form</th>
+                  <th className="py-2 pr-4 font-medium">Request</th>
+                </tr>
+              </thead>
+              <tbody>
+                {detailRows.map(({ guardian, dependent }) => (
+                  <tr key={dependent.id} className="border-b border-gray-100 align-top">
+                    <td className="py-2 pr-4 font-mono text-xs text-blue-700">{guardian.thaId ?? "N/A"}</td>
+                    <td className="py-2 pr-4 text-gray-900">{guardian.fullName}</td>
+                    <td className="py-2 pr-4 text-gray-700">{guardian.address}</td>
+                    <td className="py-2 pr-4 text-gray-700">
+                      {(dependentsByGuardian.get(guardian.id) ?? []).length}
+                    </td>
+                    <td className="py-2 pr-4 text-gray-900">{dependent.studentName}</td>
+                    <td className="py-2 pr-4 text-gray-700">{dependent.schoolName}</td>
+                    <td className="py-2 pr-4 text-gray-700">{dependent.gradeLevel}</td>
+                    <td className="py-2 pr-4 text-gray-700">
+                      <span className="block">{assignmentText.get(dependent.id) ?? "No items assigned"}</span>
+                      {dependent.bookListUrl && (
+                        <a
+                          href={dependent.bookListUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-semibold text-blue-600 underline"
+                        >
+                          Book list
+                        </a>
+                      )}
+                      {dependent.notes && <span className="block text-xs text-gray-500">{dependent.notes}</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
 
       <section className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900">Dependents by School</h2>

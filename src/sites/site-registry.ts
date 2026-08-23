@@ -23,6 +23,8 @@ export interface SiteConfig {
   tagline: string;
   /** ISO date of the programme event. */
   eventDate: string;
+  /** Optional UTC instant when registration closes (displayed as a deadline). */
+  registrationClose?: string;
   /** Primary brand colour. */
   accent: "cyan" | "amber";
   /** Full-page background image (site-specific). */
@@ -55,7 +57,6 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     nav: [
       { label: "Home", href: "/bts" },
       { label: "Register", href: "/bts/register" },
-      { label: "Volunteer", href: "/bts/volunteer" },
       { label: "Supporters", href: "/bts/supporters" },
       { label: "ID", href: "/bts/recover" },
       { label: "Progress", href: "/bts/progress" },
@@ -71,6 +72,7 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     shortName: "Market Day",
     tagline: "Hamper Distribution · Mt. St. George/Goodwood, Tobago",
     eventDate: "2026-09-06",
+    registrationClose: "2026-09-04T16:00:00Z", // noon TT
     accent: "amber",
     background: "/images/tobago/classroom-bg.jpg",
     routePrefix: "/md",
@@ -78,7 +80,6 @@ export const SITES: Record<SiteKey, SiteConfig> = {
     nav: [
       { label: "Home", href: "/md" },
       { label: "Register", href: "/md/register" },
-      { label: "Volunteer", href: "/md/volunteer" },
       { label: "Progress", href: "/md/progress" },
       { label: "Gallery", href: "/md/gallery" },
       { label: "Supporters", href: "/md/supporters" },
@@ -96,6 +97,31 @@ export const SITES: Record<SiteKey, SiteConfig> = {
  */
 export function parseEventDate(eventDate: string): Date {
   return new Date(`${eventDate}T12:00:00`);
+}
+
+/**
+ * Format a registration-deadline instant ("2026-09-04T16:00:00Z") in Tobago
+ * time so the label reads "Friday 4 September 2026 at 12:00 p.m." regardless
+ * of where the server renders. No-op when the site has no deadline.
+ */
+export function formatRegistrationClose(iso?: string): string | null {
+  if (!iso) return null;
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  const tz = "America/Port_of_Spain";
+  const date = d.toLocaleDateString("en-TT", {
+    timeZone: tz,
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const time = d.toLocaleTimeString("en-TT", {
+    timeZone: tz,
+    hour: "numeric",
+    minute: "2-digit",
+  });
+  return `${date} at ${time}`;
 }
 
 /**

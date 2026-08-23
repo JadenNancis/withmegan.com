@@ -10,7 +10,7 @@ import {
   mdRegistrants,
 } from "@/db/schema";
 import { SITES, type SiteKey } from "@/sites/site-registry";
-import { count, eq } from "drizzle-orm";
+import { count, eq, and, isNull, inArray } from "drizzle-orm";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,22 +20,46 @@ function siteFromQuery(value: string | null): SiteKey | null {
   return null;
 }
 
+function csvCell(value: string | number | null | undefined): string {
+  const s = value == null ? "" : String(value);
+  return `"${s.replace(/"/g, '""')}"`;
+}
+
+function csvRow(cells: (string | number | null | undefined)[]): string {
+  return cells.map(csvCell).join(",") + "\r\n";
+}
+
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const site = siteFromQuery(url.searchParams.get("site"));
-  const format = url.searchParams.get("format");
+  const format = url.searchParams.get("format") ?? "csv";
 
   if (!site) {
     return NextResponse.json({ error: "Missing or invalid `site` parameter." }, { status: 400 });
   }
-  if (format && format !== "pdf") {
-    return NextResponse.json({ error: "Unsupported `format`. Only pdf is supported." }, { status: 400 });
+  if (format !== "csv" && format !== "pdf") {
+    return NextResponse.json({ error: "Unsupported `format`. Use csv or pdf." }, { status: 400 });
   }
 
-  // Exports are admin-only: report data is sensitive and not for event-day staff.
-  await requireAdmin(undefined, "admin");
+  // Exports carry sensitive registration data — staff and above only.
+  // Staff need it for on-site physical verification and after-event reporting.
+  await requireAdmin(undefined, "staff");
 
   const cfg = SITES[site];
+
+  if (format === "csv") {
+    const csv =
+      site === "bts" ? await buildBtsCsv() : await buildMdCsv();
+    // BOM so Excel opens TT accents correctly.
+    return new NextResponse("\uFEFF" + csv, {
+      headers: {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": `attachment; filename="${site}-full-report.csv"`,
+        "Cache-Control": "no-store",
+      },
+    });
+  }
+
   const doc = new PDFDocument({ size: "LETTER", margins: { top: 56, bottom: 56, left: 56, right: 56 } });
   const chunks: Buffer[] = [];
   doc.on("data", (c: Buffer) => chunks.push(c));
@@ -141,7 +165,7 @@ function footer(doc: PDFKit.PDFDocument) {
 
 async function buildBtsReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteKey]) {
   const [guardians, dependents, assignments, inventory] = await Promise.all([
-    db.select().from(btsGuardians),
+    db.select().from(btsGuardians).where(isNull(btsGuardians.deletedAt)),
     db.select().from(btsDependents),
     db.select().from(btsResourceAssignments),
     db.select().from(btsInventory),
@@ -211,7 +235,7 @@ async function buildBtsReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteK
 // ── MD report ───────────────────────────────────────────────────
 
 async function buildMdReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteKey]) {
-  const registrants = await db.select().from(mdRegistrants);
+  const registrants = await db.select().from(mdRegistrants).where(isNull(mdRegistrants.deletedAt));
 
   const redeemedN = registrants.filter((r) => r.redeemedAt !== null).length;
   const pendingN = registrants.length - redeemedN;
@@ -273,4 +297,127 @@ async function buildMdReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteKe
   }
 
   footer(doc);
+}
+
+// ── CSV full-database sheets ───────────────────────────────────
+// One row per dependent (BTS) / registrant (MD) with every field staff need
+// to verify families physically on site and to report after the event.
+// Deleted registrations are excluded — they are not part of the event.
+
+async function buildBtsCsv(): Promise<string> {
+  const guardians = await db
+    .select()
+    .from(btsGuardians)
+    .where(isNull(btsGuardians.deletedAt));
+
+  const guardianIds = guardians.map((g) => g.id);
+  const dependents = guardianIds.length > 0
+    ? await db.select().from(btsDependents).where(inArray(btsDependents.guardianId, guardianIds))
+    : [];
+
+  const dependentIds = dependents.map((d) => d.id);
+  const assignments = dependentIds.length > 0
+    ? await db.select().from(btsResourceAssignments).where(inArray(btsResourceAssignments.dependentId, dependentIds))
+    : [];
+
+  const assignmentText = new Map<string, string>();
+  for (const a of assignments) {
+    const current = assignmentText.get(a.dependentId) ?? "";
+    const entry = `${a.itemName} x${a.quantityAssigned}`;
+    assignmentText.set(a.dependentId, current ? `${current}; ${entry}` : entry);
+  }
+
+  const lines: string[] = [];
+  lines.push(
+    csvRow([
+      "Application ID",
+      "Parent/Guardian Name",
+      "Phone",
+      "Email",
+      "Community",
+      "Number of Children",
+      "Child/Student Name",
+      "School",
+      "Grade or Form",
+      "Request (items assigned)",
+      "Notes",
+      "Book List URL",
+      "Collected Status",
+      "Registered Date",
+    ]),
+  );
+
+  for (const g of guardians) {
+    const kids = dependents.filter((d) => d.guardianId === g.id);
+    for (const d of kids) {
+      lines.push(
+        csvRow([
+          g.thaId ?? "",
+          g.fullName,
+          g.contactNumber,
+          g.email,
+          g.address,
+          kids.length,
+          d.studentName,
+          d.schoolName,
+          d.gradeLevel,
+          assignmentText.get(d.id) ?? "",
+          d.notes ?? "",
+          d.bookListUrl ?? "",
+          "Collected",
+          g.createdAt.toISOString().slice(0, 10),
+        ]),
+      );
+    }
+  }
+
+  return lines.join("");
+}
+
+async function buildMdCsv(): Promise<string> {
+  const registrants = await db
+    .select()
+    .from(mdRegistrants)
+    .where(isNull(mdRegistrants.deletedAt));
+
+  const lines: string[] = [];
+  lines.push(
+    csvRow([
+      "Application ID",
+      "Full Name",
+      "National ID",
+      "Date of Birth",
+      "Community",
+      "Phone",
+      "Email",
+      "Product Category",
+      "Category Note",
+      "Consent",
+      "Status",
+      "Registered Date",
+      "Collected At",
+    ]),
+  );
+
+  for (const r of registrants) {
+    lines.push(
+      csvRow([
+        r.thaId ?? "",
+        r.fullName,
+        r.nationalId ?? "",
+        r.dateOfBirth ?? "",
+        r.address,
+        r.phoneNumber,
+        r.email ?? "",
+        r.productCategory ?? "",
+        r.productCategoryNote ?? "",
+        r.consent ? "Given" : "Not given",
+        r.redeemedAt ? "Collected" : "Pending",
+        r.createdAt.toISOString().slice(0, 10),
+        r.redeemedAt ? r.redeemedAt.toISOString() : "",
+      ]),
+    );
+  }
+
+  return lines.join("");
 }

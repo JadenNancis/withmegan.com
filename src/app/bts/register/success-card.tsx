@@ -7,9 +7,17 @@ import type { SubmitResult } from "./steps/review-step";
 export function SuccessCard({
   result,
   onRegisterAnother,
+  backHref = "/bts",
+  backLabel = "Back home",
+  backHint = "Return to the site",
+  registerAnotherLabel = "Register another family",
 }: {
   result: SubmitResult;
   onRegisterAnother: () => void;
+  backHref?: string;
+  backLabel?: string;
+  backHint?: string;
+  registerAnotherLabel?: string;
 }) {
   return (
     <div className="mx-auto max-w-xl space-y-5 py-2 sm:py-6">
@@ -47,11 +55,11 @@ export function SuccessCard({
 
       {/* Action */}
       <Link
-        href="/bts"
+        href={backHref}
         className="flex flex-col items-center justify-center rounded-xl border border-gray-300 bg-white px-4 py-4 text-center shadow-sm hover:bg-gray-50 hover:border-gray-400 hover:shadow active:scale-95 transition-all duration-150 min-h-[80px]"
       >
-        <span className="text-sm font-bold text-gray-800">Back home</span>
-        <span className="mt-0.5 text-xs text-gray-600">Return to the site</span>
+        <span className="text-sm font-bold text-gray-800">{backLabel}</span>
+        <span className="mt-0.5 text-xs text-gray-600">{backHint}</span>
       </Link>
 
       <div className="text-center">
@@ -60,7 +68,7 @@ export function SuccessCard({
           onClick={onRegisterAnother}
           className="text-sm font-semibold text-white underline underline-offset-2 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)] hover:text-brand-100 transition-colors min-h-[44px] inline-flex items-center"
         >
-          Register another family
+          {registerAnotherLabel}
         </button>
       </div>
     </div>

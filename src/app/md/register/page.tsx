@@ -7,6 +7,7 @@ import { cn } from "@/lib/cn";
 import { BasketIcon, FloatingProduce } from "@/components/md-illustrations";
 import { TOBAGO_LOCATIONS, OTHER_LOCATION_VALUE } from "@/lib/tobago-locations";
 import { formatTtPhone, isValidTtPhone } from "@/lib/tt-phone";
+import { SITES, formatRegistrationClose } from "@/sites/site-registry";
 import { InterestCard } from "./interest-card";
 
 type Errors = Partial<Record<string, string>>;
@@ -213,6 +214,24 @@ export default function MdRegisterPage() {
           </div>
         </div>
       </div>
+
+      {(() => {
+        const deadline = formatRegistrationClose(SITES.md.registrationClose);
+        if (!deadline) return null;
+        return (
+          <div className="motion-safe:md-animate-fade-in-up flex items-start gap-3 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 shadow-sm">
+            <svg viewBox="0 0 24 24" className="mt-0.5 h-5 w-5 flex-none text-amber-700" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="17" rx="2" />
+              <path d="M8 2v4M16 2v4M3 9h18" />
+              <path d="M12 12v4M9 14h6" />
+            </svg>
+            <p className="text-sm leading-snug text-amber-900">
+              <span className="font-bold">Registration closes {deadline}.</span>{" "}
+              Register before then to secure your hamper.
+            </p>
+          </div>
+        );
+      })()}
 
       {submitError && (
         <div className="motion-safe:md-animate-fade-in-up rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-700">

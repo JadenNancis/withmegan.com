@@ -4,6 +4,7 @@ import { getGuardianWithDependents, getAuditTrailForGuardian } from "@/lib/bts-q
 import { AdminNav } from "@/components/admin-nav";
 import { AssignmentPanel } from "./assignment-panel";
 import { BookListViewer } from "./book-list-viewer";
+import { DeleteRegistrantButton } from "@/components/registrant-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -33,16 +34,27 @@ export default async function GuardianDetailPage({
               {guardian.thaId ?? "No Application ID"}
             </p>
           </div>
-          <div className="text-sm text-gray-600 space-y-0.5">
-            <p>🪪 {guardian.nationalId ?? "N/A"}</p>
-            <p>📞 {guardian.contactNumber}</p>
-            <p>✉️ {guardian.email}</p>
-            <p>📍 {guardian.address}</p>
-            <p className="mt-1 text-xs text-gray-600">
-              Registered {guardian.createdAt.toLocaleDateString("en-TT")}
-            </p>
+          <div className="flex flex-col items-start sm:items-end gap-3">
+            <div className="text-sm text-gray-600 space-y-0.5">
+              <p>🪪 {guardian.nationalId ?? "N/A"}</p>
+              <p>📞 {guardian.contactNumber}</p>
+              <p>✉️ {guardian.email}</p>
+              <p>📍 {guardian.address}</p>
+              <p className="mt-1 text-xs text-gray-600">
+                Registered {guardian.createdAt.toLocaleDateString("en-TT")}
+              </p>
+            </div>
+            {!guardian.deletedAt && (
+              <DeleteRegistrantButton site="bts" id={guardian.id} redirectTo="/bts/admin" />
+            )}
           </div>
         </div>
+        {guardian.deletedAt && (
+          <p className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700">
+            This registration is deleted. It only appears on the deleted tab and will be
+            hidden from all counts and check-in screens.
+          </p>
+        )}
       </section>
 
       {/* Dependents + assignments */}

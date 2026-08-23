@@ -11,9 +11,15 @@ import { TobagoMapBadge } from "@/components/bts-illustrations";
 export function InterestCard({
   community,
   onRegisterAnother,
+  backHref = "/bts",
+  backLabel = "Back home",
+  registerAnotherLabel = "Register another family",
 }: {
   community: string;
   onRegisterAnother: () => void;
+  backHref?: string;
+  backLabel?: string;
+  registerAnotherLabel?: string;
 }) {
   return (
     <div className="mx-auto max-w-xl space-y-5 py-2 sm:py-6">
@@ -47,17 +53,17 @@ export function InterestCard({
 
       <div className="grid gap-3 sm:grid-cols-2">
         <Link
-          href="/bts"
+          href={backHref}
           className="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-brand-700 px-6 text-base font-bold text-white shadow-lg shadow-brand-700/25 hover:bg-brand-800 active:scale-95 transition-all duration-150"
         >
-          Back home
+          {backLabel}
         </Link>
         <button
           type="button"
           onClick={onRegisterAnother}
           className="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-gray-300 bg-white px-6 text-base font-semibold text-gray-800 shadow-sm hover:bg-gray-50 hover:border-gray-400 active:scale-95 transition-all duration-150"
         >
-          Register another family
+          {registerAnotherLabel}
         </button>
       </div>
     </div>
