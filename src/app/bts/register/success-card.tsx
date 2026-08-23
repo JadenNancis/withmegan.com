@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { SuccessCheckmark } from "@/components/bts-illustrations";
-import { SITES } from "@/sites/site-registry";
 import type { SubmitResult } from "./steps/review-step";
 
 export function SuccessCard({
@@ -12,38 +11,6 @@ export function SuccessCard({
   result: SubmitResult;
   onRegisterAnother: () => void;
 }) {
-  function downloadIcs() {
-    const d = new Date(SITES.bts.eventDate + "T09:00:00");
-    const pad = (n: number) => String(n).padStart(2, "0");
-    const stamp = (x: Date) =>
-      `${x.getUTCFullYear()}${pad(x.getUTCMonth() + 1)}${pad(x.getUTCDate())}T${pad(
-        x.getUTCHours(),
-      )}${pad(x.getUTCMinutes())}00Z`;
-    const end = new Date(d.getTime() + 4 * 60 * 60 * 1000);
-    const ics = [
-      "BEGIN:VCALENDAR",
-      "VERSION:2.0",
-      "PRODID:-//withmegan//bts//EN",
-      "BEGIN:VEVENT",
-      `UID:${result.thaId}@withmegan`,
-      `DTSTAMP:${stamp(new Date())}`,
-      `DTSTART:${stamp(d)}`,
-      `DTEND:${stamp(end)}`,
-      "SUMMARY:Back to School with Megan · Collection Day",
-      `DESCRIPTION:Your Application ID is ${result.thaId}. Show it (or your QR code) at the distribution counter.`,
-      "LOCATION:Mt. St. George Community Centre\\, Tobago",
-      "END:VEVENT",
-      "END:VCALENDAR",
-    ].join("\r\n");
-    const blob = new Blob([ics], { type: "text/calendar" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `bts-collection-${result.thaId}.ics`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
   return (
     <div className="mx-auto max-w-xl space-y-5 py-2 sm:py-6">
       {/* Celebration header + ID share one white surface so the copy stays
@@ -78,29 +45,14 @@ export function SuccessCard({
         </div>
       </div>
 
-      {/* Action grid */}
-      <div className="grid gap-3 sm:grid-cols-2">
-        <button
-          type="button"
-          onClick={downloadIcs}
-          className="flex flex-col items-center justify-center rounded-xl bg-brand-700 px-4 py-4 text-center shadow-lg shadow-brand-700/25 hover:bg-brand-800 hover:shadow-xl hover:shadow-brand-700/30 active:scale-95 transition-all duration-150 min-h-[80px] text-white"
-        >
-          <span className="text-sm font-bold">Add to calendar</span>
-          <span className="mt-0.5 text-xs text-brand-100">
-            {new Date(SITES.bts.eventDate + "T12:00:00").toLocaleDateString("en-TT", {
-              month: "short",
-              day: "numeric",
-            })}
-          </span>
-        </button>
-        <Link
-          href="/bts"
-          className="flex flex-col items-center justify-center rounded-xl border border-gray-300 bg-white px-4 py-4 text-center shadow-sm hover:bg-gray-50 hover:border-gray-400 hover:shadow active:scale-95 transition-all duration-150 min-h-[80px]"
-        >
-          <span className="text-sm font-bold text-gray-800">Back home</span>
-          <span className="mt-0.5 text-xs text-gray-600">Return to the site</span>
-        </Link>
-      </div>
+      {/* Action */}
+      <Link
+        href="/bts"
+        className="flex flex-col items-center justify-center rounded-xl border border-gray-300 bg-white px-4 py-4 text-center shadow-sm hover:bg-gray-50 hover:border-gray-400 hover:shadow active:scale-95 transition-all duration-150 min-h-[80px]"
+      >
+        <span className="text-sm font-bold text-gray-800">Back home</span>
+        <span className="mt-0.5 text-xs text-gray-600">Return to the site</span>
+      </Link>
 
       <div className="text-center">
         <button

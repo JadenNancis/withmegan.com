@@ -47,16 +47,16 @@ export async function GET(req: Request) {
   });
 
   const stream = new ReadableStream({
-    start(controller) {
+    async start(controller) {
       doc.on("end", () => {
         controller.enqueue(Buffer.concat(chunks));
         controller.close();
       });
       try {
         if (site === "bts") {
-          buildBtsReport(doc, cfg);
+          await buildBtsReport(doc, cfg);
         } else {
-          buildMdReport(doc, cfg);
+          await buildMdReport(doc, cfg);
         }
         doc.end();
       } catch (err) {
