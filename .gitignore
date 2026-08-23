@@ -41,4 +41,8 @@ next-env.d.ts
 
 # Agent / design screenshots (local artifacts, not app code)
 screenshots/
+visual-check-screenshots/
+
+# Raw generated image sources (working files; optimized copies live in public/)
+/Images/
 .env*

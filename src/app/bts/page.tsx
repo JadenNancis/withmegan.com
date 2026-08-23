@@ -159,8 +159,10 @@ export default async function BtsLanding() {
       {/* ===== How it works — snap-scroll cards on mobile ===== */}
       <section className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
         <div className="text-center">
-          <h2 className="text-title text-white drop-shadow-md [text-shadow:0_3px_12px_rgba(0,0,0,0.55)]">Three steps, three minutes</h2>
-          <p className="mt-1 text-sm sm:text-body text-brand-100 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">
+          <h2 className="text-title text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.6),0_4px_18px_rgba(0,0,0,0.65)]">
+            Three steps, three minutes
+          </h2>
+          <p className="mt-1 text-sm sm:text-body text-white/95 [text-shadow:0_1px_2px_rgba(0,0,0,0.6),0_2px_10px_rgba(0,0,0,0.6)]">
             Everything happens right here on your phone.
           </p>
         </div>

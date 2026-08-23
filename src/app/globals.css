@@ -65,9 +65,9 @@ html {
 */
 html {
   /* Warm golden-hour fallback that mirrors the backdrop while it loads.
-     Tones sampled from the scene: pale sky → amber mid → deep sand-brown.
+     Tones sampled from the MD scene: pale sky → warm amber → deep brown.
      Each site layers its own fixed background image over this (SiteShell). */
-  background: linear-gradient(180deg, #d3dce6 0%, #d8b877 40%, #96662f 72%, #6d4a1f 100%);
+  background: linear-gradient(180deg, #a5c3d8 0%, #d9c798 38%, #7b593b 70%, #503125 100%);
 }
 
 body {
