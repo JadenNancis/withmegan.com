@@ -28,6 +28,11 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "admin";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
+  // Multi-domain deployment: the same auth realm serves btswithmegan.com and
+  // mdwithmegan.com. trustHost lets Auth.js derive every redirect origin from
+  // the actual request host (instead of a pinned AUTH_URL), so signing in and
+  // out always stays on the domain the user is using.
+  trustHost: true,
   providers: [
     Credentials({
       name: "Credentials",

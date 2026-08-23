@@ -51,7 +51,6 @@ In **Vercel → Settings → Environment Variables**, add these for the **Produc
 |-----|-------|----------|
 | `DATABASE_URL` | `postgres://...?sslmode=require` (Neon pooled connection string) | Yes |
 | `AUTH_SECRET` | `openssl rand -base64 32` output | Yes |
-| `AUTH_URL` | `https://backtoschoolwithmegan.tha.tt` (canonical production origin) | Yes |
 | `NEXT_PUBLIC_BTS_HOST` | `backtoschoolwithmegan.tha.tt` | Yes |
 | `NEXT_PUBLIC_MD_HOST` | `marketdaywithmegan.tha.tt` | Yes |
 | `NEXT_PUBLIC_APP_URL` | `https://backtoschoolwithmegan.tha.tt` (OpenGraph metadata base) | Yes |
@@ -69,7 +68,7 @@ In **Vercel → Settings → Environment Variables**, add these for the **Produc
 
 ### `AUTH_URL` note
 
-Auth.js uses `AUTH_URL` as the canonical trust host. Because both domains share one deployment, pick **one** as canonical (the BTS domain above). Auth callbacks resolve correctly because `/auth/*` is a shared path served on both domains.
+`AUTH_URL` is intentionally **not** set in production. The app sets `trustHost: true`, so Auth.js derives the redirect origin from each request's `Host`/`x-forwarded-host` header. This is what makes sign-in and sign-out stay on whichever of the two domains the visitor is actually using — a pinned `AUTH_URL` would bounce one domain to the other's origin. Do not add `AUTH_URL` back.
 
 ## 4. Push the schema to Neon
 
