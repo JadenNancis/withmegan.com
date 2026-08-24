@@ -1,6 +1,6 @@
 import { readdir } from "fs/promises";
 import path from "path";
-import { list } from "@vercel/blob";
+import { isWasabiConfigured, listFiles } from "@/lib/storage";
 
 export type GalleryPhotoSource = "seed" | "upload";
 
@@ -14,11 +14,11 @@ export interface GalleryPhoto {
 /**
  * Get gallery photos for a given site.
  *
- * Production (Vercel Blob): lists blobs under `gallery/{site}/` and returns
- * their public CDN URLs. Also includes seed images from public/ that were
+ * Production (Wasabi): lists objects under `gallery/{site}/` and returns
+ * their public URLs. Also includes seed images from public/ that were
  * committed to the repo.
  *
- * Dev fallback (no BLOB_READ_WRITE_TOKEN): reads seed images from
+ * Dev fallback (no Wasabi config): reads seed images from
  * `public/images/gallery/{site}/` (committed to repo, served at build time)
  * PLUS uploaded images from `uploads/gallery/{site}/` (served by
  * the /api/gallery-file route).
@@ -47,17 +47,17 @@ export async function getGalleryPhotos(site: string): Promise<GalleryPhoto[]> {
     // No seed directory.
   }
 
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
-    // Production: also list blobs from Vercel Blob.
+  if (isWasabiConfigured()) {
+    // Production: also list uploaded objects from Wasabi.
     try {
-      const { blobs } = await list({ prefix: `gallery/${site}/` });
-      for (const b of blobs) {
-        if (/\.(jpe?g|png|webp|gif)$/i.test(b.url)) {
-          photos.push({ url: b.url, deletable: true, source: "upload" });
+      const objects = await listFiles(`gallery/${site}/`);
+      for (const o of objects) {
+        if (/\.(jpe?g|png|webp|gif)$/i.test(o.key)) {
+          photos.push({ url: o.url, deletable: true, source: "upload" });
         }
       }
     } catch (err) {
-      console.error(`[gallery] blob list failed for ${site}:`, err);
+      console.error(`[gallery] wasabi list failed for ${site}:`, err);
     }
   } else {
     // Dev fallback: also read from uploads/gallery/{site}/.

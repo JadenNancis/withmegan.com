@@ -51,6 +51,11 @@ In **Vercel → Settings → Environment Variables**, add these for the **Produc
 |-----|-------|----------|
 | `DATABASE_URL` | `postgres://...?sslmode=require` (Neon pooled connection string) | Yes |
 | `AUTH_SECRET` | `openssl rand -base64 32` output | Yes |
+| `WASABI_ACCESS_KEY_ID` | Wasabi access key (S3-compatible file storage) | Yes |
+| `WASABI_SECRET_ACCESS_KEY` | Wasabi secret key | Yes |
+| `WASABI_REGION` | Wasabi bucket region, e.g. `us-east-1` | Yes |
+| `WASABI_BUCKET` | Wasabi bucket name (must be public-read) | Yes |
+| `WASABI_ENDPOINT` | `https://s3.{region}.wasabisys.com` (defaults to this) | No |
 | `NEXT_PUBLIC_BTS_HOST` | `backtoschoolwithmegan.tha.tt` | Yes |
 | `NEXT_PUBLIC_MD_HOST` | `marketdaywithmegan.tha.tt` | Yes |
 | `NEXT_PUBLIC_APP_URL` | `https://backtoschoolwithmegan.tha.tt` (OpenGraph metadata base) | Yes |
@@ -60,7 +65,7 @@ In **Vercel → Settings → Environment Variables**, add these for the **Produc
 | `FROM_EMAIL_BTS` | `Back to School with Megan <noreply@btswithmegan.com>` | No |
 | `FROM_EMAIL_MD` | `Market Day with Megan <noreply@mdwithmegan.com>` | No |
 | `FROM_EMAIL` | Shared fallback from-address (used only when the site-specific one is missing) | No |
-| `BLOB_READ_WRITE_TOKEN` | Vercel Blob token (only when file uploads go to Blob) | No |
+| `BLOB_READ_WRITE_TOKEN` | Vercel Blob token — only needed to run `scripts/migrate-blob-to-wasabi.mjs` once | No |
 | `ADMIN_EMAIL` | Override prototype admin email | No |
 | `ADMIN_PASSWORD` | Override prototype admin password | No |
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { put } from "@vercel/blob";
+import { isWasabiConfigured, uploadFile } from "@/lib/storage";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import crypto from "crypto";
@@ -8,11 +8,11 @@ import crypto from "crypto";
 /**
  * Shared file upload endpoint for book-list documents (BTS).
  *
- * Production: Vercel Blob — files survive redeployments and are served
- * from the Vercel Blob CDN. Requires BLOB_READ_WRITE_TOKEN.
+ * Production: Wasabi (S3-compatible) — files survive redeployments and are
+ * served from the bucket's public endpoint. Requires WASABI_* env vars.
  *
- * Dev fallback: when BLOB_READ_WRITE_TOKEN is absent, stores locally
- * under /public/uploads so the prototype works without external config.
+ * Dev fallback: when Wasabi is not configured, stores locally under
+ * /uploads so the prototype works without external config.
  * The response shape ({ url }) is identical either way.
  *
  * Security gates:
@@ -53,19 +53,21 @@ export async function POST(req: Request) {
 
   const opaqueName = `${crypto.randomUUID()}.${ext}`;
 
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
+  if (isWasabiConfigured()) {
     try {
-      const blob = await put(opaqueName, file, {
-        access: "public",
-        addRandomSuffix: false,
-      });
+      const bytes = Buffer.from(await file.arrayBuffer());
+      const url = await uploadFile(
+        `documents/${opaqueName}`,
+        bytes,
+        file.type,
+      );
       return NextResponse.json({
-        url: blob.url,
+        url,
         filename: opaqueName,
         uploadedBy: session?.user?.email ?? "anonymous",
       });
     } catch (err) {
-      console.error("[upload] Vercel Blob failed:", err);
+      console.error("[upload] Wasabi failed:", err);
       return NextResponse.json({ error: "Upload failed. Please try again." }, { status: 500 });
     }
   }

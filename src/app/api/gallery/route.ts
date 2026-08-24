@@ -3,7 +3,7 @@ import { readdir, unlink, mkdir, writeFile } from "fs/promises";
 import path from "path";
 import crypto from "crypto";
 import { auth } from "@/auth";
-import { put, del, BlobNotFoundError } from "@vercel/blob";
+import { isWasabiConfigured, uploadFile, deleteFile } from "@/lib/storage";
 import { getGalleryPhotos } from "@/lib/gallery-photos";
 
 const ALLOWED_MIME: Record<string, string> = {
@@ -15,7 +15,7 @@ const ALLOWED_MIME: Record<string, string> = {
 
 const MAX_BYTES = 8 * 1024 * 1024; // 8 MB
 
-const USE_BLOB = !!process.env.BLOB_READ_WRITE_TOKEN;
+const USE_REMOTE = isWasabiConfigured();
 
 /** Writable directory for dev-mode uploads (not under public/). */
 const UPLOAD_ROOT = path.join(process.cwd(), "uploads");
@@ -88,12 +88,10 @@ export async function POST(req: Request) {
   const blobPath = `gallery/${site}/${opaqueName}`;
 
   try {
-    if (USE_BLOB) {
-      const blob = await put(blobPath, file, {
-        access: "public",
-        addRandomSuffix: false,
-      });
-      return NextResponse.json({ url: blob.url, filename: opaqueName });
+    if (USE_REMOTE) {
+      const bytes = Buffer.from(await file.arrayBuffer());
+      const url = await uploadFile(blobPath, bytes, file.type || "application/octet-stream");
+      return NextResponse.json({ url, filename: opaqueName });
     }
 
     // Dev fallback: write to uploads/gallery/{site}/ (writable at runtime).
@@ -138,18 +136,18 @@ export async function DELETE(req: Request) {
   }
 
   try {
-    if (USE_BLOB) {
-      const blobPath = `gallery/${site}/${filename}`;
-      await del(blobPath);
+    if (USE_REMOTE) {
+      const key = `gallery/${site}/${filename}`;
+      await deleteFile(key);
       return NextResponse.json({ success: true });
     }
 
     await unlink(path.join(siteDir(site), filename));
     return NextResponse.json({ success: true });
-  } catch (err: any) {
+  } catch (err) {
     // Idempotent: deleting something already gone is a success — a stale
     // URL in a cached list must not block the client from clearing it.
-    if (err?.code === "ENOENT" || err instanceof BlobNotFoundError) {
+    if ((err as any)?.code === "ENOENT" || (err as any)?.name === "NoSuchKey") {
       return NextResponse.json({ success: true });
     }
     console.error("[gallery] delete failed:", err);

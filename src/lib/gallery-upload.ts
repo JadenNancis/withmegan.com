@@ -1,5 +1,3 @@
-import { upload } from "@vercel/blob/client";
-
 const MAX_BYTES = 8 * 1024 * 1024;
 
 const ALLOWED_MIME: Record<string, string> = {
@@ -8,6 +6,14 @@ const ALLOWED_MIME: Record<string, string> = {
   "image/webp": "webp",
   "image/gif": "gif",
 };
+
+// Remote (Wasabi) uploads are enabled when the public flag is set on the
+// server. NEXT_PUBLIC_HAS_BLOB_TOKEN is a legacy fallback kept so an
+// existing deployment keeps working until the migration is fully applied;
+// remove it once WASABI_* is set everywhere.
+const REMOTE_UPLOADS =
+  !!process.env.NEXT_PUBLIC_HAS_WASABI ||
+  !!process.env.NEXT_PUBLIC_HAS_BLOB_TOKEN;
 
 export async function uploadGalleryPhoto(
   file: File,
@@ -24,26 +30,41 @@ export async function uploadGalleryPhoto(
 
   const pathname = `gallery/${site}/${crypto.randomUUID()}.${ext}`;
 
-  const hasBlobToken = !!process.env.NEXT_PUBLIC_HAS_BLOB_TOKEN;
-
-  if (hasBlobToken) {
-    const blob = await upload(pathname, file, {
-      access: "public",
-      handleUploadUrl: "/api/gallery/upload-token",
+  if (REMOTE_UPLOADS) {
+    // Direct-to-Wasabi: get a presigned PUT URL, then upload the file body.
+    const res = await fetch("/api/gallery/upload-token", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ pathname }),
     });
-    return blob.url;
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error ?? "Could not start upload.");
+    }
+    const { url, publicUrl } = await res.json();
+
+    const putRes = await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": file.type },
+      body: file,
+    });
+    if (!putRes.ok) {
+      throw new Error("Upload failed. Please try again.");
+    }
+    return publicUrl as string;
   }
 
+  // Dev fallback: POST through the server, which writes to uploads/.
   const formData = new FormData();
   formData.append("file", file);
-  const res = await fetch(`/api/gallery?site=${site}`, {
+  const postRes = await fetch(`/api/gallery?site=${site}`, {
     method: "POST",
     body: formData,
   });
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
+  if (!postRes.ok) {
+    const data = await postRes.json().catch(() => ({}));
     throw new Error(data.error ?? "Upload failed.");
   }
-  const { url } = await res.json();
+  const { url } = await postRes.json();
   return url as string;
 }

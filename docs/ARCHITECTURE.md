@@ -114,7 +114,7 @@ Full table reference in [DATABASE.md](./DATABASE.md).
 
 ## File uploads
 
-`src/app/api/upload/route.ts` is a shared endpoint. Prototype uses local storage; production uses Vercel Blob (`BLOB_READ_WRITE_TOKEN`).
+All file storage is S3-compatible Wasabi (`src/lib/storage.ts`): book-list documents (`documents/…`) and gallery photos (`gallery/{site}/…`). Gallery uploads go straight from the browser to a presigned PUT URL (`/api/gallery/upload-token`); the server uploads documents itself (`/api/upload`). Dev falls back to the local `uploads/` directory when `WASABI_*` is unset. `scripts/migrate-blob-to-wasabi.mjs` copies any existing Vercel Blob objects over.
 
 ## Key files
 

@@ -221,7 +221,7 @@ export function RotatingGallery({ initialImages, site, label, galleryHref }: Pro
               }}
             >
               {/* Plain <img> because uploaded photos come from /api/gallery-file
-                  (dev) or blob URLs (prod) — neither fits next/image's static
+                  (dev) or Wasabi URLs (prod) — neither fits next/image's static
                   optimisation cleanly at runtime. */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img

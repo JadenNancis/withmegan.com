@@ -18,8 +18,8 @@ const MIME: Record<string, string> = {
 
 /**
  * Serves files from the writable uploads/ directory in dev mode.
- * On Vercel, files are served from Vercel Blob CDN URLs directly, so this
- * route is only used when BLOB_READ_WRITE_TOKEN is not set.
+ * In production, files are served straight from the Wasabi bucket URL, so
+ * this route is only used when WASABI_* is not configured.
  *
  * Query params:
  *  - site: "bts" | "md" (gallery) | "documents" (book-list uploads)
