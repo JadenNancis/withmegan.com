@@ -8,9 +8,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * between all images in the platform's gallery with a slow Ken Burns
  * pan/zoom. No dots, no thumbs, no counters — just the photo, rotating.
  *
- * Live photo feed: polls /api/gallery every REFRESH_MS so newly uploaded
- * photos join the rotation without a page reload, and removed photos
- * cycle out gracefully.
+ * Live photo feed: polls /api/gallery every REFRESH_MS (and on tab
+ * return) so newly uploaded photos join the rotation without a page
+ * reload, and removed photos cycle out gracefully. Polling pauses while
+ * the tab is hidden so background tabs burn zero requests.
  *
  * Timing model: two recursive setTimeout schedulers (one for rotation,
  * one for the gallery poll). They capture state via refs — never stale
@@ -27,7 +28,10 @@ const KEN_BURNS_MS = 6_500;
 // smooth rather than sluggish.
 const ZOOM_OUT_MS = 1_400;
 const FADE_MS = 1_400;
-const REFRESH_MS = 20_000;
+// Live photo feed refresh: long enough that public visitors burn almost no
+// requests (a Wasabi list op per tab per minute instead of 3/min), short
+// enough that staff see new uploads appear within a minute.
+const REFRESH_MS = 60_000;
 // First slide shows for a shorter burst so users landing mid-scroll see
 // the rotation begin promptly. Subsequent beats use ROTATE_MS.
 const FIRST_BEAT_MS = 3_500;
@@ -104,7 +108,9 @@ export function RotatingGallery({ initialImages, site, label, galleryHref }: Pro
      Refreshes the photo list from /api/gallery periodically and on
      visibility change. Picks up new uploads mid-session, removes deleted
      photos gracefully, and re-anchors the visible slide on its URL so the
-     user doesn't see a jump. */
+     user doesn't see a jump. While the tab is hidden the timer goes
+     dormant (no wasted requests); returning to the tab polls immediately
+     and resumes the chain. */
   useEffect(() => {
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout> | null = null;
@@ -139,18 +145,23 @@ export function RotatingGallery({ initialImages, site, label, galleryHref }: Pro
       }
     };
 
+    const kick = async () => {
+      await poll();
+      schedule();
+    };
+
     const schedule = () => {
       if (cancelled) return;
-      timer = setTimeout(async () => {
-        await poll();
-        schedule();
-      }, REFRESH_MS);
+      // No requests while the tab is hidden — the visibility handler below
+      // polls immediately on return, so background polling is pure waste.
+      if (document.visibilityState !== "visible") return;
+      timer = setTimeout(kick, REFRESH_MS);
     };
 
     schedule();
 
     const onVisibility = () => {
-      if (document.visibilityState === "visible") poll();
+      if (document.visibilityState === "visible") kick();
     };
     document.addEventListener("visibilitychange", onVisibility);
 
