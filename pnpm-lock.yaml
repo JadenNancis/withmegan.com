@@ -26,9 +26,6 @@ importers:
       '@types/qrcode':
         specifier: ^1.5.6
         version: 1.5.6
-      '@vercel/blob':
-        specifier: ^2.6.1
-        version: 2.6.1
       drizzle-orm:
         specifier: ^0.36.4
         version: 0.36.4(@neondatabase/serverless@0.10.4)(@types/pg@8.11.6)(@types/react@19.2.18)(react@19.2.8)
@@ -72,6 +69,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.3
         version: 19.2.4(@types/react@19.2.18)
+      '@vercel/blob':
+        specifier: ^2.6.1
+        version: 2.6.1
       drizzle-kit:
         specifier: ^0.30.1
         version: 0.30.6
