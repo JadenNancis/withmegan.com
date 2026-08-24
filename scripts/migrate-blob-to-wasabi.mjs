@@ -17,7 +17,7 @@
  *
  * Safe to re-run: uploads are idempotent (same key, overwrite).
  */
-import { list } from "@vercel/blob";
+import { list, get } from "@vercel/blob";
 import {
   S3Client,
   PutObjectCommand,
@@ -94,9 +94,12 @@ async function main() {
   for (const blob of blobs) {
     const key = blob.pathname;
     try {
-      const res = await fetch(blob.url);
-      if (!res.ok) throw new Error(`download failed: HTTP ${res.status}`);
-      const body = new Uint8Array(await res.arrayBuffer());
+      // Token-authenticated download: the public CDN URL may 403 when the
+      // Blob store is over its free-tier usage limits, but the SDK `get`
+      // signs the request with the read-write token server-side.
+      const blobRes = await get(blob.url, { access: "public" });
+      if (!blobRes.ok) throw new Error(`download failed: HTTP ${blobRes.status}`);
+      const body = new Uint8Array(await blobRes.arrayBuffer());
 
       await s3.send(
         new PutObjectCommand({

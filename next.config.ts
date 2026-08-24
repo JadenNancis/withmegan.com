@@ -8,15 +8,13 @@ const nextConfig: NextConfig = {
   },
   env: {
     // Client needs to know whether to upload straight to Wasabi (presigned
-    // URL) or fall back to the dev multipart POST. Legacy Blob flag kept so
-    // existing deployments work until the migration is fully applied.
+    // URL) or fall back to the dev multipart POST.
     NEXT_PUBLIC_HAS_WASABI:
       process.env.WASABI_BUCKET &&
       process.env.WASABI_ACCESS_KEY_ID &&
       process.env.WASABI_SECRET_ACCESS_KEY
         ? "1"
         : "",
-    NEXT_PUBLIC_HAS_BLOB_TOKEN: process.env.BLOB_READ_WRITE_TOKEN ? "1" : "",
   },
   // pdfkit reads its font metrics (Helvetica.afm) from __dirname at runtime;
   // bundling it rewrites __dirname to a virtual path that doesn't exist on

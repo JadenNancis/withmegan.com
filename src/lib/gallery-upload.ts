@@ -8,12 +8,9 @@ const ALLOWED_MIME: Record<string, string> = {
 };
 
 // Remote (Wasabi) uploads are enabled when the public flag is set on the
-// server. NEXT_PUBLIC_HAS_BLOB_TOKEN is a legacy fallback kept so an
-// existing deployment keeps working until the migration is fully applied;
-// remove it once WASABI_* is set everywhere.
-const REMOTE_UPLOADS =
-  !!process.env.NEXT_PUBLIC_HAS_WASABI ||
-  !!process.env.NEXT_PUBLIC_HAS_BLOB_TOKEN;
+// server (next.config env), i.e. when WASABI_* is configured in the
+// deployment environment.
+const REMOTE_UPLOADS = !!process.env.NEXT_PUBLIC_HAS_WASABI;
 
 export async function uploadGalleryPhoto(
   file: File,
