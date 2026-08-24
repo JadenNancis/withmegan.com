@@ -37,6 +37,54 @@ const supporters: { name: string; role: string; email?: string }[] = [
   },
 ];
 
+// 2026 Bookdrive sponsors — appended from the official sponsor list.
+const sponsors: string[] = [
+  "A.B.A Mini Mart",
+  "Asha's Eco Resort Tobago",
+  "Bethel Credit Union Cooperative Society Ltd",
+  "Books and Office Supplies",
+  "Comfort Inn & Suites",
+  "Coss Cutters Supermarket",
+  "D #1 Hardware",
+  "Division of Community Development, Youth Development and Sport",
+  "Double B Enterprise",
+  "Educators Book Store",
+  "The Esplanade",
+  "Fireball Local Chinese Restaurant",
+  "Georgia Boyz Auto Parts",
+  "IADPA Bookstore",
+  "Independence Store LTD",
+  "Johnny Q Sound Hardware",
+  "K. Moore Auto Plus",
+  "Lambeau Credit Union",
+  "M3K Mini Mart",
+  "Midway Mini Mart",
+  "Mustapha's Motor Services",
+  "Nelson's Bookstore",
+  "Pages Bookstore",
+  "Party Hearty Cater Smart",
+  "Penny Savers",
+  "Police Credit Union",
+  "Public Demand Market Place",
+  "Richard's Hardware",
+  "Roxie's Roti Shop",
+  "Save Value Supermarket",
+  "Sharon's Kountry Side Mini Mart",
+  "Singh's Hardware",
+  "Smart City Supermarket",
+  "Studley Park Enterprise LTD",
+  "Studley Park Variety Store",
+  "Telecommunication Services of Trinidad and Tobago",
+  "Tobago Conference of SDA",
+  "Tobago Glass Supplies Ltd",
+  "Tobago Hospitality and Tourism Institute",
+  "Tobago Tourism Agency",
+  "Trinidad & Tobago Solid Waste Management Company",
+  "Viewport Supermarket",
+  "Waterfront Pharmacy",
+  "Williams Auto and Gas Supplies",
+];
+
 export default function BtsSupportersPage() {
   return (
     <div className="space-y-0">
@@ -84,6 +132,35 @@ export default function BtsSupportersPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* 2026 Bookdrive sponsors — appended from the official list */}
+      <section className="py-12">
+        <div className="mx-auto max-w-4xl px-4">
+          <div className="motion-safe:bts-fade-in-up mb-8 text-center">
+            <h2 className="text-xl sm:text-2xl font-bold text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.6),0_4px_18px_rgba(0,0,0,0.65)]">
+              2026 Bookdrive Sponsors
+            </h2>
+            <p className="mt-2 text-sm text-white/95 [text-shadow:0_1px_2px_rgba(0,0,0,0.6),0_2px_10px_rgba(0,0,0,0.6)]">
+              Thank you to every business and organization whose generosity makes this drive possible.
+            </p>
+          </div>
+
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {sponsors.map((name, i) => (
+              <li
+                key={name}
+                className={`motion-safe:bts-fade-in-up bts-stagger-${Math.min((i % 6) + 1, 6)} flex items-center gap-3 rounded-xl border border-brand-100 bg-white/95 px-4 py-3.5 shadow-[0_2px_16px_-6px_rgba(0,0,0,0.08)] backdrop-blur-sm transition-all duration-200 hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-lg`}
+              >
+                <span
+                  aria-hidden="true"
+                  className="h-2 w-2 shrink-0 rounded-full bg-gradient-to-br from-brand-400 to-brand-600"
+                />
+                <span className="text-sm font-semibold text-brand-900 leading-snug">{name}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
