@@ -12,10 +12,15 @@ const ALLOWED_MIME: Record<string, string> = {
 // deployment environment.
 const REMOTE_UPLOADS = !!process.env.NEXT_PUBLIC_HAS_WASABI;
 
+export interface UploadedPhoto {
+  url: string;
+  filename: string;
+}
+
 export async function uploadGalleryPhoto(
   file: File,
   site: "bts" | "md",
-): Promise<string> {
+): Promise<UploadedPhoto> {
   if (file.size > MAX_BYTES) {
     throw new Error("File too large. Max 8 MB.");
   }
@@ -25,7 +30,8 @@ export async function uploadGalleryPhoto(
     throw new Error("Unsupported file type. Use JPG, PNG, WebP, or GIF.");
   }
 
-  const pathname = `gallery/${site}/${crypto.randomUUID()}.${ext}`;
+  const filename = `${crypto.randomUUID()}.${ext}`;
+  const pathname = `gallery/${site}/${filename}`;
 
   if (REMOTE_UPLOADS) {
     // Direct-to-Wasabi: get a presigned PUT URL, then upload the file body.
@@ -48,7 +54,7 @@ export async function uploadGalleryPhoto(
     if (!putRes.ok) {
       throw new Error("Upload failed. Please try again.");
     }
-    return publicUrl as string;
+    return { url: publicUrl as string, filename };
   }
 
   // Dev fallback: POST through the server, which writes to uploads/.
@@ -63,5 +69,5 @@ export async function uploadGalleryPhoto(
     throw new Error(data.error ?? "Upload failed.");
   }
   const { url } = await postRes.json();
-  return url as string;
+  return { url: url as string, filename };
 }

@@ -18,10 +18,10 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: GalleryPhot
     setUploading(true);
     try {
       for (const file of Array.from(files)) {
-        const url = await uploadGalleryPhoto(file, "md");
+        const { url, filename } = await uploadGalleryPhoto(file, "md");
         if (url) {
           setPhotos((prev) =>
-            [...prev, { url, deletable: true, source: "upload" as const }].sort((a, b) =>
+            [...prev, { url, filename, deletable: true, source: "upload" as const }].sort((a, b) =>
               a.url.localeCompare(b.url),
             ),
           );
@@ -34,8 +34,8 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: GalleryPhot
     }
   }, []);
 
-  async function handleDelete(url: string) {
-    const filename = url.split("/").pop();
+  async function handleDelete(photo: GalleryPhoto) {
+    const filename = photo.filename;
     if (!filename) return;
     if (!confirm("Delete this photo?")) return;
 
@@ -48,7 +48,7 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: GalleryPhot
         const data = await res.json().catch(() => ({}));
         throw new Error(data.error ?? "Delete failed.");
       }
-      setPhotos((prev) => prev.filter((p) => p.url !== url));
+      setPhotos((prev) => prev.filter((p) => p.url !== photo.url));
     } catch (err: any) {
       setError(err?.message ?? "Delete failed.");
     }
@@ -151,7 +151,7 @@ export function MdGalleryManager({ initialPhotos }: { initialPhotos: GalleryPhot
                 )}
                 {photo.deletable && (
                   <button
-                    onClick={() => handleDelete(photo.url)}
+                    onClick={() => handleDelete(photo)}
                     className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-red-600/90 text-white shadow-sm transition-opacity"
                     aria-label="Delete photo"
                     title="Delete photo"

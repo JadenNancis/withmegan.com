@@ -1,11 +1,13 @@
 import { readdir } from "fs/promises";
 import path from "path";
-import { isWasabiConfigured, listFiles } from "@/lib/storage";
+import { isWasabiConfigured, listFiles, galleryServingUrl } from "@/lib/storage";
 
 export type GalleryPhotoSource = "seed" | "upload";
 
 export interface GalleryPhoto {
   url: string;
+  /** Opaque filename in storage (delete calls use this, not the URL). */
+  filename?: string;
   /** Seed photos are bundled with the site (public/) and cannot be removed at runtime. */
   deletable: boolean;
   source: GalleryPhotoSource;
@@ -15,8 +17,8 @@ export interface GalleryPhoto {
  * Get gallery photos for a given site.
  *
  * Production (Wasabi): lists objects under `gallery/{site}/` and returns
- * their public URLs. Also includes seed images from public/ that were
- * committed to the repo.
+ * proxy URLs served through /api/gallery-file (objects are not public).
+ * Also includes seed images from public/ that were committed to the repo.
  *
  * Dev fallback (no Wasabi config): reads seed images from
  * `public/images/gallery/{site}/` (committed to repo, served at build time)
@@ -53,7 +55,13 @@ export async function getGalleryPhotos(site: string): Promise<GalleryPhoto[]> {
       const objects = await listFiles(`gallery/${site}/`);
       for (const o of objects) {
         if (/\.(jpe?g|png|webp|gif)$/i.test(o.key)) {
-          photos.push({ url: o.url, deletable: true, source: "upload" });
+          const filename = o.key.split("/").pop() ?? o.key;
+          photos.push({
+            url: galleryServingUrl(site, filename),
+            filename,
+            deletable: true,
+            source: "upload",
+          });
         }
       }
     } catch (err) {
@@ -67,7 +75,8 @@ export async function getGalleryPhotos(site: string): Promise<GalleryPhoto[]> {
       for (const f of uploaded) {
         if (/\.(jpe?g|png|webp|gif)$/i.test(f)) {
           photos.push({
-            url: `/api/gallery-file?site=${site}&name=${encodeURIComponent(f)}`,
+            url: galleryServingUrl(site, f),
+            filename: f,
             deletable: true,
             source: "upload",
           });

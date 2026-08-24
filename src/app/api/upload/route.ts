@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { isWasabiConfigured, uploadFile } from "@/lib/storage";
+import { isWasabiConfigured, uploadFile, documentServingUrl } from "@/lib/storage";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
 import crypto from "crypto";
@@ -56,13 +56,13 @@ export async function POST(req: Request) {
   if (isWasabiConfigured()) {
     try {
       const bytes = Buffer.from(await file.arrayBuffer());
-      const url = await uploadFile(
+      await uploadFile(
         `documents/${opaqueName}`,
         bytes,
         file.type,
       );
       return NextResponse.json({
-        url,
+        url: documentServingUrl(opaqueName),
         filename: opaqueName,
         uploadedBy: session?.user?.email ?? "anonymous",
       });

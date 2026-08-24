@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { createUploadUrl, isWasabiConfigured, publicUrl as publicUrlOf } from "@/lib/storage";
+import { createUploadUrl, isWasabiConfigured, galleryServingUrl } from "@/lib/storage";
 
 /**
  * Hands the browser a short-lived presigned PUT URL for a direct gallery
@@ -56,7 +56,12 @@ export async function POST(req: Request) {
 
   try {
     const url = await createUploadUrl(pathname, contentType);
-    return NextResponse.json({ url, key: pathname, publicUrl: publicUrlOf(pathname) });
+    const filename = pathname.split("/").pop() ?? "";
+    return NextResponse.json({
+      url,
+      key: pathname,
+      publicUrl: galleryServingUrl(site, filename),
+    });
   } catch (err) {
     console.error("[gallery/upload-token] failed:", err);
     return NextResponse.json(

@@ -69,6 +69,24 @@ export function publicUrl(key: string): string {
   return `${ENDPOINT}/${BUCKET}/${key}`;
 }
 
+/**
+ * Serving URL for gallery photos and book-list documents.
+ *
+ * The app proxies reads through /api/gallery-file (server-side, credential
+ * authenticated) instead of pointing clients at the bucket directly. This
+ * works whether or not the Wasabi account allows public object access and
+ * keeps bucket keys opaque to browsers. If public-read is later enabled on
+ * the bucket, these helpers can be switched back to `publicUrl` in one
+ * place.
+ */
+export function galleryServingUrl(site: string, filename: string): string {
+  return `/api/gallery-file?site=${site}&name=${encodeURIComponent(filename)}`;
+}
+
+export function documentServingUrl(filename: string): string {
+  return `/api/gallery-file?site=documents&name=${encodeURIComponent(filename)}`;
+}
+
 /** Server-side upload. Returns the public URL. */
 export async function uploadFile(
   key: string,
@@ -136,10 +154,12 @@ export async function listFiles(
   return items;
 }
 
-/** Fetch an object body (used by the migration script via a small wrapper). */
-export async function downloadFile(key: string): Promise<Uint8Array> {
+/** Fetch an object body (used by the proxy route). Returns a fresh ArrayBuffer. */
+export async function downloadFile(key: string): Promise<ArrayBuffer> {
   const res = await s3().send(new GetObjectCommand({ Bucket: BUCKET, Key: key }));
   const body = await res.Body?.transformToByteArray();
   if (!body) throw new Error(`Object ${key} has no body.`);
-  return body;
+  const copy = new ArrayBuffer(body.byteLength);
+  new Uint8Array(copy).set(body);
+  return copy;
 }

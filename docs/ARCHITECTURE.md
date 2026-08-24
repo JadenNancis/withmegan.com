@@ -114,7 +114,9 @@ Full table reference in [DATABASE.md](./DATABASE.md).
 
 ## File uploads
 
-All file storage is S3-compatible Wasabi (`src/lib/storage.ts`): book-list documents (`documents/…`) and gallery photos (`gallery/{site}/…`). Gallery uploads go straight from the browser to a presigned PUT URL (`/api/gallery/upload-token`); the server uploads documents itself (`/api/upload`). Dev falls back to the local `uploads/` directory when `WASABI_*` is unset. `scripts/migrate-blob-to-wasabi.mjs` copies any existing Vercel Blob objects over.
+All file storage is S3-compatible Wasabi (`src/lib/storage.ts`): book-list documents (`documents/…`) and gallery photos (`gallery/{site}/…`). Gallery uploads go straight from the browser to a presigned PUT URL (`/api/gallery/upload-token`); the server uploads documents itself (`/api/upload`).
+
+Files are served through the authenticated proxy `/api/gallery-file`, which streams objects from Wasabi with server-side credentials. This works without making the bucket public and keeps keys opaque to browsers. Dev falls back to the local `uploads/` directory when `WASABI_*` is unset. `scripts/migrate-blob-to-wasabi.mjs` copies any existing Vercel Blob objects over.
 
 ## Key files
 
