@@ -65,7 +65,6 @@ In **Vercel → Settings → Environment Variables**, add these for the **Produc
 | `FROM_EMAIL_BTS` | `Back to School with Megan <noreply@btswithmegan.com>` | No |
 | `FROM_EMAIL_MD` | `Market Day with Megan <noreply@mdwithmegan.com>` | No |
 | `FROM_EMAIL` | Shared fallback from-address (used only when the site-specific one is missing) | No |
-| `BLOB_READ_WRITE_TOKEN` | Vercel Blob token — only needed to run `scripts/migrate-blob-to-wasabi.mjs` once | No |
 | `ADMIN_EMAIL` | Override prototype admin email | No |
 | `ADMIN_PASSWORD` | Override prototype admin password | No |
 
