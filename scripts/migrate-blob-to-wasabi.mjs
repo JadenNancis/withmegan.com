@@ -6,7 +6,10 @@
  * bucket, preserving the exact key (e.g. gallery/bts/..., documents/...).
  *
  * Usage:
- *   node --env-file=.env.local scripts/migrate-blob-to-wasabi.mjs
+ *   node --env-file=.env.local scripts/migrate-blob-to-wasabi.mjs [--dry-run]
+ *
+ * With --dry-run, only lists what would be copied (no Wasabi credentials
+ * needed) — useful for sizing the migration before applying it.
  *
  * Requires (in env):
  *   BLOB_READ_WRITE_TOKEN        — Vercel Blob token (read side)
@@ -20,6 +23,8 @@ import {
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
 
+const DRY_RUN = process.argv.includes("--dry-run");
+
 const BLOB_TOKEN = process.env.BLOB_READ_WRITE_TOKEN;
 const WASABI_BUCKET = process.env.WASABI_BUCKET;
 const WASABI_REGION = process.env.WASABI_REGION ?? "us-east-1";
@@ -30,20 +35,22 @@ if (!BLOB_TOKEN) {
   console.error("Missing BLOB_READ_WRITE_TOKEN. Nothing to read.");
   process.exit(1);
 }
-if (!WASABI_BUCKET || !process.env.WASABI_ACCESS_KEY_ID || !process.env.WASABI_SECRET_ACCESS_KEY) {
-  console.error("Missing WASABI_* credentials. Nothing to write.");
+if (!DRY_RUN && (!WASABI_BUCKET || !process.env.WASABI_ACCESS_KEY_ID || !process.env.WASABI_SECRET_ACCESS_KEY)) {
+  console.error("Missing WASABI_* credentials. Nothing to write. (Use --dry-run to list only.)");
   process.exit(1);
 }
 
-const s3 = new S3Client({
-  region: WASABI_REGION,
-  endpoint: WASABI_ENDPOINT,
-  forcePathStyle: true,
-  credentials: {
-    accessKeyId: process.env.WASABI_ACCESS_KEY_ID,
-    secretAccessKey: process.env.WASABI_SECRET_ACCESS_KEY,
-  },
-});
+const s3 = DRY_RUN
+  ? null
+  : new S3Client({
+      region: WASABI_REGION,
+      endpoint: WASABI_ENDPOINT,
+      forcePathStyle: true,
+      credentials: {
+        accessKeyId: process.env.WASABI_ACCESS_KEY_ID,
+        secretAccessKey: process.env.WASABI_SECRET_ACCESS_KEY,
+      },
+    });
 
 async function main() {
   let cursor;
@@ -62,6 +69,25 @@ async function main() {
 
   const totalBytes = blobs.reduce((sum, b) => sum + (b.size ?? 0), 0);
   console.log(`Total size: ${(totalBytes / 1024 / 1024).toFixed(2)} MB`);
+
+  const byPrefix = new Map();
+  for (const b of blobs) {
+    const prefix = (b.pathname ?? b.url).split("/")[0] ?? "(root)";
+    const entry = byPrefix.get(prefix) ?? { count: 0, bytes: 0 };
+    entry.count += 1;
+    entry.bytes += b.size ?? 0;
+    byPrefix.set(prefix, entry);
+  }
+  for (const [prefix, e] of byPrefix) {
+    console.log(
+      `  ${prefix.padEnd(16)} ${String(e.count).padStart(4)} object(s), ${(e.bytes / 1024 / 1024).toFixed(2)} MB`,
+    );
+  }
+
+  if (DRY_RUN) {
+    console.log("Dry run — nothing was copied. Re-run without --dry-run to migrate.");
+    return;
+  }
 
   let copied = 0;
   let failed = 0;
