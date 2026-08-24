@@ -1,6 +1,6 @@
 import { PalmTreeIcon, SchoolBookIcon, TobagoMapBadge } from "@/components/bts-illustrations";
 
-const supporters = [
+const supporters: { name: string; role: string; email?: string }[] = [
   {
     name: "THA Division of Health, Wellness and Social Protection",
     role: "Government partner: funding & logistical support",
@@ -16,6 +16,16 @@ const supporters = [
   {
     name: "Tobago Business Chamber",
     role: "Corporate donations & supply sponsorship",
+  },
+  {
+    name: "Windies Wholesalers",
+    role: "Corporate partner: wholesale & supply support",
+    email: "wimart@windiesgroup.com",
+  },
+  {
+    name: "Windies Media",
+    role: "Media partner: promotion & event coverage",
+    email: "media@windiesgroup.com",
   },
   {
     name: "Local Booksellers & Stationers",
@@ -63,6 +73,14 @@ export default function BtsSupportersPage() {
                 </div>
                 <h3 className="text-sm font-bold text-brand-900 leading-snug">{s.name}</h3>
                 <p className="mt-1 text-xs text-gray-600">{s.role}</p>
+                {s.email ? (
+                  <a
+                    href={`mailto:${s.email}`}
+                    className="mt-2 inline-block text-xs font-medium text-brand-700 underline underline-offset-2 break-all hover:text-brand-900"
+                  >
+                    {s.email}
+                  </a>
+                ) : null}
               </div>
             ))}
           </div>
