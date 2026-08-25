@@ -10,10 +10,30 @@ import {
   mdRegistrants,
 } from "@/db/schema";
 import { SITES, type SiteKey } from "@/sites/site-registry";
+import { isInDistrictCommunity } from "@/lib/tobago-locations";
 import { count, eq, and, isNull, inArray } from "drizzle-orm";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+type ExportScope = "all" | "district" | "outside";
+
+const SCOPE_LABELS: Record<ExportScope, string> = {
+  all: "Entire database",
+  district: "In the district",
+  outside: "Outside the district",
+};
+
+function scopeFromQuery(value: string | null): ExportScope {
+  return value === "district" || value === "outside" ? value : "all";
+}
+
+/** Does this registration fall inside the requested export scope? */
+function inScope(address: string | null, scope: ExportScope): boolean {
+  if (scope === "all") return true;
+  const inDistrict = isInDistrictCommunity(address ?? "");
+  return scope === "district" ? inDistrict : !inDistrict;
+}
 
 function siteFromQuery(value: string | null): SiteKey | null {
   if (value === "bts" || value === "md") return value;
@@ -33,6 +53,9 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const site = siteFromQuery(url.searchParams.get("site"));
   const format = url.searchParams.get("format") ?? "csv";
+  const scope = scopeFromQuery(url.searchParams.get("scope"));
+  const scopeSuffix = scope === "all" ? "full" : scope;
+  const scopeLabel = SCOPE_LABELS[scope];
 
   if (!site) {
     return NextResponse.json({ error: "Missing or invalid `site` parameter." }, { status: 400 });
@@ -49,12 +72,12 @@ export async function GET(req: Request) {
 
   if (format === "csv") {
     const csv =
-      site === "bts" ? await buildBtsCsv() : await buildMdCsv();
+      site === "bts" ? await buildBtsCsv(scope) : await buildMdCsv(scope);
     // BOM so Excel opens TT accents correctly.
     return new NextResponse("\uFEFF" + csv, {
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": `attachment; filename="${site}-full-report.csv"`,
+        "Content-Disposition": `attachment; filename="${site}-${scopeSuffix}-report.csv"`,
         "Cache-Control": "no-store",
       },
     });
@@ -66,7 +89,7 @@ export async function GET(req: Request) {
 
   const headers = new Headers({
     "Content-Type": "application/pdf",
-    "Content-Disposition": `attachment; filename="${site}-tha-report.pdf"`,
+    "Content-Disposition": `attachment; filename="${site}-${scopeSuffix}-report.pdf"`,
     "Cache-Control": "no-store",
   });
 
@@ -78,9 +101,9 @@ export async function GET(req: Request) {
       });
       try {
         if (site === "bts") {
-          await buildBtsReport(doc, cfg);
+          await buildBtsReport(doc, cfg, scope, scopeLabel);
         } else {
-          await buildMdReport(doc, cfg);
+          await buildMdReport(doc, cfg, scope, scopeLabel);
         }
         doc.end();
       } catch (err) {
@@ -98,7 +121,7 @@ export async function GET(req: Request) {
 
 // ── Shared layout helpers ───────────────────────────────────────
 
-function header(doc: PDFKit.PDFDocument, siteName: string, eventDate: string) {
+function header(doc: PDFKit.PDFDocument, siteName: string, eventDate: string, scopeLabel: string) {
   doc
     .fontSize(18)
     .font("Helvetica-Bold")
@@ -113,6 +136,11 @@ function header(doc: PDFKit.PDFDocument, siteName: string, eventDate: string) {
     .font("Helvetica-Bold")
     .fillColor("#000")
     .text("THA Community Programme Report", { align: "center" });
+  doc
+    .fontSize(10)
+    .font("Helvetica")
+    .fillColor("#666")
+    .text(`Scope: ${scopeLabel}`, { align: "center" });
   doc.moveDown(0.5);
   doc.moveTo(56, doc.y).lineTo(doc.page.width - 56, doc.y).strokeColor("#ccc").stroke();
   doc.moveDown(0.8);
@@ -163,15 +191,21 @@ function footer(doc: PDFKit.PDFDocument) {
 
 // ── BTS report ──────────────────────────────────────────────────
 
-async function buildBtsReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteKey]) {
-  const [guardians, dependents, assignments, inventory] = await Promise.all([
-    db.select().from(btsGuardians).where(isNull(btsGuardians.deletedAt)),
-    db.select().from(btsDependents),
-    db.select().from(btsResourceAssignments),
-    db.select().from(btsInventory),
-  ]);
+async function buildBtsReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteKey], scope: ExportScope, scopeLabel: string) {
+  // Scope applies at the guardian level; dependents and assignments follow.
+  const allGuardians = await db.select().from(btsGuardians).where(isNull(btsGuardians.deletedAt));
+  const guardians = allGuardians.filter((g) => inScope(g.address, scope));
+  const guardianIds = guardians.map((g) => g.id);
+  const dependents = guardianIds.length > 0
+    ? await db.select().from(btsDependents).where(inArray(btsDependents.guardianId, guardianIds))
+    : [];
+  const dependentIds = dependents.map((d) => d.id);
+  const assignments = dependentIds.length > 0
+    ? await db.select().from(btsResourceAssignments).where(inArray(btsResourceAssignments.dependentId, dependentIds))
+    : [];
+  const inventory = await db.select().from(btsInventory);
 
-  header(doc, cfg.name, cfg.eventDate);
+  header(doc, cfg.name, cfg.eventDate, scopeLabel);
 
   // Summary stats
   sectionTitle(doc, "Summary");
@@ -234,15 +268,16 @@ async function buildBtsReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteK
 
 // ── MD report ───────────────────────────────────────────────────
 
-async function buildMdReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteKey]) {
-  const registrants = await db.select().from(mdRegistrants).where(isNull(mdRegistrants.deletedAt));
+async function buildMdReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteKey], scope: ExportScope, scopeLabel: string) {
+  const allRegistrants = await db.select().from(mdRegistrants).where(isNull(mdRegistrants.deletedAt));
+  const registrants = allRegistrants.filter((r) => inScope(r.address, scope));
 
   const redeemedN = registrants.filter((r) => r.redeemedAt !== null).length;
   const pendingN = registrants.length - redeemedN;
   const redemptionRate =
     registrants.length > 0 ? Math.round((redeemedN / registrants.length) * 100) : 0;
 
-  header(doc, cfg.name, cfg.eventDate);
+  header(doc, cfg.name, cfg.eventDate, scopeLabel);
 
   // Summary stats
   sectionTitle(doc, "Summary");
@@ -304,11 +339,12 @@ async function buildMdReport(doc: PDFKit.PDFDocument, cfg: (typeof SITES)[SiteKe
 // to verify families physically on site and to report after the event.
 // Deleted registrations are excluded — they are not part of the event.
 
-async function buildBtsCsv(): Promise<string> {
-  const guardians = await db
+async function buildBtsCsv(scope: ExportScope): Promise<string> {
+  const guardians = (await db
     .select()
     .from(btsGuardians)
-    .where(isNull(btsGuardians.deletedAt));
+    .where(isNull(btsGuardians.deletedAt)))
+    .filter((g) => inScope(g.address, scope));
 
   const guardianIds = guardians.map((g) => g.id);
   const dependents = guardianIds.length > 0
@@ -374,11 +410,12 @@ async function buildBtsCsv(): Promise<string> {
   return lines.join("");
 }
 
-async function buildMdCsv(): Promise<string> {
-  const registrants = await db
+async function buildMdCsv(scope: ExportScope): Promise<string> {
+  const registrants = (await db
     .select()
     .from(mdRegistrants)
-    .where(isNull(mdRegistrants.deletedAt));
+    .where(isNull(mdRegistrants.deletedAt)))
+    .filter((r) => inScope(r.address, scope));
 
   const lines: string[] = [];
   lines.push(

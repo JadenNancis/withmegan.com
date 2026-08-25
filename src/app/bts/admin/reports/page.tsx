@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
+import { ExportBar } from "@/components/export-bar";
 import { db } from "@/db/client";
 import { btsGuardians, btsDependents, btsResourceAssignments, btsInventory } from "@/db/schema";
 import { isNull } from "drizzle-orm";
@@ -63,24 +64,7 @@ export default async function BtsReportsPage() {
           <h1 className="text-xl sm:text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Reports</h1>
           <p className="mt-1 text-sm text-brand-100/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">Summary of all BTS book drive registrations.</p>
         </div>
-        <div className="flex gap-2 flex-wrap">
-          <a
-            href="/api/export?site=bts&format=csv"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center rounded-xl bg-green-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-green-700 active:scale-95 min-h-[44px]"
-          >
-            Export Sheet (CSV)
-          </a>
-          <a
-            href="/api/export?site=bts&format=pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 active:scale-95 min-h-[44px]"
-          >
-            Export PDF
-          </a>
-        </div>
+        <ExportBar site="bts" pdfClassName="bg-blue-600 hover:bg-blue-700" />
       </div>
 
       <div className="grid gap-3 sm:gap-4 sm:grid-cols-3">

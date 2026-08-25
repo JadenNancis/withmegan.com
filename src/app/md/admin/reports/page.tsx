@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
+import { ExportBar } from "@/components/export-bar";
 import { SearchBar } from "@/components/search-bar";
 import { ClickableTableRow } from "@/components/clickable-table-row";
 import { cn } from "@/lib/cn";
@@ -71,24 +72,7 @@ export default async function MdAdminReportsPage({
         <div className="px-5 py-4 md-animate-fade-in-up">
           <h1 className="text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Reports</h1>
         </div>
-        <div className="flex gap-2 flex-wrap">
-          <a
-            href="/api/export?site=md&format=csv"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center rounded-xl bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-green-700"
-          >
-            Export Sheet (CSV)
-          </a>
-          <a
-            href="/api/export?site=md&format=pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center rounded-xl bg-amber-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-amber-700"
-          >
-            Export PDF
-          </a>
-        </div>
+        <ExportBar site="md" pdfClassName="bg-amber-600 hover:bg-amber-700" />
       </div>
 
       <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
