@@ -5,11 +5,13 @@ import { AdminNav } from "@/components/admin-nav";
 import { SearchBar } from "@/components/search-bar";
 import {
   getDashboardStats,
-  getRecentRegistrations,
+  getAllActiveRegistrants,
   searchRegistrants,
   getDeletedRegistrants,
   countDeletedRegistrants,
+  type SearchRegistrantResult,
 } from "@/lib/md-queries";
+import { sortByDistrictAndArea } from "@/lib/tobago-locations";
 import { ClickableTableRow } from "@/components/clickable-table-row";
 import { DeletedRowActions } from "@/components/registrant-actions";
 import { cn } from "@/lib/cn";
@@ -33,15 +35,20 @@ export default async function MdAdminPage({
   const q = typeof sp.q === "string" ? sp.q.trim() : "";
   const tab = sp.tab === "deleted" ? "deleted" : "active";
 
-  const [stats, recent, searchResults, deleted, deletedCount] = await Promise.all([
+  const [stats, allActive, searchResults, deleted, deletedCount] = await Promise.all([
     getDashboardStats(),
-    getRecentRegistrations(15),
+    getAllActiveRegistrants(),
     q ? searchRegistrants(q, 50) : Promise.resolve(null),
     tab === "deleted" ? getDeletedRegistrants() : Promise.resolve([]),
     countDeletedRegistrants(),
   ]);
 
-  const rows = searchResults ?? recent;
+  const rows = searchResults ?? allActive;
+
+  // Split the active applicant list: the district first, then everyone else
+  // sorted by area, so counter staff can work one list at a time.
+  const { inDistrict, outOfDistrict } =
+    tab === "active" ? sortByDistrictAndArea(rows) : { inDistrict: [], outOfDistrict: [] };
 
   return (
     <div className="space-y-6">
@@ -99,7 +106,7 @@ export default async function MdAdminPage({
             ? "Soft-deleted registrations"
             : q
               ? `Search results for "${q}"`
-              : "Recent registrations"}
+              : "Applicants"}
         </h2>
         {tab === "active" && (
           <Suspense fallback={<div className="text-sm text-white/90 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">Loading search…</div>}>
@@ -173,75 +180,118 @@ export default async function MdAdminPage({
           </p>
         ) : (
           <>
-            {/* Mobile: card list */}
-            <div className="sm:hidden space-y-3">
-              {rows.map((r) => (
-                <Link
-                  key={r.id}
-                  href={`/md/admin/${r.id}`}
-                  className="block rounded-xl border border-amber-200/40 bg-white/95 backdrop-blur-sm p-4 shadow-sm active:scale-[0.98] transition-transform"
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0 flex-1">
-                      <p className="font-semibold text-gray-900 truncate">{r.fullName}</p>
-                      <p className="text-xs font-mono text-gray-600 mt-0.5 truncate">{r.thaId ?? "N/A"}</p>
-                    </div>
-                    <span className={cn("shrink-0 inline-block rounded-full px-2.5 py-1 text-xs font-medium", statusBadge[r.status])}>
-                      {r.status}
-                    </span>
-                  </div>
-                  <div className="mt-1 text-xs text-gray-600">
-                    {new Date(r.createdAt).toLocaleDateString("en-TT")}
-                  </div>
-                  <p className="mt-1.5 text-xs font-semibold text-amber-700">View details &rarr;</p>
-                </Link>
-              ))}
-            </div>
-
-            {/* Desktop: table */}
-            <div className="hidden sm:block overflow-x-auto rounded-lg border border-amber-200">
-              <table className="min-w-full divide-y divide-amber-100 text-sm">
-                <thead className="bg-gradient-to-r from-amber-50 to-orange-50">
-                  <tr>
-                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Application ID</th>
-                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Name</th>
-                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Status</th>
-                    <th className="px-3 py-2 text-left font-semibold text-amber-800">Registered</th>
-                    <th className="px-3 py-2 text-left font-semibold text-amber-800">View</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-amber-50 bg-white">
-                  {rows.map((r) => (
-                    <ClickableTableRow
-                      key={r.id}
-                      href={`/md/admin/${r.id}`}
-                      label={`View application ${r.thaId ?? r.fullName}`}
-                      className="hover:bg-amber-50/50"
-                    >
-                      <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "N/A"}</td>
-                      <td className="px-3 py-2 text-gray-900">{r.fullName}</td>
-                      <td className="px-3 py-2">
-                        <span className={cn("inline-block rounded-full px-2 py-0.5 text-xs font-medium", statusBadge[r.status])}>
-                          {r.status}
-                        </span>
-                      </td>
-                      <td className="px-3 py-2 text-gray-500">
-                        {new Date(r.createdAt).toLocaleDateString("en-TT")}
-                      </td>
-                      <td className="px-3 py-2">
-                        <span className="inline-flex items-center font-bold text-amber-600">
-                          Details &rarr;
-                        </span>
-                      </td>
-                    </ClickableTableRow>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <RegistrantList
+              registrants={inDistrict}
+              title={`In the district · Mt. St. George/Goodwood (${inDistrict.length})`}
+              emptyText="No registrations in the district yet."
+            />
+            <RegistrantList
+              registrants={outOfDistrict}
+              title={`Other areas (${outOfDistrict.length})`}
+              emptyText="No registrations from other areas."
+            />
           </>
         )}
       </section>
     </div>
+  );
+}
+
+/**
+ * One headed list of MD registrations: mobile cards, desktop table. The
+ * active tab renders two of these (district first, then other areas sorted
+ * by area).
+ */
+function RegistrantList({
+  registrants,
+  title,
+  emptyText,
+}: {
+  registrants: SearchRegistrantResult[];
+  title: string;
+  emptyText: string;
+}) {
+  return (
+    <section className="space-y-3">
+      <h3 className="md-animate-fade-in-up text-base font-semibold text-white drop-shadow-md break-words">
+        {title}
+      </h3>
+      {registrants.length === 0 ? (
+        <p className="text-sm text-amber-100/85 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
+          {emptyText}
+        </p>
+      ) : (
+        <>
+          {/* Mobile: card list */}
+          <div className="sm:hidden space-y-3">
+            {registrants.map((r) => (
+              <Link
+                key={r.id}
+                href={`/md/admin/${r.id}`}
+                className="block rounded-xl border border-amber-200/40 bg-white/95 backdrop-blur-sm p-4 shadow-sm active:scale-[0.98] transition-transform"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-gray-900 truncate">{r.fullName}</p>
+                    <p className="text-xs font-mono text-gray-600 mt-0.5 truncate">{r.thaId ?? "N/A"}</p>
+                  </div>
+                  <span className={cn("shrink-0 inline-block rounded-full px-2.5 py-1 text-xs font-medium", statusBadge[r.status])}>
+                    {r.status}
+                  </span>
+                </div>
+                <div className="mt-1 text-xs text-gray-600">
+                  📍 {r.address} · {new Date(r.createdAt).toLocaleDateString("en-TT")}
+                </div>
+                <p className="mt-1.5 text-xs font-semibold text-amber-700">View details &rarr;</p>
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop: table */}
+          <div className="hidden sm:block overflow-x-auto rounded-lg border border-amber-200">
+            <table className="min-w-full divide-y divide-amber-100 text-sm">
+              <thead className="bg-gradient-to-r from-amber-50 to-orange-50">
+                <tr>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Application ID</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Name</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Area</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Status</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">Registered</th>
+                  <th className="px-3 py-2 text-left font-semibold text-amber-800">View</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-amber-50 bg-white">
+                {registrants.map((r) => (
+                  <ClickableTableRow
+                    key={r.id}
+                    href={`/md/admin/${r.id}`}
+                    label={`View application ${r.thaId ?? r.fullName}`}
+                    className="hover:bg-amber-50/50"
+                  >
+                    <td className="px-3 py-2 font-mono text-xs text-gray-700">{r.thaId ?? "N/A"}</td>
+                    <td className="px-3 py-2 text-gray-900">{r.fullName}</td>
+                    <td className="px-3 py-2 text-gray-700">{r.address}</td>
+                    <td className="px-3 py-2">
+                      <span className={cn("inline-block rounded-full px-2 py-0.5 text-xs font-medium", statusBadge[r.status])}>
+                        {r.status}
+                      </span>
+                    </td>
+                    <td className="px-3 py-2 text-gray-500">
+                      {new Date(r.createdAt).toLocaleDateString("en-TT")}
+                    </td>
+                    <td className="px-3 py-2">
+                      <span className="inline-flex items-center font-bold text-amber-600">
+                        Details &rarr;
+                      </span>
+                    </td>
+                  </ClickableTableRow>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
+    </section>
   );
 }
 

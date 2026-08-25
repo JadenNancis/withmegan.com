@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/require-admin";
 import { AdminNav } from "@/components/admin-nav";
-import { getAllGuardians, getDeletedGuardians, countDeletedGuardians } from "@/lib/bts-queries";
+import { getAllGuardians, getDeletedGuardians, countDeletedGuardians, type GuardianWithDependents } from "@/lib/bts-queries";
+import { sortByDistrictAndArea } from "@/lib/tobago-locations";
 import { ClickableTableRow } from "@/components/clickable-table-row";
 import { DeletedRowActions } from "@/components/registrant-actions";
 import { SchoolBookIcon } from "@/components/bts-illustrations";
@@ -22,6 +23,11 @@ export default async function BtsAdminDashboard({
 
   const guardians = tab === "deleted" ? await getDeletedGuardians(search) : await getAllGuardians(search);
   const deletedCount = await countDeletedGuardians();
+
+  // Split the active applicant list: the district first, then everyone else
+  // sorted by area, so counter staff can work one list at a time.
+  const { inDistrict, outOfDistrict } =
+    tab === "active" ? sortByDistrictAndArea(guardians) : { inDistrict: [], outOfDistrict: [] };
 
   // Compute summary stats
   const totalDependents = guardians.reduce((sum, g) => sum + g.dependents.length, 0);
@@ -121,26 +127,84 @@ export default async function BtsAdminDashboard({
       </div>
 
       {/* Registrations — cards on mobile, table on desktop */}
-      {guardians.length === 0 ? (
+      {tab === "deleted" ? (
+        <RegistrantSection
+          guardians={guardians}
+          tab="deleted"
+          isAdmin={isAdmin}
+          title="Soft-deleted registrations"
+          emptyText={search ? "No deleted registrations match your search." : "Nothing deleted yet."}
+        />
+      ) : guardians.length === 0 ? (
         <div className="bts-fade-in-up bts-stagger-4 rounded-2xl border border-dashed border-brand-400/50 bg-brand-950/60 backdrop-blur-md p-12 text-center shadow-xl">
           <div className="mx-auto mb-4 opacity-50">
             <SchoolBookIcon className="h-16 w-16 text-brand-300" />
           </div>
           <p className="text-sm font-medium text-brand-100/85">
-            {tab === "deleted"
-              ? search
-                ? "No deleted registrations match your search."
-                : "Nothing deleted yet."
-              : search
-                ? "No registrations match your search."
-                : "No registrations yet."}
+            {search ? "No registrations match your search." : "No registrations yet."}
           </p>
         </div>
       ) : (
         <>
+          <RegistrantSection
+            guardians={inDistrict}
+            tab="active"
+            isAdmin={isAdmin}
+            title={`In the district · Mt. St. George/Goodwood (${inDistrict.length})`}
+            emptyText="No registrations in the district yet."
+          />
+          <RegistrantSection
+            guardians={outOfDistrict}
+            tab="active"
+            isAdmin={isAdmin}
+            title={`Other areas (${outOfDistrict.length})`}
+            emptyText="No registrations from other areas."
+          />
+        </>
+      )}
+    </div>
+  );
+}
+
+function Th({ children }: { children: React.ReactNode }) {
+  return (
+    <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-cyan-700">
+      {children}
+    </th>
+  );
+}
+
+/**
+ * One headed list of registrations: mobile cards, desktop table. The active
+ * tab renders two of these (district first, then other areas sorted by area).
+ */
+function RegistrantSection({
+  guardians,
+  tab,
+  isAdmin,
+  title,
+  emptyText,
+}: {
+  guardians: GuardianWithDependents[];
+  tab: "active" | "deleted";
+  isAdmin: boolean;
+  title: string;
+  emptyText: string;
+}) {
+  return (
+    <section className="space-y-3">
+      <h2 className="bts-fade-in-up text-lg font-semibold text-white drop-shadow-md">
+        {title}
+      </h2>
+      {guardians.length === 0 ? (
+        <p className="bts-fade-in-up text-sm text-white/85 [text-shadow:0_1px_4px_rgba(0,0,0,0.65)]">
+          {emptyText}
+        </p>
+      ) : (
+        <>
           {/* Mobile: card list */}
           <div className="sm:hidden space-y-3">
-            {guardians.map((g, i) => (
+            {guardians.map((g) => (
               <div
                 key={g.id}
                 className={cn(
@@ -162,9 +226,9 @@ export default async function BtsAdminDashboard({
                     </Link>
                   )}
                 </div>
-                <div className="mt-2 flex items-center gap-3 text-xs text-gray-500">
+                <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500">
+                  <span>📍 {g.address}</span>
                   <span>{g.dependents.length} {g.dependents.length === 1 ? "child/student" : "children/students"}</span>
-                  <span>&middot;</span>
                   <span className="truncate">{g.contactNumber}</span>
                 </div>
                 {tab === "deleted" && (
@@ -177,13 +241,14 @@ export default async function BtsAdminDashboard({
           </div>
 
           {/* Desktop: table */}
-          <div className="hidden sm:block bts-fade-in-up bts-stagger-4 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+          <div className="hidden sm:block bts-fade-in-up overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gradient-to-r from-cyan-50 to-cyan-50/50">
                   <tr>
                     <Th>Application ID</Th>
                     <Th>Guardian</Th>
+                    <Th>Area</Th>
                     <Th>National ID</Th>
                     <Th>Contact</Th>
                     <Th>Dependents</Th>
@@ -192,7 +257,7 @@ export default async function BtsAdminDashboard({
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
-                  {guardians.map((g, i) =>
+                  {guardians.map((g) =>
                     tab === "deleted" ? (
                       <tr key={g.id} className="bg-red-50/30 hover:bg-red-50/60 transition-colors">
                         <td className="px-4 py-3 text-sm font-mono font-medium text-cyan-700">
@@ -202,6 +267,7 @@ export default async function BtsAdminDashboard({
                           <div className="font-medium text-gray-900">{g.fullName}</div>
                           <div className="text-xs text-gray-500">{g.email ?? "No email"}</div>
                         </td>
+                        <td className="px-4 py-3 text-sm text-gray-600">{g.address}</td>
                         <td className="px-4 py-3 font-mono text-xs text-gray-600">{g.nationalId ?? "N/A"}</td>
                         <td className="px-4 py-3 text-sm text-gray-700">{g.contactNumber}</td>
                         <td className="px-4 py-3 text-sm text-gray-700">
@@ -223,7 +289,7 @@ export default async function BtsAdminDashboard({
                         key={g.id}
                         href={`/bts/admin/${g.id}`}
                         label={`View application ${g.thaId ?? g.fullName}`}
-                        className={`hover:bg-cyan-50/40 bts-fade-in-up bts-stagger-${Math.min(i + 1, 7)}`}
+                        className="hover:bg-cyan-50/40"
                       >
                         <td className="px-4 py-3 text-sm font-mono font-medium text-cyan-700">
                           {g.thaId ?? "N/A"}
@@ -232,6 +298,7 @@ export default async function BtsAdminDashboard({
                           <div className="font-medium text-gray-900">{g.fullName}</div>
                           <div className="text-xs text-gray-500">{g.email ?? "No email"}</div>
                         </td>
+                        <td className="px-4 py-3 text-sm text-gray-600">{g.address}</td>
                         <td className="px-4 py-3 font-mono text-xs text-gray-600">{g.nationalId ?? "N/A"}</td>
                         <td className="px-4 py-3 text-sm text-gray-700">{g.contactNumber}</td>
                         <td className="px-4 py-3 text-sm text-gray-700">
@@ -258,14 +325,6 @@ export default async function BtsAdminDashboard({
           </div>
         </>
       )}
-    </div>
-  );
-}
-
-function Th({ children }: { children: React.ReactNode }) {
-  return (
-    <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wide text-cyan-700">
-      {children}
-    </th>
+    </section>
   );
 }

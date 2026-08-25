@@ -75,24 +75,63 @@ export interface SearchRegistrantResult {
   redeemedBy: string | null;
 }
 
+/** Columns needed to render/search the active applicant list. */
+const activeRegistrantColumns = {
+  id: mdRegistrants.id,
+  thaId: mdRegistrants.thaId,
+  fullName: mdRegistrants.fullName,
+  nationalId: mdRegistrants.nationalId,
+  dateOfBirth: mdRegistrants.dateOfBirth,
+  address: mdRegistrants.address,
+  phoneNumber: mdRegistrants.phoneNumber,
+  email: mdRegistrants.email,
+  productCategory: mdRegistrants.productCategory,
+  productCategoryNote: mdRegistrants.productCategoryNote,
+  createdAt: mdRegistrants.createdAt,
+  redeemedAt: mdRegistrants.redeemedAt,
+  redeemedBy: mdRegistrants.redeemedBy,
+};
+
+function mapRegistrant(r: {
+  id: string;
+  thaId: string | null;
+  fullName: string;
+  nationalId: string | null;
+  dateOfBirth: string | null;
+  address: string;
+  phoneNumber: string;
+  email: string | null;
+  productCategory: string | null;
+  productCategoryNote: string | null;
+  createdAt: Date;
+  redeemedAt: Date | null;
+  redeemedBy: string | null;
+}): SearchRegistrantResult {
+  return {
+    ...r,
+    status: r.redeemedAt ? "redeemed" : "registered",
+  };
+}
+
+/**
+ * Every active applicant, for the dashboard list. The page splits and sorts
+ * these by area (district first), so the full set is fetched rather than a
+ * "recent N" window.
+ */
+export async function getAllActiveRegistrants(limit = 500): Promise<SearchRegistrantResult[]> {
+  const rows = await db
+    .select(activeRegistrantColumns)
+    .from(mdRegistrants)
+    .where(isNull(mdRegistrants.deletedAt))
+    .orderBy(desc(mdRegistrants.createdAt))
+    .limit(limit);
+  return rows.map(mapRegistrant);
+}
+
 export async function searchRegistrants(query: string, limit = 50): Promise<SearchRegistrantResult[]> {
   const pattern = `%${query.trim()}%`;
   const rows = await db
-    .select({
-      id: mdRegistrants.id,
-      thaId: mdRegistrants.thaId,
-      fullName: mdRegistrants.fullName,
-      nationalId: mdRegistrants.nationalId,
-      dateOfBirth: mdRegistrants.dateOfBirth,
-      address: mdRegistrants.address,
-      phoneNumber: mdRegistrants.phoneNumber,
-      email: mdRegistrants.email,
-      productCategory: mdRegistrants.productCategory,
-      productCategoryNote: mdRegistrants.productCategoryNote,
-      createdAt: mdRegistrants.createdAt,
-      redeemedAt: mdRegistrants.redeemedAt,
-      redeemedBy: mdRegistrants.redeemedBy,
-    })
+    .select(activeRegistrantColumns)
     .from(mdRegistrants)
     .where(
       and(
@@ -107,10 +146,7 @@ export async function searchRegistrants(query: string, limit = 50): Promise<Sear
     )
     .orderBy(desc(mdRegistrants.createdAt))
     .limit(limit);
-  return rows.map((r) => ({
-    ...r,
-    status: r.redeemedAt ? "redeemed" : "registered",
-  }));
+  return rows.map(mapRegistrant);
 }
 
 export interface RegistrantDetail {

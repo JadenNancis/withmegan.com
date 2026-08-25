@@ -69,6 +69,14 @@ export function isKnownLocation(value: string): boolean {
   return TOBAGO_LOCATIONS.includes(value as TobagoLocation);
 }
 
+/** Case- and punctuation-insensitive normalisation for location matching. */
+function normaliseLocation(value: string): string {
+  return value
+    .toLowerCase()
+    .replace(/\bmount\b/g, "mt")
+    .replace(/[^a-z0-9]/g, "");
+}
+
 /**
  * Is this community inside the Mt. St. George/Goodwood electoral district?
  *
@@ -80,12 +88,52 @@ export function isKnownLocation(value: string): boolean {
  * "mount st george" still resolve to the district.
  */
 export function isInDistrictCommunity(value: string): boolean {
-  const normalise = (s: string) =>
-    s
-      .toLowerCase()
-      .replace(/\bmount\b/g, "mt")
-      .replace(/[^a-z0-9]/g, "");
-  const target = normalise(value);
+  const target = normaliseLocation(value);
   if (!target) return false;
-  return PRIORITY_DISTRICT_VILLAGES.some((v) => normalise(v) === target);
+  return PRIORITY_DISTRICT_VILLAGES.some((v) => normaliseLocation(v) === target);
+}
+
+/**
+ * Sort rank for a community: district villages first in their canonical
+ * order, everything else after. Used to order the in-district list.
+ */
+export function districtSortRank(address: string): number {
+  const target = normaliseLocation(address);
+  const idx = PRIORITY_DISTRICT_VILLAGES.findIndex((v) => normaliseLocation(v) === target);
+  return idx === -1 ? PRIORITY_DISTRICT_VILLAGES.length : idx;
+}
+
+export interface AreaSortable {
+  address: string | null;
+  fullName: string;
+}
+
+/**
+ * Split an applicant list into district and non-district partitions, sorted
+ * for the counter/registration review:
+ *   - in the district: district villages in canonical order, then name
+ *   - outside the district: by area (alphabetical), then name
+ */
+export function sortByDistrictAndArea<T extends AreaSortable>(
+  rows: T[],
+): { inDistrict: T[]; outOfDistrict: T[] } {
+  const inDistrict: T[] = [];
+  const outOfDistrict: T[] = [];
+  for (const row of rows) {
+    if (isInDistrictCommunity(row.address ?? "")) inDistrict.push(row);
+    else outOfDistrict.push(row);
+  }
+
+  inDistrict.sort(
+    (a, b) =>
+      districtSortRank(a.address ?? "") - districtSortRank(b.address ?? "") ||
+      a.fullName.localeCompare(b.fullName),
+  );
+  outOfDistrict.sort(
+    (a, b) =>
+      (a.address ?? "").localeCompare(b.address ?? "", undefined, { sensitivity: "base" }) ||
+      a.fullName.localeCompare(b.fullName),
+  );
+
+  return { inDistrict, outOfDistrict };
 }
