@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/require-admin";
-import { getGuardianByApplicationId } from "@/lib/bts-queries";
+import { getGuardianByApplicationId, searchGuardiansByAnyField } from "@/lib/bts-queries";
+import type { GuardianWithDependents } from "@/lib/bts-queries";
+import { extractApplicationId } from "@/lib/application-id";
 import { AdminNav } from "@/components/admin-nav";
 import { BookListViewer } from "../[guardianId]/book-list-viewer";
 import { CollectionActions } from "./collection-actions";
@@ -18,13 +20,36 @@ export default async function BtsAdminCollectionPage({
 
   const sp = await searchParams;
   const aid = typeof sp.aid === "string" ? sp.aid.trim() : "";
-  const guardian = aid ? await getGuardianByApplicationId(aid) : null;
+  const q = typeof sp.q === "string" ? sp.q.trim() : "";
+
+  // Exact Application ID (QR scan flow) or any-field search. The server tries
+  // an exact Application ID match first so a pasted/scanned ID jumps straight
+  // to the family; anything else runs the any-field search.
+  let guardian: GuardianWithDependents | null = null;
+  let matches: GuardianWithDependents[] = [];
+
+  if (aid) {
+    guardian = await getGuardianByApplicationId(aid);
+  } else if (q) {
+    const exact = extractApplicationId(q);
+    if (exact) {
+      guardian = await getGuardianByApplicationId(exact.toUpperCase());
+    }
+    if (!guardian) {
+      matches = await searchGuardiansByAnyField(q);
+      if (matches.length === 1) guardian = matches[0];
+    }
+  }
 
   const dependents = guardian?.dependents ?? [];
   const allCollected =
     guardian != null &&
     dependents.length > 0 &&
     dependents.every((d) => d.assignments.length > 0 && d.assignments.every((a) => a.status === "collected"));
+
+  const searching = Boolean(aid || q);
+  const notFound =
+    searching && !guardian && matches.length === 0;
 
   return (
     <div className="space-y-6">
@@ -38,17 +63,18 @@ export default async function BtsAdminCollectionPage({
         <div className="min-w-0">
           <h1 className="text-2xl font-bold text-white [text-shadow:0_2px_10px_rgba(0,0,0,0.55)]">Collection Counter</h1>
           <p className="mt-0.5 text-sm text-brand-100/90 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)]">
-            Look up a family at the counter, view each child&rsquo;s book list, and mark resources collected.
+            Find a family by any detail (name, phone, Application ID, school), view each child&rsquo;s book list,
+            and mark resources collected.
           </p>
         </div>
       </div>
 
       {/* Lookup */}
       <div className="bts-fade-in-up rounded-2xl border border-cyan-100 bg-white/90 backdrop-blur-sm p-5 shadow-sm">
-        <CollectionLookup initial={aid} />
+        <CollectionLookup initial={aid || q} />
       </div>
 
-      {!aid && (
+      {!searching && (
         <p className="bts-fade-in-up text-sm text-white/90 [text-shadow:0_2px_6px_rgba(0,0,0,0.7)]">
           Tip: use the{" "}
           <Link href="/bts/admin/scan" className="font-semibold text-cyan-200 underline">
@@ -58,14 +84,55 @@ export default async function BtsAdminCollectionPage({
         </p>
       )}
 
-      {aid && !guardian && (
+      {notFound && (
         <div className="bts-fade-in-up rounded-2xl border border-red-200 bg-red-50 p-6 text-center shadow-sm">
-          <h2 className="text-lg font-bold text-red-800">Registration not found</h2>
+          <h2 className="text-lg font-bold text-red-800">No registrations found</h2>
           <p className="mt-1 text-sm text-red-700">
-            Nothing matches <code className="font-mono font-semibold">{aid}</code>. Check the
-            Application ID and try again.
+            Nothing matches{" "}
+            <code className="font-mono font-semibold">{aid || q}</code>. Try a different spelling, a phone
+            number, or the Application ID.
           </p>
         </div>
+      )}
+
+      {matches.length > 1 && (
+        <section className="bts-fade-in-up space-y-3">
+          <h2 className="text-lg font-semibold text-white drop-shadow-md">
+            {matches.length} families match &ldquo;{q}&rdquo;
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {matches.map((g) => (
+              <div
+                key={g.id}
+                className="rounded-xl border border-cyan-100 bg-white p-4 shadow-sm sm:p-5 flex flex-col"
+              >
+                <div className="min-w-0">
+                  <h3 className="font-semibold text-gray-900 truncate">{g.fullName}</h3>
+                  <p className="mt-0.5 font-mono text-xs font-medium text-cyan-700 break-all">
+                    {g.thaId ?? "No Application ID"}
+                  </p>
+                </div>
+                <p className="mt-2 text-sm text-gray-600">📍 {g.address}</p>
+                <p className="text-sm text-gray-600">📞 {g.contactNumber}</p>
+                <div className="mt-3 flex items-center justify-between gap-2 border-t border-gray-100 pt-3">
+                  <span className="text-xs text-gray-500">
+                    {g.dependents.length} {g.dependents.length === 1 ? "child/student" : "children/students"}
+                  </span>
+                  {g.thaId ? (
+                    <Link
+                      href={`/bts/admin/collection?aid=${encodeURIComponent(g.thaId)}`}
+                      className="inline-flex min-h-[40px] items-center rounded-lg bg-cyan-600 px-4 text-sm font-bold text-white shadow-sm hover:bg-cyan-700 active:scale-95 transition-all"
+                    >
+                      Open &rarr;
+                    </Link>
+                  ) : (
+                    <span className="text-xs text-gray-400">No book list on file</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       )}
 
       {guardian && (
