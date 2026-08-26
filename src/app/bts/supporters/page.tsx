@@ -1,43 +1,6 @@
-import { PalmTreeIcon, SchoolBookIcon, TobagoMapBadge } from "@/components/bts-illustrations";
+import { SchoolBookIcon, TobagoMapBadge } from "@/components/bts-illustrations";
 
-const supporters: { name: string; role: string; email?: string }[] = [
-  {
-    name: "THA Division of Health, Wellness and Social Protection",
-    role: "Government partner: funding & logistical support",
-  },
-  {
-    name: "Mt. St. George Community Council",
-    role: "Community outreach & volunteer coordination",
-  },
-  {
-    name: "Goodwood Village Council",
-    role: "Venue partnership & local organizing",
-  },
-  {
-    name: "Tobago Business Chamber",
-    role: "Corporate donations & supply sponsorship",
-  },
-  {
-    name: "Windies Wholesalers",
-    role: "Corporate partner: wholesale & supply support",
-    email: "wimart@windiesgroup.com",
-  },
-  {
-    name: "Windies Media",
-    role: "Media partner: promotion & event coverage",
-    email: "media@windiesgroup.com",
-  },
-  {
-    name: "Local Booksellers & Stationers",
-    role: "Discounted books and school materials",
-  },
-  {
-    name: "Community Volunteers",
-    role: "Sorting, packing, and event-day support",
-  },
-];
-
-// 2026 Bookdrive sponsors — appended from the official sponsor list.
+// 2026 Bookdrive sponsors — from the official sponsor list.
 const sponsors: string[] = [
   "A.B.A Mini Mart",
   "Asha's Eco Resort Tobago",
@@ -100,42 +63,7 @@ export default function BtsSupportersPage() {
         </p>
       </section>
 
-      {/* Supporters heading — full-bleed background */}
-      <section className="-mx-4 bg-gradient-to-b from-cyan-50 to-white py-12">
-        <div className="mx-auto max-w-4xl px-4">
-          <div className="motion-safe:bts-fade-in-up mb-8 text-center">
-            <h2 className="text-xl sm:text-2xl font-bold text-brand-900">This programme is supported by</h2>
-            <p className="mt-2 text-sm text-gray-600">
-              We are deeply grateful to every organization and individual listed below.
-            </p>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            {supporters.map((s, i) => (
-              <div
-                key={s.name}
-                className={`motion-safe:bts-fade-in-up bts-stagger-${Math.min(i + 1, 6)} rounded-2xl border border-brand-100 bg-white p-6 shadow-[0_2px_16px_-4px_rgba(0,0,0,0.06)] hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}
-              >
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-brand-50">
-                  <PalmTreeIcon className="h-7 w-7" />
-                </div>
-                <h3 className="text-sm font-bold text-brand-900 leading-snug">{s.name}</h3>
-                <p className="mt-1 text-xs text-gray-600">{s.role}</p>
-                {s.email ? (
-                  <a
-                    href={`mailto:${s.email}`}
-                    className="mt-2 inline-block text-xs font-medium text-brand-700 underline underline-offset-2 break-all hover:text-brand-900"
-                  >
-                    {s.email}
-                  </a>
-                ) : null}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 2026 Bookdrive sponsors — appended from the official list */}
+      {/* 2026 Bookdrive sponsors — from the official list */}
       <section className="py-12">
         <div className="mx-auto max-w-4xl px-4">
           <div className="motion-safe:bts-fade-in-up mb-8 text-center">
